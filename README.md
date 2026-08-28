@@ -22,7 +22,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 28 August 2026 at 20:35:32Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 28 August 2026 at 22:20:00Z UTC</sub></p>
 
 ---
 
@@ -40,17 +40,22 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 |---|---|
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
-| Frontend package version | `2.0.0` |
+| Frontend package version | `2.1.0` |
 | Google Apps Script API version | `3.0.0` |
 | Apps Script build stamp | `27 August 2026 at 15:20:42Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `28 August 2026 at 20:35:32Z UTC` |
+| README revision | `28 August 2026 at 22:20:00Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
 
 ---
-
+## v2.1 Release Note(s):
+v2.1 now includes
+• Updated PayPal link(s) for direct product download.  
+• Added Editorial Standard(s)
+• Updated Global Header/Footer shell
+---
 ## Architecture at a glance
 
 ```mermaid
@@ -443,8 +448,8 @@ Before merging a production change:
 **Repository architecture revision:** `2026-08-27T22:28:20Z`  
 **Apps Script build stamp:** `27 August 2026 at 15:20:42Z UTC`  
 **Backend API version:** `3.0.0`  
-**README last updated:** **28 August 2026 at 20:35:32Z UTC**
+**README last updated:** **28 August 2026 at 22:20:00Z UTC**
 
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 28 August 2026 at 20:35:32Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 28 August 2026 at 22:20:00Z UTC</strong></p>

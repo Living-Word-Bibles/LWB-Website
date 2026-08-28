@@ -1,0 +1,13 @@
+{
+  "name": "lwb-website",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "validate": "node scripts/validate-links.mjs",
+    "audit": "npm run validate"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

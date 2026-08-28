@@ -1,0 +1,323 @@
+<!doctype html><html lang="en" data-paypal-client="BAADY3HmA8ip1D8X4DGaJ9V3YBlg1INapOOrbKRCDd1nTP9KQN6WxKo9Tn5ZWectpb3LYEoeDYH6a3i1dA"><head>
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Living Word Bibles</title><meta name="description" content="Beautifully Formatted to Bring God’s Word to Life on Any Device"><link rel="canonical" href="https://www.livingwordbibles.com/">
+    <meta property="og:type" content="website"><meta property="og:title" content="Living Word Bibles"><meta property="og:description" content="Beautifully Formatted to Bring God’s Word to Life on Any Device"><meta property="og:url" content="https://www.livingwordbibles.com/"><meta property="og:image" content="https://www.livingwordbibles.com/assets/lwbbanner.webp">
+    <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Living Word Bibles"><meta name="twitter:description" content="Beautifully Formatted to Bring God’s Word to Life on Any Device"><meta name="twitter:image" content="https://www.livingwordbibles.com/assets/lwbbanner.webp">
+    <link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/svg+xml" href="/assets/icons/lwb-mark.svg"><link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png"><link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest">
+    <link rel="stylesheet" href="/assets/css/site.css">
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.livingwordbibles.com/#organization","name":"Living Word Bibles","url":"https://www.livingwordbibles.com/","logo":"https://www.livingwordbibles.com/assets/LivingWordBibles01.png","email":"gospellivingwordbibles@gmail.com","telephone":"+1 (317) 442-1437","address":{"@type":"PostalAddress","streetAddress":"151 N. Delaware Street, Suite 122","addressLocality":"Indianapolis","addressRegion":"IN","postalCode":"46204","addressCountry":"US"},"sameAs":["https://www.instagram.com/living.word.bibles/","https://x.com/LBibles93286","https://www.youtube.com/@LivingWordBibles316"]},{"@type":"WebSite","@id":"https://www.livingwordbibles.com/#website","url":"https://www.livingwordbibles.com/","name":"Living Word Bibles","publisher":{"@id":"https://www.livingwordbibles.com/#organization"}},{"@type":"WebPage","@id":"https://www.livingwordbibles.com/#webpage","url":"https://www.livingwordbibles.com/","name":"Living Word Bibles","description":"Beautifully Formatted to Bring God’s Word to Life on Any Device","isPartOf":{"@id":"https://www.livingwordbibles.com/#website"},"about":{"@id":"https://www.livingwordbibles.com/#organization"}}]}</script>
+    <script>window.LWB_PUBLIC_CONFIG={"adsEnabled":false,"adsenseClient":""};</script>
+  </head><body class="">
+    <a class="skip-link" href="#main-content">Skip to Content</a><div data-lwb-header></div>
+    <main id="main-content">
+  <section class="section">
+    <div class="container">
+      <style>
+        .homepage-hero-slider{
+          position:relative;
+          isolation:isolate;
+          overflow:hidden;
+          min-height:clamp(430px,48vw,620px);
+          border-radius:inherit;
+        }
+
+        .homepage-hero-slide{
+          position:absolute;
+          inset:0;
+          display:flex;
+          flex-direction:column;
+          align-items:center;
+          justify-content:center;
+          padding:clamp(3rem,8vw,6rem) clamp(1.25rem,5vw,3rem);
+          background-image:var(--hero-bg);
+          background-position:center center;
+          background-size:cover;
+          background-repeat:no-repeat;
+          color:#fff;
+          text-align:center;
+          text-shadow:0 2px 10px rgba(0,0,0,.7);
+          opacity:0;
+          visibility:hidden;
+          transition:opacity .9s ease, visibility .9s ease;
+        }
+
+        .homepage-hero-slide:first-child{
+          position:relative;
+        }
+
+        .homepage-hero-slide.is-active{
+          z-index:2;
+          opacity:1;
+          visibility:visible;
+        }
+
+        .homepage-hero-slide::before{
+          content:"";
+          position:absolute;
+          inset:0;
+          z-index:0;
+          background:linear-gradient(
+            180deg,
+            rgba(0,0,0,.34) 0%,
+            rgba(0,0,0,.48) 50%,
+            rgba(0,0,0,.58) 100%
+          );
+        }
+
+        .homepage-hero-slide .homepage-hero-content{
+          position:relative;
+          z-index:1;
+          width:min(900px,100%);
+          margin:0 auto;
+        }
+
+        .homepage-hero-slide h1,
+        .homepage-hero-slide p,
+        .homepage-hero-slide .eyebrow{
+          color:#fff;
+        }
+
+        .homepage-hero-slide h1{
+          margin-left:auto;
+          margin-right:auto;
+        }
+
+        .homepage-hero-slide .button-row{
+          position:relative;
+          z-index:1;
+          justify-content:center;
+        }
+
+        .homepage-hero-dots{
+          position:absolute;
+          z-index:6;
+          left:50%;
+          bottom:1rem;
+          transform:translateX(-50%);
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          gap:.55rem;
+        }
+
+        .homepage-hero-dot{
+          width:12px;
+          height:12px;
+          padding:0;
+          border:2px solid rgba(255,255,255,.95);
+          border-radius:50%;
+          background:rgba(0,0,0,.25);
+          cursor:pointer;
+          box-shadow:0 1px 5px rgba(0,0,0,.35);
+        }
+
+        .homepage-hero-dot[aria-current="true"]{
+          background:#fff;
+        }
+
+        .homepage-hero-dot:focus-visible{
+          outline:3px solid #fff;
+          outline-offset:3px;
+        }
+
+        @media(max-width:720px){
+          .homepage-hero-slider{
+            min-height:420px;
+          }
+
+          .homepage-hero-slide{
+            background-position:center center;
+            padding-bottom:4.5rem;
+          }
+        }
+
+        @media(prefers-reduced-motion:reduce){
+          .homepage-hero-slide{
+            transition:none;
+          }
+        }
+      </style>
+
+      <div class="hero-panel homepage-hero-slider" data-homepage-hero-slider aria-label="Living Word Bibles featured content">
+
+        <article
+          class="homepage-hero-slide is-active"
+          data-homepage-hero-slide
+          aria-hidden="false"
+          style="--hero-bg:url('/assets/homepage-hero.png')"
+        >
+          <div class="homepage-hero-content">
+            <p class="eyebrow">Living Word Bibles</p>
+            <h1>Beautifully Formatted to Bring God’s Word to Life on Any Device</h1>
+            <p>At Living Word Bibles, our mission is simple: to make God’s Word accessible, elegant, and enduring to everyone who seeks Christ.</p>
+            <div class="button-row">
+              <a class="btn gold" href="/read-the-bible-online/kjv/#/genesis/1/1">Read the Bible Online</a>
+              <a class="btn secondary" href="/bibles/">View All Translations</a>
+            </div>
+          </div>
+        </article>
+
+        <article
+          class="homepage-hero-slide"
+          data-homepage-hero-slide
+          aria-hidden="true"
+          style="--hero-bg:url('/assets/homepage-hero-2.png')"
+        >
+          <div class="homepage-hero-content">
+            <p class="eyebrow">The Ethiopian Bible</p>
+            <h1>Discover the Ancient Christian Tradition of Ethiopia</h1>
+            <p>Explore the Ethiopian Bible tradition and our digital edition of the Complete Apocrypha, bringing treasured ancient writings together for study, devotion, and reference.</p>
+            <div class="button-row">
+              <a class="btn gold" href="/ethiopian-bible/">Explore the Ethiopian Bible</a>
+              <a class="btn secondary" href="/bibles/">View All Bible Translations</a>
+            </div>
+          </div>
+        </article>
+
+        <article
+          class="homepage-hero-slide"
+          data-homepage-hero-slide
+          aria-hidden="true"
+          style="--hero-bg:url('/assets/homepage-hero-3.png')"
+        >
+          <div class="homepage-hero-content">
+            <p class="eyebrow">Living Word Bibles eStore</p>
+            <h1>Beautiful Digital Bible Editions for Study and Devotion</h1>
+            <p>Browse thoughtfully formatted Bible editions designed for phones, tablets, e-readers, and computers—wherever you read God’s Word.</p>
+            <div class="button-row">
+              <a class="btn gold" href="/estore/">Visit the eStore</a>
+              <a class="btn secondary" href="/download-the-bible/">Download the Bible</a>
+            </div>
+          </div>
+        </article>
+
+        <div class="homepage-hero-dots" aria-label="Choose featured slide">
+          <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="0" aria-label="Show Living Word Bibles slide" aria-current="true"></button>
+          <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="1" aria-label="Show Ethiopian Bible slide" aria-current="false"></button>
+          <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="2" aria-label="Show eStore slide" aria-current="false"></button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <section class="section alt"><div class="container"><div class="section-heading"><p class="eyebrow">Read the Bible Online</p><h2>The Holy Bible</h2><p>Choose a trusted translation and begin reading.</p></div><div class="translation-grid"><a href="/read-the-bible-online/kjv/" class="bible-card"><h3>The Holy Bible</h3><span>King James Version</span><img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="Living Word Bibles logo"></a><a href="/read-the-bible-online/nkjv/" class="bible-card"><h3>The Holy Bible</h3><span>New King James Version</span><img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="Living Word Bibles logo"></a><a href="/read-the-bible-online/niv/" class="bible-card"><h3>The Holy Bible</h3><span>New International Version</span><img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="Living Word Bibles logo"></a><a href="/read-the-bible-online/esv/" class="bible-card"><h3>The Holy Bible</h3><span>English Standard Version</span><img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="Living Word Bibles logo"></a><a href="/read-the-bible-online/net/" class="bible-card"><h3>The Holy Bible</h3><span>New English Translation</span><img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="Living Word Bibles logo"></a><a href="/read-the-bible-online/drb/" class="bible-card"><h3>The Holy Bible</h3><span>Douay-Rheims Bible</span><img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="Living Word Bibles logo"></a><a href="/read-the-bible-online/asv/" class="bible-card"><h3>The Holy Bible</h3><span>American Standard Version</span><img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="Living Word Bibles logo"></a><a href="/read-the-bible-online/bbe/" class="bible-card"><h3>The Holy Bible</h3><span>Bible in Basic English</span><img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="Living Word Bibles logo"></a><a href="/read-the-bible-online/oeb/" class="bible-card"><h3>The Holy Bible</h3><span>Open English Bible</span><img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="Living Word Bibles logo"></a><a href="/read-the-bible-online/web/" class="bible-card"><h3>The Holy Bible</h3><span>World English Bible</span><img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="Living Word Bibles logo"></a></div><div class="button-row" style="justify-content:center;margin-top:2rem"><a class="btn gold" href="/bibles/">View All Translations</a></div></div></section>
+  <section class="section"><div class="container"><div class="section-heading"><h2>Explore Scripture &amp; Biblical Resources</h2></div>
+    <style>
+      .home-resource-grid .resource-card{
+        position:relative;
+        isolation:isolate;
+        overflow:hidden;
+        min-height:280px;
+        display:flex;
+        flex-direction:column;
+        justify-content:flex-end;
+        padding:1.35rem;
+        background-position:center;
+        background-size:cover;
+        background-repeat:no-repeat;
+        color:#fff;
+        text-shadow:0 2px 8px rgba(0,0,0,.75);
+      }
+      .home-resource-grid .resource-card::before{
+        content:"";
+        position:absolute;
+        inset:0;
+        z-index:-1;
+        background:linear-gradient(to top,rgba(0,0,0,.82) 0%,rgba(0,0,0,.56) 46%,rgba(0,0,0,.18) 100%);
+      }
+      .home-resource-grid .resource-card h3,
+      .home-resource-grid .resource-card p{
+        position:relative;
+        z-index:1;
+        color:#fff;
+      }
+      .home-resource-grid .resource-card h3{
+        margin-bottom:.35rem;
+      }
+      .home-resource-grid .resource-card p{
+        margin-bottom:0;
+      }
+      .home-resource-grid .resource-card:nth-child(1){background-image:url('/assets/home-icon-1.png')}
+      .home-resource-grid .resource-card:nth-child(2){background-image:url('/assets/home-icon-2.png')}
+      .home-resource-grid .resource-card:nth-child(3){background-image:url('/assets/home-icon-3.png')}
+      .home-resource-grid .resource-card:nth-child(4){background-image:url('/assets/home-icon-4.png')}
+      @media(max-width:720px){
+        .home-resource-grid .resource-card{min-height:240px}
+      }
+    </style>
+    <div class="grid four home-resource-grid">
+      <a class="resource-card" href="/history-of-the-bible/"><h3>The History of the Bible</h3><p>From scrolls and codices to print and digital Scripture.</p></a>
+      <a class="resource-card" href="/maps-of-the-holy-land/"><h3>Maps of the Holy Land</h3><p>Explore the lands and historical settings of the biblical world.</p></a>
+      <a class="resource-card" href="/the-catholic-bible/"><h3>Books of the Catholic Bible</h3><p>Discover the full 73-book Catholic canon and Douay-Rheims tradition.</p></a>
+      <a class="resource-card" href="/estore/"><h3>eStore</h3><p>Beautiful digital Bible editions for study and devotion.</p></a>
+    </div>
+  </div></section>
+  <section class="section alt"><div class="container"><div class="quote-feature"><blockquote>“Yea, though I walk through the valley of the shadow of death, I will fear no evil: for thou art with me; thy rod and thy staff they comfort me.”</blockquote><cite>— Psalms 23:4</cite></div></div></section>
+  <section class="section"><div class="container narrow"><div class="section-heading"><h2>Bringing God’s Word to Life</h2></div><div class="media-frame"><iframe src="https://www.youtube.com/embed/ydGoRosM9tQ" title="Living Word Bibles" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div></div></section>
+  <section class="section alt"><div class="container"><div class="section-heading"><p class="eyebrow">eBibles</p><h2>Read God’s Word</h2><p>Our six digital Bible editions. Free editions download directly; paid editions use PayPal Hosted Buttons and verified fulfillment.</p></div><div class="product-grid"><article class="product-card" data-product-card data-product-slug="the-holy-bible-king-james-version-special-edition"><a class="product-cover" data-product-link href="/estore/p/the-holy-bible-king-james-version-special-edition/"><img src="/assets/HolyBible_KJV_SpecialEdition_KindleCover_1600x2560.webp" alt="Cover of The Holy Bible: King James Version Special Edition"></a><div class="product-body"><h3><a data-product-title data-product-link href="/estore/p/the-holy-bible-king-james-version-special-edition/">The Holy Bible: King James Version Special Edition</a></h3><p class="price" data-product-price>FREE <del>$1.99</del></p><p class="uk-restriction">NOT AVAILABLE FOR SALE OR DISTRIBUTION IN THE UNITED KINGDOM. <a href="/copyright-notice/#uk-notice">VIEW OUR UK NOTICE HERE.</a></p><p><strong>THE ORIGINAL OG KING JAMES!</strong> First published in 1611, the King James Version stands as one of history’s most treasured and enduring translations of Scripture. Revered for its majestic language, poetic rhythm, and faithful rendering of the sacred texts, the KJV has guided and inspired believers for more than four centuries.</p><p>This Special Edition presents the complete text of the Holy Bible: King James Version, carefully designed for both reverence and readability. Enhanced with elegant formatting and thoughtful navigation, this edition honors the timeless beauty of the Word of God while providing a seamless reading experience.</p><h3>Special Features</h3><ul><li>Complete Old and New Testaments of the King James Bible</li><li>Special Edition design with refined formatting</li><li>Reverent, eloquent language for faith, worship, and literature</li><li>Easy-to-navigate eBook-friendly layout</li><li>A meaningful keepsake edition for new and lifelong readers</li></ul><p>For generations, the King James Bible has been more than a book—it has been a source of comfort, wisdom, and divine truth. This Special Edition carries that tradition forward.</p><blockquote>“For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.” — John 3:16</blockquote><div class="product-actions"><a class="btn" href="/assets/products/kjvspecial.epub" download>Download Free eBible</a></div></div></article><article class="product-card" data-product-card data-product-slug="the-holy-bible-king-james-version"><a class="product-cover" data-product-link href="/estore/p/the-holy-bible-king-james-version/"><img src="/assets/HolyBible_KJV_Kindle_Cover_withLogo.webp" alt="Cover of The Holy Bible: King James Version"></a><div class="product-body"><h3><a data-product-title data-product-link href="/estore/p/the-holy-bible-king-james-version/">The Holy Bible: King James Version</a></h3><p class="price" data-product-price>$0.99 <del>$1.99</del></p><p class="uk-restriction">NOT AVAILABLE FOR SALE OR DISTRIBUTION IN THE UNITED KINGDOM. <a href="/copyright-notice/#uk-notice">VIEW OUR UK NOTICE HERE.</a></p><p data-product-description>First published in 1611, the King James Version is one of the most influential and beloved English translations of Scripture. This complete Old and New Testament edition is thoughtfully formatted for smooth eBook navigation, devotional reading, and serious study.</p><div class="product-actions"><div id="paypal-the-holy-bible-king-james-version" class="paypal-hosted" data-paypal-button="YXUZPMWTKME24"></div></div></div></article><article class="product-card" data-product-card data-product-slug="the-holy-bible-american-standard-version-asv"><a class="product-cover" data-product-link href="/estore/p/the-holy-bible-american-standard-version-asv/"><img src="/assets/HolyBible_ASV_Kindle_Cover_withLogo.webp" alt="Cover of The Holy Bible: American Standard Version"></a><div class="product-body"><h3><a data-product-title data-product-link href="/estore/p/the-holy-bible-american-standard-version-asv/">The Holy Bible: American Standard Version</a></h3><p class="price" data-product-price>$0.99 <del>$1.99</del></p><p data-product-description>First published in 1901, the American Standard Version is respected for its accuracy, faithfulness to the Hebrew and Greek texts, and enduring usefulness for study, devotion, and worship.</p><div class="product-actions"><div id="paypal-the-holy-bible-american-standard-version-asv" class="paypal-hosted" data-paypal-button="KBJTWT23LA6JN"></div></div></div></article><article class="product-card" data-product-card data-product-slug="the-holy-bible-youngs-literal-translation-ylt"><a class="product-cover" data-product-link href="/estore/p/the-holy-bible-youngs-literal-translation-ylt/"><img src="/assets/HolyBible_YLT_KindleCover_1600x2560_v2.webp" alt="Cover of The Holy Bible: Young’s Literal Translation"></a><div class="product-body"><h3><a data-product-title data-product-link href="/estore/p/the-holy-bible-youngs-literal-translation-ylt/">The Holy Bible: Young’s Literal Translation</a></h3><p class="price" data-product-price>$0.99 <del>$1.99</del></p><p data-product-description>Young’s Literal Translation presents the complete Old and New Testaments in an exceptionally literal English rendering designed for close comparative Bible study.</p><div class="product-actions"><div id="paypal-the-holy-bible-youngs-literal-translation-ylt" class="paypal-hosted" data-paypal-button="5A5Z2VDH74DFG"></div></div></div></article><article class="product-card" data-product-card data-product-slug="the-holy-bible-world-english-bible-web"><a class="product-cover" data-product-link href="/estore/p/the-holy-bible-world-english-bible-web/"><img src="/assets/WEB+Bible+Kindle+Cover.webp" alt="Cover of The Holy Bible: World English Bible"></a><div class="product-body"><h3><a data-product-title data-product-link href="/estore/p/the-holy-bible-world-english-bible-web/">The Holy Bible: World English Bible</a></h3><p class="price" data-product-price>$0.99 <del>$1.99</del></p><p data-product-description>The World English Bible presents the complete Scriptures in clear contemporary English and is well suited to personal devotion, study, teaching, and outreach.</p><div class="product-actions"><div id="paypal-the-holy-bible-world-english-bible-web" class="paypal-hosted" data-paypal-button="K7C2SJYLCDKMU"></div></div></div></article><article class="product-card" data-product-card data-product-slug="the-holy-bible-douay-rheims-bible"><a class="product-cover" data-product-link href="/estore/p/the-holy-bible-douay-rheims-bible/"><img src="/assets/HolyBible_DouayRheims_Kindle_1600x2560.webp" alt="Cover of The Holy Bible: Douay-Rheims Bible"></a><div class="product-body"><h3><a data-product-title data-product-link href="/estore/p/the-holy-bible-douay-rheims-bible/">The Holy Bible: Douay-Rheims Bible</a></h3><p class="price" data-product-price>FREE <del>$0.99</del></p><p>The classic English Catholic translation from the Latin Vulgate—beloved for prayer, study, and devotional reading. This edition includes the full Catholic canon of 73 books, featuring Tobit, Judith, Wisdom, Sirach (Ecclesiasticus), Baruch, 1 Maccabees, and 2 Maccabees, together with the traditional Greek additions to Esther and Daniel.</p><h3>Why This Bible Matters</h3><p>The New Testament was published at Reims in 1582 and the Old Testament at Douay in 1609–1610. Later Challoner revisions shaped the form read by generations of Catholics.</p><h3>What’s Included</h3><ul><li>All 73 books of the Catholic Bible</li><li>The seven deuterocanonical books</li><li>Additions to Esther and Daniel</li><li>Traditional Catholic book names with modern equivalents where helpful</li><li>Readable digital formatting for prayer, study, catechesis, and RCIA</li></ul><p><strong>Price:</strong> FREE<br><strong>Format:</strong> Digital eBible and online reader<br><strong>Translation lineage:</strong> Latin Vulgate → English Douay-Rheims, widely read in the Challoner form.</p><div class="product-actions"><a class="btn" href="/assets/products/drb.epub" download>Download Free eBible</a></div></div></article></div><div class="button-row" style="justify-content:center;margin-top:2rem"><a class="btn" href="/estore/">Visit the eStore</a></div></div></section>
+  <section class="section"><div class="container"><div class="section-heading"><h2>Also Available From Trusted Booksellers</h2></div><div class="retailer-row"><a href="https://www.amazon.com" target="_blank" rel="noopener noreferrer"><img src="/assets/amazonlogo_transparent.webp" alt="Visit our Amazon Store"></a><a href="https://www.barnesandnoble.com" target="_blank" rel="noopener noreferrer"><img src="/assets/barnes-noble-01-logo-png-transparent.webp" alt="Available at Barnes &amp; Noble"></a></div></div></section>
+  <section class="section dark"><div class="container"><div class="section-heading"><h2>Follow Living Word Bibles</h2><p>Scripture, devotionals, publishing news, and encouragement.</p></div><div class="social-preview"><a class="social-preview-card" href="https://www.instagram.com/living.word.bibles/" target="_blank" rel="noopener noreferrer"><img src="/assets/homeasset01.webp" alt="Living Word Bibles Instagram preview"><span class="social-preview-copy"><strong>Instagram</strong><span>@living.word.bibles</span></span></a><a class="social-preview-card" href="https://x.com/LBibles93286" target="_blank" rel="noopener noreferrer"><img src="/assets/homeasset02.webp" alt="Living Word Bibles X preview"><span class="social-preview-copy"><strong>X</strong><span>@LBibles93286</span></span></a><a class="social-preview-card" href="https://www.youtube.com/@LivingWordBibles316" target="_blank" rel="noopener noreferrer"><img src="/assets/homeasset03.webp" alt="Living Word Bibles YouTube preview"><span class="social-preview-copy"><strong>YouTube</strong><span>@LivingWordBibles316</span></span></a></div><div class="button-row" style="justify-content:center;margin-top:1.5rem"><a class="btn gold" href="/social-media/">Visit Social Media</a></div></div></section></main><div data-lwb-footer></div>
+    <script src="/assets/js/config.js" defer></script><script src="/assets/js/site.js" defer></script><script src="/assets/js/forms.js" defer></script><script src="/assets/js/products.js" defer></script>
+  <script>
+      (() => {
+        const slider = document.querySelector("[data-homepage-hero-slider]");
+        if (!slider) return;
+
+        const slides = Array.from(slider.querySelectorAll("[data-homepage-hero-slide]"));
+        const dots = Array.from(slider.querySelectorAll("[data-homepage-hero-dot]"));
+        if (slides.length < 2) return;
+
+        let current = 0;
+        let timer = null;
+        const interval = 5000;
+
+        const showSlide = (index) => {
+          current = (index + slides.length) % slides.length;
+
+          slides.forEach((slide, i) => {
+            const active = i === current;
+            slide.classList.toggle("is-active", active);
+            slide.setAttribute("aria-hidden", active ? "false" : "true");
+          });
+
+          dots.forEach((dot, i) => {
+            dot.setAttribute("aria-current", i === current ? "true" : "false");
+          });
+        };
+
+        const stop = () => {
+          if (timer) {
+            window.clearInterval(timer);
+            timer = null;
+          }
+        };
+
+        const start = () => {
+          stop();
+          timer = window.setInterval(() => showSlide(current + 1), interval);
+        };
+
+        dots.forEach((dot) => {
+          dot.addEventListener("click", () => {
+            showSlide(Number(dot.dataset.homepageHeroDot));
+            start();
+          });
+        });
+
+        slider.addEventListener("mouseenter", stop);
+        slider.addEventListener("mouseleave", start);
+        slider.addEventListener("focusin", stop);
+        slider.addEventListener("focusout", (event) => {
+          if (!slider.contains(event.relatedTarget)) start();
+        });
+
+        document.addEventListener("visibilitychange", () => {
+          if (document.hidden) stop();
+          else start();
+        });
+
+        showSlide(0);
+        start();
+      })();
+    </script>
+  </body></html>

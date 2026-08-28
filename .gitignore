@@ -1,0 +1,10 @@
+node_modules/
+.DS_Store
+.env
+.firebase-config.js
+
+# Paid eBible files are fulfilled from authenticated Google Drive, not GitHub Pages.
+/assets/products/kjv.epub
+/assets/products/asv.epub
+/assets/products/ylt.epub
+/assets/products/web.epub

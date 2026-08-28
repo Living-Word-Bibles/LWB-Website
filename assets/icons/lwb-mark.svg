@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="t">
+<title id="t">Living Word Bibles</title>
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#6c1f1f"/><stop offset="1" stop-color="#b78b32"/></linearGradient></defs>
+<rect width="512" height="512" rx="96" fill="#fbf8ef"/>
+<g fill="none" stroke="url(#g)" stroke-width="18" stroke-linecap="round" stroke-linejoin="round">
+<path d="M72 188c64-26 123-18 184 18v214c-61-36-120-44-184-18z"/>
+<path d="M440 188c-64-26-123-18-184 18v214c61-36 120-44 184-18z"/>
+<path d="M256 206v214"/><path d="M256 132v92M224 166h64"/>
+<path d="M256 52v42M182 70l18 38M330 70l-18 38M120 112l34 24M392 112l-34 24"/>
+</g></svg>

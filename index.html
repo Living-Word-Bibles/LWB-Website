@@ -13,8 +13,24 @@
   <section class="section">
     <div class="container">
       <style>
+        /* Homepage-only navigation/hero stacking fix.
+           Keep the injected global navigation and its dropdowns above
+           every rotating hero layer on this page. */
+        body > [data-lwb-header]{
+          position:relative;
+          z-index:1000;
+          isolation:isolate;
+        }
+
+        #main-content{
+          position:relative;
+          z-index:0;
+        }
+
         .homepage-hero-slider{
           position:relative;
+          z-index:0;
+          isolation:isolate;
           overflow:hidden;
           min-height:clamp(430px,48vw,620px);
           border-radius:inherit;
@@ -45,7 +61,7 @@
         }
 
         .homepage-hero-slide.is-active{
-          z-index:2;
+          z-index:1;
           opacity:1;
           visibility:visible;
         }
@@ -89,7 +105,7 @@
 
         .homepage-hero-dots{
           position:absolute;
-          z-index:6;
+          z-index:2;
           left:50%;
           bottom:1rem;
           transform:translateX(-50%);
@@ -160,6 +176,23 @@
           class="homepage-hero-slide"
           data-homepage-hero-slide
           aria-hidden="true"
+          style="--hero-bg:url('/assets/homepage-hero-4.png')"
+        >
+          <div class="homepage-hero-content">
+            <p class="eyebrow">Living Word Bibles App</p>
+            <h1>Take God’s Word With You on Any Device</h1>
+            <p>Enjoy a clean King James Bible reading experience optimized for iOS, Android, and desktop—beautifully formatted wherever you read.</p>
+            <div class="button-row">
+              <a class="btn gold" href="/ios/">Explore the Bible App</a>
+              <a class="btn secondary" href="/read-the-bible-online/">Read the Bible Online</a>
+            </div>
+          </div>
+        </article>
+
+        <article
+          class="homepage-hero-slide"
+          data-homepage-hero-slide
+          aria-hidden="true"
           style="--hero-bg:url('/assets/homepage-hero-2.png')"
         >
           <div class="homepage-hero-content">
@@ -192,8 +225,9 @@
 
         <div class="homepage-hero-dots" aria-label="Choose featured slide">
           <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="0" aria-label="Show Living Word Bibles slide" aria-current="true"></button>
-          <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="1" aria-label="Show Ethiopian Bible slide" aria-current="false"></button>
-          <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="2" aria-label="Show eStore slide" aria-current="false"></button>
+          <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="1" aria-label="Show Living Word Bibles App slide" aria-current="false"></button>
+          <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="2" aria-label="Show Ethiopian Bible slide" aria-current="false"></button>
+          <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="3" aria-label="Show eStore slide" aria-current="false"></button>
         </div>
 
       </div>

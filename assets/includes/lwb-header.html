@@ -1,11 +1,194 @@
 <header class="site-header">
+
+<style>
+/* LWB canonical header hardening */
+.site-header{z-index:2147480000!important;overflow:visible!important}
+.site-header .header-inner,.site-header .header-top,.site-header .header-actions,
+.site-header .primary-nav,.site-header .nav-group,.site-header .nav-parent-row{
+  overflow:visible!important
+}
+.site-header .primary-nav{position:relative;z-index:50}
+.site-header .nav-dropdown{z-index:1000!important}
+
+/* Logged-in account control */
+.lwb-account-link{display:inline-flex!important;align-items:center;justify-content:center;gap:.42rem;white-space:nowrap}
+.lwb-user-avatar{display:none;position:relative;width:24px;height:24px;flex:0 0 24px;overflow:hidden;
+  border:1px solid rgba(255,255,255,.72);border-radius:50%;background:rgba(255,255,255,.10)}
+.lwb-user-avatar::before{content:"";position:absolute;left:50%;top:4px;width:7px;height:7px;
+  transform:translateX(-50%);border-radius:50%;background:currentColor}
+.lwb-user-avatar::after{content:"";position:absolute;left:50%;bottom:3px;width:14px;height:8px;
+  transform:translateX(-50%);border-radius:9px 9px 5px 5px;background:currentColor}
+.lwb-account-link.is-authenticated .lwb-user-avatar{display:inline-block}
+
+/* Mobile-only HTML/CSS iPhone + iOS */
+.lwb-ios-mobile{display:none;align-items:center;justify-content:center;gap:.42rem;min-height:40px;
+  padding:.32rem .48rem;border:1px solid rgba(255,255,255,.60);border-radius:11px;color:#fff;
+  background:rgba(0,0,0,.26);text-decoration:none;font:800 .85rem/1 var(--sans)}
+.lwb-ios-phone{position:relative;display:inline-block;width:20px;height:32px;flex:0 0 20px;
+  border:2px solid currentColor;border-radius:5px;background:rgba(255,255,255,.08)}
+.lwb-ios-phone::before{content:"";position:absolute;left:50%;top:2px;width:6px;height:2px;
+  transform:translateX(-50%);border-radius:99px;background:currentColor}
+.lwb-ios-phone::after{content:"";position:absolute;left:50%;bottom:2px;width:3px;height:3px;
+  transform:translateX(-50%);border:1px solid currentColor;border-radius:50%}
+.lwb-ios-phone-screen{position:absolute;inset:7px 3px;border-radius:2px;background:rgba(255,255,255,.12)}
+.lwb-ios-phone-cross::before,.lwb-ios-phone-cross::after{content:"";position:absolute;left:50%;top:50%;
+  border-radius:1px;background:currentColor;transform:translate(-50%,-50%)}
+.lwb-ios-phone-cross::before{width:2px;height:9px}
+.lwb-ios-phone-cross::after{width:7px;height:2px}
+.lwb-ios-wordmark{display:inline-block;font:800 .92rem/1 var(--sans)}
+
+@media(max-width:900px){
+  .site-header,.site-header .header-inner{overflow:visible!important}
+  .site-header .header-top{align-items:center;gap:.55rem}
+  .site-header .header-actions{gap:.35rem;flex:0 0 auto}
+  .site-header .header-actions .social-links{display:none!important}
+  .site-header .nav-toggle{display:inline-flex!important;align-items:center;justify-content:center;min-height:40px}
+  .site-header .primary-nav{display:none;position:absolute;top:90px;left:.6rem;right:.6rem;
+    z-index:2147480001!important;max-height:calc(100dvh - 105px);overflow-y:auto!important;
+    overflow-x:hidden!important;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+    align-items:stretch;flex-direction:column;flex-wrap:nowrap;background:#1e1411}
+  .site-header .primary-nav[data-open="true"]{display:flex}
+  .site-header .nav-group,.site-header .nav-direct{width:100%}
+  .site-header .nav-parent-row{width:100%}
+  .site-header .nav-parent-link{flex:1;text-align:left!important}
+  .site-header .nav-dropdown-toggle{height:42px;min-width:45px}
+  .site-header .nav-dropdown{position:static!important;width:100%;max-width:none;margin-top:.25rem;
+    overflow:visible!important;box-shadow:none;background:rgba(255,255,255,.06);
+    border-color:rgba(255,255,255,.16)}
+  .site-header .nav-dropdown a{padding-left:1.25rem!important;text-align:left!important}
+  .site-header .lwb-ios-desktop{display:none!important}
+  .site-header .lwb-ios-mobile{display:inline-flex}
+}
+@media(max-width:640px){
+  .site-header .brand{gap:.45rem;min-width:0}
+  .site-header .brand img{width:54px;height:54px}
+  .site-header .brand-copy{min-width:0}
+  .site-header .brand-copy strong{font-size:1rem;letter-spacing:.04em;white-space:nowrap}
+  .site-header .brand-copy span{display:none}
+  .site-header .lwb-help-link{width:28px!important;flex-basis:28px!important}
+  .site-header .lwb-ios-mobile{padding:.28rem .38rem}
+  .site-header .nav-toggle{padding:.5rem .58rem}
+  .site-header .primary-nav{top:76px}
+}
+@media(max-width:460px){
+  .site-header .brand-copy strong{font-size:.88rem}
+  .site-header .lwb-ios-wordmark{font-size:.8rem}
+  .site-header .lwb-ios-phone{width:18px;height:29px;flex-basis:18px}
+}
+</style>
+
     <a class="header-banner-link" href="/" aria-label="Living Word Bibles homepage"></a>
     <div class="container header-inner">
       <div class="header-top">
         <a class="brand" href="/"><img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="Living Word Bibles"><span class="brand-copy"><strong>Living Word Bibles</strong><span>Bringing God’s Word to Life</span></span></a>
-        <div class="header-actions"><div class="social-links" aria-label="Social media"><a class="icon-link" href="https://www.instagram.com/living.word.bibles/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm10.5 1.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg></a><a class="icon-link" href="https://x.com/LBibles93286" target="_blank" rel="noopener noreferrer" aria-label="X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.78 7.75L23.2 22h-6.25l-4.9-6.4L6.46 22H3.34l7.25-8.29L2.94 2h6.4l4.43 5.86L18.9 2Zm-1.1 17.84h1.72L8.4 4.05H6.56L17.8 19.84Z"/></svg></a><a class="icon-link" href="https://www.youtube.com/@LivingWordBibles316" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.3 3.6-6.3 3.6Z"/></svg></a></div><a href="/support/" class="lwb-help-link" aria-label="Open Living Word Bibles Technical Support" title="Technical Support" style="width:32px;height:38px;display:inline-flex;flex:0 0 32px;flex-direction:column;align-items:center;justify-content:center;gap:1px;color:currentColor;text-decoration:none;line-height:1;"><span aria-hidden="true" style="width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;border:2px solid currentColor;border-radius:999px;background:transparent;font-family:Arial Black,Arial,Helvetica,sans-serif;font-size:12px;font-weight:900;line-height:1;">?</span><span aria-hidden="true" style="display:block;margin-top:1px;font-family:Arial Black,Arial,Helvetica,sans-serif;font-size:7px;font-weight:900;line-height:1;letter-spacing:.01em;white-space:nowrap;">Help</span></a><a class="ios-badge" href="/ios/"><img src="/assets/lw-ios-badge-light.svg" data-fallback="/assets/icons/lwb-mark.svg" alt=""><span>Get the App</span></a><button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="primary-nav">Menu</button></div>
+        <div class="header-actions"><div class="social-links" aria-label="Social media"><a class="icon-link" href="https://www.instagram.com/living.word.bibles/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm10.5 1.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg></a><a class="icon-link" href="https://x.com/LBibles93286" target="_blank" rel="noopener noreferrer" aria-label="X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.78 7.75L23.2 22h-6.25l-4.9-6.4L6.46 22H3.34l7.25-8.29L2.94 2h6.4l4.43 5.86L18.9 2Zm-1.1 17.84h1.72L8.4 4.05H6.56L17.8 19.84Z"/></svg></a><a class="icon-link" href="https://www.youtube.com/@LivingWordBibles316" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.3 3.6-6.3 3.6Z"/></svg></a></div><a href="/support/" class="lwb-help-link" aria-label="Open Living Word Bibles Technical Support" title="Technical Support" style="width:32px;height:38px;display:inline-flex;flex:0 0 32px;flex-direction:column;align-items:center;justify-content:center;gap:1px;color:currentColor;text-decoration:none;line-height:1;"><span aria-hidden="true" style="width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;border:2px solid currentColor;border-radius:999px;background:transparent;font-family:Arial Black,Arial,Helvetica,sans-serif;font-size:12px;font-weight:900;line-height:1;">?</span><span aria-hidden="true" style="display:block;margin-top:1px;font-family:Arial Black,Arial,Helvetica,sans-serif;font-size:7px;font-weight:900;line-height:1;letter-spacing:.01em;white-space:nowrap;">Help</span></a><a class="ios-badge lwb-ios-desktop" href="/ios/" aria-label="Get the Living Word Bibles App"><img src="/assets/lw-ios-badge-light.svg" data-fallback="/assets/icons/lwb-mark.svg" alt=""><span>Get the App</span></a><a class="lwb-ios-mobile" href="/ios/" aria-label="Get the Living Word Bibles App for iOS"><span class="lwb-ios-phone" aria-hidden="true"><span class="lwb-ios-phone-screen"><span class="lwb-ios-phone-cross"></span></span></span><span class="lwb-ios-wordmark">iOS</span></a><button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="primary-nav">Menu</button></div>
       </div>
-      <nav class="primary-nav" id="primary-nav" data-primary-nav aria-label="Primary navigation"><div class="nav-group" data-nav-group><div class="nav-parent-row"><a class="nav-parent-link" href="/bibles/">The Holy Bible</a><button class="nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-menu-0" data-dropdown-toggle><span class="sr-only">Open The Holy Bible menu</span><span aria-hidden="true">⌄</span></button></div><div class="nav-dropdown" id="nav-menu-0" data-dropdown-menu hidden><a href="/estore/">eBibles</a><a href="/download-the-bible/">Download the Bible</a><a href="/read-the-bible-online/">Read the Bible Online</a><a href="/ethiopian-bible/">The Ethiopian Bible</a><a href="/bibles/">View All Bible Translations</a></div></div><div class="nav-group" data-nav-group><div class="nav-parent-row"><a class="nav-parent-link" href="/history-of-the-bible/">History of the Bible</a><button class="nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-menu-1" data-dropdown-toggle><span class="sr-only">Open History of the Bible menu</span><span aria-hidden="true">⌄</span></button></div><div class="nav-dropdown" id="nav-menu-1" data-dropdown-menu hidden><a href="/history-of-the-bible/">The History of the Holy Bible</a><a href="/history-of-the-bible/#books-of-the-holy-bible">The Books of the Holy Bible</a><a href="/the-catholic-bible/">Books of the Catholic Bible</a><a href="/maps-of-the-holy-land/">Maps of the Holy Land</a><a href="/history-of-the-bible/#the-story-of-the-bible">The Story of the Bible</a><a href="/history-of-the-bible/#the-dead-sea-scrolls">The Dead Sea Scrolls</a><a href="/history-of-the-bible/#who-wrote-the-bible">Who Wrote the Bible</a><a href="/history-of-the-bible/#bible-translation-histories">Bible Translation Histories</a><a href="/history-of-the-bible/#history-media">Media Resources</a></div></div><div class="nav-group" data-nav-group><div class="nav-parent-row"><a class="nav-parent-link" href="/christian-living/">Christian Living</a><button class="nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-menu-2" data-dropdown-toggle><span class="sr-only">Open Christian Living menu</span><span aria-hidden="true">⌄</span></button></div><div class="nav-dropdown" id="nav-menu-2" data-dropdown-menu hidden><a href="/christian-living/#walking-in-the-light-of-christ">Walking in the Light of Christ</a><a href="/christian-living/#most-popular-verses">Most Popular Verses</a><a href="/christian-living/#scripture-illustrated">Scripture Illustrated</a><a href="/christian-living/#common-prayers">Common Prayers</a><a href="/christian-living/#daily-devotionals">Daily Devotionals</a><a href="/christian-living/#media-library">Media Library</a></div></div><div class="nav-group" data-nav-group><div class="nav-parent-row"><a class="nav-parent-link" href="/bible-study/">Bible Study</a><button class="nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-menu-3" data-dropdown-toggle><span class="sr-only">Open Bible Study menu</span><span aria-hidden="true">⌄</span></button></div><div class="nav-dropdown" id="nav-menu-3" data-dropdown-menu hidden><a href="/bible-study/#scripture">Scripture</a><a href="/prayers/">Prayer</a><a href="/bible-study/#media">Media Resources</a></div></div><div class="nav-group" data-nav-group><div class="nav-parent-row"><a class="nav-parent-link" href="/about-us/">About Us</a><button class="nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-menu-4" data-dropdown-toggle><span class="sr-only">Open About Us menu</span><span aria-hidden="true">⌄</span></button></div><div class="nav-dropdown" id="nav-menu-4" data-dropdown-menu hidden><a href="/about-us/#our-story">Our Story</a><a href="/about-us/#our-team">Our Team</a><a href="/about-us/#contact-us">Contact Us</a><a href="/about-us/#newsletter">Newsletter</a><a href="/for-churches/">For Churches</a><a href="/social-media/">Social Media</a><a href="/donors/">Donors</a><a href="/about-us/#frequently-asked-questions">Frequently Asked Questions</a></div></div><a class="nav-direct" href="/donate/">Donate</a><a class="nav-direct" href="/estore/">eStore</a><a class="nav-direct" href="/login/">Login</a></nav>
+      <nav class="primary-nav" id="primary-nav" data-primary-nav aria-label="Primary navigation"><div class="nav-group" data-nav-group><div class="nav-parent-row"><a class="nav-parent-link" href="/bibles/">The Holy Bible</a><button class="nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-menu-0" data-dropdown-toggle><span class="sr-only">Open The Holy Bible menu</span><span aria-hidden="true">⌄</span></button></div><div class="nav-dropdown" id="nav-menu-0" data-dropdown-menu hidden><a href="/estore/">eBibles</a><a href="/download-the-bible/">Download the Bible</a><a href="/read-the-bible-online/">Read the Bible Online</a><a href="/ethiopian-bible/">The Ethiopian Bible</a><a href="/bibles/">View All Bible Translations</a></div></div><div class="nav-group" data-nav-group><div class="nav-parent-row"><a class="nav-parent-link" href="/history-of-the-bible/">History of the Bible</a><button class="nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-menu-1" data-dropdown-toggle><span class="sr-only">Open History of the Bible menu</span><span aria-hidden="true">⌄</span></button></div><div class="nav-dropdown" id="nav-menu-1" data-dropdown-menu hidden><a href="/history-of-the-bible/">The History of the Holy Bible</a><a href="/history-of-the-bible/#books-of-the-holy-bible">The Books of the Holy Bible</a><a href="/the-catholic-bible/">Books of the Catholic Bible</a><a href="/maps-of-the-holy-land/">Maps of the Holy Land</a><a href="/history-of-the-bible/#the-story-of-the-bible">The Story of the Bible</a><a href="/history-of-the-bible/#the-dead-sea-scrolls">The Dead Sea Scrolls</a><a href="/history-of-the-bible/#who-wrote-the-bible">Who Wrote the Bible</a><a href="/history-of-the-bible/#bible-translation-histories">Bible Translation Histories</a><a href="/history-of-the-bible/#history-media">Media Resources</a></div></div><div class="nav-group" data-nav-group><div class="nav-parent-row"><a class="nav-parent-link" href="/christian-living/">Christian Living</a><button class="nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-menu-2" data-dropdown-toggle><span class="sr-only">Open Christian Living menu</span><span aria-hidden="true">⌄</span></button></div><div class="nav-dropdown" id="nav-menu-2" data-dropdown-menu hidden><a href="/christian-living/#walking-in-the-light-of-christ">Walking in the Light of Christ</a><a href="/christian-living/#most-popular-verses">Most Popular Verses</a><a href="/christian-living/#scripture-illustrated">Scripture Illustrated</a><a href="/christian-living/#common-prayers">Common Prayers</a><a href="/christian-living/#daily-devotionals">Daily Devotionals</a><a href="/christian-living/#media-library">Media Library</a></div></div><div class="nav-group" data-nav-group><div class="nav-parent-row"><a class="nav-parent-link" href="/bible-study/">Bible Study</a><button class="nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-menu-3" data-dropdown-toggle><span class="sr-only">Open Bible Study menu</span><span aria-hidden="true">⌄</span></button></div><div class="nav-dropdown" id="nav-menu-3" data-dropdown-menu hidden><a href="/bible-study/#scripture">Scripture</a><a href="/prayers/">Prayer</a><a href="/bible-study/#media">Media Resources</a></div></div><div class="nav-group" data-nav-group><div class="nav-parent-row"><a class="nav-parent-link" href="/about-us/">About Us</a><button class="nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="nav-menu-4" data-dropdown-toggle><span class="sr-only">Open About Us menu</span><span aria-hidden="true">⌄</span></button></div><div class="nav-dropdown" id="nav-menu-4" data-dropdown-menu hidden><a href="/about-us/#our-story">Our Story</a><a href="/about-us/#our-team">Our Team</a><a href="/about-us/#contact-us">Contact Us</a><a href="/about-us/#newsletter">Newsletter</a><a href="/for-churches/">For Churches</a><a href="/social-media/">Social Media</a><a href="/donors/">Donors</a><a href="/about-us/#frequently-asked-questions">Frequently Asked Questions</a></div></div><a class="nav-direct" href="/donate/">Donate</a><a class="nav-direct" href="/estore/">eStore</a><a class="nav-direct lwb-account-link" href="/login/" data-lwb-account-link aria-label="Login to Living Word Bibles"><span class="lwb-user-avatar" aria-hidden="true"></span><span data-lwb-account-label>Login</span></a></nav>
       <div class="header-message"><h1>Find Peace Within</h1><p>Beautifully Formatted to Bring God’s Word to Life on Any Device</p></div>
     </div>
-  </header>
+  
+<script>
+(() => {
+  'use strict';
+  const link = document.querySelector('[data-lwb-account-link]');
+  const label = link?.querySelector('[data-lwb-account-label]');
+  if (!link || !label) return;
+
+  const SESSION_KEY = 'lwbAccountSession';
+  const CACHE_KEY = 'lwbHeaderAccountCache';
+  const CACHE_MS = 5 * 60 * 1000;
+
+  const getFirstName = value => {
+    const clean = String(value || '').trim();
+    return clean ? clean.split(/\s+/)[0] : 'Account';
+  };
+
+  const loggedOut = () => {
+    link.classList.remove('is-authenticated');
+    link.href = '/login/';
+    link.setAttribute('aria-label','Login to Living Word Bibles');
+    label.textContent = 'Login';
+  };
+
+  const loggedIn = user => {
+    const name = getFirstName(user?.display_name);
+    link.classList.add('is-authenticated');
+    link.href = '/account/';
+    link.setAttribute('aria-label', name === 'Account' ? 'Open your Living Word Bibles account' : `Open ${name}'s Living Word Bibles account`);
+    label.textContent = name;
+  };
+
+  const clearSession = () => {
+    try { localStorage.removeItem(SESSION_KEY); } catch (_) {}
+    try { sessionStorage.removeItem(CACHE_KEY); } catch (_) {}
+    loggedOut();
+  };
+
+  const decodeSession = token => {
+    try {
+      const part = String(token || '').split('.')[0];
+      const normalized = part.replace(/-/g,'+').replace(/_/g,'/');
+      const padded = normalized + '='.repeat((4 - normalized.length % 4) % 4);
+      return JSON.parse(atob(padded));
+    } catch (_) {
+      return null;
+    }
+  };
+
+  loggedOut();
+
+  let token = '';
+  try { token = localStorage.getItem(SESSION_KEY) || ''; } catch (_) {}
+  if (!token) return;
+
+  const decoded = decodeSession(token);
+  if (decoded?.expires && Number(decoded.expires) < Date.now()) {
+    clearSession();
+    return;
+  }
+
+  const fingerprint = token.slice(-24);
+  try {
+    const cached = JSON.parse(sessionStorage.getItem(CACHE_KEY) || 'null');
+    if (cached && cached.fingerprint === fingerprint && cached.user &&
+        Date.now() - Number(cached.checkedAt || 0) < CACHE_MS) {
+      loggedIn(cached.user);
+      return;
+    }
+  } catch (_) {}
+
+  const apiUrl = window.LWB_SITE_CONFIG?.apiBase || '';
+  if (!apiUrl) {
+    link.classList.add('is-authenticated');
+    link.href = '/account/';
+    link.setAttribute('aria-label','Open your Living Word Bibles account');
+    label.textContent = 'Account';
+    return;
+  }
+
+  fetch(apiUrl, {
+    method:'POST',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body:JSON.stringify({action:'account',token,userAgent:navigator.userAgent}),
+    redirect:'follow'
+  })
+  .then(response => {
+    if (!response.ok) throw new Error('Account validation failed.');
+    return response.json();
+  })
+  .then(payload => {
+    if (!payload?.ok || !payload?.user) throw new Error(payload?.error || 'Account validation failed.');
+    loggedIn(payload.user);
+    try {
+      sessionStorage.setItem(CACHE_KEY, JSON.stringify({
+        fingerprint,
+        user:{display_name:payload.user.display_name || ''},
+        checkedAt:Date.now()
+      }));
+    } catch (_) {}
+  })
+  .catch(clearSession);
+})();
+</script>
+
+</header>

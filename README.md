@@ -1,3 +1,4 @@
+[README-v2.4.0.md](https://github.com/user-attachments/files/31603928/README-v2.4.0.md)
 [README(1).md](https://github.com/user-attachments/files/31598452/README.1.md)
 [README.md](https://github.com/user-attachments/files/31572992/README.md)
 <p align="center">
@@ -12,7 +13,7 @@
 
 <p align="center">
   <a href="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml/badge.svg?branch=main"></a>
-  <img alt="Frontend package v2.3.0" src="https://img.shields.io/badge/frontend-v2.3.0-555555">
+  <img alt="Frontend package v2.4.0" src="https://img.shields.io/badge/frontend-v2.4.0-555555">
   <img alt="Backend API v3.0.0" src="https://img.shields.io/badge/backend%20API-v3.0.0-555555">
   <img alt="Hosting GitHub Pages" src="https://img.shields.io/badge/hosting-GitHub%20Pages-555555">
 </p>
@@ -23,7 +24,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 29 August 2026 at 14:39:00Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 29 August 2026 at 20:42:00Z UTC</sub></p>
 
 ---
 
@@ -41,14 +42,28 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 |---|---|
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
-| Frontend package version | `2.3.0` |
+| Frontend package version | `2.4.0` |
 | Google Apps Script API version | `3.0.0` |
 | Apps Script build stamp | `27 August 2026 at 15:20:42Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `29 August 2026 at 14:39:00Z UTC` |
+| README revision | `29 August 2026 at 20:42:00Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
+---
+
+## What's New in v2.4.0
+
+- Hardened the **global header/footer shell** to resolve the navigation dropdown bug and keep shared navigation reliably above homepage hero content and other page-level layers.
+- Fixed **desktop and mobile dropdown behavior**, including stacking, overflow, responsive menu flow, and viewport-safe scrolling for expanded mobile navigation.
+- Added `/assets/homepage-hero-4.png` as the new **Living Word Bibles App homepage hero**, positioned in the homepage carousel between the primary Living Word Bibles hero and the Ethiopian Bible hero.
+- Added the new **homepage mobile app hero presentation** for improved app promotion and responsive display.
+- Improved the **global header/footer mobile behavior** so branding, Help, App, Menu, navigation groups, and dropdowns remain usable on smaller screens.
+- Added a custom **mobile-only HTML/CSS iPhone + “iOS” badge** in the global header while preserving the existing desktop app badge.
+- Added **authenticated header presentation**: when a valid Living Word Bibles account session is present, the `Login` control can display a custom user icon and the customer’s first name and link directly to `/account/`.
+- Preserved the existing **Google Apps Script account backend and session architecture**; the v2.4.0 header changes consume the existing account/session system rather than replacing it.
+- Preserved the static-site architecture: page-level HTML remains authoritative, and shared shell/runtime changes do not regenerate or overwrite page content.
+
 ---
 
 ## What's New in v2.3.0
@@ -122,7 +137,7 @@ The public website and the operational backend are deliberately separated:
 | `404.html` | Branded static 404 page |
 | `CNAME` | Production custom-domain configuration |
 
-Major content areas include Bible translation pages, online Bible readers, Catholic Bible/deuterocanonical resources, Bible history, Holy Land maps, eStore pages, the Ethiopian Bible page, account routes, support/legal pages, donation pages, social pages, and the Living Word Bibles app page.
+Major content areas include Bible translation pages, online Bible readers, Catholic Bible/deuterocanonical resources, Bible history, Holy Land maps, eStore pages, the Ethiopian Bible page, account routes, support/legal pages, donation pages, social pages, and the Living Word Bibles app page. Homepage promotional assets include the rotating hero series under `/assets/`, including the v2.4.0 app hero at `/assets/homepage-hero-4.png`.
 
 ---
 
@@ -161,7 +176,7 @@ The universal site shell is maintained in exactly two canonical fragments:
 /assets/includes/lwb-footer.html
 ```
 
-Page files contain placeholders only. This keeps navigation, account/login presentation, site identity, contact details, newsletter UI, and footer content consistent across the production site.
+Page files contain placeholders only. This keeps navigation, authenticated account/login presentation, site identity, responsive mobile header behavior, contact details, newsletter UI, and footer content consistent across the production site. The shared header is also responsible for the hardened dropdown stacking/overflow behavior and the mobile-only HTML/CSS iOS badge introduced in v2.4.0.
 
 ---
 
@@ -468,8 +483,8 @@ Before merging a production change:
 **Repository architecture revision:** `2026-08-27T22:28:20Z`  
 **Apps Script build stamp:** `27 August 2026 at 15:20:42Z UTC`  
 **Backend API version:** `3.0.0`  
-**README last updated:** **29 August 2026 at 14:39:00Z UTC**
+**README last updated:** **29 August 2026 at 20:42:00Z UTC**
 
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 29 August 2026 at 14:39:00Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 29 August 2026 at 20:42:00Z UTC</strong></p>

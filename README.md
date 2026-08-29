@@ -1,3 +1,4 @@
+[README-v2.4.1.md](https://github.com/user-attachments/files/31604108/README-v2.4.1.md)
 [README-v2.4.0.md](https://github.com/user-attachments/files/31603928/README-v2.4.0.md)
 [README(1).md](https://github.com/user-attachments/files/31598452/README.1.md)
 [README.md](https://github.com/user-attachments/files/31572992/README.md)
@@ -13,7 +14,7 @@
 
 <p align="center">
   <a href="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml/badge.svg?branch=main"></a>
-  <img alt="Frontend package v2.4.0" src="https://img.shields.io/badge/frontend-v2.4.0-555555">
+  <img alt="Frontend package v2.4.1" src="https://img.shields.io/badge/frontend-v2.4.1-555555">
   <img alt="Backend API v3.0.0" src="https://img.shields.io/badge/backend%20API-v3.0.0-555555">
   <img alt="Hosting GitHub Pages" src="https://img.shields.io/badge/hosting-GitHub%20Pages-555555">
 </p>
@@ -24,7 +25,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 29 August 2026 at 20:42:00Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 29 August 2026 at 20:57:57Z UTC</sub></p>
 
 ---
 
@@ -42,14 +43,28 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 |---|---|
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
-| Frontend package version | `2.4.0` |
+| Frontend package version | `2.4.1` |
 | Google Apps Script API version | `3.0.0` |
 | Apps Script build stamp | `27 August 2026 at 15:20:42Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `29 August 2026 at 20:42:00Z UTC` |
+| README revision | `29 August 2026 at 20:57:57Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
+---
+
+## What's New in v2.4.1
+
+- Simplified the **homepage eBible merchandising section** so the homepage no longer duplicates the full paid eStore catalog.
+- Retained the **Read God’s Word** homepage section with direct calls to action for the **Living Word Bibles eStore** and the **online Bible reader**.
+- Removed the four paid eBible product cards from the homepage while preserving the complete six-edition catalog on `/estore/`.
+- Kept the two free homepage editions — the **King James Version Special Edition** and the **Douay-Rheims Bible** — presented together as the featured free eBible downloads.
+- Repositioned **Also Available From Trusted Booksellers** on the homepage above the two free eBible cards.
+- Retained **Amazon** and **Barnes & Noble** as the trusted-bookseller links and adjusted the Barnes & Noble logo sizing so its visual weight better matches the Amazon logo.
+- Added the same **Also Available From Trusted Booksellers** presentation to `/estore/`, positioned between the eStore introduction and the six-product digital Bible catalog.
+- Preserved all existing **free-download URLs, paid-product PayPal Hosted Button IDs, product routes, prices, and fulfillment behavior**; this release changes presentation only.
+- Preserved the static-site architecture and shared global shell introduced in v2.4.0.
+
 ---
 
 ## What's New in v2.4.0
@@ -483,8 +498,8 @@ Before merging a production change:
 **Repository architecture revision:** `2026-08-27T22:28:20Z`  
 **Apps Script build stamp:** `27 August 2026 at 15:20:42Z UTC`  
 **Backend API version:** `3.0.0`  
-**README last updated:** **29 August 2026 at 20:42:00Z UTC**
+**README last updated:** **29 August 2026 at 20:57:57Z UTC**
 
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 29 August 2026 at 20:42:00Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 29 August 2026 at 20:57:57Z UTC</strong></p>

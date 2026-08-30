@@ -1,3 +1,4 @@
+[README.md](https://github.com/user-attachments/files/31613780/README.md)
 [README(2).md](https://github.com/user-attachments/files/31613655/README.2.md)
 [README-v2.4.1.md](https://github.com/user-attachments/files/31604108/README-v2.4.1.md)
 [README-v2.4.0.md](https://github.com/user-attachments/files/31603928/README-v2.4.0.md)
@@ -15,7 +16,7 @@
 
 <p align="center">
   <a href="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml/badge.svg?branch=main"></a>
-  <img alt="Frontend package v2.4.2" src="https://img.shields.io/badge/frontend-v2.4.2-555555">
+  <img alt="Frontend package v2.4.3" src="https://img.shields.io/badge/frontend-v2.4.3-555555">
   <img alt="Backend API v3.0.0" src="https://img.shields.io/badge/backend%20API-v3.0.0-555555">
   <img alt="Hosting GitHub Pages" src="https://img.shields.io/badge/hosting-GitHub%20Pages-555555">
 </p>
@@ -26,7 +27,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 30 August 2026 at 12:51:39Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 30 August 2026 at 13:01:36Z UTC</sub></p>
 
 ---
 
@@ -44,14 +45,20 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 |---|---|
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
-| Frontend package version | `2.4.2` |
+| Frontend package version | `2.4.3` |
 | Google Apps Script API version | `3.0.0` |
 | Apps Script build stamp | `27 August 2026 at 15:20:42Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `30 August 2026 at 12:51:39Z UTC` |
+| README revision | `30 August 2026 at 13:01:36Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
+---
+
+## What's New in v2.4.3
+
+- Updated the **Ethiopian Bible** page so the **“What’s Included”** section sits in the left desktop column beneath the Living Word Bibles logo, to the left of the PayPal purchase button.
+
 ---
 
 ## What's New in v2.4.2
@@ -506,8 +513,8 @@ Before merging a production change:
 **Repository architecture revision:** `2026-08-27T22:28:20Z`  
 **Apps Script build stamp:** `27 August 2026 at 15:20:42Z UTC`  
 **Backend API version:** `3.0.0`  
-**README last updated:** **30 August 2026 at 12:51:39Z UTC**
+**README last updated:** **30 August 2026 at 13:01:36Z UTC**
 
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 30 August 2026 at 12:51:39Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 30 August 2026 at 13:01:36Z UTC</strong></p>

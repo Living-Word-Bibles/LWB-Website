@@ -144,6 +144,12 @@
             background-position:center center;
             padding-bottom:4.5rem;
           }
+
+          /* Use the portrait app hero on mobile only.
+             Desktop continues to use homepage-hero-4.png. */
+          .homepage-hero-slide[data-mobile-hero]{
+            background-image:var(--hero-bg-mobile,var(--hero-bg));
+          }
         }
 
         @media(prefers-reduced-motion:reduce){
@@ -176,7 +182,8 @@
           class="homepage-hero-slide"
           data-homepage-hero-slide
           aria-hidden="true"
-          style="--hero-bg:url('/assets/homepage-hero-4.png')"
+          data-mobile-hero
+          style="--hero-bg:url('/assets/homepage-hero-4.png');--hero-bg-mobile:url('/assets/homepage-hero-4-mobile.png')"
         >
           <div class="homepage-hero-content">
             <p class="eyebrow">Living Word Bibles App</p>

@@ -1,5 +1,5 @@
-[README-v2.4.8.md](https://github.com/user-attachments/files/31622600/README-v2.4.8.md)
-[README-v2.4.8.md](README-v2.4.8.md)
+[Uploading README-v2.4.9.md…]()
+[README-v2.4.9.md](README-v2.4.9.md)
 <p align="center">
   <a href="https://www.livingwordbibles.com/">
     <img src="assets/LivingWordBibles01.png" alt="Living Word Bibles" width="320">
@@ -12,7 +12,7 @@
 
 <p align="center">
   <a href="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml/badge.svg?branch=main"></a>
-  <img alt="Frontend package v2.4.8" src="https://img.shields.io/badge/frontend-v2.4.8-555555">
+  <img alt="Frontend package v2.4.9" src="https://img.shields.io/badge/frontend-v2.4.9-555555">
   <img alt="Backend API v3.0.0" src="https://img.shields.io/badge/backend%20API-v3.0.0-555555">
   <img alt="Hosting GitHub Pages" src="https://img.shields.io/badge/hosting-GitHub%20Pages-555555">
 </p>
@@ -23,7 +23,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 30 August 2026 at 22:46:10Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 30 August 2026 at 23:11:21Z UTC</sub></p>
 
 ---
 
@@ -41,14 +41,73 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 |---|---|
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
-| Frontend package version | `2.4.8` |
+| Frontend package version | `2.4.9` |
 | Google Apps Script API version | `3.0.0` |
 | Apps Script build stamp | `27 August 2026 at 15:20:42Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `30 August 2026 at 22:46:10Z UTC` |
+| README revision | `30 August 2026 at 23:11:21Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
+---
+
+## What's New in v2.4.9
+
+- Redesigned the **About Us** page at `/about-us/` and the **Social Media** page at `/social-media/` to bring both pages in line with the modern editorial presentation now used across Living Word Bibles.
+- Preserved the site’s static GitHub Pages architecture, shared header/footer shell, existing routes, backend configuration, payment configuration, account/session behavior, and form wiring.
+
+### About Us
+
+- Rebuilt the About Us page from a largely linear legacy/Squarespace-style presentation into a modern responsive editorial layout.
+- Preserved the existing shared-navigation anchor targets used by the About Us dropdown, including `#our-story`, `#our-team`, `#contact-us`, `#newsletter`, and `#frequently-asked-questions`.
+- Preserved the existing `#support` anchor inside the FAQ/support content so direct support links continue to resolve.
+- Replaced the previous top-page wording with the canonical Living Word Bibles slogan: **“Beautifully Formatted to Bring God’s Word to Life on Any Device.”**
+- Reworked the About Us hero with a cleaner responsive layout, Living Word Bibles branding, mission-oriented calls to action, and stronger visual hierarchy.
+- Added the existing repository asset `/assets/lwb_iphone_phone_only.webp` as the primary app/device visual in the hero so the mobile-reading experience is presented intentionally instead of forcing a landscape Bible photograph into the main feature slot.
+- Retained the supporting About Us Bible photography while adjusting image presentation so supporting visuals remain properly cropped and proportioned.
+- Added direct calls to action from the About hero for the **online Bible reader**, **Bible Study**, and **eStore**.
+- Added a modern **Our Mission** section organized around three core presentation principles: **Accessible by Design**, **Reverent Presentation**, and **Scripture First**.
+- Added the Living Word Bibles featured YouTube video (`ydGoRosM9tQ`) to the About Us page in a dedicated responsive 16:9 feature block.
+- Modernized the **Our Team** presentation for Executive Director **Ms. Sophie Keller**, preserving the existing biography and team anchor while presenting the profile in a responsive leadership card.
+- Added a new **Go Deeper with Living Word Bibles** section linking directly to **Read Scripture**, **Study the Bible**, and **History of the Bible**.
+- Upgraded the three Go Deeper cards with public-domain image headers using the same visual approach introduced on the Bible Study and History pages.
+- Added visible source/public-domain credit lines beneath the Go Deeper card imagery.
+- Rebuilt **Contact Us** and **Newsletter** as coordinated responsive cards while preserving the existing contact information and `data-lwb-action="subscribe"` newsletter form behavior.
+- Added a direct **Technical Support** call to action linking to `/support/`.
+- Redesigned the FAQ presentation into a cleaner modern accordion while preserving all **22 existing FAQ entries**, their existing IDs, and the established accordion JavaScript hooks.
+- Preserved existing order/support information, app information, translation information, third-party website notices, licensing guidance, and official Living Word Bibles purchase/support instructions.
+- Preserved the existing `config.js`, `site.js`, and `forms.js` runtime dependencies.
+
+### Social Media
+
+- Rebuilt `/social-media/` from a minimal three-card social preview into a full Living Word Bibles social hub.
+- Organized the page in the requested platform order: **YouTube first, Instagram second, X last**.
+- Added a modern social hero with direct links and custom inline SVG platform icons for **YouTube**, **Instagram**, and **X**, avoiding an additional icon-library dependency.
+- Added page-level anchor navigation for `#youtube`, `#instagram`, and `#x-posts`.
+- Added the Living Word Bibles featured YouTube video (`ydGoRosM9tQ`) as the primary video feature at the top of the page.
+- Added the official YouTube handle **@LivingWordBibles316** and a direct call to action to the Living Word Bibles YouTube channel.
+- Added the official Instagram handle **@living.word.bibles**.
+- Added **14 unique Instagram post URLs** supplied for the page and verified that no duplicate Instagram links were included.
+- Implemented Instagram public-post embedding through the platform embed mechanism rather than copying or scraping post imagery.
+- Added direct **Open on Instagram** fallback links for every Instagram post in case a browser’s privacy settings or third-party-script restrictions prevent an embed from rendering.
+- Loaded the Instagram embed script only **once** for the page rather than once per post.
+- Added the official X handle **@LBibles93286**.
+- Added **7 unique X status IDs** supplied for the page and verified that no duplicate status IDs were included.
+- Preserved the supplied X posts covering the Living Word Bibles App and Scripture posts including **1 John 2:25**, **John 1:5**, **Proverbs 3:5–6**, and **Romans 8:28**.
+- Implemented the supplied X post collection using X/Twitter embed markup and loaded the X widgets script only **once** for the page rather than repeating it after each post.
+- Added direct fallback links to the original X status pages so the social content remains reachable even when third-party embeds are blocked.
+- Added responsive two-column desktop presentation for embedded social posts with a one-column mobile fallback.
+- Preserved the canonical Social Media metadata, organization schema, shared global shell, and existing site JavaScript dependencies.
+
+### Release safeguards
+
+- No Google Apps Script backend behavior was changed.
+- No PayPal Hosted Button IDs, merchant configuration, checkout behavior, fulfillment logic, or digital-product delivery settings were changed.
+- No Living Word Bibles account/session logic was changed.
+- No shared footer behavior was changed.
+- Existing About Us navigation anchors were deliberately preserved even though the page content was substantially rearranged.
+- The v2.4.9 release remains a **frontend/content presentation release**, so the version remains within the `2.4.x` line rather than advancing to `2.5.0`.
+
 ---
 
 ## What's New in v2.4.8
@@ -614,8 +673,8 @@ Before merging a production change:
 **Repository architecture revision:** `2026-08-27T22:28:20Z`  
 **Apps Script build stamp:** `27 August 2026 at 15:20:42Z UTC`  
 **Backend API version:** `3.0.0`  
-**README last updated:** **30 August 2026 at 22:46:10Z UTC**
+**README last updated:** **30 August 2026 at 23:11:21Z UTC**
 
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 30 August 2026 at 22:46:10Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 30 August 2026 at 23:11:21Z UTC</strong></p>

@@ -160,11 +160,16 @@
       text-transform:uppercase;
     }
 
-    .eeo-hero h1{
-      margin:.15rem 0 .7rem;
-      color:#fff;
-      font-size:clamp(2rem,5vw,3.4rem);
-      line-height:1.05;
+    .eeo-page-title{
+      position:absolute;
+      width:1px;
+      height:1px;
+      padding:0;
+      margin:-1px;
+      overflow:hidden;
+      clip:rect(0,0,0,0);
+      white-space:nowrap;
+      border:0;
     }
 
     .eeo-hero > p:not(.eeo-kicker){
@@ -332,8 +337,7 @@
       margin-top:1rem;
     }
 
-    .agency-card,
-    .eeo-contact-box{
+    .agency-card{
       margin:0;
       padding:1rem;
       border:1px solid rgba(59,23,17,.12);
@@ -341,6 +345,35 @@
       background:#faf8f4;
       font-style:normal;
       line-height:1.55;
+    }
+
+    .eeo-contact-box{
+      margin:1rem 0 0;
+      padding:clamp(1.35rem,3vw,2rem);
+      min-height:240px;
+      border:1px solid rgba(184,135,52,.34);
+      border-radius:18px;
+      background:
+        linear-gradient(
+          90deg,
+          rgba(38,16,12,.94) 0%,
+          rgba(51,22,16,.90) 42%,
+          rgba(44,19,14,.78) 72%,
+          rgba(31,13,10,.84) 100%
+        ),
+        url('/assets/legal-banner.png') center center / cover no-repeat;
+      color:#fff;
+      font-style:normal;
+      line-height:1.65;
+      box-shadow:0 14px 34px rgba(36,22,17,.14);
+    }
+
+    .eeo-contact-box strong{
+      color:#fff;
+    }
+
+    .eeo-contact-box a{
+      color:#f5d89a;
     }
 
     .agency-card strong{
@@ -475,7 +508,7 @@
 
       <header class="eeo-hero">
         <p class="eeo-kicker">Living Word Bibles · Employment &amp; Workplace Policy</p>
-        <h1>Equal Opportunity &amp; Workplace Policies</h1>
+        <h1 class="eeo-page-title">Equal Opportunity &amp; Workplace Policies</h1>
         <p>
           Living Word Bibles is committed to equal employment opportunity, a safe and respectful workplace,
           lawful employment practices, and professional treatment of applicants, employees, contractors,
@@ -494,7 +527,8 @@
         <strong>Equal Opportunity Employer.</strong>
         Employment decisions at Living Word Bibles are based on legitimate qualifications, experience,
         performance, organizational needs, and other lawful considerations. Unlawful discrimination,
-        harassment, and retaliation are prohibited.
+        harassment, retaliation, and discrimination based on protected military or veteran status are prohibited.
+        Living Word Bibles respects lawful accommodation, military-leave, and reemployment rights.
       </div>
 
       <nav class="eeo-toc" aria-label="Equal Opportunity and Workplace Policies contents">
@@ -502,7 +536,7 @@
         <div class="eeo-toc-grid">
           <a href="#notice">1. Equal Opportunity Employer Notice</a>
           <a href="#eeo-policy">2. Equal Employment Opportunity Policy</a>
-          <a href="#veteran-policy">3. Veteran Employment Policy</a>
+          <a href="#veteran-policy">3. Veteran Employment Policy &amp; Definitions</a>
           <a href="#safety-policy">4. Workplace Safety / OSHA Policy</a>
           <a href="#drug-policy">5. Alcohol &amp; Drug-Free Workplace Policy</a>
           <a href="#reporting">6. Reporting Concerns &amp; Non-Retaliation</a>
@@ -558,28 +592,32 @@
 
         <h3>2.1 Policy Statement</h3>
         <p>
-          Living Word Bibles is committed to maintaining a workplace free from unlawful discrimination,
-          harassment, and retaliation and to providing equal employment opportunity consistent with applicable law.
+          Living Word Bibles is committed to providing equal employment opportunity to qualified applicants and
+          employees and to maintaining a workplace free from unlawful discrimination, harassment, and retaliation.
+          Employment practices will be administered in accordance with applicable federal, state, and local law.
         </p>
 
-        <p>This policy applies to employment practices including:</p>
-        <ul class="eeo-list">
-          <li>Recruitment and job advertising;</li>
-          <li>Hiring and onboarding;</li>
-          <li>Assignments and transfers;</li>
-          <li>Compensation and benefits;</li>
-          <li>Training and professional development;</li>
-          <li>Promotion and advancement;</li>
-          <li>Performance management and discipline;</li>
-          <li>Leave and workplace accommodations;</li>
-          <li>Termination and separation; and</li>
-          <li>Other terms, conditions, and privileges of employment.</li>
-        </ul>
-
-        <h3>2.2 Protected Characteristics</h3>
         <p>
-          Living Word Bibles prohibits discrimination or harassment based on legally protected characteristics,
-          which may include:
+          Equal employment opportunity applies to every stage of the employment relationship, including recruiting,
+          advertising, application review, interviewing, selection, hiring, onboarding, job assignment, transfer,
+          scheduling, compensation, benefits, training, professional development, promotion, performance management,
+          discipline, leave, accommodation, reduction in force, termination, separation, and other terms, conditions,
+          and privileges of employment.
+        </p>
+
+        <h3>2.2 Scope</h3>
+        <p>
+          This policy applies in offices, remote-work settings, publishing and technology operations, business travel,
+          church or community events, meetings, fulfillment or warehousing activities, vendor and customer interactions,
+          digital communications, company-sponsored events, and other work-related settings. It applies to conduct by
+          supervisors, coworkers, contractors, vendors, customers, visitors, volunteers, contributors, and other persons
+          encountered in connection with Living Word Bibles operations.
+        </p>
+
+        <h3>2.3 Protected Characteristics</h3>
+        <p>
+          Living Word Bibles prohibits unlawful discrimination or harassment based on characteristics protected by
+          applicable law, which may include:
         </p>
 
         <ul class="protected-grid">
@@ -587,60 +625,90 @@
           <li>Color</li>
           <li>Religion</li>
           <li>Sex</li>
-          <li>Pregnancy or related conditions</li>
+          <li>Pregnancy, childbirth, or related conditions</li>
           <li>Sexual orientation</li>
-          <li>Gender identity</li>
+          <li>Gender identity or expression</li>
           <li>National origin</li>
           <li>Ancestry</li>
           <li>Age, where protected by law</li>
-          <li>Disability</li>
+          <li>Physical or mental disability</li>
           <li>Genetic information</li>
           <li>Military or veteran status</li>
           <li>Citizenship or immigration status where protected by law</li>
           <li>Any other status protected by applicable law</li>
         </ul>
 
-        <h3>2.3 Anti-Harassment</h3>
+        <h3>2.4 Anti-Harassment</h3>
         <p>
-          Unlawful harassment is prohibited whether committed by a supervisor, coworker, contractor,
-          vendor, customer, visitor, volunteer, contributor, or other person encountered in a work-related setting.
+          Unlawful harassment is prohibited. Harassment may be verbal, physical, visual, written, digital, or online and
+          may violate this policy when, under applicable law and the surrounding circumstances, it unlawfully creates an
+          intimidating, hostile, or offensive work environment, interferes with an individual's work, or is made a term
+          or condition of employment.
         </p>
 
         <p>Prohibited conduct may include, depending on the circumstances:</p>
         <ul class="eeo-list">
-          <li>Unwelcome sexual advances, requests, or propositions;</li>
-          <li>Unwelcome physical contact;</li>
-          <li>Derogatory comments, slurs, epithets, or stereotypes;</li>
-          <li>Offensive images, messages, jokes, displays, or digital communications;</li>
+          <li>Unwelcome sexual advances, requests, propositions, or other unwelcome sexual conduct;</li>
+          <li>Unwelcome or inappropriate physical contact;</li>
+          <li>Derogatory comments, slurs, epithets, stereotypes, or demeaning remarks;</li>
+          <li>Offensive jokes, images, displays, messages, gestures, or digital communications;</li>
           <li>Threatening, intimidating, or hostile conduct based on a protected characteristic; and</li>
-          <li>Retaliation against a person who raises a concern or participates in a review.</li>
+          <li>Retaliation against a person who raises a good-faith concern or participates in a review or investigation.</li>
         </ul>
 
-        <h3>2.4 Reasonable Accommodation</h3>
+        <h3>2.5 Reasonable Accommodation and Interactive Process</h3>
         <p>
-          Living Word Bibles will consider reasonable accommodations for qualified applicants and employees
-          with disabilities as required by applicable law. We also consider reasonable accommodations related
-          to sincerely held religious beliefs and practices and pregnancy, childbirth, or related medical
+          Living Word Bibles will provide or consider reasonable accommodations for qualified applicants and employees
+          with disabilities as required by applicable law. We also consider reasonable accommodations related to
+          sincerely held religious beliefs, observances, and practices, and pregnancy, childbirth, or related medical
           conditions where required by law.
         </p>
-
         <p>
-          An applicant or employee requesting an accommodation should contact Human Resources using the
-          information on this page. Requests will be evaluated individually and handled as confidentially as
-          reasonably possible.
+          Accommodation requests should be directed to Human Resources. Living Word Bibles may request information that
+          is reasonably necessary to evaluate a request where permitted by law and will engage in an individualized,
+          good-faith process to identify an effective accommodation that does not impose an undue hardship or otherwise
+          exceed legal requirements. Medical and accommodation information will be handled separately and confidentially
+          to the extent required by law.
         </p>
 
-        <h3>2.5 Non-Retaliation</h3>
+        <h3>2.6 Employment Decisions and Equal Treatment</h3>
         <p>
-          Retaliation against a person for making a good-faith discrimination or harassment report,
-          requesting a lawful accommodation, participating in an investigation, or exercising rights protected
-          by law is prohibited.
+          Employment decisions are based on legitimate, nondiscriminatory considerations such as qualifications,
+          demonstrated skills, relevant experience, performance, professional conduct, availability, job requirements,
+          organizational needs, and other lawful factors. Living Word Bibles will administer compensation and employment
+          opportunities consistently with applicable equal-pay and anti-discrimination requirements.
         </p>
 
-        <h3>2.6 Corrective Action</h3>
+        <h3>2.7 Reporting, Review, and Investigation</h3>
         <p>
-          Violations may result in appropriate corrective action, up to and including termination of employment
-          or another working relationship, consistent with applicable law and the circumstances.
+          Applicants, employees, or other covered individuals who believe they have experienced or witnessed conduct
+          inconsistent with this policy should report the matter promptly to Human Resources or appropriate management.
+          Reports may be verbal or written. A report should provide enough information to permit a meaningful review,
+          including relevant dates, persons involved, witnesses if known, and supporting documents when available.
+        </p>
+        <p>
+          Living Word Bibles will review reports as promptly, impartially, and confidentially as reasonably practicable,
+          consistent with a fair investigation, the rights of all persons involved, and applicable legal obligations.
+          No policy can guarantee complete confidentiality where disclosure is necessary to investigate, respond, or
+          comply with law.
+        </p>
+
+        <h3>2.8 Non-Retaliation</h3>
+        <p>
+          Unlawful retaliation is prohibited against any person who, in good faith, reports discrimination or harassment,
+          requests an accommodation, opposes conduct reasonably believed to be unlawful, participates in an investigation
+          or proceeding, provides information to an appropriate government agency, or exercises another right protected
+          by law.
+        </p>
+
+        <h3>2.9 Enforcement and Administration</h3>
+        <p>
+          Violations of this policy may result in appropriate corrective action, up to and including termination of
+          employment or another working relationship, consistent with applicable law and the circumstances. This policy
+          is intended to operate consistently with Title VII of the Civil Rights Act of 1964, the Americans with
+          Disabilities Act, the Age Discrimination in Employment Act, the Genetic Information Nondiscrimination Act,
+          the Equal Pay Act, the Uniformed Services Employment and Reemployment Rights Act, the Pregnant Workers
+          Fairness Act, applicable Indiana civil-rights requirements, and other laws that apply to the organization.
         </p>
       </section>
 
@@ -650,47 +718,172 @@
         <div class="eeo-section-meta">
           <strong>Living Word Bibles</strong><br>
           Operated by <a href="https://www.cook-international.com" target="_blank" rel="noopener noreferrer">Cook Services Company, LLC</a><br>
-          Effective Date: 30 August 2026
+          Effective Date: 30 August 2026<br>
+          Applies To: Applicants, employees, veterans, service members, and other covered personnel as applicable
         </div>
 
         <h3>3.1 Commitment to Veterans and Service Members</h3>
         <p>
-          Living Word Bibles recognizes the leadership, discipline, technical experience, public-service
-          commitment, teamwork, and judgment that veterans and service members can bring to the workplace.
-          Qualified veterans and service members are encouraged to pursue opportunities for which they are eligible.
+          Living Word Bibles is operated by Cook Services Company, LLC, a veteran-owned business. Living Word Bibles
+          recognizes the service, leadership, discipline, judgment, technical experience, teamwork, adaptability, and
+          public-service values that veterans, members of the National Guard and Reserve, and other service members may
+          bring to the workplace. Qualified veterans and service members are encouraged to pursue opportunities for which
+          they are eligible.
         </p>
-
-        <h3>3.2 Equal Employment Opportunity</h3>
         <p>
-          Living Word Bibles prohibits unlawful discrimination based on military or veteran status and respects
-          employment and reemployment rights provided by applicable law, including the Uniformed Services
-          Employment and Reemployment Rights Act.
+          It is the policy of Living Word Bibles to provide equal employment opportunity to qualified persons without
+          unlawful discrimination because of past, present, or future military service or obligation, veteran status,
+          membership in a uniformed service, application for membership in a uniformed service, or another military-related
+          status protected by applicable law.
         </p>
 
-        <p>Employment decisions are based on lawful business considerations such as:</p>
+        <h3>3.2 Veteran and Protected-Veteran Definitions</h3>
+        <p>
+          For purposes of this policy, the term <strong>veteran</strong> generally refers to an individual who served on
+          active duty in the United States Armed Forces and was discharged or released under conditions other than
+          dishonorable, subject to the definitions and eligibility rules of the particular law being applied. Nothing in
+          this policy narrows any broader definition or protection provided by federal or state law.
+        </p>
+        <p>
+          The following protected-veteran categories reflect the categories used under the Vietnam Era Veterans'
+          Readjustment Assistance Act and related federal regulations. Living Word Bibles recognizes these definitions
+          for policy and equal-opportunity purposes; federal-contractor affirmative-action obligations apply only when
+          Living Word Bibles or its operator is legally subject to them.
+        </p>
+
+        <div class="definition-grid" aria-label="Protected veteran definitions">
+          <div class="definition-card">
+            <strong>Disabled Veteran</strong>
+            A veteran of the U.S. military, ground, naval, or air service who is entitled to compensation, or who but for
+            the receipt of military retired pay would be entitled to compensation, under laws administered by the U.S.
+            Department of Veterans Affairs; or a person who was discharged or released from active duty because of a
+            service-connected disability.
+          </div>
+
+          <div class="definition-card">
+            <strong>Recently Separated Veteran</strong>
+            A veteran during the three-year period beginning on the date of the veteran's discharge or release from active
+            duty in the U.S. military, ground, naval, or air service.
+          </div>
+
+          <div class="definition-card">
+            <strong>Active-Duty Wartime or Campaign Badge Veteran</strong>
+            A veteran who served on active duty in the U.S. military, ground, naval, or air service during a war, or in a
+            campaign or expedition for which a campaign badge has been authorized under laws administered by the U.S.
+            Department of Defense.
+          </div>
+
+          <div class="definition-card">
+            <strong>Armed Forces Service Medal Veteran</strong>
+            A veteran who, while serving on active duty in the U.S. military, ground, naval, or air service, participated
+            in a United States military operation for which an Armed Forces Service Medal was awarded pursuant to
+            Executive Order 12985 or a successor authority.
+          </div>
+        </div>
+
+        <h3>3.3 Equal Employment Opportunity for Veterans</h3>
+        <p>
+          Living Word Bibles prohibits unlawful discrimination, harassment, intimidation, retaliation, or adverse
+          employment treatment because of protected military or veteran status. Employment decisions involving veterans
+          and service members are based on merit, qualifications, transferable experience, performance, professional
+          conduct, job requirements, organizational needs, and other lawful considerations.
+        </p>
+        <p>This commitment applies to, among other matters:</p>
         <ul class="eeo-list">
-          <li>Qualifications and demonstrated skills;</li>
-          <li>Relevant experience, including transferable military experience;</li>
-          <li>Performance and professional conduct;</li>
-          <li>Job requirements and organizational needs; and</li>
-          <li>Other lawful employment factors.</li>
+          <li>Recruiting, job advertising, application review, interviewing, and hiring;</li>
+          <li>Onboarding, assignments, scheduling, transfers, and work opportunities;</li>
+          <li>Compensation, benefits, training, and professional development;</li>
+          <li>Promotion, performance management, discipline, and retention;</li>
+          <li>Military leave, return from service, and reemployment rights; and</li>
+          <li>Termination, separation, and other terms or conditions of employment.</li>
         </ul>
 
-        <h3>3.3 Veteran Outreach</h3>
-        <p>Living Word Bibles may support veteran employment through:</p>
+        <h3>3.4 USERRA — Military Service, Leave, and Reemployment</h3>
+        <p>
+          Living Word Bibles respects the employment and reemployment rights of persons who serve in the uniformed
+          services under the Uniformed Services Employment and Reemployment Rights Act of 1994 (USERRA), as amended.
+          USERRA protects qualified individuals from discrimination based on past military service, present military
+          obligations, or an intent or application to serve, and it provides reemployment rights when statutory
+          eligibility requirements are satisfied.
+        </p>
+        <p>
+          Where USERRA applies, Living Word Bibles will administer military leave, reemployment, seniority, status, pay,
+          benefits, training or retraining, and related matters in accordance with applicable law. An eligible returning
+          service member will be reemployed promptly in the position and with the rights and benefits required by USERRA,
+          including application of the statutory “escalator” principle where applicable.
+        </p>
+        <p>
+          Employees should provide advance verbal or written notice of military service when required and reasonably
+          possible. No employee will be required to provide notice where military necessity prevents notice or where
+          notice is otherwise impossible or unreasonable under USERRA. Reporting-back and reemployment-application
+          deadlines will be administered according to the length and circumstances of service and other applicable
+          statutory rules.
+        </p>
+
+        <h3>3.5 Veterans with Disabilities and Reasonable Accommodation</h3>
+        <p>
+          A veteran with a disability may have rights under the Americans with Disabilities Act or other applicable law
+          whether or not the disability is service-connected. Living Word Bibles will consider reasonable accommodations
+          for qualified applicants and employees with disabilities as required by law and will not require unnecessary
+          disclosure of a diagnosis or medical history.
+        </p>
+        <p>
+          USERRA may also impose reemployment and accommodation-related obligations for service members returning with a
+          service-connected disability or other limitation. Living Word Bibles will evaluate these obligations under the
+          law applicable to the individual circumstances.
+        </p>
+
+        <h3>3.6 Veteran Recruiting, Outreach, and Transferable Experience</h3>
+        <p>Living Word Bibles may support veteran employment and professional opportunity through:</p>
         <ul class="eeo-list">
           <li>Veteran-focused recruiting and outreach;</li>
-          <li>Recognition of transferable military education and experience;</li>
-          <li>Consideration of leadership, logistics, communications, technology, administration, and public-affairs experience;</li>
-          <li>Reasonable accommodations for veterans with disabilities where required by law; and</li>
-          <li>Support for lawful military leave and reemployment rights.</li>
+          <li>Recognition of transferable military education, training, certifications, leadership, and experience;</li>
+          <li>Consideration of military experience in communications, logistics, technology, administration, intelligence, security, operations, public affairs, publishing, and related fields;</li>
+          <li>Support for lawful Guard and Reserve service obligations;</li>
+          <li>Reasonable accommodation for qualified veterans with disabilities where required by law; and</li>
+          <li>Training or retraining associated with lawful reemployment obligations where applicable.</li>
         </ul>
 
-        <h3>3.4 Federal Contractor Requirements</h3>
+        <h3>3.7 Voluntary Self-Identification and Confidentiality</h3>
         <p>
-          Statutes and regulations that apply specifically to federal contractors or subcontractors, including
-          VEVRAA or Section 503 of the Rehabilitation Act, apply to Living Word Bibles only to the extent the
-          organization or its operator is legally subject to those requirements.
+          Any request for an applicant or employee to identify military or veteran status will be made only for a lawful
+          purpose and in a manner consistent with applicable law. Unless disclosure is legally required, individuals should
+          not be required to disclose more military, medical, disability, or veteran information than is reasonably
+          necessary for a legitimate employment, accommodation, benefits, reporting, or compliance purpose.
+        </p>
+        <p>
+          Veteran-status information voluntarily provided to Living Word Bibles will be maintained as confidentially as
+          reasonably practicable and disclosed only to persons with a legitimate business or legal need, or as otherwise
+          required or permitted by law. Medical and disability information will be handled in accordance with applicable
+          confidentiality requirements.
+        </p>
+
+        <h3>3.8 Federal Contractor and Affirmative-Action Requirements</h3>
+        <p>
+          The Vietnam Era Veterans' Readjustment Assistance Act (VEVRAA), Section 503 of the Rehabilitation Act, and
+          related Office of Federal Contract Compliance Programs requirements apply only to covered federal contractors
+          and subcontractors and only to the extent required by law. Nothing on this page represents that Living Word
+          Bibles or Cook Services Company, LLC is presently a covered federal contractor or subcontractor unless that
+          status is separately established.
+        </p>
+        <p>
+          If such requirements become applicable, Living Word Bibles and its operator will administer the relevant
+          nondiscrimination, affirmative-action, posting, self-identification, recordkeeping, and reporting obligations as
+          required by law.
+        </p>
+
+        <h3>3.9 Reporting, External Rights, and Non-Retaliation</h3>
+        <p>
+          Applicants and employees may report concerns involving military or veteran discrimination, harassment, military
+          leave, reemployment, accommodation, or retaliation to Living Word Bibles Human Resources. Internal reporting is
+          not a prerequisite to contacting the U.S. Department of Labor Veterans' Employment and Training Service, the
+          U.S. Equal Employment Opportunity Commission, or another government agency with jurisdiction.
+        </p>
+        <p>
+          Living Word Bibles prohibits unlawful retaliation against any person for exercising or attempting to exercise a
+          right under USERRA or another applicable law, for assisting another person in exercising such a right, for filing
+          or supporting a good-faith complaint, for providing testimony or information, or for participating in an
+          investigation or proceeding.
         </p>
       </section>
 
@@ -821,7 +1014,16 @@
 
         <p>
           Unlawful retaliation against a person for making a good-faith report, requesting accommodation,
-          participating in a review, or exercising legally protected rights is prohibited.
+          raising a military-service or veteran-employment concern, participating in a review, assisting another
+          person in exercising protected rights, communicating with an appropriate government agency, or exercising
+          other legally protected rights is prohibited.
+        </p>
+
+        <p>
+          Nothing in these internal reporting procedures requires an applicant or employee to waive, delay, or surrender
+          a right to communicate with the U.S. Equal Employment Opportunity Commission, the U.S. Department of Labor,
+          OSHA, a state or local civil-rights agency, or another government authority. Statutory filing deadlines may
+          continue to run regardless of an internal review.
         </p>
       </section>
 
@@ -852,6 +1054,15 @@
             <a href="https://www.in.gov/icrc/" target="_blank" rel="noopener noreferrer">Indiana Civil Rights Commission</a>
           </address>
         </div>
+
+        <h3>Military and Veteran Employment Rights</h3>
+        <p>
+          Information about USERRA, military-service discrimination, and reemployment rights is available from the
+          <a href="https://www.dol.gov/agencies/vets/programs/userra" target="_blank" rel="noopener noreferrer">U.S. Department of Labor Veterans' Employment and Training Service (VETS)</a>.
+          VETS administers USERRA and provides compliance assistance and complaint information. Where federal-contractor
+          veteran requirements apply, information is also available from the
+          <a href="https://www.dol.gov/agencies/ofccp/vevraa" target="_blank" rel="noopener noreferrer">Office of Federal Contract Compliance Programs</a>.
+        </p>
 
         <h3>Workplace Safety</h3>
         <p>
@@ -885,8 +1096,8 @@
           <strong>Human Resources &amp; Workplace Policy Questions</strong>
           <p>
             For employment-policy questions, workplace reports, accommodation requests, discrimination or
-            harassment concerns, safety concerns, or questions about these policies, contact Living Word Bibles
-            using the Human Resources subject line.
+            harassment concerns, military-leave or veteran-employment questions, safety concerns, or questions about
+            these policies, contact Living Word Bibles using the Human Resources subject line.
           </p>
           <a class="eeo-button" href="mailto:gospellivingwordbibles@gmail.com?subject=ATTN%3A%20Human%20Resources">
             Contact Living Word Bibles

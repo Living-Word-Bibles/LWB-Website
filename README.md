@@ -1,3 +1,4 @@
+[README-v2.4.4.md](https://github.com/user-attachments/files/31619019/README-v2.4.4.md)
 [README.md](https://github.com/user-attachments/files/31613780/README.md)
 [README(2).md](https://github.com/user-attachments/files/31613655/README.2.md)
 [README-v2.4.1.md](https://github.com/user-attachments/files/31604108/README-v2.4.1.md)
@@ -16,7 +17,7 @@
 
 <p align="center">
   <a href="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml/badge.svg?branch=main"></a>
-  <img alt="Frontend package v2.4.3" src="https://img.shields.io/badge/frontend-v2.4.3-555555">
+  <img alt="Frontend package v2.4.4" src="https://img.shields.io/badge/frontend-v2.4.4-555555">
   <img alt="Backend API v3.0.0" src="https://img.shields.io/badge/backend%20API-v3.0.0-555555">
   <img alt="Hosting GitHub Pages" src="https://img.shields.io/badge/hosting-GitHub%20Pages-555555">
 </p>
@@ -27,7 +28,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 30 August 2026 at 13:01:36Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 30 August 2026 at 17:52:45Z UTC</sub></p>
 
 ---
 
@@ -45,14 +46,22 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 |---|---|
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
-| Frontend package version | `2.4.3` |
+| Frontend package version | `2.4.4` |
 | Google Apps Script API version | `3.0.0` |
 | Apps Script build stamp | `27 August 2026 at 15:20:42Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `30 August 2026 at 13:01:36Z UTC` |
+| README revision | `30 August 2026 at 17:52:45Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
+---
+
+## What's New in v2.4.4
+
+- Updated the **Terms of Service**, **Privacy Policy**, **Copyright Notice**, and **Publisher Licensing Notice** so **Cook Services Company, LLC** is a clickable hyperlink to `https://www.cook-international.com` in the operator attribution at the beginning and end of each legal page.
+- Preserved the existing public contact email presentation near the top of the applicable legal pages while adding the Cook Services Company, LLC hyperlink.
+- Updated the **Editorial Standards** page to use the same clickable **Cook Services Company, LLC** attribution linking to `https://www.cook-international.com`.
+
 ---
 
 ## What's New in v2.4.3
@@ -513,8 +522,8 @@ Before merging a production change:
 **Repository architecture revision:** `2026-08-27T22:28:20Z`  
 **Apps Script build stamp:** `27 August 2026 at 15:20:42Z UTC`  
 **Backend API version:** `3.0.0`  
-**README last updated:** **30 August 2026 at 13:01:36Z UTC**
+**README last updated:** **30 August 2026 at 17:52:45Z UTC**
 
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 30 August 2026 at 13:01:36Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 30 August 2026 at 17:52:45Z UTC</strong></p>

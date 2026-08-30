@@ -1,10 +1,5 @@
+[README-v2.4.5.md](https://github.com/user-attachments/files/31620105/README-v2.4.5.md)
 [README-v2.4.4.md](https://github.com/user-attachments/files/31619019/README-v2.4.4.md)
-[README.md](https://github.com/user-attachments/files/31613780/README.md)
-[README(2).md](https://github.com/user-attachments/files/31613655/README.2.md)
-[README-v2.4.1.md](https://github.com/user-attachments/files/31604108/README-v2.4.1.md)
-[README-v2.4.0.md](https://github.com/user-attachments/files/31603928/README-v2.4.0.md)
-[README(1).md](https://github.com/user-attachments/files/31598452/README.1.md)
-[README.md](https://github.com/user-attachments/files/31572992/README.md)
 <p align="center">
   <a href="https://www.livingwordbibles.com/">
     <img src="assets/LivingWordBibles01.png" alt="Living Word Bibles" width="320">
@@ -17,7 +12,7 @@
 
 <p align="center">
   <a href="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml/badge.svg?branch=main"></a>
-  <img alt="Frontend package v2.4.4" src="https://img.shields.io/badge/frontend-v2.4.4-555555">
+  <img alt="Frontend package v2.4.5" src="https://img.shields.io/badge/frontend-v2.4.5-555555">
   <img alt="Backend API v3.0.0" src="https://img.shields.io/badge/backend%20API-v3.0.0-555555">
   <img alt="Hosting GitHub Pages" src="https://img.shields.io/badge/hosting-GitHub%20Pages-555555">
 </p>
@@ -28,7 +23,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 30 August 2026 at 17:52:45Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 30 August 2026 at 19:25:00Z UTC</sub></p>
 
 ---
 
@@ -46,14 +41,21 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 |---|---|
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
-| Frontend package version | `2.4.4` |
+| Frontend package version | `2.4.5` |
 | Google Apps Script API version | `3.0.0` |
 | Apps Script build stamp | `27 August 2026 at 15:20:42Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `30 August 2026 at 17:52:45Z UTC` |
+| README revision | `30 August 2026 at 19:25:00Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
+---
+
+## What's New in v2.4.5
+
+- Added the new **Equal Opportunity & Workplace Policies** page at `/eeo/`.
+- Updated the shared global footer to add an **EEO** link immediately after **Editorial Standards**, linking to `/eeo/`.
+
 ---
 
 ## What's New in v2.4.4
@@ -176,7 +178,7 @@ The public website and the operational backend are deliberately separated:
 | `404.html` | Branded static 404 page |
 | `CNAME` | Production custom-domain configuration |
 
-Major content areas include Bible translation pages, online Bible readers, Catholic Bible/deuterocanonical resources, Bible history, Holy Land maps, eStore pages, the Ethiopian Bible page, account routes, support/legal pages, donation pages, social pages, and the Living Word Bibles app page. Homepage promotional assets include the rotating hero series under `/assets/`, including the desktop app hero at `/assets/homepage-hero-4.png` and its mobile-specific companion at `/assets/homepage-hero-4-mobile.png`.
+Major content areas include Bible translation pages, online Bible readers, Catholic Bible/deuterocanonical resources, Bible history, Holy Land maps, eStore pages, the Ethiopian Bible page, account routes, support/legal pages, the Equal Opportunity & Workplace Policies page, donation pages, social pages, and the Living Word Bibles app page. Homepage promotional assets include the rotating hero series under `/assets/`, including the desktop app hero at `/assets/homepage-hero-4.png` and its mobile-specific companion at `/assets/homepage-hero-4-mobile.png`.
 
 ---
 
@@ -522,8 +524,8 @@ Before merging a production change:
 **Repository architecture revision:** `2026-08-27T22:28:20Z`  
 **Apps Script build stamp:** `27 August 2026 at 15:20:42Z UTC`  
 **Backend API version:** `3.0.0`  
-**README last updated:** **30 August 2026 at 17:52:45Z UTC**
+**README last updated:** **30 August 2026 at 19:25:00Z UTC**
 
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 30 August 2026 at 17:52:45Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 30 August 2026 at 19:25:00Z UTC</strong></p>

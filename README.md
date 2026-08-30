@@ -1,5 +1,5 @@
-[README-v2.4.7.md](https://github.com/user-attachments/files/31622442/README-v2.4.7.md)
-[README-v2.4.7.md](README-v2.4.7.md)
+[README-v2.4.8.md](https://github.com/user-attachments/files/31622600/README-v2.4.8.md)
+[README-v2.4.8.md](README-v2.4.8.md)
 <p align="center">
   <a href="https://www.livingwordbibles.com/">
     <img src="assets/LivingWordBibles01.png" alt="Living Word Bibles" width="320">
@@ -12,7 +12,7 @@
 
 <p align="center">
   <a href="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml/badge.svg?branch=main"></a>
-  <img alt="Frontend package v2.4.7" src="https://img.shields.io/badge/frontend-v2.4.7-555555">
+  <img alt="Frontend package v2.4.8" src="https://img.shields.io/badge/frontend-v2.4.8-555555">
   <img alt="Backend API v3.0.0" src="https://img.shields.io/badge/backend%20API-v3.0.0-555555">
   <img alt="Hosting GitHub Pages" src="https://img.shields.io/badge/hosting-GitHub%20Pages-555555">
 </p>
@@ -23,7 +23,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 30 August 2026 at 22:30:00Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 30 August 2026 at 22:46:10Z UTC</sub></p>
 
 ---
 
@@ -41,14 +41,59 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 |---|---|
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
-| Frontend package version | `2.4.7` |
+| Frontend package version | `2.4.8` |
 | Google Apps Script API version | `3.0.0` |
 | Apps Script build stamp | `27 August 2026 at 15:20:42Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `30 August 2026 at 22:30:00Z UTC` |
+| README revision | `30 August 2026 at 22:46:10Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
+---
+
+## What's New in v2.4.8
+
+- Redesigned the **Christian Living** page at `/christian-living/` and the **Bible Study** page at `/bible-study/` so their video resources follow the same integrated editorial approach introduced on the History of the Bible page.
+- Moved each page’s **Media Library** to the top of the content experience, immediately after the primary page introduction/navigation, so visitors can access a small set of key video resources without scrolling to the bottom of a long page.
+- Reworked both page-level navigation menus so **Media Library** is a prominent top-level anchor while preserving the existing Scripture, prayer, devotional, books, and other major content anchors.
+
+### Christian Living
+
+- Rebuilt the Christian Living Media Library as a focused **three-video featured collection** at the top of the page rather than a long stack of embeds at the bottom.
+- Retained **The Story of the Bible — From Beginning to End**, **John Chapter 1 — Summary and What God Wants From Us**, and **Amazing Grace — Judy Collins** as the three flagship Christian Living media resources.
+- Preserved all **7 existing Christian Living YouTube resources**; no existing video was removed.
+- Distributed the remaining four videos throughout the page according to subject matter so video becomes part of the devotional experience instead of a detached media dump.
+- Integrated **God’s Word Changes Lives** beside the **Tools for Growth** material, reinforcing Scripture reading, memorization, study aids, and practical discipleship.
+- Integrated **Trusting God in Difficult Times — Psalm 46 Meditation** directly with the **Faith in the Storm** devotional.
+- Integrated **Love Jesus More Than You Love Anything** with the **A Servant’s Heart** / wholehearted-discipleship material.
+- Integrated **Trusting God in Uncertainty** with **Hope That Endures**, connecting the video directly to the page’s treatment of faith, uncertainty, and enduring Christian hope.
+- Added a consistent responsive video-feature presentation with contained cards, 16:9 embeds, contextual headings, explanatory copy, and spacing aligned with the visual treatment used on the History of the Bible page.
+- Preserved **Most Popular Verses**, **Scripture Illustrated**, the expanded devotional content, and the existing `/prayers/` links introduced in earlier releases.
+- Cleaned the **Glory Be** prayer block by removing stray template/placeholder text that did not belong on the Christian Living page while preserving the prayer itself.
+- Retained the **Grow with Us** newsletter invitation as a dedicated closing callout instead of leaving it attached to the former bottom media dump.
+
+### Bible Study
+
+- Rebuilt the Bible Study Media Library as a focused **three-video featured collection** near the top of the page.
+- Retained **Beginner’s Guide to Studying the Bible**, **Deep Bible Study — Connections Across Scripture**, and **Complete NIV Audio Bible — David Suchet** as the three key top-of-page media resources.
+- Preserved all **11 existing Bible Study YouTube resources**; no existing video was removed.
+- Distributed the remaining **8 videos** throughout the Bible Study page so they reinforce the section a visitor is actively studying.
+- Added supporting study videos around **Featured Verse Studies** and the main **Verse-by-Verse Scripture Studies** library.
+- Integrated a video resource with the **Prayer** section to connect Scripture study with prayerful response and worship.
+- Integrated deeper-study and long-form resources into the **Books of the Bible** section, including the existing **Midweek Bible Study — The Book of Jude** resource as a concrete example of whole-book study.
+- Integrated an additional study-series resource near the **Bible Reader** call to action to reinforce reading verses in literary and canonical context.
+- Integrated the remaining long-form study resource with the closing **Scripture First / Our Approach** material, encouraging continued contextual study rather than isolated verse consumption.
+- Preserved all **156 verse-study cards**, their dedicated `/verses/` routes, the public-domain card imagery added in v2.4.6, and the Featured Verse Studies presentation.
+- Preserved the repaired **Bible Study search/filter system**, including normalized multi-term search, topic filtering, Old/New Testament filtering, result counts, and empty-result behavior.
+- Preserved the six Common Prayer links, Books of the Bible links, Bible Reader links, and Editorial Standards link.
+- Standardized responsive video presentation across Bible Study so featured media and in-context video callouts remain readable and properly proportioned on desktop, tablet, and mobile.
+
+### Release safeguards
+
+- Preserved the site’s plain static **GitHub Pages architecture** and page-level HTML source-of-truth model.
+- No Google Apps Script backend, payment, PayPal Hosted Button, product, account/session, fulfillment, or runtime configuration behavior was changed in this release.
+- No existing Christian Living or Bible Study video URL was intentionally removed; this release reorganizes and contextualizes the existing media library while tightening presentation and removing unrelated placeholder debris.
+
 ---
 
 ## What's New in v2.4.7
@@ -569,8 +614,8 @@ Before merging a production change:
 **Repository architecture revision:** `2026-08-27T22:28:20Z`  
 **Apps Script build stamp:** `27 August 2026 at 15:20:42Z UTC`  
 **Backend API version:** `3.0.0`  
-**README last updated:** **30 August 2026 at 22:30:00Z UTC**
+**README last updated:** **30 August 2026 at 22:46:10Z UTC**
 
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 30 August 2026 at 22:30:00Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 30 August 2026 at 22:46:10Z UTC</strong></p>

@@ -2,24 +2,31 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://www.livingwordbibles.com/</loc></url>
   <url><loc>https://www.livingwordbibles.com/bibles</loc></url>
+  <url><loc>https://www.livingwordbibles.com/read-the-bible-online</loc></url>
+  <url><loc>https://www.livingwordbibles.com/bible-study</loc></url>
+  <url><loc>https://www.livingwordbibles.com/christian-living</loc></url>
   <url><loc>https://www.livingwordbibles.com/history-of-the-bible</loc></url>
   <url><loc>https://www.livingwordbibles.com/the-catholic-bible</loc></url>
   <url><loc>https://www.livingwordbibles.com/maps-of-the-holy-land</loc></url>
-  <url><loc>https://www.livingwordbibles.com/christian-living</loc></url>
-  <url><loc>https://www.livingwordbibles.com/about-us</loc></url>
-  <url><loc>https://www.livingwordbibles.com/donors</loc></url>
-  <url><loc>https://www.livingwordbibles.com/for-churches</loc></url>
-  <url><loc>https://www.livingwordbibles.com/donate</loc></url>
-  <url><loc>https://www.livingwordbibles.com/social-media</loc></url>
-  <url><loc>https://www.livingwordbibles.com/ios</loc></url>
+  <url><loc>https://www.livingwordbibles.com/prayers</loc></url>
+  <url><loc>https://www.livingwordbibles.com/ethiopian-bible</loc></url>
   <url><loc>https://www.livingwordbibles.com/estore</loc></url>
   <url><loc>https://www.livingwordbibles.com/download-the-bible</loc></url>
-  <url><loc>https://www.livingwordbibles.com/opt-out</loc></url>
+  <url><loc>https://www.livingwordbibles.com/ios</loc></url>
+  <url><loc>https://www.livingwordbibles.com/about-us</loc></url>
+  <url><loc>https://www.livingwordbibles.com/social-media</loc></url>
+  <url><loc>https://www.livingwordbibles.com/for-churches</loc></url>
+  <url><loc>https://www.livingwordbibles.com/donors</loc></url>
+  <url><loc>https://www.livingwordbibles.com/donate</loc></url>
+  <url><loc>https://www.livingwordbibles.com/support</loc></url>
+  <url><loc>https://www.livingwordbibles.com/editorial-standards</loc></url>
+  <url><loc>https://www.livingwordbibles.com/eeo</loc></url>
   <url><loc>https://www.livingwordbibles.com/terms-of-service</loc></url>
   <url><loc>https://www.livingwordbibles.com/privacy-policy</loc></url>
   <url><loc>https://www.livingwordbibles.com/copyright-notice</loc></url>
   <url><loc>https://www.livingwordbibles.com/licensing</loc></url>
   <url><loc>https://www.livingwordbibles.com/app-licensing</loc></url>
+  <url><loc>https://www.livingwordbibles.com/opt-out</loc></url>
   <url><loc>https://www.livingwordbibles.com/king-james-version</loc></url>
   <url><loc>https://www.livingwordbibles.com/new-king-james-version</loc></url>
   <url><loc>https://www.livingwordbibles.com/new-international-version</loc></url>
@@ -35,6 +42,8 @@
   <url><loc>https://www.livingwordbibles.com/berean-standard-bible</loc></url>
   <url><loc>https://www.livingwordbibles.com/basic-english-bible</loc></url>
   <url><loc>https://www.livingwordbibles.com/douay-rheims-bible</loc></url>
+  <url><loc>https://www.livingwordbibles.com/new-living-translation</loc></url>
+  <url><loc>https://www.livingwordbibles.com/christian-standard-bible</loc></url>
   <url><loc>https://www.livingwordbibles.com/catholic-bible/tobit</loc></url>
   <url><loc>https://www.livingwordbibles.com/catholic-bible/judith</loc></url>
   <url><loc>https://www.livingwordbibles.com/catholic-bible/wisdom</loc></url>
@@ -59,7 +68,10 @@
   <url><loc>https://www.livingwordbibles.com/read-the-bible-online/bsb</loc></url>
   <url><loc>https://www.livingwordbibles.com/read-the-bible-online/bbe</loc></url>
   <url><loc>https://www.livingwordbibles.com/read-the-bible-online/drb</loc></url>
-  <url><loc>https://www.livingwordbibles.com/read-the-bible-online</loc></url>
+  <url><loc>https://www.livingwordbibles.com/read-the-bible-online/nlt</loc></url>
+  <url><loc>https://www.livingwordbibles.com/read-the-bible-online/csb</loc></url>
+  <url><loc>https://www.livingwordbibles.com/bibles/drb</loc></url>
+  <url><loc>https://www.livingwordbibles.com/bibles/oeb</loc></url>
   <url><loc>https://www.livingwordbibles.com/history/books-of-the-bible/1-chronicles</loc></url>
   <url><loc>https://www.livingwordbibles.com/history/books-of-the-bible/1-corinthians</loc></url>
   <url><loc>https://www.livingwordbibles.com/history/books-of-the-bible/1-john</loc></url>
@@ -132,27 +144,12 @@
   <url><loc>https://www.livingwordbibles.com/estore/p/the-holy-bible-youngs-literal-translation-ylt</loc></url>
   <url><loc>https://www.livingwordbibles.com/estore/p/the-holy-bible-world-english-bible-web</loc></url>
   <url><loc>https://www.livingwordbibles.com/estore/p/the-holy-bible-douay-rheims-bible</loc></url>
-  <url><loc>https://www.livingwordbibles.com/login</loc></url>
-  <url><loc>https://www.livingwordbibles.com/register</loc></url>
-  <url><loc>https://www.livingwordbibles.com/forgot-password</loc></url>
-  <url><loc>https://www.livingwordbibles.com/reset-password</loc></url>
-  <url><loc>https://www.livingwordbibles.com/verify-email</loc></url>
-  <url><loc>https://www.livingwordbibles.com/account</loc></url>
-  <url><loc>https://www.livingwordbibles.com/account/library</loc></url>
-  <url><loc>https://www.livingwordbibles.com/account/orders</loc></url>
-  <url><loc>https://www.livingwordbibles.com/account/profile</loc></url>
-  <url><loc>https://www.livingwordbibles.com/payment-complete</loc></url>
-  <url><loc>https://www.livingwordbibles.com/estore/order-complete</loc></url>
-  <url><loc>https://www.livingwordbibles.com/donate/thank-you</loc></url>
-  <url><loc>https://www.livingwordbibles.com/order/cancelled</loc></url>
-  <url><loc>https://www.livingwordbibles.com/bibles/drb</loc></url>
-  <url><loc>https://www.livingwordbibles.com/catholic-bible/wisdom-of-solomon</loc></url>
-  <url><loc>https://www.livingwordbibles.com/bibles/oeb</loc></url>
-  <url><loc>https://www.livingwordbibles.com/new-living-translation</loc></url>
-  <url><loc>https://www.livingwordbibles.com/read-the-bible-online/nlt</loc></url>
-  <url><loc>https://www.livingwordbibles.com/read-the-bible-online/csb</loc></url>
-  <url><loc>https://www.livingwordbibles.com/christian-standard-bible</loc></url>
-  <url><loc>https://www.livingwordbibles.com/ads</loc></url>
+  <url><loc>https://www.livingwordbibles.com/prayers/lord-s-prayer</loc></url>
+  <url><loc>https://www.livingwordbibles.com/prayers/hail-mary</loc></url>
+  <url><loc>https://www.livingwordbibles.com/prayers/serenity-prayer</loc></url>
+  <url><loc>https://www.livingwordbibles.com/prayers/nicene-creed</loc></url>
+  <url><loc>https://www.livingwordbibles.com/prayers/glory-be</loc></url>
+  <url><loc>https://www.livingwordbibles.com/prayers/guardian-angel-prayer</loc></url>
   <url><loc>https://www.livingwordbibles.com/verses/1-corinthians-10-13</loc></url>
   <url><loc>https://www.livingwordbibles.com/verses/1-corinthians-13-13</loc></url>
   <url><loc>https://www.livingwordbibles.com/verses/1-corinthians-13-4-7</loc></url>

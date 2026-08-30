@@ -87,7 +87,6 @@
 <script>
     window.LWB_PUBLIC_CONFIG={"adsEnabled":false,"adsenseClient":""};
   </script>
-
 <style>
 :root{--about-muted:#6f6258;--about-gold:#a57e3e;--about-gold-soft:rgba(165,126,62,.10);--about-line:rgba(89,55,29,.16);--about-shadow:0 18px 45px rgba(42,25,12,.08)}
 .about-page{padding-bottom:4rem}.about-shell{width:min(1180px,calc(100% - 40px));margin:0 auto}
@@ -121,6 +120,100 @@
 .faq-item>div[id^="faq-"]{padding:0 1.1rem 1.15rem;color:var(--about-muted);line-height:1.7}.faq-item>div[id^="faq-"] p:last-child{margin-bottom:0}
 @media(max-width:900px){.about-hero-grid,.about-video-card,.about-team-card{grid-template-columns:1fr}.about-photo-grid{min-height:360px}.about-values,.about-explore-grid{grid-template-columns:1fr}.about-video-copy{padding:.5rem .25rem .75rem}}
 @media(max-width:720px){.about-shell{width:min(100% - 24px,1180px)}.about-hero{padding:1.35rem;border-radius:18px}.about-photo-grid{grid-template-columns:1fr 1fr;min-height:300px}.about-photo-grid figure:first-child{grid-row:auto;grid-column:1/3;aspect-ratio:16/9}.about-contact-grid{grid-template-columns:1fr}.about-section{padding:2.8rem 0}}
+
+/* About Us hero/app refinement */
+.about-photo-grid{
+  grid-template-columns:1.05fr .95fr;
+  grid-template-rows:1fr 1fr;
+  align-items:stretch;
+}
+.about-photo-grid .about-phone-visual{
+  grid-row:1 / 3;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:440px;
+  padding:1.25rem;
+  background:
+    radial-gradient(circle at 50% 42%,rgba(165,126,62,.18),transparent 42%),
+    linear-gradient(180deg,#f8f4ed,#efe4d4);
+}
+.about-photo-grid .about-phone-visual img{
+  width:auto;
+  height:auto;
+  max-width:88%;
+  max-height:430px;
+  object-fit:contain;
+  filter:drop-shadow(0 18px 24px rgba(42,25,12,.22));
+}
+.about-photo-grid .about-supporting-visual img{
+  object-fit:cover;
+  object-position:center;
+}
+
+/* Go Deeper image cards */
+.about-explore-card{
+  padding:0;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  min-height:100%;
+}
+.about-explore-image{
+  display:block;
+  width:100%;
+  aspect-ratio:16/9;
+  overflow:hidden;
+  background:rgba(165,126,62,.08);
+}
+.about-explore-image img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+}
+.about-explore-card h3{
+  margin:1.05rem 1.2rem .45rem;
+}
+.about-explore-card > p{
+  margin:0 1.2rem .8rem;
+  flex:1;
+}
+.about-explore-credit{
+  display:block;
+  margin:0 1.2rem 1.1rem;
+  padding-top:.75rem;
+  border-top:1px solid rgba(89,55,29,.10);
+  color:var(--about-muted);
+  font-size:.72rem;
+  line-height:1.45;
+}
+.about-explore-credit a{
+  color:inherit;
+  font-weight:700;
+}
+
+@media(max-width:900px){
+  .about-photo-grid .about-phone-visual{
+    min-height:400px;
+  }
+  .about-photo-grid .about-phone-visual img{
+    max-height:390px;
+  }
+}
+@media(max-width:720px){
+  .about-photo-grid .about-phone-visual{
+    grid-column:1 / 3;
+    grid-row:auto;
+    min-height:360px;
+    aspect-ratio:auto;
+  }
+  .about-photo-grid .about-phone-visual img{
+    max-height:340px;
+    max-width:78%;
+  }
+}
 </style>
 </head>
 <body class="">
@@ -131,8 +224,7 @@
 <a href="/">Home</a>
 <span aria-hidden="true">›</span>
         About Us
-      </nav><div class="about-shell"><section class="about-hero" id="our-story"><div class="about-hero-grid"><div class="about-hero-copy"><p class="eyebrow">About Living Word Bibles</p><img alt="Living Word Bibles logo" class="about-hero-logo" data-fallback="/assets/icons/lwb-mark.svg" src="/assets/LivingWordBibles01.png"/><h1>God’s Word, Beautifully Presented for Every Device</h1><p class="about-lead">Living Word Bibles is an independent Bible publisher rooted in Indiana. We create simple, elegant, reverent editions of the Holy Bible designed to be read often—at home, in church, and on the go.</p><p class="about-origin">Since 2000, our work has centered on access: placing God’s Word within reach across websites, phones, tablets, and e-readers.</p><div class="about-hero-actions"><a class="btn gold" href="/read-the-bible-online/">Read the Bible Online</a><a class="btn secondary" href="/bible-study/">Explore Bible Study</a><a class="btn secondary" href="/estore/">Visit the eStore</a></div></div><div class="about-photo-grid"><figure><img alt="An open Bible" loading="eager" src="/assets/aboutus01.webp"/></figure><figure><img alt="An open Bible and mug beside the water" loading="lazy" src="/assets/aboutus02.webp"/></figure><figure><img alt="An open Bible at sunset" loading="lazy" src="/assets/aboutus03.webp"/></figure></div></div></section></div><div class="about-shell"><nav aria-label="About Us page sections" class="about-jump"><a class="btn secondary" href="#our-story">Our Story</a><a class="btn secondary" href="#our-team">Our Team</a><a class="btn secondary" href="#contact-us">Contact Us</a><a class="btn secondary" href="#newsletter">Newsletter</a><a class="btn secondary" href="#frequently-asked-questions">Frequently Asked Questions</a></nav></div><section class="about-section"><div class="about-shell"><div class="about-heading"><p class="eyebrow">Our Mission</p><h2>Beautifully Formatted to Bring God’s Word to Life on Any Device</h2><p>Every edition is prepared for readability, clear navigation, and faithful engagement with Scripture. Living Word Bibles is non-denominational at heart and seeks to encourage Christians from many traditions to walk closely with Christ.</p></div><div class="about-values"><div class="about-value"><strong>Accessible by Design</strong><p>Scripture should be easy to reach, read, navigate, and return to across modern devices.</p></div><div class="about-value"><strong>Reverent Presentation</strong><p>Design should serve the biblical text—never overwhelm it—and support thoughtful reading and devotion.</p></div><div class="about-value"><strong>Scripture First</strong><p>Our publishing, study, history, and devotional resources exist to bring readers back to the Word itself.</p></div></div></div></section><section class="about-section alt"><div class="about-shell"><div class="about-heading"><p class="eyebrow">Our Work in Motion</p><h2>Living Word Bibles</h2><p>A featured video from the Living Word Bibles homepage, brought into the About page as part of our story.</p></div><div class="about-video-card"><div class="about-video"><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" loading="lazy" src="https://www.youtube.com/embed/ydGoRosM9tQ" title="Living Word Bibles featured video"></iframe></div><div class="about-video-copy"><p class="eyebrow">Watch</p><h3>Bringing God’s Word to Life</h3><p>Living Word Bibles combines Scripture, publishing, digital design, and accessible reading tools to help people engage with the Bible wherever they are.</p></div></div></div></section><section class="about-section" id="our-team"><div class="about-shell"><div class="about-heading"><p class="eyebrow">Leadership</p><h2>Our Team</h2><p>Publishing, partnerships, and digital access are guided by a commitment to Scripture, service, and responsible presentation.</p></div><div class="about-team-card"><figure><img alt="Sophie Keller, Executive Director" data-fallback="/assets/icons/lwb-mark.svg" loading="lazy" src="/assets/sophie01.webp"/></figure><div><p class="eyebrow">Executive Director</p><h3>Ms. Sophie Keller</h3><p>Born in Manila and raised in Carmel, Indiana, Sophie’s formation in church life and theology shaped a calling to serve the Church by putting the Gospel in people’s hands. At Living Word Bibles, she leads strategy, partnerships, publishing operations, newsletters, and digital access.</p></div></div></div></section><section class="about-section alt"><div class="about-shell"><div class="about-heading"><p class="eyebrow">Explore</p><h2>Go Deeper with Living Word Bibles</h2><p>Move from our story directly into Scripture, study, history, and the digital editions we publish.</p></div><div class="about-explore-grid"><a class="about-explore-card" href="/read-the-bible-online/"><h3>Read Scripture</h3><p>Open the online Bible reader and begin reading a trusted translation.</p></a><a class="about-explore-card" href="/bible-study/"><h3>Study the Bible</h3><p>Explore 156 verse studies, prayer resources, book studies, and contextual media.</p></a><a class="about-explore-card" href="/history-of-the-bible/"><h3>History of the Bible</h3><p>Follow Scripture from ancient manuscripts and codices through print and the digital age.</p></a></div></div></section><section class="about-section"><div class="about-shell about-contact-grid"><section class="about-card" id="contact-us"><h2>Contact Us</h2><p>Questions about Living Word Bibles, orders, products, partnerships, or publishing? We’d be glad to hear from you.</p><div class="about-contact-lines"><strong>Living Word Bibles</strong><br/>151 N. Delaware Street<br/>Suite 122<br/>Indianapolis, IN 46204<br/><br/><a href="mailto:gospellivingwordbibles@gmail.com">gospellivingwordbibles@gmail.com</a><br/>Office Hours: 9am–5pm (ET) | Mon–Fri</div><a class="btn secondary" href="/support/">Technical Support</a></section><section class="about-card" id="newsletter"><h2>Subscribe to the LWB Newsletter</h2><p>Receive new Bible resources, publishing updates, devotionals, and Living Word Bibles news.</p><form class="content-card" data-lwb-action="subscribe"><div class="form-field"><label for="about-email">Email address</label><input id="about-email" name="email" required="" type="email"/></div><input name="source" type="hidden" value="about-page"/><button class="btn" type="submit">Join</button><p data-form-message="" hidden=""></p></form></section></div></section><section class="about-section alt"><div class="about-shell about-faq-wrap"><div class="about-heading"><p class="eyebrow">Help &amp; Information</p><h2>Frequently Asked Questions</h2><p>Orders, Bible translations, apps, licensing, support, and questions about official Living Word Bibles products.</p></div><section id="frequently-asked-questions">
-
+      </nav><div class="about-shell"><section class="about-hero" id="our-story"><div class="about-hero-grid"><div class="about-hero-copy"><p class="eyebrow">About Living Word Bibles</p><img alt="Living Word Bibles logo" class="about-hero-logo" data-fallback="/assets/icons/lwb-mark.svg" src="/assets/LivingWordBibles01.png"/><h1>Beautifully Formatted to Bring God’s Word to Life on Any Device</h1><p class="about-lead">Living Word Bibles is an independent Bible publisher rooted in Indiana. We create simple, elegant, reverent editions of the Holy Bible designed to be read often—at home, in church, and on the go.</p><p class="about-origin">Since 2000, our work has centered on access: placing God’s Word within reach across websites, phones, tablets, and e-readers.</p><div class="about-hero-actions"><a class="btn gold" href="/read-the-bible-online/">Read the Bible Online</a><a class="btn secondary" href="/bible-study/">Explore Bible Study</a><a class="btn secondary" href="/estore/">Visit the eStore</a></div></div><div class="about-photo-grid"><figure class="about-phone-visual"><img alt="Living Word Bibles displayed on an iPhone" loading="eager" src="/assets/lwb_iphone_phone_only.webp"/></figure><figure class="about-supporting-visual"><img alt="An open Bible and mug beside the water" loading="lazy" src="/assets/aboutus02.webp"/></figure><figure class="about-supporting-visual"><img alt="An open Bible at sunset" loading="lazy" src="/assets/aboutus03.webp"/></figure></div></div></section></div><div class="about-shell"><nav aria-label="About Us page sections" class="about-jump"><a class="btn secondary" href="#our-story">Our Story</a><a class="btn secondary" href="#our-team">Our Team</a><a class="btn secondary" href="#contact-us">Contact Us</a><a class="btn secondary" href="#newsletter">Newsletter</a><a class="btn secondary" href="#frequently-asked-questions">Frequently Asked Questions</a></nav></div><section class="about-section"><div class="about-shell"><div class="about-heading"><p class="eyebrow">Our Mission</p><h2>Designed to Make Scripture Clear, Accessible, and Enduring</h2><p>Every edition is prepared for readability, clear navigation, and faithful engagement with Scripture. Living Word Bibles is non-denominational at heart and seeks to encourage Christians from many traditions to walk closely with Christ.</p></div><div class="about-values"><div class="about-value"><strong>Accessible by Design</strong><p>Scripture should be easy to reach, read, navigate, and return to across modern devices.</p></div><div class="about-value"><strong>Reverent Presentation</strong><p>Design should serve the biblical text—never overwhelm it—and support thoughtful reading and devotion.</p></div><div class="about-value"><strong>Scripture First</strong><p>Our publishing, study, history, and devotional resources exist to bring readers back to the Word itself.</p></div></div></div></section><section class="about-section alt"><div class="about-shell"><div class="about-heading"><p class="eyebrow">Our Work in Motion</p><h2>Living Word Bibles</h2><p>A featured video from the Living Word Bibles homepage, brought into the About page as part of our story.</p></div><div class="about-video-card"><div class="about-video"><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" loading="lazy" src="https://www.youtube.com/embed/ydGoRosM9tQ" title="Living Word Bibles featured video"></iframe></div><div class="about-video-copy"><p class="eyebrow">Watch</p><h3>Bringing God’s Word to Life</h3><p>Living Word Bibles combines Scripture, publishing, digital design, and accessible reading tools to help people engage with the Bible wherever they are.</p></div></div></div></section><section class="about-section" id="our-team"><div class="about-shell"><div class="about-heading"><p class="eyebrow">Leadership</p><h2>Our Team</h2><p>Publishing, partnerships, and digital access are guided by a commitment to Scripture, service, and responsible presentation.</p></div><div class="about-team-card"><figure><img alt="Sophie Keller, Executive Director" data-fallback="/assets/icons/lwb-mark.svg" loading="lazy" src="/assets/sophie01.webp"/></figure><div><p class="eyebrow">Executive Director</p><h3>Ms. Sophie Keller</h3><p>Born in Manila and raised in Carmel, Indiana, Sophie’s formation in church life and theology shaped a calling to serve the Church by putting the Gospel in people’s hands. At Living Word Bibles, she leads strategy, partnerships, publishing operations, newsletters, and digital access.</p></div></div></div></section><section class="about-section alt"><div class="about-shell"><div class="about-heading"><p class="eyebrow">Explore</p><h2>Go Deeper with Living Word Bibles</h2><p>Move from our story directly into Scripture, study, history, and the digital editions we publish.</p></div><div class="about-explore-grid"><a class="about-explore-card" href="/read-the-bible-online/"><span class="about-explore-image"><img alt="An open Bible" decoding="async" loading="lazy" src="https://www.publicdomainpictures.net/pictures/440000/velka/an-open-bible.jpg"/></span><h3>Read Scripture</h3><p>Open the online Bible reader and begin reading a trusted translation.</p><small class="about-explore-credit">Image: <a href="https://www.publicdomainpictures.net/en/view-image.php?image=439364&amp;picture=an-open-bible" rel="noopener noreferrer" target="_blank">PublicDomainPictures.net</a> · CC0 Public Domain</small></a><a class="about-explore-card" href="/bible-study/"><span class="about-explore-image"><img alt="A path representing growth and study" decoding="async" loading="lazy" src="https://www.publicdomainpictures.net/pictures/50000/velka/path-13701802522gB.jpg"/></span><h3>Study the Bible</h3><p>Explore 156 verse studies, prayer resources, book studies, and contextual media.</p><small class="about-explore-credit">Image: <a href="https://www.publicdomainpictures.net/" rel="noopener noreferrer" target="_blank">PublicDomainPictures.net</a> · CC0 Public Domain</small></a><a class="about-explore-card" href="/history-of-the-bible/"><span class="about-explore-image"><img alt="An open Bible at the Psalms" decoding="async" loading="lazy" src="https://www.publicdomainpictures.net/pictures/440000/velka/page-of-a-bible-open-in-psalms.jpg"/></span><h3>History of the Bible</h3><p>Follow Scripture from ancient manuscripts and codices through print and the digital age.</p><small class="about-explore-credit">Image: <a href="https://www.publicdomainpictures.net/" rel="noopener noreferrer" target="_blank">PublicDomainPictures.net</a> · CC0 Public Domain</small></a></div></div></section><section class="about-section"><div class="about-shell about-contact-grid"><section class="about-card" id="contact-us"><h2>Contact Us</h2><p>Questions about Living Word Bibles, orders, products, partnerships, or publishing? We’d be glad to hear from you.</p><div class="about-contact-lines"><strong>Living Word Bibles</strong><br/>151 N. Delaware Street<br/>Suite 122<br/>Indianapolis, IN 46204<br/><br/><a href="mailto:gospellivingwordbibles@gmail.com">gospellivingwordbibles@gmail.com</a><br/>Office Hours: 9am–5pm (ET) | Mon–Fri</div><a class="btn secondary" href="/support/">Technical Support</a></section><section class="about-card" id="newsletter"><h2>Subscribe to the LWB Newsletter</h2><p>Receive new Bible resources, publishing updates, devotionals, and Living Word Bibles news.</p><form class="content-card" data-lwb-action="subscribe"><div class="form-field"><label for="about-email">Email address</label><input id="about-email" name="email" required="" type="email"/></div><input name="source" type="hidden" value="about-page"/><button class="btn" type="submit">Join</button><p data-form-message="" hidden=""></p></form></section></div></section><section class="about-section alt"><div class="about-shell about-faq-wrap"><div class="about-heading"><p class="eyebrow">Help &amp; Information</p><h2>Frequently Asked Questions</h2><p>Orders, Bible translations, apps, licensing, support, and questions about official Living Word Bibles products.</p></div><section id="frequently-asked-questions">
 <!-- EXISTING FAQS -->
 <div class="faq-item">
 <button aria-controls="faq-0" aria-expanded="false" data-accordion-button="" type="button">What is Living Word Bibles all about?</button>

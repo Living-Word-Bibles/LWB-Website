@@ -1,5 +1,5 @@
-[Uploading README-v2.4.9.md…]()
-[README-v2.4.9.md](README-v2.4.9.md)
+[Uploading README-v2.5.0.md…]()
+[README-v2.5.0.md](README-v2.5.0.md)
 <p align="center">
   <a href="https://www.livingwordbibles.com/">
     <img src="assets/LivingWordBibles01.png" alt="Living Word Bibles" width="320">
@@ -12,7 +12,7 @@
 
 <p align="center">
   <a href="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml/badge.svg?branch=main"></a>
-  <img alt="Frontend package v2.4.9" src="https://img.shields.io/badge/frontend-v2.4.9-555555">
+  <img alt="Frontend package v2.5.0" src="https://img.shields.io/badge/frontend-v2.5.0-555555">
   <img alt="Backend API v3.0.0" src="https://img.shields.io/badge/backend%20API-v3.0.0-555555">
   <img alt="Hosting GitHub Pages" src="https://img.shields.io/badge/hosting-GitHub%20Pages-555555">
 </p>
@@ -23,7 +23,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 30 August 2026 at 23:11:21Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 30 August 2026 at 23:27:18Z UTC</sub></p>
 
 ---
 
@@ -41,14 +41,68 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 |---|---|
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
-| Frontend package version | `2.4.9` |
+| Frontend package version | `2.5.0` |
 | Google Apps Script API version | `3.0.0` |
 | Apps Script build stamp | `27 August 2026 at 15:20:42Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `30 August 2026 at 23:11:21Z UTC` |
+| README revision | `30 August 2026 at 23:27:18Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
+---
+
+## What's New in v2.5.0
+
+- Completed a **full public-route inventory** of the Living Word Bibles GitHub repository and the production website at `www.livingwordbibles.com`, with special attention to canonical content routes, redirect aliases, route families, search-oriented content, account/transaction utilities, and newer pages added during the v2.4.x release cycle.
+- Rebuilt the production root **`sitemap.xml`** from the audited public route inventory instead of continuing to append URLs to the older sitemap.
+- The new XML sitemap contains **307 unique canonical public URLs** intended for discovery.
+- Confirmed and retained all **156 dedicated `/verses/` Bible-study pages**.
+- Confirmed and retained all **66 `/history/books-of-the-bible/` book-history pages**.
+- Confirmed the Bible Reader family and retained the `/read-the-bible-online/` landing page plus the current translation-reader routes for **KJV, NKJV, NIV, ESV, NET, LEB, ASV, YLT, WEB, OEB, DBY, GNV, BSB, BBE, DRB, NLT, and CSB**.
+- Added `/bible-study/`, which had become a major public Scripture-study hub but was missing from the prior XML sitemap.
+- Added the canonical **Common Prayers** library at `/prayers/` and all six dedicated prayer pages: the **Lord’s Prayer, Hail Mary, Serenity Prayer, Nicene Creed, Glory Be, and Guardian Angel Prayer**.
+- Added the newer public pages `/editorial-standards/`, `/eeo/`, `/ethiopian-bible/`, and `/support/`, all of which were present in the current site/repository but absent from the previous sitemap.
+- Retained the current canonical public eStore catalog: `/estore/` plus its six public eBible product pages.
+- Retained the canonical translation-history pages, Catholic Bible resources, Living Word Bibles App page, Social Media page, About Us page, For Churches, donors, donation, legal/licensing pages, downloads, and HTML site-map route.
+- Retained the canonical `/catholic-bible/wisdom` page and removed `/catholic-bible/wisdom-of-solomon` from the XML sitemap because that duplicate file explicitly declares `/catholic-bible/wisdom` as its canonical URL.
+- Audited repository compatibility routes and intentionally kept redirect-only aliases out of the XML sitemap. Confirmed examples include `/home/ → /`, `/instagram/ → /social-media/`, `/twitter/ → /social-media/`, `/churches/ → /for-churches/`, `/bibles-1/ → /bibles/`, `/copyright/ → /copyright-notice/`, and `/the-holy-bible/ → /bibles/`.
+- Removed authentication/account utility routes from the XML sitemap, including login, registration, password-reset/verification, account, library, orders, and profile pages. These routes remain functional website routes but are not canonical editorial/content destinations that need sitemap promotion.
+- Removed transaction-completion/cancellation utility routes from the XML sitemap, including payment-complete, eStore order-complete, donation thank-you, and cancelled-order routes.
+- Removed `/ads/` from sitemap promotion because it is an operational advertising/configuration utility rather than a substantive Living Word Bibles content page.
+- Preserved `/opt-out/` with the public legal/privacy routes because it remains part of the public-facing privacy and preference framework.
+- Kept `/bibles/drb/` and `/bibles/oeb/` because the repository gives those directory pages their own explicit canonical URLs rather than treating them as redirect aliases.
+- Normalized the sitemap to one entry per canonical route and avoided adding `lastmod` values that could not be reliably derived per page from authoritative publication/revision metadata.
+- Preserved the existing static GitHub Pages publishing model: `sitemap.xml` remains a checked-in root file and is published directly with the repository rather than generated by a build system.
+
+### Inventory findings
+
+| Route family | Canonical URLs retained |
+|---|---:|
+| Verse studies | 156 |
+| Books of the Bible history pages | 66 |
+| Bible Reader landing + translations | 18 |
+| Catholic Bible book resources | 9 |
+| Common Prayers landing + prayer pages | 7 |
+| eStore landing + public eBible products | 7 |
+| Bible directory pages (`/bibles`, DRB, OEB) | 3 |
+| Translation-history pages | 17 |
+| Other canonical public, legal, study, ministry, app, support, and site routes | 24 |
+| **Total** | **307** |
+
+### Sitemap policy established in v2.5.0
+
+The production XML sitemap should list **canonical public content that Living Word Bibles wants search engines to discover**. A file being publicly reachable in a static GitHub Pages repository is not by itself sufficient reason to place the URL in `sitemap.xml`.
+
+Redirect aliases, duplicate-canonical pages, authentication/account utilities, payment completion pages, cancellation/thank-you flows, and internal operational pages should remain outside the XML sitemap unless their purpose changes in a future release.
+
+### Release safeguards
+
+- No verse-study, Bible-book, translation-reader, prayer, product, or canonical content route was removed from the repository by this audit.
+- No Google Apps Script backend code was changed.
+- No PayPal Hosted Button IDs, checkout settings, fulfillment logic, account/session behavior, or runtime API configuration was changed.
+- No redirect compatibility route was deleted; redirect aliases were simply excluded from sitemap promotion.
+- v2.5.0 establishes a cleaner **repository/site inventory and search-discovery baseline** for future releases.
+
 ---
 
 ## What's New in v2.4.9
@@ -673,8 +727,8 @@ Before merging a production change:
 **Repository architecture revision:** `2026-08-27T22:28:20Z`  
 **Apps Script build stamp:** `27 August 2026 at 15:20:42Z UTC`  
 **Backend API version:** `3.0.0`  
-**README last updated:** **30 August 2026 at 23:11:21Z UTC**
+**README last updated:** **30 August 2026 at 23:27:18Z UTC**
 
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 30 August 2026 at 23:11:21Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 30 August 2026 at 23:27:18Z UTC</strong></p>

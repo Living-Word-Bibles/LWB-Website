@@ -1,5 +1,5 @@
-[Uploading README-v2.4.6.md…]()
-[README-v2.4.6.md](README-v2.4.6.md)
+[README-v2.4.7.md](https://github.com/user-attachments/files/31622442/README-v2.4.7.md)
+[README-v2.4.7.md](README-v2.4.7.md)
 <p align="center">
   <a href="https://www.livingwordbibles.com/">
     <img src="assets/LivingWordBibles01.png" alt="Living Word Bibles" width="320">
@@ -12,7 +12,7 @@
 
 <p align="center">
   <a href="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml/badge.svg?branch=main"></a>
-  <img alt="Frontend package v2.4.6" src="https://img.shields.io/badge/frontend-v2.4.6-555555">
+  <img alt="Frontend package v2.4.7" src="https://img.shields.io/badge/frontend-v2.4.7-555555">
   <img alt="Backend API v3.0.0" src="https://img.shields.io/badge/backend%20API-v3.0.0-555555">
   <img alt="Hosting GitHub Pages" src="https://img.shields.io/badge/hosting-GitHub%20Pages-555555">
 </p>
@@ -23,7 +23,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 30 August 2026 at 22:00:00Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 30 August 2026 at 22:30:00Z UTC</sub></p>
 
 ---
 
@@ -41,14 +41,42 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 |---|---|
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
-| Frontend package version | `2.4.6` |
+| Frontend package version | `2.4.7` |
 | Google Apps Script API version | `3.0.0` |
 | Apps Script build stamp | `27 August 2026 at 15:20:42Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `30 August 2026 at 22:00:00Z UTC` |
+| README revision | `30 August 2026 at 22:30:00Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
+---
+
+## What's New in v2.4.7
+
+- Reorganized the **History of the Bible** page at `/history-of-the-bible/` into a more useful reference-first structure.
+- Moved **Bible Translation Histories** and **The Books of the Holy Bible** directly beneath the page’s top anchor navigation so visitors can immediately browse translation histories or open the expanded studies for all 66 books before entering the long-form historical narrative.
+- Added a prominent **Start Reading the History** control linking directly to `#from-scroll-to-screen`, giving readers a clear transition from the reference directories into the full historical narrative.
+- Rebuilt the History page’s top navigation so the major destinations and integrated video resources are all directly accessible, including **Who Wrote the Bible**, **The Dead Sea Scrolls**, **King James Version**, **Bible Translation Histories**, **The Books of the Holy Bible**, and all three featured history videos.
+- Repaired the previously nonfunctional **Who Wrote the Bible** navigation target by establishing the working `#who-wrote-the-bible` anchor while retaining compatibility with the earlier `#origins-and-authors` route.
+- Preserved and repaired the existing **The Story of the Bible** and **Media Resources** legacy anchor behavior so existing links continue to resolve after the page reorganization.
+- Added multiple **public-domain Bible and manuscript images** throughout the long-form history to break up the text and visually support the historical narrative.
+- Used **CC0 Public Domain** Bible imagery from PublicDomainPictures.net where appropriate and historically specific public-domain manuscript imagery from Wikimedia Commons and institutional collections for sections such as the **Dead Sea Scrolls** and **Gutenberg Bible**.
+- Added a visible **source and rights/credit line beneath each new History page image**, keeping image provenance and public-domain status clear to readers.
+- Standardized History page image presentation with responsive sizing, consistent spacing, and manuscript-specific `object-fit: contain` handling so documentary images are not improperly cropped.
+- Moved the three existing **YouTube history resources** out of the isolated media block at the bottom of the page and integrated each video into the historical section where it is most relevant.
+- Integrated the **Who Wrote the Bible / History documentary** into the authorship and origins section.
+- Integrated **The Complete Story of the Bible** alongside the canon and collection discussion.
+- Integrated **The Dead Sea Scrolls** documentary directly into the Dead Sea Scrolls section.
+- Updated the shared **History of the Bible** dropdown in `/assets/includes/lwb-header.html` using the current canonical header as the source, aligning the menu with the reorganized History page.
+- Added direct History-dropdown links for **Start Reading the History**, **Bible Translation Histories**, **The Books of the Holy Bible**, **Who Wrote the Bible**, **The Story of the Bible**, **The Dead Sea Scrolls**, **King James Version**, and each of the three individual video resources.
+- Preserved the existing **Books of the Catholic Bible** and **Maps of the Holy Land** links in the History dropdown.
+- Verified that all internal History dropdown anchors resolve to actual targets on the updated History page.
+- Refined the **eStore** paid-product presentation without changing the existing six-card product grid, product order, product artwork, product copy, pricing, or responsive layout.
+- Corrected the visual spacing around the four PayPal-hosted paid products — **King James Version**, **American Standard Version**, **Young’s Literal Translation**, and **World English Bible** — by lifting their checkout/action areas slightly within the existing cards.
+- Preserved the paired visual alignment of **King James Version / American Standard Version** and **Young’s Literal Translation / World English Bible** while reducing excessive empty space around the PayPal controls.
+- Preserved all existing **PayPal Hosted Button IDs**, including `YXUZPMWTKME24`, `KBJTWT23LA6JN`, `5A5Z2VDH74DFG`, and `K7C2SJYLCDKMU`, together with all free-download links, product routes, prices, and fulfillment behavior.
+- Preserved the static GitHub Pages architecture, shared shell, Google Apps Script API configuration, and all other production behavior outside the specific History navigation/content and eStore presentation changes described above.
+
 ---
 
 ## What's New in v2.4.6
@@ -541,8 +569,8 @@ Before merging a production change:
 **Repository architecture revision:** `2026-08-27T22:28:20Z`  
 **Apps Script build stamp:** `27 August 2026 at 15:20:42Z UTC`  
 **Backend API version:** `3.0.0`  
-**README last updated:** **30 August 2026 at 22:00:00Z UTC**
+**README last updated:** **30 August 2026 at 22:30:00Z UTC**
 
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 30 August 2026 at 22:00:00Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 30 August 2026 at 22:30:00Z UTC</strong></p>

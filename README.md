@@ -1,5 +1,5 @@
-[README-v2.4.5.md](https://github.com/user-attachments/files/31620105/README-v2.4.5.md)
-[README-v2.4.4.md](https://github.com/user-attachments/files/31619019/README-v2.4.4.md)
+[Uploading README-v2.4.6.md…]()
+[README-v2.4.6.md](README-v2.4.6.md)
 <p align="center">
   <a href="https://www.livingwordbibles.com/">
     <img src="assets/LivingWordBibles01.png" alt="Living Word Bibles" width="320">
@@ -12,7 +12,7 @@
 
 <p align="center">
   <a href="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml/badge.svg?branch=main"></a>
-  <img alt="Frontend package v2.4.5" src="https://img.shields.io/badge/frontend-v2.4.5-555555">
+  <img alt="Frontend package v2.4.6" src="https://img.shields.io/badge/frontend-v2.4.6-555555">
   <img alt="Backend API v3.0.0" src="https://img.shields.io/badge/backend%20API-v3.0.0-555555">
   <img alt="Hosting GitHub Pages" src="https://img.shields.io/badge/hosting-GitHub%20Pages-555555">
 </p>
@@ -23,7 +23,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 30 August 2026 at 19:25:00Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 30 August 2026 at 22:00:00Z UTC</sub></p>
 
 ---
 
@@ -41,14 +41,31 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 |---|---|
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
-| Frontend package version | `2.4.5` |
+| Frontend package version | `2.4.6` |
 | Google Apps Script API version | `3.0.0` |
 | Apps Script build stamp | `27 August 2026 at 15:20:42Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `30 August 2026 at 19:25:00Z UTC` |
+| README revision | `30 August 2026 at 22:00:00Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
+---
+
+## What's New in v2.4.6
+
+- Updated the **Bible Study** page at `/bible-study/` to repair the Scripture-study search and filtering controls so users can reliably filter the 156 verse studies by reference, book, topic, and Old/New Testament.
+- Hardened the Bible Study filtering logic so search terms, topic filters, and testament filters work together correctly, including normalized multi-word searches and proper empty-result/count behavior.
+- Added **public-domain Bible-themed imagery** to the Bible Study verse cards and featured-study cards, using consistent responsive image sizing, a 16:9 crop, `object-fit: cover`, and lazy loading so the card grid remains visually consistent and performant.
+- Updated the **Christian Living** page so **Most Popular Verses** and **Scripture Illustrated** link to the corresponding dedicated `/verses/` study pages wherever an existing verse page is available.
+- Preserved the existing KJV Bible Reader links for **Luke 2:11** and **1 John 2:25**, which do not currently have dedicated `/verses/` study pages.
+- Corrected **Psalms 23:4** to use the existing `/verses/psalms-23-4/` route and preserved the repository’s existing verse-route naming rather than normalizing or renaming published paths.
+- Updated **Common Prayers** on Christian Living so each listed prayer links directly to its corresponding page under `/prayers/`, including the Lord’s Prayer, Hail Mary, Serenity Prayer, Nicene Creed, Glory Be, and Guardian Angel Prayer.
+- Refined the new **Equal Opportunity & Workplace Policies** page at `/eeo/` after its initial v2.4.5 release, expanding the legal language and aligning the page more closely with the corporate EEO policy while preserving Living Word Bibles’ established legal-page design.
+- Strengthened and clarified the **veterans and protected-veteran language and definitions** on the EEO page, retaining the dedicated veteran-policy coverage as a substantive part of the page.
+- Removed redundant duplicate **EEO & Workplace Policies** content beneath the EEO banner and retained the consolidated legal-policy presentation.
+- Updated the EEO contact-area presentation to use the established **legal banner treatment** used across other Living Word Bibles legal pages.
+- Preserved the existing static-site architecture, shared header/footer includes, backend configuration, payment settings, and published verse/prayer routes; this release changes only the intended page content, navigation behavior, filtering behavior, and presentation described above.
+
 ---
 
 ## What's New in v2.4.5
@@ -524,8 +541,8 @@ Before merging a production change:
 **Repository architecture revision:** `2026-08-27T22:28:20Z`  
 **Apps Script build stamp:** `27 August 2026 at 15:20:42Z UTC`  
 **Backend API version:** `3.0.0`  
-**README last updated:** **30 August 2026 at 19:25:00Z UTC**
+**README last updated:** **30 August 2026 at 22:00:00Z UTC**
 
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 30 August 2026 at 19:25:00Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 30 August 2026 at 22:00:00Z UTC</strong></p>

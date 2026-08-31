@@ -1,3 +1,4 @@
+[README.md](https://github.com/user-attachments/files/31662203/README.md)
 [README-v2.5.2.md](https://github.com/user-attachments/files/31658473/README-v2.5.2.md)
 <p align="center">
   <a href="https://www.livingwordbibles.com/">
@@ -11,7 +12,7 @@
 
 <p align="center">
   <a href="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml/badge.svg?branch=main"></a>
-  <img alt="Frontend package v2.5.2" src="https://img.shields.io/badge/frontend-v2.5.2-555555">
+  <img alt="Frontend package v2.5.3" src="https://img.shields.io/badge/frontend-v2.5.3-555555">
   <img alt="Backend API v3.0.0" src="https://img.shields.io/badge/backend%20API-v3.0.0-555555">
   <img alt="Hosting GitHub Pages" src="https://img.shields.io/badge/hosting-GitHub%20Pages-555555">
 </p>
@@ -22,7 +23,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 31 August 2026 at 18:53:45Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 31 August 2026 at 19:56:03Z UTC</sub></p>
 
 ---
 
@@ -40,14 +41,58 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 |---|---|
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
-| Frontend package version | `2.5.2` |
+| Frontend package version | `2.5.3` |
 | Google Apps Script API version | `3.0.0` |
 | Apps Script build stamp | `27 August 2026 at 15:20:42Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `31 August 2026 at 18:53:45Z UTC` |
+| README revision | `31 August 2026 at 19:56:03Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
+
+---
+
+## What's New in v2.5.3
+
+- Added the new canonical **KJV Audio Bible** experience at `/audio-bible/`, extending Living Word Bibles from online Bible reading into a dedicated public-domain Scripture listening experience.
+- Integrated the complete **King James Version, 1769 Oxford Edition** recording from **LibriVox**, read by **Michael Armenta**. The source recording is organized into **127 LibriVox audio sections** covering Genesis through Revelation.
+- Built the Audio Bible as a fully static GitHub Pages page with **book, chapter, and verse navigation**, a complete Books panel, previous/next chapter controls, play/pause controls, playback-speed selection, automatic continuation to the next LibriVox section, and browser media-session support.
+- Added approximate chapter/verse positioning within LibriVox's multi-chapter audio files using the public-domain KJV text as the navigation reference. The page clearly identifies that the source audio is segmented by ranges of chapters rather than by individual verse.
+- Added resilient Audio Bible playback behavior so the page can continue functioning when optional remote text or slideshow resources are unavailable, rather than allowing a missing enhancement resource to prevent the player from initializing.
+- Added persistent local playback state so a visitor's selected book, chapter, verse, playback position, and playback speed can be restored between visits where supported by the browser.
+- Added `/audio-bible/slides/images.json` as the scalable visual manifest for the Audio Bible's historic Bible-art slideshow.
+- Expanded the visual system around **public-domain and rights-cleared historic Bible imagery**, retaining the established Gustave Doré sources and adding large Wikimedia Commons collection sources including **James Tissot Bible art**, **Julius Schnorr von Carolsfeld's _Die Bibel in Bildern_**, and historic **King James Bible** material.
+- Retained the **Library of Congress _Doré Bible Gallery_** as an institutional public-domain source and retained visible source/rights links so slideshow imagery remains traceable to its originating collection.
+- Configured the visual-library system to support a maximum library of **1,200 images**, with collection expansion, duplicate control, source metadata, and public-domain/CC0-oriented rights filtering before remote Commons material is admitted to the rotating library.
+- Improved visual relevance so the Audio Bible can prioritize artwork associated with the selected Bible book or testament before falling back to broader historic Bible imagery.
+- Replaced the earlier beta/placeholder **Visuals** wording on the Audio Bible page with the actual image-source collections used by the slideshow.
+- Removed the large Audio Bible banner from the top of `/audio-bible/` so the listening interface begins directly with the Audio Bible introduction and player.
+- Added `/audio-bible/audio-bible.png` to the **homepage hero carousel as the third slide**, positioned after the Living Word Bibles App hero and before the Ethiopian Bible hero.
+- Because the Audio Bible hero artwork already contains its own title and promotional copy, the homepage Audio Bible slide intentionally uses only a single **Listen Now** call to action linking to `/audio-bible/`.
+- Updated the shared global header's **The Holy Bible** dropdown to add **Listen to the Bible** immediately beneath **Read the Bible Online**, linking directly to `/audio-bible/`.
+- Updated the homepage carousel controls from five to **six slides** while preserving the established five-second automatic rotation and existing slider interaction behavior.
+- Updated the production XML sitemap to add the canonical `/audio-bible` route. The sitemap now contains **309 unique canonical public URLs**, up from the **308-URL** v2.5.2 baseline.
+- Preserved the plain static GitHub Pages architecture: the Audio Bible remains checked-in HTML plus a checked-in JSON image manifest and existing shared-site assets; no page-generation or build-output architecture was introduced.
+
+### Audio Bible source architecture
+
+| Resource | Production role |
+|---|---|
+| `/audio-bible/index.html` | Canonical KJV Audio Bible page and player |
+| `/audio-bible/slides/images.json` | Public-domain visual-library manifest and collection configuration |
+| `/audio-bible/audio-bible.png` | Audio Bible promotional artwork used as the third homepage hero slide |
+| LibriVox — _Bible (KJV), Complete_ | Public-domain KJV audio source, read by Michael Armenta |
+| Wikimedia Commons | Public-domain / rights-cleared Bible-art collection source and rights metadata |
+| Library of Congress | Institutional public-domain source for the _Doré Bible Gallery_ |
+
+### Release safeguards
+
+- No Google Apps Script backend code, API version, runtime endpoint, or spreadsheet schema was changed.
+- No PayPal Hosted Button IDs, PayPal client configuration, eBible checkout behavior, digital fulfillment logic, or Amazon-linked Print Bible behavior was changed.
+- No Living Word Bibles account/session behavior was changed.
+- No existing canonical public route was removed from the sitemap; `/audio-bible` is the only canonical URL added by this release.
+- The existing online Bible readers remain unchanged and separate from the new KJV Audio Bible experience.
+- Public-domain audio and visual-source attribution remains visible on the Audio Bible page; individual remote image records retain their source/rights destinations where available.
 
 ---
 
@@ -442,7 +487,7 @@ The public website and the operational backend are deliberately separated:
 | `404.html` | Branded static 404 page |
 | `CNAME` | Production custom-domain configuration |
 
-Major content areas include Bible translation pages, online Bible readers, Catholic Bible/deuterocanonical resources, Bible history, Holy Land maps, the digital eBible storefront at `/estore/`, the Amazon-linked Print Bibles storefront at `/estore/print-bibles/`, the Ethiopian Bible page, account routes, support/legal pages, the Equal Opportunity & Workplace Policies page, donation pages, social pages, and the Living Word Bibles app page. Homepage promotional assets include the rotating hero series under `/assets/`, including the desktop app hero at `/assets/homepage-hero-4.png`, its mobile-specific companion at `/assets/homepage-hero-4-mobile.png`, and the Print Bibles hero at `/assets/homepage-hero-5.png`.
+Major content areas include Bible translation pages, online Bible readers, the KJV Audio Bible at `/audio-bible/`, Catholic Bible/deuterocanonical resources, Bible history, Holy Land maps, the digital eBible storefront at `/estore/`, the Amazon-linked Print Bibles storefront at `/estore/print-bibles/`, the Ethiopian Bible page, account routes, support/legal pages, the Equal Opportunity & Workplace Policies page, donation pages, social pages, and the Living Word Bibles app page. Homepage promotional assets include the rotating hero series under `/assets/` together with the Audio Bible hero at `/audio-bible/audio-bible.png`; the current sequence includes the desktop app hero at `/assets/homepage-hero-4.png`, its mobile-specific companion at `/assets/homepage-hero-4-mobile.png`, the Audio Bible hero as the third slide, the Ethiopian Bible hero, the eStore hero, and the Print Bibles hero at `/assets/homepage-hero-5.png`.
 
 ---
 
@@ -481,7 +526,7 @@ The universal site shell is maintained in exactly two canonical fragments:
 /assets/includes/lwb-footer.html
 ```
 
-Page files contain placeholders only. This keeps navigation, authenticated account/login presentation, site identity, responsive mobile header behavior, contact details, newsletter UI, and footer content consistent across the production site. The shared header is also responsible for the hardened dropdown stacking/overflow behavior and the mobile-only HTML/CSS iOS badge introduced in v2.4.0.
+Page files contain placeholders only. This keeps navigation, authenticated account/login presentation, site identity, responsive mobile header behavior, contact details, newsletter UI, and footer content consistent across the production site. The shared header is also responsible for the hardened dropdown stacking/overflow behavior and the mobile-only HTML/CSS iOS badge introduced in v2.4.0. The Holy Bible dropdown now exposes both primary Scripture experiences directly: **Read the Bible Online** and **Listen to the Bible**, with the latter linking to `/audio-bible/`.
 
 ---
 
@@ -808,8 +853,8 @@ Before merging a production change:
 **Repository architecture revision:** `2026-08-27T22:28:20Z`  
 **Apps Script build stamp:** `27 August 2026 at 15:20:42Z UTC`  
 **Backend API version:** `3.0.0`  
-**README last updated:** **31 August 2026 at 18:53:45Z UTC**
+**README last updated:** **31 August 2026 at 19:56:03Z UTC**
 
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 31 August 2026 at 18:53:45Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 31 August 2026 at 19:56:03Z UTC</strong></p>

@@ -1,7 +1,7 @@
 <!doctype html><html lang="en" data-paypal-client="BAADY3HmA8ip1D8X4DGaJ9V3YBlg1INapOOrbKRCDd1nTP9KQN6WxKo9Tn5ZWectpb3LYEoeDYH6a3i1dA"><head>
     <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Living Word Bibles eStore | Living Word Bibles</title><meta name="description" content="Six digital Bible editions for study and devotion."><link rel="canonical" href="https://www.livingwordbibles.com/estore">
-    <meta property="og:type" content="website"><meta property="og:title" content="Living Word Bibles eStore | Living Word Bibles"><meta property="og:description" content="Six digital Bible editions for study and devotion."><meta property="og:url" content="https://www.livingwordbibles.com/estore"><meta property="og:image" content="https://www.livingwordbibles.com/assets/lwbbanner.webp">
+    <title>Living Word Bibles eStore | Living Word Bibles</title><meta name="description" content="Six digital Bible editions for study and devotion."><link rel="canonical" href="https://www.livingwordbibles.com/estore/">
+    <meta property="og:type" content="website"><meta property="og:title" content="Living Word Bibles eStore | Living Word Bibles"><meta property="og:description" content="Six digital Bible editions for study and devotion."><meta property="og:url" content="https://www.livingwordbibles.com/estore/"><meta property="og:image" content="https://www.livingwordbibles.com/assets/lwbbanner.webp">
     <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Living Word Bibles eStore | Living Word Bibles"><meta name="twitter:description" content="Six digital Bible editions for study and devotion."><meta name="twitter:image" content="https://www.livingwordbibles.com/assets/lwbbanner.webp">
     <link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/svg+xml" href="/assets/icons/lwb-mark.svg"><link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png"><link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest">
     <link rel="stylesheet" href="/assets/css/site.css">
@@ -94,7 +94,30 @@
     }
   }
 
+  /* eStore category navigation */
+  .estore-category-nav{
+    display:flex;
+    justify-content:center;
+    gap:.85rem;
+    flex-wrap:wrap;
+    margin:0 auto 2rem;
+  }
+
+  .estore-category-nav .btn{
+    min-width:160px;
+    text-align:center;
+  }
+
+  .estore-category-nav .btn[aria-current="page"]{
+    cursor:default;
+  }
+
 </style>
+
+<div class="estore-category-nav" aria-label="eStore categories">
+  <a class="btn" href="/estore/" aria-current="page">eBibles</a>
+  <a class="btn btn-secondary" href="/estore/print-bibles/">Print Bibles</a>
+</div>
 
 <div class="section-heading"><p class="eyebrow">Living Word Bibles eStore</p><h1>Digital Bibles</h1><p>Six beautifully formatted eBible editions. No clothing, accessories, mugs, or unrelated merchandise.</p></div>
 

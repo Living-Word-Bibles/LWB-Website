@@ -1,5 +1,6 @@
-[Uploading README-v2.5.0.md…]()
-[README-v2.5.0.md](README-v2.5.0.md)
+[README-v2.5.1.md](https://github.com/user-attachments/files/31648802/README-v2.5.1.md)
+[Uploading README-v2.5.1.md…]()
+[README-v2.5.1.md](README-v2.5.1.md)
 <p align="center">
   <a href="https://www.livingwordbibles.com/">
     <img src="assets/LivingWordBibles01.png" alt="Living Word Bibles" width="320">
@@ -12,7 +13,7 @@
 
 <p align="center">
   <a href="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml/badge.svg?branch=main"></a>
-  <img alt="Frontend package v2.5.0" src="https://img.shields.io/badge/frontend-v2.5.0-555555">
+  <img alt="Frontend package v2.5.1" src="https://img.shields.io/badge/frontend-v2.5.1-555555">
   <img alt="Backend API v3.0.0" src="https://img.shields.io/badge/backend%20API-v3.0.0-555555">
   <img alt="Hosting GitHub Pages" src="https://img.shields.io/badge/hosting-GitHub%20Pages-555555">
 </p>
@@ -23,7 +24,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 30 August 2026 at 23:27:18Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 31 August 2026 at 14:00:00Z UTC</sub></p>
 
 ---
 
@@ -41,14 +42,39 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 |---|---|
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
-| Frontend package version | `2.5.0` |
+| Frontend package version | `2.5.1` |
 | Google Apps Script API version | `3.0.0` |
 | Apps Script build stamp | `27 August 2026 at 15:20:42Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `30 August 2026 at 23:27:18Z UTC` |
+| README revision | `31 August 2026 at 14:00:00Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
+
+---
+
+## What's New in v2.5.1
+
+- Completed a coordinated **Bible Translation History visual and editorial enhancement pass** across **15 translation-history pages**, extending the image-rich historical presentation introduced elsewhere on Living Word Bibles.
+- Updated the translation histories for the **King James Version (KJV)**, **New King James Version (NKJV)**, **New International Version (NIV)**, **English Standard Version (ESV)**, **Geneva Bible (GNV)**, **Lexham English Bible (LEB)**, **New English Translation (NET)**, **Open English Bible (OEB)**, **World English Bible (WEB)**, **Young’s Literal Translation (YLT)**, **Bible in Basic English (BBE)**, **Berean Standard Bible (BSB)**, **Darby Translation (DBY)**, **Douay-Rheims Bible (DRB)**, and **American Standard Version (ASV)**.
+- Added historically relevant **public-domain or otherwise rights-cleared visual material** to the translation histories, including Bible covers, historical editions, title pages, printing-era material, and other documentary imagery appropriate to each translation.
+- Used **Wikimedia Commons and other public-domain / rights-cleared sources** where appropriate, with visible image captions, source information, and rights/public-domain notes so readers can identify the provenance of the visual material.
+- Standardized responsive image presentation so covers, title pages, scans, and documentary images remain readable on desktop, tablet, and mobile without unnecessary cropping.
+- Preserved the established long-form translation histories, headings, bibliographies, canonical URLs, metadata, and Bible Reader links while integrating the new visual material into the existing editorial flow.
+- Refined supporting-media placement during the translation-page pass, including moving the existing history video beneath the relevant **Key Facts** material where requested so video appears closer to the historical context it supports.
+- Preserved the distinction between **image rights** and **Bible-text licensing**: the addition of public-domain imagery does not alter the copyright or licensing status of copyrighted Bible translations already governed by their existing publisher notices and permissions.
+- Preserved the site’s plain static **GitHub Pages architecture**. All translation-history changes remain checked-in page-level HTML and do not introduce a generated site, build step, or alternate content source.
+- v2.5.1 is a focused **editorial and visual presentation release** that builds on the repository and sitemap baseline established in v2.5.0.
+
+### Release safeguards
+
+- No Google Apps Script backend code or API behavior was changed.
+- No PayPal Hosted Button IDs, merchant configuration, checkout behavior, fulfillment logic, or digital-product delivery settings were changed.
+- No Living Word Bibles account/session behavior was changed.
+- No canonical translation-history route was renamed or removed.
+- No v2.5.0 sitemap inventory or sitemap-policy change was reversed; the **307-URL canonical public sitemap baseline** remains intact.
+- Existing translation-history text and bibliographies were preserved while the new visual material and source/rights notes were integrated around them.
+
 ---
 
 ## What's New in v2.5.0
@@ -335,6 +361,7 @@ Redirect aliases, duplicate-canonical pages, authentication/account utilities, p
 - Updated the **global header/footer shell**.
 
 ---
+
 ## Architecture at a glance
 
 ```mermaid
@@ -727,8 +754,8 @@ Before merging a production change:
 **Repository architecture revision:** `2026-08-27T22:28:20Z`  
 **Apps Script build stamp:** `27 August 2026 at 15:20:42Z UTC`  
 **Backend API version:** `3.0.0`  
-**README last updated:** **30 August 2026 at 23:27:18Z UTC**
+**README last updated:** **31 August 2026 at 14:00:00Z UTC**
 
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 30 August 2026 at 23:27:18Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 31 August 2026 at 14:00:00Z UTC</strong></p>

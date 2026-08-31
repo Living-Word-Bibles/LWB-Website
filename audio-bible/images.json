@@ -1,27 +1,91 @@
 {
-  "version": 1,
-  "title": "Living Word Bibles Audio Bible Image Manifest",
+  "version": 2,
+  "title": "Living Word Bibles Audio Bible — Public-Domain Visual Library",
+  "maxImages": 1200,
   "rotationSeconds": 12,
-  "strategy": "starter-static-plus-collections",
-  "notes": "The current audio-bible page can use the images array immediately. The next page revision can also use collections to expand the library dynamically through the Wikimedia Commons API.",
+  "strategy": "seed-images-plus-public-domain-commons-collections",
+  "licensePolicy": {
+    "allow": [
+      "Public domain",
+      "CC0"
+    ],
+    "note": "The Audio Bible page checks Wikimedia Commons file metadata at runtime and admits only files identified as public domain/CC0 or not copyrighted. Files carrying attribution/share-alike/non-PD licenses are skipped."
+  },
+  "sources": [
+    {
+      "name": "Wikimedia Commons — Gustave Doré Bible illustrations",
+      "url": "https://commons.wikimedia.org/wiki/Category:Bible_illustrations_by_Gustave_Dor%C3%A9",
+      "rights": "Individual files are checked for public-domain/CC0 metadata before use."
+    },
+    {
+      "name": "Wikimedia Commons — James Tissot Bible art",
+      "url": "https://commons.wikimedia.org/wiki/Category:Bible_art_by_James_Tissot",
+      "rights": "Individual files are checked for public-domain/CC0 metadata before use."
+    },
+    {
+      "name": "Wikimedia Commons — Julius Schnorr von Carolsfeld, Die Bibel in Bildern",
+      "url": "https://commons.wikimedia.org/wiki/Category:Die_Bibel_in_Bildern_by_Julius_Schnorr_von_Carolsfeld",
+      "rights": "Individual files are checked for public-domain/CC0 metadata before use."
+    },
+    {
+      "name": "Wikimedia Commons — King James Bible",
+      "url": "https://commons.wikimedia.org/wiki/Category:King_James_Bible",
+      "rights": "Individual files are checked for public-domain/CC0 metadata before use."
+    },
+    {
+      "name": "Library of Congress — The Doré Bible Gallery",
+      "url": "https://www.loc.gov/item/10002262/",
+      "rights": "Library of Congress identifies the digitized book as public domain and free to use and reuse."
+    }
+  ],
   "collections": [
     {
       "id": "dore-old-testament",
-      "provider": "wikimedia-commons",
+      "provider": "wikimedia-commons-category",
       "category": "Art depicting the Old Testament by Gustave Doré",
-      "testament": "Old Testament"
+      "testament": "Old Testament",
+      "artist": "Gustave Doré",
+      "maxItems": 164
     },
     {
       "id": "dore-new-testament",
-      "provider": "wikimedia-commons",
+      "provider": "wikimedia-commons-category",
       "category": "Art depicting the New Testament by Gustave Doré",
-      "testament": "New Testament"
+      "testament": "New Testament",
+      "artist": "Gustave Doré",
+      "maxItems": 98
+    },
+    {
+      "id": "tissot-old-testament",
+      "provider": "wikimedia-commons-category",
+      "category": "Old Testament by James Tissot",
+      "testament": "Old Testament",
+      "artist": "James Tissot",
+      "maxItems": 345
+    },
+    {
+      "id": "tissot-life-of-christ",
+      "provider": "wikimedia-commons-category",
+      "category": "The Life of Jesus Christ by James Tissot",
+      "testament": "New Testament",
+      "artist": "James Tissot",
+      "maxItems": 444
+    },
+    {
+      "id": "schnorr-bibel-in-bildern",
+      "provider": "wikimedia-commons-category",
+      "category": "Die Bibel in Bildern by Julius Schnorr von Carolsfeld",
+      "testament": "Bible",
+      "artist": "Julius Schnorr von Carolsfeld",
+      "maxItems": 250
     },
     {
       "id": "king-james-bible",
-      "provider": "wikimedia-commons",
+      "provider": "wikimedia-commons-category",
       "category": "King James Bible",
-      "testament": "Reference"
+      "testament": "Reference",
+      "artist": "Various / historic editions",
+      "maxItems": 132
     }
   ],
   "images": [

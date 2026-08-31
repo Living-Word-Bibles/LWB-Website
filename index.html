@@ -103,6 +103,30 @@
           justify-content:center;
         }
 
+        /* Audio Bible hero artwork already contains its own title/copy.
+           Keep the image unobstructed and place only the Listen Now CTA low. */
+        .homepage-hero-slide--audio{
+          justify-content:flex-end;
+          padding-bottom:clamp(4.25rem,7vw,5.25rem);
+        }
+
+        .homepage-hero-slide--audio::before{
+          background:linear-gradient(
+            to top,
+            rgba(0,0,0,.48) 0%,
+            rgba(0,0,0,.12) 25%,
+            rgba(0,0,0,0) 52%
+          );
+        }
+
+        .homepage-hero-slide--audio .homepage-hero-content{
+          width:100%;
+        }
+
+        .homepage-hero-slide--audio .button-row{
+          margin:0;
+        }
+
         .homepage-hero-dots{
           position:absolute;
           z-index:2;
@@ -197,6 +221,20 @@
         </article>
 
         <article
+          class="homepage-hero-slide homepage-hero-slide--audio"
+          data-homepage-hero-slide
+          aria-hidden="true"
+          style="--hero-bg:url('/audio-bible/audio-bible.png')"
+        >
+          <div class="homepage-hero-content">
+            <span class="sr-only">KJV Audio Bible</span>
+            <div class="button-row">
+              <a class="btn gold" href="/audio-bible/">Listen Now</a>
+            </div>
+          </div>
+        </article>
+
+        <article
           class="homepage-hero-slide"
           data-homepage-hero-slide
           aria-hidden="true"
@@ -250,9 +288,10 @@
         <div class="homepage-hero-dots" aria-label="Choose featured slide">
           <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="0" aria-label="Show Living Word Bibles slide" aria-current="true"></button>
           <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="1" aria-label="Show Living Word Bibles App slide" aria-current="false"></button>
-          <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="2" aria-label="Show Ethiopian Bible slide" aria-current="false"></button>
-          <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="3" aria-label="Show eStore slide" aria-current="false"></button>
-          <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="4" aria-label="Show Print Bibles slide" aria-current="false"></button>
+          <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="2" aria-label="Show KJV Audio Bible slide" aria-current="false"></button>
+          <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="3" aria-label="Show Ethiopian Bible slide" aria-current="false"></button>
+          <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="4" aria-label="Show eStore slide" aria-current="false"></button>
+          <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="5" aria-label="Show Print Bibles slide" aria-current="false"></button>
         </div>
 
       </div>

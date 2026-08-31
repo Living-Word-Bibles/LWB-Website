@@ -1,0 +1,742 @@
+{
+  "version": 1,
+  "title": "Living Word Bibles Audio Bible Image Manifest",
+  "rotationSeconds": 12,
+  "strategy": "starter-static-plus-collections",
+  "notes": "The current audio-bible page can use the images array immediately. The next page revision can also use collections to expand the library dynamically through the Wikimedia Commons API.",
+  "collections": [
+    {
+      "id": "dore-old-testament",
+      "provider": "wikimedia-commons",
+      "category": "Art depicting the Old Testament by Gustave Doré",
+      "testament": "Old Testament"
+    },
+    {
+      "id": "dore-new-testament",
+      "provider": "wikimedia-commons",
+      "category": "Art depicting the New Testament by Gustave Doré",
+      "testament": "New Testament"
+    },
+    {
+      "id": "king-james-bible",
+      "provider": "wikimedia-commons",
+      "category": "King James Bible",
+      "testament": "Reference"
+    }
+  ],
+  "images": [
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/001.The%20Creation%20of%20Light.jpg",
+      "alt": "Gustave Doré illustration of the Creation of Light",
+      "caption": "The Creation of Light",
+      "source": "https://commons.wikimedia.org/wiki/File:001.The_Creation_of_Light.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Genesis",
+      "artist": "Gustave Doré",
+      "tags": [
+        "creation",
+        "light"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/002.The%20Creation%20of%20Eve.jpg",
+      "alt": "Gustave Doré illustration of the Creation of Eve",
+      "caption": "The Creation of Eve",
+      "source": "https://commons.wikimedia.org/wiki/File:002.The_Creation_of_Eve.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Genesis",
+      "artist": "Gustave Doré",
+      "tags": [
+        "creation",
+        "Eve"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/003.Adam%20and%20Eve%20Are%20Driven%20out%20of%20Eden.jpg",
+      "alt": "Gustave Doré illustration of Adam and Eve leaving Eden",
+      "caption": "Adam and Eve Are Driven out of Eden",
+      "source": "https://commons.wikimedia.org/wiki/File:003.Adam_and_Eve_Are_Driven_out_of_Eden.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Genesis",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Eden",
+        "Adam",
+        "Eve"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/004.Cain%20and%20Abel%20Offer%20Their%20Sacrifices.jpg",
+      "alt": "Gustave Doré illustration of Cain and Abel offering sacrifices",
+      "caption": "Cain and Abel Offer Their Sacrifices",
+      "source": "https://commons.wikimedia.org/wiki/File:004.Cain_and_Abel_Offer_Their_Sacrifices.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Genesis",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Cain",
+        "Abel"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/005.Cain%20Slays%20Abel.jpg",
+      "alt": "Gustave Doré illustration of Cain and Abel",
+      "caption": "Cain Slays Abel",
+      "source": "https://commons.wikimedia.org/wiki/File:005.Cain_Slays_Abel.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Genesis",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Cain",
+        "Abel"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/006.The%20World%20Is%20Destroyed%20by%20Water.jpg",
+      "alt": "Gustave Doré illustration of the Flood",
+      "caption": "The World Is Destroyed by Water",
+      "source": "https://commons.wikimedia.org/wiki/File:006.The_World_Is_Destroyed_by_Water.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Genesis",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Noah",
+        "flood"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/007.The%20Great%20Flood.jpg",
+      "alt": "Gustave Doré illustration of the Great Flood",
+      "caption": "The Great Flood",
+      "source": "https://commons.wikimedia.org/wiki/File:007.The_Great_Flood.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Genesis",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Noah",
+        "flood"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/008.A%20Dove%20Is%20Sent%20Forth%20from%20the%20Ark.jpg",
+      "alt": "Gustave Doré illustration of Noah sending a dove from the Ark",
+      "caption": "A Dove Is Sent Forth from the Ark",
+      "source": "https://commons.wikimedia.org/wiki/File:008.A_Dove_Is_Sent_Forth_from_the_Ark.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Genesis",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Noah",
+        "ark",
+        "dove"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/010.The%20Tower%20of%20Babel.jpg",
+      "alt": "Gustave Doré illustration of the Tower of Babel",
+      "caption": "The Tower of Babel",
+      "source": "https://commons.wikimedia.org/wiki/File:010.The_Tower_of_Babel.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Genesis",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Babel"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/011.Abraham%20Goes%20to%20the%20Land%20of%20Canaan.jpg",
+      "alt": "Gustave Doré illustration of Abraham journeying to Canaan",
+      "caption": "Abraham Goes to the Land of Canaan",
+      "source": "https://commons.wikimedia.org/wiki/File:011.Abraham_Goes_to_the_Land_of_Canaan.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Genesis",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Abraham",
+        "Canaan"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/012.Abraham%20and%20the%20Three%20Angels.jpg",
+      "alt": "Gustave Doré illustration of Abraham and the three angels",
+      "caption": "Abraham and the Three Angels",
+      "source": "https://commons.wikimedia.org/wiki/File:012.Abraham_and_the_Three_Angels.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Genesis",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Abraham",
+        "angels"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/013.Lot%20Flees%20as%20Sodom%20and%20Gomorrah%20Burn.jpg",
+      "alt": "Gustave Doré illustration of Lot fleeing Sodom and Gomorrah",
+      "caption": "Lot Flees as Sodom and Gomorrah Burn",
+      "source": "https://commons.wikimedia.org/wiki/File:013.Lot_Flees_as_Sodom_and_Gomorrah_Burn.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Genesis",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Lot",
+        "Sodom",
+        "Gomorrah"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/016.The%20Testing%20of%20Abraham%27s%20Faith.jpg",
+      "alt": "Gustave Doré illustration of the testing of Abraham",
+      "caption": "The Testing of Abraham's Faith",
+      "source": "https://commons.wikimedia.org/wiki/File:016.The_Testing_of_Abraham's_Faith.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Genesis",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Abraham",
+        "Isaac"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/021.Jacob%27s%20Dream.jpg",
+      "alt": "Gustave Doré illustration of Jacob's dream",
+      "caption": "Jacob's Dream",
+      "source": "https://commons.wikimedia.org/wiki/File:021.Jacob's_Dream.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Genesis",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Jacob",
+        "dream"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/024.Jacob%20Wrestles%20with%20the%20Angel.jpg",
+      "alt": "Gustave Doré illustration of Jacob wrestling with the angel",
+      "caption": "Jacob Wrestles with the Angel",
+      "source": "https://commons.wikimedia.org/wiki/File:024.Jacob_Wrestles_with_the_Angel.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Genesis",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Jacob",
+        "angel"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/026.Joseph%20Is%20Sold%20by%20His%20Brothers.jpg",
+      "alt": "Gustave Doré illustration of Joseph being sold by his brothers",
+      "caption": "Joseph Is Sold by His Brothers",
+      "source": "https://commons.wikimedia.org/wiki/File:026.Joseph_Is_Sold_by_His_Brothers.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Genesis",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Joseph"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/027.Joseph%20Interprets%20Pharaoh%27s%20Dream.jpg",
+      "alt": "Gustave Doré illustration of Joseph interpreting Pharaoh's dream",
+      "caption": "Joseph Interprets Pharaoh's Dream",
+      "source": "https://commons.wikimedia.org/wiki/File:027.Joseph_Interprets_Pharaoh's_Dream.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Genesis",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Joseph",
+        "Pharaoh"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/030.The%20Child%20Moses%20on%20the%20Nile.jpg",
+      "alt": "Gustave Doré illustration of the infant Moses on the Nile",
+      "caption": "The Child Moses on the Nile",
+      "source": "https://commons.wikimedia.org/wiki/File:030.The_Child_Moses_on_the_Nile.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Exodus",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Moses",
+        "Nile"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/031.The%20Finding%20of%20Moses.jpg",
+      "alt": "Gustave Doré illustration of the finding of Moses",
+      "caption": "The Finding of Moses",
+      "source": "https://commons.wikimedia.org/wiki/File:031.The_Finding_of_Moses.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Exodus",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Moses"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/032.Moses%20and%20Aaron%20Appear%20before%20Pharaoh.jpg",
+      "alt": "Gustave Doré illustration of Moses and Aaron before Pharaoh",
+      "caption": "Moses and Aaron Appear before Pharaoh",
+      "source": "https://commons.wikimedia.org/wiki/File:032.Moses_and_Aaron_Appear_before_Pharaoh.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Exodus",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Moses",
+        "Aaron",
+        "Pharaoh"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/037.The%20Egyptians%20Drown%20in%20the%20Sea.jpg",
+      "alt": "Gustave Doré illustration of the crossing of the sea",
+      "caption": "The Egyptians Drown in the Sea",
+      "source": "https://commons.wikimedia.org/wiki/File:037.The_Egyptians_Drown_in_the_Sea.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Exodus",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Moses",
+        "Red Sea"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/038.The%20Giving%20of%20the%20Law%20on%20Mount%20Sinai.jpg",
+      "alt": "Gustave Doré illustration of the giving of the Law at Mount Sinai",
+      "caption": "The Giving of the Law on Mount Sinai",
+      "source": "https://commons.wikimedia.org/wiki/File:038.The_Giving_of_the_Law_on_Mount_Sinai.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Exodus",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Moses",
+        "Sinai",
+        "Ten Commandments"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/046.The%20Walls%20of%20Jericho%20Fall%20Down.jpg",
+      "alt": "Gustave Doré illustration of the fall of Jericho",
+      "caption": "The Walls of Jericho Fall Down",
+      "source": "https://commons.wikimedia.org/wiki/File:046.The_Walls_of_Jericho_Fall_Down.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Joshua",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Joshua",
+        "Jericho"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/063.Samson%20and%20Delilah.jpg",
+      "alt": "Gustave Doré illustration of Samson and Delilah",
+      "caption": "Samson and Delilah",
+      "source": "https://commons.wikimedia.org/wiki/File:063.Samson_and_Delilah.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Judges",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Samson",
+        "Delilah"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/068.Naomi%20and%20Her%20Daughters-in-Law.jpg",
+      "alt": "Gustave Doré illustration of Naomi and her daughters-in-law",
+      "caption": "Naomi and Her Daughters-in-Law",
+      "source": "https://commons.wikimedia.org/wiki/File:068.Naomi_and_Her_Daughters-in-Law.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Ruth",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Naomi",
+        "Ruth"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/069.Ruth%20and%20Boaz.jpg",
+      "alt": "Gustave Doré illustration of Ruth and Boaz",
+      "caption": "Ruth and Boaz",
+      "source": "https://commons.wikimedia.org/wiki/File:069.Ruth_and_Boaz.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Ruth",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Ruth",
+        "Boaz"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/071A.David%20Slays%20Goliath.jpg",
+      "alt": "Gustave Doré illustration of David and Goliath",
+      "caption": "David Slays Goliath",
+      "source": "https://commons.wikimedia.org/wiki/File:071A.David_Slays_Goliath.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "1 Samuel",
+      "artist": "Gustave Doré",
+      "tags": [
+        "David",
+        "Goliath"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/084.The%20Judgment%20of%20Solomon.jpg",
+      "alt": "Gustave Doré illustration of the judgment of Solomon",
+      "caption": "The Judgment of Solomon",
+      "source": "https://commons.wikimedia.org/wiki/File:084.The_Judgment_of_Solomon.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "1 Kings",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Solomon"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/086.Solomon%20Receives%20the%20Queen%20of%20Sheba.jpg",
+      "alt": "Gustave Doré illustration of Solomon receiving the Queen of Sheba",
+      "caption": "Solomon Receives the Queen of Sheba",
+      "source": "https://commons.wikimedia.org/wiki/File:086.Solomon_Receives_the_Queen_of_Sheba.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "1 Kings",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Solomon",
+        "Queen of Sheba"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/095.Elijah%20Ascends%20to%20Heaven%20in%20a%20Chariot%20of%20Fire.jpg",
+      "alt": "Gustave Doré illustration of Elijah ascending to heaven",
+      "caption": "Elijah Ascends to Heaven in a Chariot of Fire",
+      "source": "https://commons.wikimedia.org/wiki/File:095.Elijah_Ascends_to_Heaven_in_a_Chariot_of_Fire.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "2 Kings",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Elijah",
+        "chariot"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/120.The%20Prophet%20Isaiah.jpg",
+      "alt": "Gustave Doré illustration of the prophet Isaiah",
+      "caption": "The Prophet Isaiah",
+      "source": "https://commons.wikimedia.org/wiki/File:120.The_Prophet_Isaiah.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Isaiah",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Isaiah",
+        "prophet"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/123.The%20Prophet%20Jeremiah.jpg",
+      "alt": "Gustave Doré illustration of the prophet Jeremiah",
+      "caption": "The Prophet Jeremiah",
+      "source": "https://commons.wikimedia.org/wiki/File:123.The_Prophet_Jeremiah.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Jeremiah",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Jeremiah",
+        "prophet"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/126.The%20Prophet%20Ezekiel.jpg",
+      "alt": "Gustave Doré illustration of the prophet Ezekiel",
+      "caption": "The Prophet Ezekiel",
+      "source": "https://commons.wikimedia.org/wiki/File:126.The_Prophet_Ezekiel.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Ezekiel",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Ezekiel",
+        "prophet"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/129.Shadrach%2C%20Meshach%20and%20Abednego%20in%20the%20Furnace.jpg",
+      "alt": "Gustave Doré illustration of the fiery furnace",
+      "caption": "Shadrach, Meshach and Abednego in the Furnace",
+      "source": "https://commons.wikimedia.org/wiki/File:129.Shadrach,_Meshach_and_Abednego_in_the_Furnace.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Daniel",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Daniel",
+        "fiery furnace"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/131.Daniel%20in%20the%20Lions%27%20Den.jpg",
+      "alt": "Gustave Doré illustration of Daniel in the lions' den",
+      "caption": "Daniel in the Lions' Den",
+      "source": "https://commons.wikimedia.org/wiki/File:131.Daniel_in_the_Lions'_Den.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Daniel",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Daniel",
+        "lions"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/137.Jonah%20Is%20Spewed%20Forth%20by%20the%20Whale.jpg",
+      "alt": "Gustave Doré illustration of Jonah and the great fish",
+      "caption": "Jonah Is Spewed Forth by the Whale",
+      "source": "https://commons.wikimedia.org/wiki/File:137.Jonah_Is_Spewed_Forth_by_the_Whale.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Jonah",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Jonah",
+        "whale"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/DoreJohntheBaptistPreachingintheWilderness.jpg",
+      "alt": "Gustave Doré illustration of John the Baptist preaching",
+      "caption": "John the Baptist Preaching in the Wilderness",
+      "source": "https://commons.wikimedia.org/wiki/File:DoreJohntheBaptistPreachingintheWilderness.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "New Testament",
+      "book": "Mark",
+      "scripture": "Mark 1:6–7",
+      "artist": "Gustave Doré",
+      "tags": [
+        "John the Baptist"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Dore%20Bible%20Sermon%20on%20the%20Mount.jpg",
+      "alt": "Gustave Doré illustration of the Sermon on the Mount",
+      "caption": "The Sermon on the Mount",
+      "source": "https://commons.wikimedia.org/wiki/File:Dore_Bible_Sermon_on_the_Mount.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "New Testament",
+      "book": "Matthew",
+      "scripture": "Matthew 5:7–10",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Jesus",
+        "Sermon on the Mount"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/DoreJesusSeaGalilee.jpg",
+      "alt": "Gustave Doré illustration of Jesus at the Sea of Galilee",
+      "caption": "Jesus Preaching at the Sea of Galilee",
+      "source": "https://commons.wikimedia.org/wiki/File:DoreJesusSeaGalilee.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "New Testament",
+      "book": "Luke",
+      "scripture": "Luke 5:3",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Jesus",
+        "Galilee"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/DoreJesusHealingtheLunatic.jpg",
+      "alt": "Gustave Doré illustration of Jesus healing",
+      "caption": "Jesus Healing the Lunatic",
+      "source": "https://commons.wikimedia.org/wiki/File:DoreJesusHealingtheLunatic.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "New Testament",
+      "book": "Matthew",
+      "scripture": "Matthew 17:14–15",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Jesus",
+        "healing"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Dore%20adultress.jpg",
+      "alt": "Gustave Doré illustration of Jesus and the woman taken in adultery",
+      "caption": "Jesus and the Woman Taken in Adultery",
+      "source": "https://commons.wikimedia.org/wiki/File:Dore_adultress.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "New Testament",
+      "book": "John",
+      "scripture": "John 8:3–5",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Jesus"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/DoreJesusPrayingintheGarden.jpg",
+      "alt": "Gustave Doré illustration of Jesus praying in Gethsemane",
+      "caption": "Jesus Praying in the Garden",
+      "source": "https://commons.wikimedia.org/wiki/File:DoreJesusPrayingintheGarden.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "New Testament",
+      "book": "Matthew",
+      "scripture": "Matthew 26:40–41",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Jesus",
+        "Gethsemane"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Christ%20Presented%20to%20the%20PeopleDore.jpg",
+      "alt": "Gustave Doré illustration of Christ presented to the people",
+      "caption": "Christ Presented to the People",
+      "source": "https://commons.wikimedia.org/wiki/File:Christ_Presented_to_the_PeopleDore.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "New Testament",
+      "book": "John",
+      "scripture": "John 19:15",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Jesus",
+        "Passion"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/DoreArrivalatCalvary.jpg",
+      "alt": "Gustave Doré illustration of the arrival at Calvary",
+      "caption": "The Arrival at Calvary",
+      "source": "https://commons.wikimedia.org/wiki/File:DoreArrivalatCalvary.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "New Testament",
+      "book": "Matthew",
+      "scripture": "Matthew 27:33–34",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Jesus",
+        "Calvary"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Gustave%20Dore%20-%20Jesus%20is%20nailed%20to%20the%20cross.jpg",
+      "alt": "Gustave Doré illustration of Jesus being nailed to the cross",
+      "caption": "Nailing Christ to the Cross",
+      "source": "https://commons.wikimedia.org/wiki/File:Gustave_Dore_-_Jesus_is_nailed_to_the_cross.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "New Testament",
+      "book": "John",
+      "scripture": "John 19:18–19",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Jesus",
+        "Crucifixion"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Crucifixion-dore.jpg",
+      "alt": "Gustave Doré illustration of the Crucifixion",
+      "caption": "The Crucifixion",
+      "source": "https://commons.wikimedia.org/wiki/File:Crucifixion-dore.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "New Testament",
+      "book": "Luke",
+      "scripture": "Luke 23:34–35",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Jesus",
+        "Crucifixion"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/DoreTheDeadchrist.jpg",
+      "alt": "Gustave Doré illustration of the Dead Christ",
+      "caption": "The Dead Christ",
+      "source": "https://commons.wikimedia.org/wiki/File:DoreTheDeadchrist.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "New Testament",
+      "book": "Matthew",
+      "scripture": "Matthew 27:59",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Jesus",
+        "Burial"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Gusta%20Dore%20-%20The%20Ascension.jpg",
+      "alt": "Gustave Doré illustration of the Ascension",
+      "caption": "The Ascension",
+      "source": "https://commons.wikimedia.org/wiki/File:Gusta_Dore_-_The_Ascension.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "New Testament",
+      "book": "Mark",
+      "scripture": "Mark 16:19",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Jesus",
+        "Ascension"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/DoreDeathofAnanias.jpg",
+      "alt": "Gustave Doré illustration of the death of Ananias",
+      "caption": "Death of Ananias",
+      "source": "https://commons.wikimedia.org/wiki/File:DoreDeathofAnanias.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "New Testament",
+      "book": "Acts",
+      "scripture": "Acts 5:4–5",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Acts",
+        "Ananias"
+      ]
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/DoreStPaulPreachingtotheThessalonians.jpg",
+      "alt": "Gustave Doré illustration of Paul preaching",
+      "caption": "Paul Preaching to the Thessalonians",
+      "source": "https://commons.wikimedia.org/wiki/File:DoreStPaulPreachingtotheThessalonians.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "New Testament",
+      "book": "1 Thessalonians",
+      "scripture": "1 Thessalonians 2:11–12",
+      "artist": "Gustave Doré",
+      "tags": [
+        "Paul",
+        "Thessalonica"
+      ]
+    }
+  ]
+}

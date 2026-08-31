@@ -1,6 +1,4 @@
-[README-v2.5.1.md](https://github.com/user-attachments/files/31648802/README-v2.5.1.md)
-[Uploading README-v2.5.1.md…]()
-[README-v2.5.1.md](README-v2.5.1.md)
+[README-v2.5.2.md](https://github.com/user-attachments/files/31658473/README-v2.5.2.md)
 <p align="center">
   <a href="https://www.livingwordbibles.com/">
     <img src="assets/LivingWordBibles01.png" alt="Living Word Bibles" width="320">
@@ -13,7 +11,7 @@
 
 <p align="center">
   <a href="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml/badge.svg?branch=main"></a>
-  <img alt="Frontend package v2.5.1" src="https://img.shields.io/badge/frontend-v2.5.1-555555">
+  <img alt="Frontend package v2.5.2" src="https://img.shields.io/badge/frontend-v2.5.2-555555">
   <img alt="Backend API v3.0.0" src="https://img.shields.io/badge/backend%20API-v3.0.0-555555">
   <img alt="Hosting GitHub Pages" src="https://img.shields.io/badge/hosting-GitHub%20Pages-555555">
 </p>
@@ -24,7 +22,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 31 August 2026 at 14:00:00Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 31 August 2026 at 18:53:45Z UTC</sub></p>
 
 ---
 
@@ -42,14 +40,50 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 |---|---|
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
-| Frontend package version | `2.5.1` |
+| Frontend package version | `2.5.2` |
 | Google Apps Script API version | `3.0.0` |
 | Apps Script build stamp | `27 August 2026 at 15:20:42Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `31 August 2026 at 14:00:00Z UTC` |
+| README revision | `31 August 2026 at 18:53:45Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
+
+---
+
+## What's New in v2.5.2
+
+- Added the new canonical **Print Bibles storefront** at `/estore/print-bibles/`, extending the eStore beyond Living Word Bibles digital editions while preserving `/estore/` as the dedicated eBible storefront.
+- Added five curated print Bible listings that send customers to Amazon through the supplied Living Word Bibles Amazon Associates links: **KJV**, **NKJV**, **NIV**, **ESV**, and the **NRSV Catholic Edition**.
+- Rebuilt the Print Bibles listings as full retail-style product cards using the current Amazon product names, local product imagery, seller information, current displayed pricing with price-change notices, concise product summaries, and prominent **View on Amazon** calls to action.
+- Added the local Print Bibles product artwork files `kjv-aa.jpg`, `nkjv-aa.jpg`, `niv-aa.jpg`, `esv-aa.jpg`, and `nrsv-aa.jpg` alongside the Print Bibles page so each listing has a consistent storefront image.
+- Added the required Amazon Associates identification/disclosure presentation to the Print Bibles storefront and retained per-product paid-link disclosures.
+- Added coordinated **eBibles / Print Bibles** category navigation to both `/estore/` and `/estore/print-bibles/`, using the established Living Word Bibles gold-and-secondary button treatment already used by homepage hero calls to action.
+- Updated the shared global header’s **The Holy Bible** dropdown so its first entries are **iOS**, **eBibles**, and **Print Bibles**. The former **iOS App** wording was shortened to **iOS**, and Print Bibles links directly to `/estore/print-bibles/`.
+- Added `/assets/homepage-hero-5.png` and a fifth homepage carousel slide immediately after the existing eStore hero to promote the new print catalog.
+- Refined the new homepage slide language to the simpler **“Shop Print Bibles”** presentation, with its primary call to action linking directly to `/estore/print-bibles/` and its secondary action returning visitors to the eBible store.
+- Updated the homepage carousel controls to include the fifth Print Bibles slide while preserving the existing Living Word Bibles, app, Ethiopian Bible, and eStore slides.
+- Updated the production XML sitemap to add the canonical Print Bibles storefront. The sitemap now contains **308 unique canonical public URLs**, up from the **307-URL** v2.5.0/v2.5.1 baseline.
+- Preserved the plain static GitHub Pages architecture: these changes remain checked-in HTML, image assets, the shared header include, and the root `sitemap.xml`; no build-generated page source was introduced.
+
+### Print Bible catalog added in v2.5.2
+
+| Translation / edition | Storefront image | Destination |
+|---|---|---|
+| King James Version (KJV) | `kjv-aa.jpg` | Amazon |
+| New King James Version (NKJV) | `nkjv-aa.jpg` | Amazon |
+| New International Version (NIV) | `niv-aa.jpg` | Amazon |
+| English Standard Version (ESV) | `esv-aa.jpg` | Amazon |
+| NRSV Catholic Edition | `nrsv-aa.jpg` | Amazon |
+
+### Release safeguards
+
+- No Google Apps Script backend code, API version, runtime endpoint, or spreadsheet schema was changed.
+- No PayPal Hosted Button IDs, PayPal client configuration, eBible checkout behavior, digital fulfillment logic, or free-download URLs were changed.
+- No Living Word Bibles account/session behavior was changed.
+- No existing canonical public route was removed from the sitemap; `/estore/print-bibles/` is the only canonical URL added by this release.
+- Existing eBible products remain on `/estore/`; the new Amazon-linked Print Bibles catalog is a separate storefront section.
+- Amazon product pricing and availability remain subject to change on Amazon.
 
 ---
 
@@ -408,7 +442,7 @@ The public website and the operational backend are deliberately separated:
 | `404.html` | Branded static 404 page |
 | `CNAME` | Production custom-domain configuration |
 
-Major content areas include Bible translation pages, online Bible readers, Catholic Bible/deuterocanonical resources, Bible history, Holy Land maps, eStore pages, the Ethiopian Bible page, account routes, support/legal pages, the Equal Opportunity & Workplace Policies page, donation pages, social pages, and the Living Word Bibles app page. Homepage promotional assets include the rotating hero series under `/assets/`, including the desktop app hero at `/assets/homepage-hero-4.png` and its mobile-specific companion at `/assets/homepage-hero-4-mobile.png`.
+Major content areas include Bible translation pages, online Bible readers, Catholic Bible/deuterocanonical resources, Bible history, Holy Land maps, the digital eBible storefront at `/estore/`, the Amazon-linked Print Bibles storefront at `/estore/print-bibles/`, the Ethiopian Bible page, account routes, support/legal pages, the Equal Opportunity & Workplace Policies page, donation pages, social pages, and the Living Word Bibles app page. Homepage promotional assets include the rotating hero series under `/assets/`, including the desktop app hero at `/assets/homepage-hero-4.png`, its mobile-specific companion at `/assets/homepage-hero-4-mobile.png`, and the Print Bibles hero at `/assets/homepage-hero-5.png`.
 
 ---
 
@@ -555,7 +589,7 @@ Server-side secrets such as `DOWNLOAD_TOKEN_SECRET` belong in Apps Script Proper
 
 ---
 
-## Digital Bible catalog and PayPal
+## eStore catalog, Print Bibles, and PayPal
 
 The core eStore currently presents six digital Bible editions: two free editions and four PayPal-purchased editions. The Ethiopian Bible PDF is offered through its own dedicated product page.
 
@@ -577,6 +611,26 @@ Free repository-backed EPUB assets currently include:
 /assets/products/kjvspecial.epub
 /assets/products/drb.epub
 ```
+
+### Print Bibles / Amazon
+
+The canonical Print Bibles storefront is:
+
+```text
+/estore/print-bibles/
+```
+
+It presents five curated Amazon-linked print editions using local storefront images stored with the page:
+
+```text
+/estore/print-bibles/kjv-aa.jpg
+/estore/print-bibles/nkjv-aa.jpg
+/estore/print-bibles/niv-aa.jpg
+/estore/print-bibles/esv-aa.jpg
+/estore/print-bibles/nrsv-aa.jpg
+```
+
+The Print Bibles page uses Amazon-bound product links and Amazon Associates disclosure language. Amazon handles the external transaction, pricing, availability, seller/fulfillment information, and order processing for those products. The Living Word Bibles PayPal eBible flow remains separate and unchanged.
 
 ### Other PayPal Hosted Buttons
 
@@ -754,8 +808,8 @@ Before merging a production change:
 **Repository architecture revision:** `2026-08-27T22:28:20Z`  
 **Apps Script build stamp:** `27 August 2026 at 15:20:42Z UTC`  
 **Backend API version:** `3.0.0`  
-**README last updated:** **31 August 2026 at 14:00:00Z UTC**
+**README last updated:** **31 August 2026 at 18:53:45Z UTC**
 
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 31 August 2026 at 14:00:00Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 31 August 2026 at 18:53:45Z UTC</strong></p>

@@ -321,6 +321,23 @@
       width:100%;
     }
 
+    .audio-status{
+      min-height:1.25rem;
+      margin:-.35rem 0 0;
+      font-size:.82rem;
+      line-height:1.4;
+      color:var(--ab-muted);
+    }
+
+    .audio-status[data-state="error"]{
+      color:#8b2c23;
+      font-weight:700;
+    }
+
+    .audio-status[data-state="ok"]{
+      color:#42623c;
+    }
+
     .audio-buttons{
       display:grid;
       grid-template-columns:1fr auto 1fr;
@@ -515,6 +532,7 @@
               </div>
 
               <audio class="audio-native" id="audio-element" controls preload="metadata"></audio>
+              <p class="audio-status" id="audio-status" data-state="ok" aria-live="polite">Ready.</p>
 
               <div class="audio-buttons">
                 <button class="btn secondary" id="audio-prev-chapter" type="button">◀ Previous</button>
@@ -554,7 +572,7 @@
         <div class="audio-source-box">
           <h2>Audio &amp; Image Sources</h2>
           <p><strong>Audio:</strong> <a href="https://librivox.org/bible-complete-king-james-version/" target="_blank" rel="noopener noreferrer">Bible (KJV), Complete — LibriVox</a>, read by Michael Armenta. LibriVox recordings are public domain in the United States.</p>
-          <p><strong>Visuals:</strong> the slideshow supports a scalable manifest at <code>/audio-bible/slides/images.json</code>. Public-domain images can be curated from Wikimedia Commons, the Library of Congress, and other verified public-domain collections. Each image keeps its caption and source/rights link.</p>
+          <p><strong>Visuals:</strong> the slideshow loads the curated manifest at <code>/audio-bible/slides/images.json</code>. When artwork is tagged to the selected Bible book, the player prioritizes those images; otherwise it falls back to Testament-wide and general public-domain Bible imagery. Each image keeps its caption and source/rights link.</p>
         </div>
 
       </div>
@@ -571,20 +589,40 @@
   (() => {
     'use strict';
 
+    /*
+      Living Word Bibles — KJV Audio Bible
+      Static GitHub Pages implementation.
+      Audio: LibriVox / Internet Archive, Bible (KJV), Complete, Michael Armenta.
+      Text: aruljohn/Bible-kjv (remote JSON with graceful failure).
+      Visuals: /audio-bible/slides/images.json with built-in fallbacks.
+    */
+
     const LOGO_URL = '/assets/LivingWordBibles01.png';
     const AUDIO_BASE = 'https://archive.org/download/bible_kjv_complete_2001_librivox/';
-    const AUDIO_FILE = n => `${AUDIO_BASE}bible_${String(n).padStart(3,'0')}_kjv_64kb.mp3`;
+    const audioFile = (segment, kbps = 64) =>
+      `${AUDIO_BASE}bible_${String(segment).padStart(3,'0')}_kjv_${kbps}kb.mp3`;
 
-    const BASES = [
-      'https://cdn.jsdelivr.net/gh/Living-Word-Bibles/the-holy-bible@main/Bible-kjv-master/',
-      'https://raw.githubusercontent.com/Living-Word-Bibles/the-holy-bible/main/Bible-kjv-master/',
+    const TEXT_BASES = [
       'https://cdn.jsdelivr.net/gh/aruljohn/Bible-kjv@master/',
       'https://raw.githubusercontent.com/aruljohn/Bible-kjv/master/'
     ];
 
     const OT = ['Genesis','Exodus','Leviticus','Numbers','Deuteronomy','Joshua','Judges','Ruth','1 Samuel','2 Samuel','1 Kings','2 Kings','1 Chronicles','2 Chronicles','Ezra','Nehemiah','Esther','Job','Psalms','Proverbs','Ecclesiastes','Song of Solomon','Isaiah','Jeremiah','Lamentations','Ezekiel','Daniel','Hosea','Joel','Amos','Obadiah','Jonah','Micah','Nahum','Habakkuk','Zephaniah','Haggai','Zechariah','Malachi'];
     const NT = ['Matthew','Mark','Luke','John','Acts','Romans','1 Corinthians','2 Corinthians','Galatians','Ephesians','Philippians','Colossians','1 Thessalonians','2 Thessalonians','1 Timothy','2 Timothy','Titus','Philemon','Hebrews','James','1 Peter','2 Peter','1 John','2 John','3 John','Jude','Revelation'];
+    const ALL_BOOKS = [...OT, ...NT];
 
+    const CHAPTER_COUNTS = {
+      'Genesis':50,'Exodus':40,'Leviticus':27,'Numbers':36,'Deuteronomy':34,'Joshua':24,'Judges':21,'Ruth':4,
+      '1 Samuel':31,'2 Samuel':24,'1 Kings':22,'2 Kings':25,'1 Chronicles':29,'2 Chronicles':36,'Ezra':10,'Nehemiah':13,
+      'Esther':10,'Job':42,'Psalms':150,'Proverbs':31,'Ecclesiastes':12,'Song of Solomon':8,'Isaiah':66,'Jeremiah':52,
+      'Lamentations':5,'Ezekiel':48,'Daniel':12,'Hosea':14,'Joel':3,'Amos':9,'Obadiah':1,'Jonah':4,'Micah':7,'Nahum':3,
+      'Habakkuk':3,'Zephaniah':3,'Haggai':2,'Zechariah':14,'Malachi':4,'Matthew':28,'Mark':16,'Luke':24,'John':21,'Acts':28,
+      'Romans':16,'1 Corinthians':16,'2 Corinthians':13,'Galatians':6,'Ephesians':6,'Philippians':4,'Colossians':4,
+      '1 Thessalonians':5,'2 Thessalonians':3,'1 Timothy':6,'2 Timothy':4,'Titus':3,'Philemon':1,'Hebrews':13,'James':5,
+      '1 Peter':5,'2 Peter':3,'1 John':5,'2 John':1,'3 John':1,'Jude':1,'Revelation':22
+    };
+
+    // LibriVox section mapping. Each recording contains one or more chapters.
     const AUDIO_RANGES = {
       'Genesis':[[1,14,1],[15,24,2],[25,32,3],[33,43,4],[44,50,5]],
       'Exodus':[[1,10,6],[11,22,7],[23,33,8],[34,40,9]],
@@ -600,92 +638,55 @@
       '2 Kings':[[1,8,38],[9,17,39],[18,25,40]],
       '1 Chronicles':[[1,9,41],[10,22,42],[23,29,43]],
       '2 Chronicles':[[1,16,44],[17,28,45],[29,36,46]],
-      'Ezra':[[1,10,47]],
-      'Nehemiah':[[1,13,48]],
-      'Esther':[[1,10,49]],
+      'Ezra':[[1,10,47]],'Nehemiah':[[1,13,48]],'Esther':[[1,10,49]],
       'Job':[[1,22,50],[23,42,51]],
       'Psalms':[[1,32,52],[33,57,53],[58,80,54],[81,106,55],[107,137,56],[138,150,57]],
-      'Proverbs':[[1,18,58],[19,31,59]],
-      'Ecclesiastes':[[1,12,60]],
-      'Song of Solomon':[[1,8,61]],
+      'Proverbs':[[1,18,58],[19,31,59]],'Ecclesiastes':[[1,12,60]],'Song of Solomon':[[1,8,61]],
       'Isaiah':[[1,15,62],[16,32,63],[33,44,64],[45,59,65],[60,66,66]],
       'Jeremiah':[[1,11,67],[12,24,68],[25,35,69],[36,48,70],[49,52,71]],
-      'Lamentations':[[1,5,72]],
-      'Ezekiel':[[1,14,73],[15,24,74],[25,36,75],[37,48,76]],
-      'Daniel':[[1,8,77],[9,12,78]],
-      'Hosea':[[1,14,79]],
-      'Joel':[[1,3,80]],
-      'Amos':[[1,9,81]],
-      'Obadiah':[[1,1,82]],
-      'Jonah':[[1,4,83]],
-      'Micah':[[1,7,84]],
-      'Nahum':[[1,3,85]],
-      'Habakkuk':[[1,3,86]],
-      'Zephaniah':[[1,3,87]],
-      'Haggai':[[1,2,88]],
-      'Zechariah':[[1,14,89]],
-      'Malachi':[[1,4,90]],
-      'Matthew':[[1,12,91],[13,22,92],[23,28,93]],
-      'Mark':[[1,9,94],[10,16,95]],
-      'Luke':[[1,8,96],[9,16,97],[17,24,98]],
-      'John':[[1,8,99],[9,18,100],[19,21,101]],
-      'Acts':[[1,10,102],[11,20,103],[21,28,104]],
-      'Romans':[[1,16,105]],
-      '1 Corinthians':[[1,16,106]],
-      '2 Corinthians':[[1,13,107]],
-      'Galatians':[[1,6,108]],
-      'Ephesians':[[1,6,109]],
-      'Philippians':[[1,4,110]],
-      'Colossians':[[1,4,111]],
-      '1 Thessalonians':[[1,5,112]],
-      '2 Thessalonians':[[1,3,113]],
-      '1 Timothy':[[1,6,114]],
-      '2 Timothy':[[1,4,115]],
-      'Titus':[[1,3,116]],
-      'Philemon':[[1,1,117]],
-      'Hebrews':[[1,13,118]],
-      'James':[[1,5,119]],
-      '1 Peter':[[1,5,120]],
-      '2 Peter':[[1,3,121]],
-      '1 John':[[1,5,122]],
-      '2 John':[[1,1,123]],
-      '3 John':[[1,1,124]],
-      'Jude':[[1,1,125]],
+      'Lamentations':[[1,5,72]],'Ezekiel':[[1,14,73],[15,24,74],[25,36,75],[37,48,76]],
+      'Daniel':[[1,8,77],[9,12,78]],'Hosea':[[1,14,79]],'Joel':[[1,3,80]],'Amos':[[1,9,81]],
+      'Obadiah':[[1,1,82]],'Jonah':[[1,4,83]],'Micah':[[1,7,84]],'Nahum':[[1,3,85]],'Habakkuk':[[1,3,86]],
+      'Zephaniah':[[1,3,87]],'Haggai':[[1,2,88]],'Zechariah':[[1,14,89]],'Malachi':[[1,4,90]],
+      'Matthew':[[1,12,91],[13,22,92],[23,28,93]],'Mark':[[1,9,94],[10,16,95]],
+      'Luke':[[1,8,96],[9,16,97],[17,24,98]],'John':[[1,8,99],[9,18,100],[19,21,101]],
+      'Acts':[[1,10,102],[11,20,103],[21,28,104]],'Romans':[[1,16,105]],
+      '1 Corinthians':[[1,16,106]],'2 Corinthians':[[1,13,107]],'Galatians':[[1,6,108]],'Ephesians':[[1,6,109]],
+      'Philippians':[[1,4,110]],'Colossians':[[1,4,111]],'1 Thessalonians':[[1,5,112]],'2 Thessalonians':[[1,3,113]],
+      '1 Timothy':[[1,6,114]],'2 Timothy':[[1,4,115]],'Titus':[[1,3,116]],'Philemon':[[1,1,117]],
+      'Hebrews':[[1,13,118]],'James':[[1,5,119]],'1 Peter':[[1,5,120]],'2 Peter':[[1,3,121]],
+      '1 John':[[1,5,122]],'2 John':[[1,1,123]],'3 John':[[1,1,124]],'Jude':[[1,1,125]],
       'Revelation':[[1,17,126],[18,22,127]]
     };
 
     const FALLBACK_SLIDES = [
       {
-        src:'https://commons.wikimedia.org/wiki/Special:Redirect/file/King-James-Version-Bible-first-edition-title-page-1611.png',
-        alt:'Title page of the first edition of the King James Bible, 1611',
-        caption:'First-edition King James Bible title page, 1611',
-        source:'https://commons.wikimedia.org/wiki/File:King-James-Version-Bible-first-edition-title-page-1611.png',
-        sourceLabel:'Wikimedia Commons — Public Domain'
+        src:'https://commons.wikimedia.org/wiki/Special:Redirect/file/001.The%20Creation%20of%20Light.jpg',
+        alt:'The Creation of Light by Gustave Doré',
+        caption:'The Creation of Light — Gustave Doré',
+        source:'https://commons.wikimedia.org/wiki/File:001.The_Creation_of_Light.jpg',
+        sourceLabel:'Wikimedia Commons — source & rights',
+        testament:'Old Testament',book:'Genesis'
       },
       {
-        src:'https://commons.wikimedia.org/wiki/Special:Redirect/file/King-James-Version-Bible-first-edition-The_Newe_Testament_title-page-1611.png',
-        alt:'New Testament title page from the first edition King James Bible, 1611',
-        caption:'The New Testament title page, King James Bible, 1611',
-        source:'https://commons.wikimedia.org/wiki/File:King-James-Version-Bible-first-edition-The_Newe_Testament_title-page-1611.png',
-        sourceLabel:'Wikimedia Commons — Public Domain'
+        src:'https://commons.wikimedia.org/wiki/Special:Redirect/file/038.The%20Giving%20of%20the%20Law%20on%20Mount%20Sinai.jpg',
+        alt:'The Giving of the Law on Mount Sinai by Gustave Doré',
+        caption:'The Giving of the Law on Mount Sinai — Gustave Doré',
+        source:'https://commons.wikimedia.org/wiki/File:038.The_Giving_of_the_Law_on_Mount_Sinai.jpg',
+        sourceLabel:'Wikimedia Commons — source & rights',
+        testament:'Old Testament',book:'Exodus'
       },
       {
-        src:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Gutenberg-bible.jpg',
-        alt:'Page from the Gutenberg Bible',
-        caption:'Gutenberg Bible page, fifteenth century',
-        source:'https://commons.wikimedia.org/wiki/File:Gutenberg-bible.jpg',
-        sourceLabel:'Wikimedia Commons — Public Domain'
-      },
-      {
-        src:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Title_page,_Authorised_Verson_Bible,_1611.jpg',
-        alt:'Title page of an Authorized Version Bible from 1611',
-        caption:'Authorized Version Bible title page, 1611',
-        source:'https://commons.wikimedia.org/wiki/File:Title_page,_Authorised_Verson_Bible,_1611.jpg',
-        sourceLabel:'Wikimedia Commons — Public Domain'
+        src:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Crucifixion-dore.jpg',
+        alt:'The Crucifixion by Gustave Doré',
+        caption:'The Crucifixion — Gustave Doré',
+        source:'https://commons.wikimedia.org/wiki/File:Crucifixion-dore.jpg',
+        sourceLabel:'Wikimedia Commons — source & rights',
+        testament:'New Testament',book:'Luke'
       }
     ];
 
-    const $ = sel => document.querySelector(sel);
+    const $ = (sel) => document.querySelector(sel);
     const audio = $('#audio-element');
     const bookSelect = $('#audio-book');
     const chapterSelect = $('#audio-chapter');
@@ -695,42 +696,38 @@
     const segmentEl = $('#audio-segment-label');
     const verseRefEl = $('#verse-preview-ref');
     const verseTextEl = $('#verse-preview-text');
+    const statusEl = $('#audio-status');
     const slideImg = $('#audio-slide');
     const slideCaption = $('#slide-caption');
     const slideSource = $('#slide-source');
 
-    const Cache = new Map();
-    let activeBase = '';
-    let index = [];
-    let state = {book:'Genesis', slug:'genesis', chapter:1, verse:1, segment:1};
+    const BookCache = new Map();
+    let state = {book:'Genesis',slug:'genesis',chapter:1,verse:1,segment:1};
     let currentBookData = null;
-    let pendingApproxSeek = true;
+    let currentRange = null;
+    let loadToken = 0;
+    let pendingSeek = false;
+    let pendingRestore = null;
+    let manifestImages = FALLBACK_SLIDES.slice();
     let slides = FALLBACK_SLIDES.slice();
     let slideIndex = 0;
     let slideTimer = null;
 
-    const slugify = name => String(name).trim().toLowerCase().replace(/[^a-z0-9\s]/g,'').replace(/\s+/g,'-');
-    const fileFromName = name => String(name).replace(/[^0-9A-Za-z]/g,'') + '.json';
-    const wordCount = text => String(text || '').trim().split(/\s+/).filter(Boolean).length;
+    const slugify = (name) => String(name).trim().toLowerCase().replace(/[^a-z0-9\s]/g,'').replace(/\s+/g,'-');
+    const fileFromName = (name) => String(name).replace(/[^0-9A-Za-z]/g,'') + '.json';
+    const words = (text) => String(text || '').trim().split(/\s+/).filter(Boolean).length;
+    const bookRows = () => ALL_BOOKS.map(name => ({name, slug:slugify(name)}));
+
+    function setStatus(message, stateName='ok'){
+      if(!statusEl) return;
+      statusEl.textContent = message;
+      statusEl.dataset.state = stateName;
+    }
 
     async function fetchJSON(url){
       const res = await fetch(url,{cache:'force-cache'});
       if(!res.ok) throw new Error(`HTTP ${res.status}`);
       return res.json();
-    }
-
-    async function pickBase(){
-      if(activeBase) return activeBase;
-      for(const base of BASES){
-        try{
-          const names = await fetchJSON(base+'Books.json');
-          if(Array.isArray(names) && names.length){
-            activeBase = base;
-            return base;
-          }
-        }catch(_){}
-      }
-      throw new Error('Could not load KJV navigation data.');
     }
 
     function normalizeBook(name,data){
@@ -755,54 +752,44 @@
         for(const [ch,v] of Object.entries(data.chapters)) add(ch,v);
         return out;
       }
-      if(Array.isArray(data) && Array.isArray(data[0])){
-        data.forEach((v,i)=>add(i+1,v));
-        return out;
-      }
       throw new Error('Unrecognized KJV book format.');
     }
 
-    async function loadIndex(){
-      if(index.length) return index;
-      const base = await pickBase();
-      const names = await fetchJSON(base+'Books.json');
-      index = names.map(name=>({name,slug:slugify(name),url:base+fileFromName(name)}));
-      return index;
-    }
-
-    async function loadBook(slug){
-      if(Cache.has(slug)) return Cache.get(slug);
-      const rows = await loadIndex();
-      const row = rows.find(x=>x.slug===slug);
-      if(!row) throw new Error('Book not found.');
-      const book = normalizeBook(row.name, await fetchJSON(row.url));
-      Cache.set(slug,book);
-      return book;
+    async function loadBookText(name){
+      const slug=slugify(name);
+      if(BookCache.has(slug)) return BookCache.get(slug);
+      const filename=fileFromName(name);
+      let lastError=null;
+      for(const base of TEXT_BASES){
+        try{
+          const book=normalizeBook(name,await fetchJSON(base+filename));
+          BookCache.set(slug,book);
+          return book;
+        }catch(err){ lastError=err; }
+      }
+      throw lastError || new Error('KJV text unavailable.');
     }
 
     function getRange(bookName,chapter){
-      const ranges = AUDIO_RANGES[bookName] || [];
+      const ranges=AUDIO_RANGES[bookName]||[];
       return ranges.find(([start,end])=>chapter>=start && chapter<=end) || ranges[0] || null;
     }
 
     function rangeLabel(bookName,range){
       if(!range) return '';
-      const [start,end] = range;
+      const [start,end]=range;
       return start===end ? `${bookName} ${start}` : `${bookName} ${start}–${end}`;
     }
 
-    async function buildBookControls(){
-      const rows = await loadIndex();
+    function buildBookControls(){
       bookSelect.innerHTML='';
       for(const [label,list] of [['Old Testament',OT],['New Testament',NT]]){
         const group=document.createElement('optgroup');
         group.label=label;
         list.forEach(name=>{
-          const row=rows.find(x=>x.name===name);
-          if(!row) return;
           const option=document.createElement('option');
-          option.value=row.slug;
-          option.textContent=row.name;
+          option.value=slugify(name);
+          option.textContent=name;
           group.appendChild(option);
         });
         bookSelect.appendChild(group);
@@ -810,150 +797,196 @@
 
       const pills=$('#audio-book-pills');
       pills.innerHTML='';
-      rows.forEach(row=>{
+      ALL_BOOKS.forEach(name=>{
         const b=document.createElement('button');
         b.type='button';
-        b.textContent=row.name;
-        b.onclick=()=>selectBook(row.slug,true);
+        b.textContent=name;
+        b.addEventListener('click',()=>selectBook(slugify(name),true));
         pills.appendChild(b);
       });
     }
 
-    function populateChapters(book){
-      const nums=Object.keys(book.chapters).map(Number).sort((a,b)=>a-b);
-      chapterSelect.innerHTML=nums.map(n=>`<option value="${n}">${n}</option>`).join('');
+    function populateChapters(){
+      const count=CHAPTER_COUNTS[state.book]||1;
+      chapterSelect.innerHTML='';
+      for(let i=1;i<=count;i++){
+        const o=document.createElement('option');
+        o.value=String(i);o.textContent=String(i);
+        chapterSelect.appendChild(o);
+      }
+      state.chapter=Math.max(1,Math.min(state.chapter,count));
       chapterSelect.value=String(state.chapter);
     }
 
-    function populateVerses(book){
-      const chapter=book.chapters[state.chapter];
-      const count=chapter?.verseCount || 1;
-      verseSelect.innerHTML=Array.from({length:count},(_,i)=>`<option value="${i+1}">${i+1}</option>`).join('');
-      state.verse=Math.min(state.verse,count);
+    function populateVerses(){
+      const chapter=currentBookData?.chapters?.[state.chapter];
+      const count=Math.max(1,chapter?.verseCount||1);
+      verseSelect.innerHTML='';
+      for(let i=1;i<=count;i++){
+        const o=document.createElement('option');
+        o.value=String(i);o.textContent=String(i);
+        verseSelect.appendChild(o);
+      }
+      state.verse=Math.max(1,Math.min(state.verse,count));
       verseSelect.value=String(state.verse);
+      verseSelect.disabled=!chapter;
+      verseSelect.title=chapter?'Select verse':'Verse list loads when KJV text data is available';
     }
 
-    function updateVersePreview(){
-      const text=currentBookData?.chapters?.[state.chapter]?.verses?.[String(state.verse)] || '';
+    function updateReference(){
       const label=`${state.book} ${state.chapter}:${state.verse}`;
       refEl.textContent=label;
       verseRefEl.textContent=label;
-      verseTextEl.textContent=text || 'Verse text unavailable.';
+      const text=currentBookData?.chapters?.[state.chapter]?.verses?.[String(state.verse)]||'';
+      verseTextEl.textContent=text || 'KJV verse text is loading. Audio playback remains available.';
+      document.title=`${label} — KJV Audio Bible | Living Word Bibles`;
+    }
+
+    function writeHash(){
+      const next=`#/${state.slug}/${state.chapter}/${state.verse}`;
+      if(location.hash!==next) history.replaceState(null,'',next);
+    }
+
+    function readHash(){
+      const m=location.hash.match(/^#\/([^/]+)\/(\d+)\/(\d+)$/);
+      if(!m) return null;
+      const row=bookRows().find(x=>x.slug===m[1]);
+      if(!row) return null;
+      return {book:row.name,slug:row.slug,chapter:Number(m[2]),verse:Number(m[3])};
     }
 
     async function approximateSeek(range){
-      if(!range || !Number.isFinite(audio.duration) || audio.duration<=0 || !currentBookData) return;
-      const [start,end] = range;
-      let total=0, before=0;
+      if(!range || !Number.isFinite(audio.duration) || audio.duration<=0) return;
+      const [start,end]=range;
+      let fraction=0;
 
-      for(let ch=start; ch<=end; ch++){
-        const verses=currentBookData.chapters[ch]?.verses || {};
-        for(const [v,text] of Object.entries(verses)){
-          const words=Math.max(1,wordCount(text));
-          total+=words;
-          if(ch<state.chapter || (ch===state.chapter && Number(v)<state.verse)) before+=words;
+      if(currentBookData){
+        let total=0,before=0;
+        for(let ch=start;ch<=end;ch++){
+          const verses=currentBookData.chapters[ch]?.verses||{};
+          for(const [v,text] of Object.entries(verses)){
+            const count=Math.max(1,words(text));
+            total+=count;
+            if(ch<state.chapter || (ch===state.chapter && Number(v)<state.verse)) before+=count;
+          }
         }
+        if(total>0) fraction=before/total;
+      }else{
+        const chapters=Math.max(1,end-start+1);
+        fraction=(state.chapter-start)/chapters;
       }
 
-      if(total>0){
-        const fraction=Math.max(0,Math.min(.995,before/total));
-        audio.currentTime=fraction*audio.duration;
-      }
+      audio.currentTime=Math.max(0,Math.min(audio.duration-0.25,fraction*audio.duration));
     }
 
-    function setAudioSource(force=false){
+    function loadAudioSource(force=false){
       const range=getRange(state.book,state.chapter);
-      if(!range) return;
+      if(!range){
+        setStatus('Audio mapping is unavailable for this selection.','error');
+        return;
+      }
+      currentRange=range;
       const segment=range[2];
       state.segment=segment;
       segmentEl.textContent=`LibriVox segment ${String(segment).padStart(3,'0')}: ${rangeLabel(state.book,range)}`;
-      const src=AUDIO_FILE(segment);
 
       if(force || audio.dataset.segment!==String(segment)){
         const wasPlaying=!audio.paused;
+        loadToken+=1;
+        audio.dataset.loadToken=String(loadToken);
         audio.dataset.segment=String(segment);
-        audio.src=src;
-        pendingApproxSeek=true;
+        audio.dataset.quality='64';
+        audio.dataset.resumeAfterLoad=wasPlaying?'true':'false';
+        pendingSeek=true;
+        audio.src=audioFile(segment,64);
+        setStatus(`Loading LibriVox segment ${String(segment).padStart(3,'0')}…`);
         audio.load();
-        audio.addEventListener('loadedmetadata',async function onMeta(){
-          audio.removeEventListener('loadedmetadata',onMeta);
-          if(pendingApproxSeek){
-            await approximateSeek(range);
-            pendingApproxSeek=false;
-          }
-          if(wasPlaying) audio.play().catch(()=>{});
-        });
       }else{
-        approximateSeek(range);
+        pendingSeek=true;
+        if(audio.readyState>=1) approximateSeek(range);
       }
       saveState();
       updateMediaSession();
     }
 
-    async function selectBook(slug,seek){
-      const rows=await loadIndex();
-      const row=rows.find(x=>x.slug===slug) || rows[0];
+    async function hydrateBookText(expectedBook, expectedChapter, expectedVerse){
+      try{
+        const data=await loadBookText(expectedBook);
+        if(state.book!==expectedBook) return;
+        currentBookData=data;
+        state.chapter=expectedChapter;
+        state.verse=expectedVerse;
+        populateVerses();
+        updateReference();
+        if(audio.readyState>=1 && pendingSeek) await approximateSeek(currentRange);
+        setStatus('KJV text and LibriVox audio ready.','ok');
+      }catch(err){
+        console.warn('KJV text source unavailable:',err);
+        if(state.book!==expectedBook) return;
+        currentBookData=null;
+        populateVerses();
+        updateReference();
+        setStatus('Audio is available. KJV verse text could not be loaded from the external text source.','error');
+      }
+    }
+
+    async function selectBook(slug,seek=true,opts={}){
+      const row=bookRows().find(x=>x.slug===slug)||bookRows()[0];
       state.book=row.name;
       state.slug=row.slug;
-      state.chapter=1;
-      state.verse=1;
-      currentBookData=await loadBook(row.slug);
+      state.chapter=Number(opts.chapter)||1;
+      state.verse=Number(opts.verse)||1;
+      currentBookData=BookCache.get(row.slug)||null;
       bookSelect.value=row.slug;
-      populateChapters(currentBookData);
-      populateVerses(currentBookData);
-      updateVersePreview();
-      pendingApproxSeek=!!seek;
-      setAudioSource(true);
+      populateChapters();
+      populateVerses();
+      updateReference();
+      refreshSlidesForBook();
+      pendingSeek=!!seek;
+      loadAudioSource(true);
+      writeHash();
       $('#audio-books-panel').dataset.open='false';
+      hydrateBookText(row.name,state.chapter,state.verse);
     }
 
     async function selectChapter(chapter,seek=true){
-      state.chapter=Number(chapter)||1;
+      state.chapter=Math.max(1,Math.min(Number(chapter)||1,CHAPTER_COUNTS[state.book]||1));
       state.verse=1;
-      populateVerses(currentBookData);
-      updateVersePreview();
-      pendingApproxSeek=!!seek;
-      setAudioSource(false);
+      populateVerses();
+      updateReference();
+      pendingSeek=!!seek;
+      loadAudioSource(false);
+      writeHash();
+      if(!currentBookData) hydrateBookText(state.book,state.chapter,state.verse);
     }
 
-    async function selectVerse(verse,seek=true){
-      state.verse=Number(verse)||1;
-      updateVersePreview();
-      pendingApproxSeek=!!seek;
-      const range=getRange(state.book,state.chapter);
-      if(seek) approximateSeek(range);
+    function selectVerse(verse,seek=true){
+      state.verse=Math.max(1,Number(verse)||1);
+      updateReference();
+      pendingSeek=!!seek;
+      if(seek && audio.readyState>=1) approximateSeek(currentRange);
+      writeHash();
       saveState();
       updateMediaSession();
     }
 
     async function moveChapter(delta){
-      const rows=await loadIndex();
-      const nums=Object.keys(currentBookData.chapters).map(Number).sort((a,b)=>a-b);
-      const pos=nums.indexOf(state.chapter);
-      let nextPos=pos+delta;
-
-      if(nextPos>=0 && nextPos<nums.length){
-        await selectChapter(nums[nextPos],true);
+      const idx=ALL_BOOKS.indexOf(state.book);
+      const nextChapter=state.chapter+delta;
+      const max=CHAPTER_COUNTS[state.book]||1;
+      if(nextChapter>=1 && nextChapter<=max){
+        chapterSelect.value=String(nextChapter);
+        await selectChapter(nextChapter,true);
         return;
       }
-
-      const bookPos=rows.findIndex(x=>x.slug===state.slug);
-      const nextBook=rows[bookPos+(delta>0?1:-1)];
+      const nextBook=ALL_BOOKS[idx+(delta>0?1:-1)];
       if(!nextBook) return;
-
-      await selectBook(nextBook.slug,false);
-      const newNums=Object.keys(currentBookData.chapters).map(Number).sort((a,b)=>a-b);
-      state.chapter=delta>0 ? newNums[0] : newNums[newNums.length-1];
-      state.verse=1;
-      chapterSelect.value=String(state.chapter);
-      populateVerses(currentBookData);
-      updateVersePreview();
-      pendingApproxSeek=true;
-      setAudioSource(true);
+      const chapter=delta>0?1:(CHAPTER_COUNTS[nextBook]||1);
+      await selectBook(slugify(nextBook),true,{chapter,verse:1});
     }
 
     function togglePlay(){
-      if(audio.paused) audio.play().catch(()=>{});
+      if(audio.paused) audio.play().catch(()=>setStatus('Playback was blocked. Press Play again to start the audio.','error'));
       else audio.pause();
     }
 
@@ -965,7 +998,7 @@
       try{
         localStorage.setItem('lwbKjvAudioState',JSON.stringify({
           book:state.book,slug:state.slug,chapter:state.chapter,verse:state.verse,
-          segment:state.segment,time:audio.currentTime||0,speed:audio.playbackRate||1
+          segment:state.segment,time:Number.isFinite(audio.currentTime)?audio.currentTime:0,speed:audio.playbackRate||1
         }));
       }catch(_){}
     }
@@ -979,11 +1012,9 @@
       try{
         navigator.mediaSession.metadata=new MediaMetadata({
           title:`${state.book} ${state.chapter}`,
-          artist:'KJV Audio Bible — LibriVox',
+          artist:'KJV Audio Bible — Michael Armenta / LibriVox',
           album:'Living Word Bibles',
-          artwork:[
-            {src:LOGO_URL,sizes:'512x512',type:'image/png'}
-          ]
+          artwork:[{src:LOGO_URL,sizes:'512x512',type:'image/png'}]
         });
       }catch(_){}
     }
@@ -995,29 +1026,48 @@
         navigator.mediaSession.setActionHandler('pause',()=>audio.pause());
         navigator.mediaSession.setActionHandler('previoustrack',()=>moveChapter(-1));
         navigator.mediaSession.setActionHandler('nexttrack',()=>moveChapter(1));
-        navigator.mediaSession.setActionHandler('seekbackward',details=>{
-          audio.currentTime=Math.max(0,audio.currentTime-(details.seekOffset||15));
-        });
-        navigator.mediaSession.setActionHandler('seekforward',details=>{
-          audio.currentTime=Math.min(audio.duration||Infinity,audio.currentTime+(details.seekOffset||15));
-        });
+        navigator.mediaSession.setActionHandler('seekbackward',d=>{audio.currentTime=Math.max(0,audio.currentTime-(d.seekOffset||15));});
+        navigator.mediaSession.setActionHandler('seekforward',d=>{audio.currentTime=Math.min(audio.duration||Infinity,audio.currentTime+(d.seekOffset||15));});
       }catch(_){}
     }
+
+    function testamentFor(book){ return OT.includes(book)?'Old Testament':'New Testament'; }
 
     async function loadSlides(){
       try{
         const res=await fetch('/audio-bible/slides/images.json',{cache:'no-store'});
-        if(res.ok){
-          const data=await res.json();
-          if(Array.isArray(data) && data.length) slides=data;
-          else if(Array.isArray(data.images) && data.images.length) slides=data.images;
-        }
-      }catch(_){}
+        if(!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data=await res.json();
+        const loaded=Array.isArray(data)?data:(Array.isArray(data.images)?data.images:[]);
+        const valid=loaded.filter(x=>x && typeof x.src==='string' && x.src.trim());
+        if(valid.length) manifestImages=valid;
+      }catch(err){
+        console.warn('Image manifest unavailable; using built-in fallback slides.',err);
+        manifestImages=FALLBACK_SLIDES.slice();
+      }
+      refreshSlidesForBook();
+    }
+
+    function refreshSlidesForBook(){
+      const exact=manifestImages.filter(x=>String(x.book||'').toLowerCase()===state.book.toLowerCase());
+      const testament=testamentFor(state.book);
+      const related=manifestImages.filter(x=>String(x.testament||'').toLowerCase()===testament.toLowerCase());
+      const reference=manifestImages.filter(x=>String(x.testament||'').toLowerCase()==='reference');
+
+      const unique=[];
+      const seen=new Set();
+      for(const item of [...exact,...related,...reference,...manifestImages]){
+        const key=item.src;
+        if(!key || seen.has(key)) continue;
+        seen.add(key);unique.push(item);
+      }
+      slides=unique.length?unique:FALLBACK_SLIDES.slice();
+      slideIndex=0;
       showSlide(0);
     }
 
-    function showSlide(index){
-      if(!slides.length) return;
+    function showSlide(index,attempt=0){
+      if(!slides.length || attempt>=slides.length) return;
       slideIndex=(index+slides.length)%slides.length;
       const item=slides[slideIndex];
       slideImg.classList.add('is-changing');
@@ -1028,11 +1078,12 @@
         slideCaption.textContent=item.caption||'Historic Bible imagery';
         slideSource.href=item.source||'#';
         slideSource.textContent=item.sourceLabel||'View image source / rights';
+        slideSource.hidden=!item.source;
         requestAnimationFrame(()=>slideImg.classList.remove('is-changing'));
       };
       pre.onerror=()=>{
         slideImg.classList.remove('is-changing');
-        if(slides.length>1) showSlide(slideIndex+1);
+        showSlide(slideIndex+1,attempt+1);
       };
       pre.src=item.src;
     }
@@ -1041,19 +1092,11 @@
       stopSlides();
       slideTimer=setInterval(()=>showSlide(slideIndex+1),12000);
     }
-
-    function stopSlides(){
-      if(slideTimer){
-        clearInterval(slideTimer);
-        slideTimer=null;
-      }
-    }
+    function stopSlides(){ if(slideTimer){clearInterval(slideTimer);slideTimer=null;} }
 
     function allSegments(){
       const out=[];
-      [...OT,...NT].forEach(book=>{
-        (AUDIO_RANGES[book]||[]).forEach(([start,end,segment])=>out.push({book,start,end,segment}));
-      });
+      ALL_BOOKS.forEach(book=>(AUDIO_RANGES[book]||[]).forEach(([start,end,segment])=>out.push({book,start,end,segment})));
       return out.sort((a,b)=>a.segment-b.segment);
     }
 
@@ -1063,66 +1106,91 @@
       const i=list.findIndex(x=>x.segment===state.segment);
       const next=list[i+1];
       if(!next) return;
-
-      const rows=await loadIndex();
-      const row=rows.find(x=>x.name===next.book);
-      if(!row) return;
-      state.book=next.book;
-      state.slug=row.slug;
-      state.chapter=next.start;
-      state.verse=1;
-      currentBookData=await loadBook(row.slug);
-      bookSelect.value=row.slug;
-      populateChapters(currentBookData);
-      chapterSelect.value=String(state.chapter);
-      populateVerses(currentBookData);
-      updateVersePreview();
-      pendingApproxSeek=false;
-      setAudioSource(true);
-
-      audio.addEventListener('canplay',function onCanPlay(){
-        audio.removeEventListener('canplay',onCanPlay);
+      await selectBook(slugify(next.book),false,{chapter:next.start,verse:1});
+      audio.addEventListener('canplay',function go(){
+        audio.removeEventListener('canplay',go);
         audio.currentTime=0;
         audio.play().catch(()=>{});
+      },{once:true});
+    }
+
+    function bindAudioEvents(){
+      audio.addEventListener('loadedmetadata',async()=>{
+        if(pendingRestore && pendingRestore.segment===state.segment){
+          const max=Math.max(0,(audio.duration||0)-1);
+          audio.currentTime=Math.min(Math.max(0,pendingRestore.time||0),max);
+          pendingRestore=null;
+          pendingSeek=false;
+        }else if(pendingSeek){
+          await approximateSeek(currentRange);
+          pendingSeek=false;
+        }
+        setStatus('KJV Audio Bible ready.','ok');
+        if(audio.dataset.resumeAfterLoad==='true'){
+          audio.dataset.resumeAfterLoad='false';
+          audio.play().catch(()=>{});
+        }
+      });
+
+      audio.addEventListener('error',()=>{
+        const segment=Number(audio.dataset.segment||state.segment||1);
+        if(audio.dataset.quality==='64'){
+          audio.dataset.quality='128';
+          setStatus('Retrying this LibriVox segment…');
+          audio.src=audioFile(segment,128);
+          audio.load();
+          return;
+        }
+        setStatus('This LibriVox audio segment could not be loaded. Try refreshing the page or selecting another chapter.','error');
+      });
+
+      audio.addEventListener('play',()=>{updatePlayButton();startSlides();updateMediaSession();setStatus('Playing.','ok');});
+      audio.addEventListener('pause',()=>{updatePlayButton();stopSlides();saveState();});
+      audio.addEventListener('ended',()=>{updatePlayButton();stopSlides();playNextSegment();});
+
+      let lastSave=0;
+      audio.addEventListener('timeupdate',()=>{
+        const now=Date.now();
+        if(now-lastSave>5000){lastSave=now;saveState();}
       });
     }
 
     async function init(){
-      await buildBookControls();
+      buildBookControls();
+      bindAudioEvents();
+      configureMediaSession();
 
       const saved=restoreSaved();
-      const rows=await loadIndex();
-      let row=rows.find(x=>x.slug===saved?.slug) || rows.find(x=>x.name==='Genesis') || rows[0];
+      const hashed=readHash();
+      const initial=hashed || (saved && bookRows().some(x=>x.slug===saved.slug) ? saved : null) || {book:'Genesis',slug:'genesis',chapter:1,verse:1};
 
-      state.book=row.name;
-      state.slug=row.slug;
-      currentBookData=await loadBook(row.slug);
-
-      const chapterNums=Object.keys(currentBookData.chapters).map(Number).sort((a,b)=>a-b);
-      state.chapter=chapterNums.includes(Number(saved?.chapter)) ? Number(saved.chapter) : chapterNums[0];
-      state.verse=Math.max(1,Number(saved?.verse)||1);
-
-      bookSelect.value=row.slug;
-      populateChapters(currentBookData);
-      populateVerses(currentBookData);
-      updateVersePreview();
-      setAudioSource(true);
+      state.book=bookRows().find(x=>x.slug===initial.slug)?.name||'Genesis';
+      state.slug=slugify(state.book);
+      state.chapter=Math.max(1,Math.min(Number(initial.chapter)||1,CHAPTER_COUNTS[state.book]||1));
+      state.verse=Math.max(1,Number(initial.verse)||1);
 
       if(saved?.speed){
         audio.playbackRate=Number(saved.speed)||1;
-        $('#audio-speed').value=String(audio.playbackRate);
+        const speed=$('#audio-speed');
+        if([...speed.options].some(o=>o.value===String(audio.playbackRate))) speed.value=String(audio.playbackRate);
       }
 
-      if(saved?.segment===state.segment && Number(saved?.time)>0){
-        audio.addEventListener('loadedmetadata',function restoreTime(){
-          audio.removeEventListener('loadedmetadata',restoreTime);
-          audio.currentTime=Math.min(Number(saved.time)||0,Math.max(0,(audio.duration||0)-1));
-          pendingApproxSeek=false;
-        });
+      bookSelect.value=state.slug;
+      populateChapters();
+      populateVerses();
+      updateReference();
+      currentRange=getRange(state.book,state.chapter);
+
+      if(saved && !hashed && saved.segment===currentRange?.[2] && Number(saved.time)>0){
+        pendingRestore={segment:Number(saved.segment),time:Number(saved.time)};
+      }else{
+        pendingSeek=true;
       }
 
       await loadSlides();
-      configureMediaSession();
+      loadAudioSource(true);
+      writeHash();
+      hydrateBookText(state.book,state.chapter,state.verse);
     }
 
     bookSelect.addEventListener('change',()=>selectBook(bookSelect.value,true));
@@ -1133,50 +1201,25 @@
       const panel=$('#audio-books-panel');
       panel.dataset.open=panel.dataset.open==='true'?'false':'true';
     });
-
     $('#audio-prev-chapter').addEventListener('click',()=>moveChapter(-1));
     $('#audio-next-chapter').addEventListener('click',()=>moveChapter(1));
     playButton.addEventListener('click',togglePlay);
-
-    $('#audio-speed').addEventListener('change',e=>{
-      audio.playbackRate=Number(e.target.value)||1;
-      saveState();
-    });
-
+    $('#audio-speed').addEventListener('change',e=>{audio.playbackRate=Number(e.target.value)||1;saveState();});
     $('#slide-prev').addEventListener('click',()=>showSlide(slideIndex-1));
     $('#slide-next').addEventListener('click',()=>showSlide(slideIndex+1));
+    window.addEventListener('beforeunload',saveState);
 
-    audio.addEventListener('play',()=>{
-      updatePlayButton();
-      startSlides();
-      updateMediaSession();
-    });
-
-    audio.addEventListener('pause',()=>{
-      updatePlayButton();
-      stopSlides();
-      saveState();
-    });
-
-    audio.addEventListener('ended',()=>{
-      updatePlayButton();
-      stopSlides();
-      playNextSegment();
-    });
-
-    let lastSave=0;
-    audio.addEventListener('timeupdate',()=>{
-      const now=Date.now();
-      if(now-lastSave>5000){
-        lastSave=now;
-        saveState();
+    window.addEventListener('hashchange',()=>{
+      const h=readHash();
+      if(!h) return;
+      if(h.slug!==state.slug || h.chapter!==state.chapter || h.verse!==state.verse){
+        selectBook(h.slug,true,{chapter:h.chapter,verse:h.verse});
       }
     });
 
-    window.addEventListener('beforeunload',saveState);
-
     init().catch(err=>{
       console.error(err);
+      setStatus('The Audio Bible could not initialize. Please refresh the page.','error');
       verseTextEl.textContent='The Audio Bible could not initialize. Please refresh the page.';
     });
   })();

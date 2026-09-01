@@ -1,4 +1,4 @@
-[README.md](https://github.com/user-attachments/files/31713137/README.md)
+[README.md](https://github.com/user-attachments/files/31714041/README.md)
 <p align="center">
   <a href="https://www.livingwordbibles.com/">
     <img src="assets/LivingWordBibles01.png" alt="Living Word Bibles" width="320">
@@ -11,7 +11,7 @@
 
 <p align="center">
   <a href="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml/badge.svg?branch=main"></a>
-  <img alt="Frontend package v2.5.9" src="https://img.shields.io/badge/frontend-v2.5.9-555555">
+  <img alt="Frontend package v2.6.0" src="https://img.shields.io/badge/frontend-v2.6.0-555555">
   <img alt="Google Apps Script v2.0.1" src="https://img.shields.io/badge/Google%20Apps%20Script-v2.0.1-555555">
   <img alt="Hosting GitHub Pages" src="https://img.shields.io/badge/hosting-GitHub%20Pages-555555">
 </p>
@@ -22,7 +22,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 01 September 2026 at 21:22:11Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 01 September 2026 at 22:08:45Z UTC</sub></p>
 
 ---
 
@@ -40,17 +40,57 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 |---|---|
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
-| Frontend package version | `2.5.9` |
+| Frontend package version | `2.6.0` |
 | Google Apps Script version | `2.0.1` |
 | Apps Script build stamp | `01 September 2026 at 21:22:11Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `01 September 2026 at 21:22:11Z UTC` |
+| README revision | `01 September 2026 at 22:08:45Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
 
 ---
 
+
+
+## What's New in v2.6.0 — Legal, Licensing & Editorial Alignment
+
+Released **01 September 2026 at 22:08:45Z UTC**. Google Apps Script remains **v2.0.1**; this release does not change the backend or spreadsheet architecture.
+
+### Legal-policy refresh
+
+- Updated `/terms-of-service/` for the current account-library architecture, including automatic free KJV Special and Douay-Rheims entitlements, eligible eBible/PDF entitlements, PayPal transaction reconciliation, administrative entitlement corrections, and the separation of print purchases from digital account access.
+- Updated `/privacy-policy/` to disclose site-wide page/click/form-event logging, authenticated customer context, portal administrator audit records, purchase-reconciliation processing, newsletter suppression records, and the current logger's deliberate exclusion of typed form values, passwords, verification/reset tokens, and URL query strings from ordinary click telemetry.
+- Updated `/editorial-standards/` with dedicated standards for the KJV Audio Bible, Ethiopian Bible resources, digital product/account-entitlement accuracy, licensing implementations, corrections, privacy, and AI-assisted editorial work.
+
+### App and publisher licensing
+
+- Rebuilt `/app-licensing/` with **Effective Date: 30 September 2025**.
+- Corrected the standard public web embed license to **KJV only**.
+- Clarified that other translations may be made available only to **churches and religious nonprofit organizations**, on an organization-specific basis, and only under the controlling copyright holder's license terms and the scope of LWB's own permission.
+- Clarified that LWB does not grant a sublicense in copyrighted Bible translations it does not own.
+- Preserved the standard iOS licensing program as **KJV only** unless separate written approval and rightsholder permissions apply.
+- Updated `/licensing/` to distinguish publisher-facing compliance from the narrower public App Licensing program.
+
+### Copyright and translation presentation
+
+- Updated `/copyright-notice/` and `/licensing/` with smaller Bible cover-style icons beneath each translation name.
+- Translation names and cover icons link to the relevant LWB product or reader.
+- Existing LWB-owned local edition covers are used where available; LWB-created book icons are used where reproducing a third-party publisher cover is unnecessary.
+- Added the **KJV Audio Bible** and **The Complete Apocrypha of the Ethiopian Bible** to the Copyright Notice with explicit separation between underlying public-domain/ancient source material and LWB's protectable interface, compilation, metadata, formatting, curation, artwork, and edition elements.
+
+### EEO and veteran policy
+
+- Updated `/eeo/` to mirror the structure and substance of the current Cook Services Company, LLC veteran-employment policy.
+- The veteran section now contains: **Policy Statement; Covered Veteran Categories; Equal Employment Opportunity for Veterans; Veteran Outreach; Reemployment and Military Service; Confidentiality; Questions and Reporting**.
+- Added the general veteran definition and the four protected-veteran categories: **Disabled Veteran, Recently Separated Veteran, Active-Duty Wartime or Campaign Badge Veteran, and Armed Forces Service Medal Veteran**.
+- Updated veteran-service references to include U.S. **ground, air, naval, or space service**.
+
+### Cook Services Company operator links
+
+- Standardized the visible “Operated by Cook Services Company, LLC” legal-page badges to link to **https://www.cook-international.com** instead of email links.
+
+---
 
 ## What's New in v2.5.9 / Google Apps Script v2.0.1
 
@@ -603,4 +643,4 @@ Before merging or deploying this release:
 
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 01 September 2026 at 21:22:11Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 01 September 2026 at 22:08:45Z UTC</strong></p>

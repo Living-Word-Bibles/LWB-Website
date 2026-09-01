@@ -1,4 +1,4 @@
-[README.md](https://github.com/user-attachments/files/31712376/README.md)
+[README.md](https://github.com/user-attachments/files/31713137/README.md)
 <p align="center">
   <a href="https://www.livingwordbibles.com/">
     <img src="assets/LivingWordBibles01.png" alt="Living Word Bibles" width="320">
@@ -11,8 +11,8 @@
 
 <p align="center">
   <a href="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml/badge.svg?branch=main"></a>
-  <img alt="Frontend package v2.5.8" src="https://img.shields.io/badge/frontend-v2.5.8-555555">
-  <img alt="Google Apps Script v2.0.0" src="https://img.shields.io/badge/Google%20Apps%20Script-v2.0.0-555555">
+  <img alt="Frontend package v2.5.9" src="https://img.shields.io/badge/frontend-v2.5.9-555555">
+  <img alt="Google Apps Script v2.0.1" src="https://img.shields.io/badge/Google%20Apps%20Script-v2.0.1-555555">
   <img alt="Hosting GitHub Pages" src="https://img.shields.io/badge/hosting-GitHub%20Pages-555555">
 </p>
 
@@ -22,7 +22,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 01 September 2026 at 20:47:21Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 01 September 2026 at 21:22:11Z UTC</sub></p>
 
 ---
 
@@ -40,14 +40,224 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 |---|---|
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
-| Frontend package version | `2.5.8` |
-| Google Apps Script version | `2.0.0` |
-| Apps Script build stamp | `01 September 2026 at 20:47:21Z UTC` |
+| Frontend package version | `2.5.9` |
+| Google Apps Script version | `2.0.1` |
+| Apps Script build stamp | `01 September 2026 at 21:22:11Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `01 September 2026 at 20:47:21Z UTC` |
+| README revision | `01 September 2026 at 21:22:11Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
+
+---
+
+
+## What's New in v2.5.9 / Google Apps Script v2.0.1
+
+### New `/portal/` administration page
+
+v2.5.9 adds a private administration route at:
+
+```text
+https://www.livingwordbibles.com/portal/
+```
+
+The page is marked `noindex,nofollow,noarchive` and is intentionally **not** added to the public sitemap or global navigation.
+
+The portal uses the existing static GitHub Pages + Google Apps Script architecture. It does **not** add an Admin sheet, Portal sheet, click-log sheet, or any other new spreadsheet tab.
+
+Portal login reads these rows from the existing **Settings** tab:
+
+```text
+admin_user
+admin_password
+admin_display_name
+admin_email
+admin_enabled
+admin_session_minutes
+admin_created_at
+admin_updated_at
+```
+
+The values remain editable as normal Settings rows. As requested, `admin_password` is read as a simple plain-text Settings value and is **not stored as a password hash**. The backend creates a short-lived signed portal session token after successful login so the sheet password is not persisted in the browser.
+
+Changing the Settings credentials invalidates new logins immediately. Updating the admin password and `admin_updated_at` also invalidates existing signed portal sessions.
+
+### Portal subscriber management
+
+The **Subscribers** area works entirely through the existing:
+
+- `Newsletter Subscribers`
+- `Audience Memberships`
+- `Do Not Email`
+- `System Log`
+
+tabs.
+
+Administrators can:
+
+- search subscriber records;
+- add a new subscriber;
+- reactivate an existing subscriber;
+- explicitly re-subscribe an address that had previously opted out when the administrator checks the re-subscribe override;
+- unsubscribe/remove an address through the same working opt-out logic already used by `/opt-out/`; and
+- review the resulting activity in System Log.
+
+An ordinary unsubscribe continues to preserve the subscriber row for audit history, mark it `unsubscribed`, add/update Do Not Email, and deactivate related audience memberships.
+
+### Portal HTML newsletter composer
+
+The new **Newsletter** area lets an administrator type a custom newsletter directly in the browser.
+
+The editor supports:
+
+- subject and preheader;
+- bold, italic, and underline;
+- headings and paragraphs;
+- bullet lists;
+- hyperlinks;
+- CTA-style buttons;
+- a customizable signature;
+- a sandboxed email preview;
+- a single-address test send; and
+- personalization tokens `{{first_name}}` and `{{email}}`.
+
+The backend sanitizes custom HTML before it is queued. Script elements, embedded frames/objects, forms, input fields, inline event handlers, and `javascript:` URLs are removed.
+
+Custom portal newsletters use the same Living Word Bibles branded HTML mail shell introduced in v2.0.0:
+
+- Living Word Bibles logo;
+- slogan;
+- Read the Bible Online;
+- History of the Bible;
+- eStore;
+- Terms of Service;
+- Privacy Policy;
+- personalized unsubscribe link;
+- copyright line; and
+- Cook Technology Services attribution.
+
+The administrator-controlled signature is inserted above the standard legal/navigation footer.
+
+### Newsletter batching remains restricted
+
+The v2.0.0 newsletter delivery safeguards remain mandatory in v2.0.1:
+
+- **99 recipients maximum per subscriber batch**;
+- only one campaign batch on an eligible sending date;
+- subscriber batches send only on **Monday, Wednesday, and Friday**; and
+- transactional account, password, verification, and one-address test messages are not placed into the subscriber campaign queue.
+
+The portal's **Process Eligible Batch** button calls the same guarded campaign processor. It cannot bypass the weekday or 99-recipient rules.
+
+### Account and purchase administration
+
+The **Accounts & Purchases** area uses the existing:
+
+- `Customers`
+- `Orders`
+- `Order Items`
+- `Entitlements`
+- `Products`
+- `Digital Assets`
+- `System Log`
+
+tabs.
+
+Administrators can:
+
+- load an account by customer email;
+- review account status, orders, and entitlements;
+- reconcile a verified PayPal transaction to a selected account;
+- optionally reassign a transaction that is already attached to another account;
+- manually grant an eligible product to an account;
+- revoke an eligible non-default entitlement;
+- add a portal-created manual purchase using the existing Orders + Order Items + Entitlements model; and
+- remove a portal-created manual purchase while retaining its audit record as `removed`.
+
+Product eligibility remains unchanged:
+
+```text
+product_type = ebook
+OR
+Living Word Bibles Ethiopian Bible PDF
+```
+
+Print products and other non-library products cannot be attached through the portal.
+
+The two required free account products remain protected:
+
+- `prod_kjv_special`
+- `prod_drb`
+
+The portal will not revoke those products because every verified Living Word Bibles account is required to have them.
+
+The Ethiopian Bible / Complete Apocrypha PDF remains account-eligible and continues to use:
+
+```text
+/assets/products/EthiopianApocryphaPDF.pdf
+```
+
+### Expanded existing System Log
+
+v2.5.9 adds `/assets/js/activity-log.js` through the canonical shared footer so the existing **System Log** receives site-wide activity without adding another spreadsheet tab.
+
+The logger records:
+
+- page views;
+- clicks;
+- form-submit actions;
+- page path;
+- safe destination path;
+- element/tag label;
+- authenticated account identity when a valid account session is available;
+- portal administrator identity when a valid portal session is available; and
+- client/session metadata useful for site auditing.
+
+For security and privacy, the activity logger deliberately does **not** record:
+
+- form field values;
+- passwords;
+- password-reset tokens;
+- email-verification tokens; or
+- URL query strings.
+
+Telemetry posts are handled without the main Apps Script write lock so normal site clicks do not block account, payment, subscriber, newsletter, or portal operations.
+
+All administrative operations also create explicit System Log events, including administrator login attempts, subscriber changes, newsletter tests/queues/batches, entitlement changes, purchase reconciliation, and manual-purchase changes.
+
+### Spreadsheet architecture
+
+**No new spreadsheet tabs or columns are required by v2.5.9 / Apps Script v2.0.1.**
+
+The release uses the existing sheet architecture and the Settings rows already added for portal administration.
+
+### Surgical file set for v2.5.9 / v2.0.1
+
+Only these files need to be added or replaced:
+
+```text
+/apps-script/Code.gs
+/portal/index.html
+/assets/js/portal.js
+/assets/js/activity-log.js
+/assets/includes/lwb-footer.html
+/README.md
+```
+
+No account page, payment-complete page, opt-out page, `auth.js`, `forms.js`, `config.js`, header include, PayPal button configuration, Products schema, or sitemap replacement is required for this portal pass.
+
+### Deployment notes
+
+1. Replace the existing Apps Script source with `/apps-script/Code.gs`.
+2. Save and deploy a new production Web App version from the existing Apps Script project.
+3. Keep the existing production Web App URL when possible so `/assets/js/config.js` does not need to change.
+4. Upload `/portal/index.html`.
+5. Upload `/assets/js/portal.js` and `/assets/js/activity-log.js`.
+6. Replace `/assets/includes/lwb-footer.html` so the global activity logger is loaded through the canonical footer.
+7. Replace `README.md`.
+8. Do **not** add `/portal/` to `sitemap.xml`.
+9. Keep the existing newsletter daily trigger installed with `installNewsletterCampaignTrigger()` so the campaign processor can evaluate the Monday/Wednesday/Friday rules.
 
 ---
 
@@ -308,7 +518,7 @@ No shared header/footer replacement is required for v2.5.8.
 
 `assets/js/config.js` remains the single public runtime configuration file for the Apps Script Web App URL and public contact email. Individual pages should not hard-code alternate backend deployments.
 
-No `assets/js/config.js` replacement is required for this release unless the Apps Script deployment URL itself changes after publishing v2.0.0.
+No `assets/js/config.js` replacement is required for this release unless the Apps Script deployment URL itself changes after publishing v2.0.1.
 
 ---
 
@@ -331,7 +541,7 @@ Deployment remains handled by `.github/workflows/deploy-pages.yml`.
 
 A push to `main` validates the repository and publishes the **repository root (`.`)** directly to GitHub Pages. There is no generated production output directory.
 
-For Apps Script v2.0.0, replace the Apps Script source with `/apps-script/Code.gs`, save it in the existing Apps Script project, and deploy a new Web App version using the same production configuration. If the production Web App URL remains the same deployment URL, no frontend config change is necessary.
+For Apps Script v2.0.1, replace the Apps Script source with `/apps-script/Code.gs`, save it in the existing Apps Script project, and deploy a new Web App version using the same production configuration. If the production Web App URL remains the same deployment URL, no frontend config change is necessary.
 
 ---
 
@@ -386,11 +596,11 @@ Before merging or deploying this release:
 ---
 
 **Repository architecture revision:** `2026-08-27T22:28:20Z`  
-**Apps Script build stamp:** `01 September 2026 at 20:47:21Z UTC`  
-**Google Apps Script version:** `2.0.0`  
-**Frontend package version:** `2.5.8`  
-**README last updated:** **01 September 2026 at 20:47:21Z UTC**
+**Apps Script build stamp:** `01 September 2026 at 21:22:11Z UTC`  
+**Google Apps Script version:** `2.0.1`  
+**Frontend package version:** `2.5.9`  
+**README last updated:** **01 September 2026 at 21:22:11Z UTC**
 
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 01 September 2026 at 20:47:21Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 01 September 2026 at 21:22:11Z UTC</strong></p>

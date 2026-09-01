@@ -1,4 +1,4 @@
-[README-v2.5.4.md](https://github.com/user-attachments/files/31690737/README-v2.5.4.md)
+[README-v2.5.5.md](https://github.com/user-attachments/files/31693157/README-v2.5.5.md)
 <p align="center">
   <a href="https://www.livingwordbibles.com/">
     <img src="assets/LivingWordBibles01.png" alt="Living Word Bibles" width="320">
@@ -11,7 +11,7 @@
 
 <p align="center">
   <a href="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml/badge.svg?branch=main"></a>
-  <img alt="Frontend package v2.5.4" src="https://img.shields.io/badge/frontend-v2.5.4-555555">
+  <img alt="Frontend package v2.5.4" src="https://img.shields.io/badge/frontend-v2.5.5-555555">
   <img alt="Backend API v3.0.0" src="https://img.shields.io/badge/backend%20API-v3.0.0-555555">
   <img alt="Hosting GitHub Pages" src="https://img.shields.io/badge/hosting-GitHub%20Pages-555555">
 </p>
@@ -22,7 +22,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 01 September 2026 at 12:23:31Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 01 September 2026 at 13:04:43Z UTC</sub></p>
 
 ---
 
@@ -40,14 +40,52 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 |---|---|
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
-| Frontend package version | `2.5.4` |
+| Frontend package version | `2.5.5` |
 | Google Apps Script API version | `3.0.0` |
 | Apps Script build stamp | `27 August 2026 at 15:20:42Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `01 September 2026 at 12:23:31Z UTC` |
+| README revision | `01 September 2026 at 13:04:43Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
+
+---
+
+## What's New in v2.5.5
+
+- Expanded the **Print Bibles** storefront at `/estore/print-bibles/` from five to **seven curated Amazon-linked print Bible listings**.
+- Added the **NET Bible** print listing using the supplied Amazon Associates destination `https://amzn.to/4i6jAJM` and the local storefront image **`/estore/print-bibles/net-aa.jpg`**.
+- Added the **Ethiopian Bible** print listing using the supplied Amazon Associates destination `https://amzn.to/4cR2jk8` and the local storefront image **`/estore/print-bibles/ethiopian-aa.jpg`**.
+- Preserved the existing KJV, NKJV, NIV, ESV, and NRSV Catholic Edition listings, producing a seven-edition Print Bibles catalog: **KJV, NKJV, NIV, ESV, NRSV Catholic Edition, NET, and Ethiopian Bible**.
+- Preserved the established **Amazon Associates** presentation, including the storefront disclosure, per-product **Paid link** notices, sponsored/nofollow link attributes, and the notice that Amazon controls pricing, availability, sellers, shipping, fulfillment, and transaction processing.
+- Kept the new Ethiopian Bible Amazon listing clearly distinct from Living Word Bibles' own Ethiopian Bible resources and digital product at `/ethiopian-bible/`; the Amazon print listing is an externally sold third-party print edition.
+- Updated the **About Us** page at `/about-us/` to reflect the expanded ways readers can engage with Scripture through Living Word Bibles.
+- Added a direct **Listen to the Bible** call to action from the About Us experience, linking to the KJV Audio Bible at `/audio-bible/`.
+- Added new About Us promotional content for the **KJV Audio Bible**, explaining the listening experience and directing visitors to the Audio Bible player.
+- Added new About Us promotional content for **Print Bibles**, directing visitors to `/estore/print-bibles/` and distinguishing Amazon-fulfilled physical editions from Living Word Bibles' directly offered digital products.
+- Expanded About Us FAQ/help language to cover the Audio Bible and Print Bibles while preserving the existing mission, team, contact, newsletter, support, Bible Study, History, app, licensing, and third-party-order guidance.
+- Preserved the site's **plain static GitHub Pages architecture**. These changes remain checked-in HTML and local storefront assets; no server-side store or build-generated page architecture was introduced.
+
+### Print Bibles catalog in v2.5.5
+
+| Translation / edition | Local image | Destination |
+|---|---|---|
+| King James Version (KJV) | `kjv-aa.jpg` | Amazon |
+| New King James Version (NKJV) | `nkjv-aa.jpg` | Amazon |
+| New International Version (NIV) | `niv-aa.jpg` | Amazon |
+| English Standard Version (ESV) | `esv-aa.jpg` | Amazon |
+| NRSV Catholic Edition | `nrsv-aa.jpg` | Amazon |
+| NET Bible | `net-aa.jpg` | `https://amzn.to/4i6jAJM` |
+| Ethiopian Bible | `ethiopian-aa.jpg` | `https://amzn.to/4cR2jk8` |
+
+### Release safeguards
+
+- No Google Apps Script backend code, API version, runtime endpoint, spreadsheet schema, or account/session behavior was changed.
+- No PayPal Hosted Button ID, PayPal client configuration, eBible checkout behavior, digital fulfillment logic, or free-download path was changed.
+- The two new Print Bibles links are Amazon Associates destinations; Amazon remains responsible for the external transaction and fulfillment.
+- No canonical public route was added or removed by this release, so the established **309-URL sitemap count remains unchanged**.
+- The KJV Audio Bible implementation and `/audio-bible/slides/images.json` slideshow architecture introduced and repaired in v2.5.3–v2.5.4 remain unchanged.
+- The existing About Us anchors, shared global header/footer integration, contact/newsletter form wiring, and FAQ accordion behavior were preserved.
 
 ---
 
@@ -235,7 +273,7 @@ The public website and the operational backend are deliberately separated:
 | `404.html` | Branded static 404 page |
 | `CNAME` | Production custom-domain configuration |
 
-Major content areas include Bible translation pages, online Bible readers, the KJV Audio Bible, Catholic Bible/deuterocanonical resources, Bible history, Holy Land maps, Bible Study and verse studies, Common Prayers, digital eBibles, Amazon-linked Print Bibles, the Ethiopian Bible, support/legal pages, donation/social pages, and the Living Word Bibles app.
+Major content areas include Bible translation pages, online Bible readers, the KJV Audio Bible, Catholic Bible/deuterocanonical resources, Bible history, Holy Land maps, Bible Study and verse studies, Common Prayers, digital eBibles, the seven-edition Amazon-linked Print Bibles catalog, the Ethiopian Bible, support/legal pages, donation/social pages, and the Living Word Bibles app. The About Us page also now points visitors directly to both the Audio Bible and Print Bibles experiences.
 
 ---
 
@@ -342,7 +380,7 @@ The core eStore presents six digital Bible editions and the Ethiopian Bible PDF 
 /estore/print-bibles/
 ```
 
-The Print Bibles storefront links to Amazon. Amazon handles external pricing, availability, fulfillment, and transaction processing. Living Word Bibles PayPal eBible flows remain separate.
+The Print Bibles storefront currently presents seven curated Amazon-linked editions — KJV, NKJV, NIV, ESV, NRSV Catholic Edition, NET, and Ethiopian Bible. Amazon handles external pricing, availability, fulfillment, and transaction processing. Living Word Bibles PayPal eBible flows remain separate.
 
 ### Other PayPal Hosted Buttons
 
@@ -441,8 +479,8 @@ Before merging a production change:
 **Repository architecture revision:** `2026-08-27T22:28:20Z`  
 **Apps Script build stamp:** `27 August 2026 at 15:20:42Z UTC`  
 **Backend API version:** `3.0.0`  
-**README last updated:** **01 September 2026 at 12:23:31Z UTC**
+**README last updated:** **01 September 2026 at 13:04:43Z UTC**
 
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 01 September 2026 at 12:23:31Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 01 September 2026 at 13:04:43Z UTC</strong></p>

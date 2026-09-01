@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/lwb-mark.svg">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <script>window.LWB_PUBLIC_CONFIG={"adsEnabled":false,"adsenseClient":""};</script>
+  <title>Administration Portal | Living Word Bibles</title>
+  <style>
+    .portal-shell{max-width:1280px;margin:0 auto;padding:32px 18px 64px}.portal-login{max-width:520px;margin:34px auto}.portal-card{background:#fff;border:1px solid #ded6c6;border-radius:14px;padding:22px;box-shadow:0 8px 24px rgba(20,28,34,.06)}
+    .portal-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.portal-stat strong{display:block;font-size:2rem;line-height:1.1}.portal-stat span{color:#665f55;font-size:.92rem}.portal-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0}.portal-tabs button{border:1px solid #b9aa8d;background:#fff;padding:10px 14px;border-radius:999px;cursor:pointer}.portal-tabs button[aria-selected="true"]{background:#1d2a34;color:#fff;border-color:#1d2a34}.portal-panel[hidden]{display:none!important}.portal-row{display:flex;gap:12px;align-items:end;flex-wrap:wrap}.portal-row>*{flex:1 1 190px}.portal-row .compact{flex:0 1 150px}.portal-field{display:flex;flex-direction:column;gap:6px}.portal-field label{font-weight:700}.portal-field input,.portal-field select,.portal-field textarea{width:100%;padding:10px 12px;border:1px solid #bfb7a7;border-radius:8px;background:#fff}.portal-field textarea{min-height:92px}.portal-table{width:100%;border-collapse:collapse}.portal-table th,.portal-table td{padding:10px;border-bottom:1px solid #eee5d5;text-align:left;vertical-align:top}.portal-table th{font-size:.83rem;text-transform:uppercase;letter-spacing:.03em;color:#665f55}.portal-scroll{overflow:auto;max-height:520px;border:1px solid #e4dccd;border-radius:10px}.portal-toolbar{display:flex;flex-wrap:wrap;gap:6px;padding:8px;border:1px solid #c9c0b0;border-bottom:0;border-radius:8px 8px 0 0;background:#f8f5ee}.portal-toolbar button{padding:7px 10px;border:1px solid #bcb09a;background:#fff;border-radius:6px;cursor:pointer}.portal-editor{min-height:280px;padding:18px;border:1px solid #c9c0b0;border-radius:0 0 8px 8px;background:#fff;overflow:auto}.portal-editor:focus{outline:2px solid #8b6a25;outline-offset:1px}.portal-preview{width:100%;min-height:420px;border:1px solid #c9c0b0;border-radius:10px;background:#fff}.portal-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.portal-actions button,.portal-actions .btn{cursor:pointer}.portal-status{padding:10px 12px;border-radius:8px;margin:12px 0}.portal-status[data-state="ok"]{background:#eef8ef;color:#285c2d}.portal-status[data-state="error"]{background:#fff0ef;color:#8b2d27}.portal-muted{color:#6c6457}.portal-danger{border-color:#a34b43!important;color:#8b2d27!important}.portal-badge{display:inline-block;padding:3px 8px;border-radius:999px;background:#f0ece2;font-size:.8rem}.portal-meta{font-size:.9rem;color:#6c6457}.portal-section-head{display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap}.portal-code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.85rem;word-break:break-word}.portal-login-logo{display:block;max-width:290px;width:75%;height:auto;margin:0 auto 18px}.portal-signature{min-height:110px}.portal-two{display:grid;grid-template-columns:1fr 1fr;gap:18px}.portal-three{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    @media(max-width:900px){.portal-grid{grid-template-columns:repeat(2,1fr)}.portal-two,.portal-three{grid-template-columns:1fr}}@media(max-width:540px){.portal-grid{grid-template-columns:1fr}.portal-shell{padding-left:12px;padding-right:12px}.portal-table{min-width:720px}}
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to Content</a>
+  <div data-lwb-header></div>
+  <main id="main-content" class="portal-shell" data-portal-root>
+    <section class="portal-login portal-card" data-portal-login>
+      <img class="portal-login-logo" src="/assets/LivingWordBibles01.png" alt="Living Word Bibles">
+      <h1>Administration Portal</h1>
+      <p class="portal-muted">Authorized Living Word Bibles administration only.</p>
+      <form data-portal-login-form>
+        <div class="portal-field"><label for="admin-user">Username</label><input id="admin-user" name="admin_user" autocomplete="username" required></div>
+        <div class="portal-field" style="margin-top:12px"><label for="admin-password">Password</label><input id="admin-password" name="admin_password" type="password" autocomplete="current-password" required></div>
+        <div class="portal-actions"><button class="btn" type="submit">Sign In</button></div>
+      </form>
+      <p class="portal-status" data-portal-login-status hidden></p>
+    </section>
+
+    <section data-portal-app hidden>
+      <div class="portal-section-head">
+        <div><h1>Living Word Bibles Portal</h1><p class="portal-muted">Signed in as <strong data-admin-name>Administrator</strong></p></div>
+        <button class="btn secondary" type="button" data-portal-signout>Sign Out</button>
+      </div>
+      <p class="portal-status" data-portal-status hidden></p>
+
+      <div class="portal-grid" data-dashboard-stats></div>
+      <nav class="portal-tabs" aria-label="Portal sections">
+        <button type="button" data-tab="dashboard" aria-selected="true">Dashboard</button>
+        <button type="button" data-tab="subscribers" aria-selected="false">Subscribers</button>
+        <button type="button" data-tab="newsletter" aria-selected="false">Newsletter</button>
+        <button type="button" data-tab="accounts" aria-selected="false">Accounts & Purchases</button>
+        <button type="button" data-tab="logs" aria-selected="false">System Log</button>
+      </nav>
+
+      <section class="portal-panel" data-panel="dashboard">
+        <div class="portal-two">
+          <article class="portal-card"><h2>Newsletter Queue</h2><div data-campaign-summary></div><p class="portal-meta">Subscriber batches are hard-capped at 99 and send only Monday, Wednesday, and Friday.</p></article>
+          <article class="portal-card"><h2>Portal Rules</h2><ul><li>Uses existing spreadsheet tabs only.</li><li>Only eBibles and the Ethiopian Bible PDF may attach to accounts.</li><li>KJV Special and Douay-Rheims remain free on every verified account.</li><li>Every portal action and site click is written to the existing System Log.</li></ul></article>
+        </div>
+        <article class="portal-card" style="margin-top:18px"><h2>Recent Activity</h2><div class="portal-scroll"><table class="portal-table"><thead><tr><th>Time</th><th>Event</th><th>Source</th><th>Email</th><th>Message</th></tr></thead><tbody data-dashboard-logs></tbody></table></div></article>
+      </section>
+
+      <section class="portal-panel" data-panel="subscribers" hidden>
+        <article class="portal-card">
+          <div class="portal-section-head"><div><h2>Newsletter Subscribers</h2><p class="portal-muted">Add, reactivate, search, or unsubscribe addresses using the existing Newsletter Subscribers / Do Not Email logic.</p></div><button class="btn secondary" type="button" data-refresh-subscribers>Refresh</button></div>
+          <form class="portal-row" data-subscriber-add-form>
+            <div class="portal-field"><label>Email</label><input type="email" name="email" required></div>
+            <div class="portal-field"><label>Name</label><input name="name"></div>
+            <div class="portal-field compact"><label><input type="checkbox" name="override_dne" value="true"> Explicit re-subscribe</label></div>
+            <div class="compact"><button class="btn" type="submit">Add Subscriber</button></div>
+          </form>
+          <form class="portal-row" data-subscriber-search-form style="margin-top:18px"><div class="portal-field"><label>Search subscribers</label><input name="query" placeholder="Email, name, or status"></div><div class="compact"><button class="btn secondary" type="submit">Search</button></div></form>
+          <div class="portal-scroll" style="margin-top:18px"><table class="portal-table"><thead><tr><th>Email</th><th>Name</th><th>Status</th><th>Source</th><th>Updated</th><th>Action</th></tr></thead><tbody data-subscriber-rows></tbody></table></div>
+        </article>
+      </section>
+
+      <section class="portal-panel" data-panel="newsletter" hidden>
+        <article class="portal-card">
+          <div class="portal-section-head"><div><h2>Compose Newsletter</h2><p class="portal-muted">Branded Living Word Bibles HTML shell, personalized unsubscribe link, site/legal links, and your custom signature are added automatically.</p></div><span class="portal-badge">99 max / Mon-Wed-Fri</span></div>
+          <div class="portal-two">
+            <div class="portal-field"><label for="newsletter-subject">Subject</label><input id="newsletter-subject" data-news-subject maxlength="200" placeholder="Newsletter subject"></div>
+            <div class="portal-field"><label for="newsletter-preheader">Preheader</label><input id="newsletter-preheader" data-news-preheader maxlength="240" placeholder="Short preview text"></div>
+          </div>
+          <p class="portal-meta">Personalization tokens: <code>{{first_name}}</code> and <code>{{email}}</code>.</p>
+          <div class="portal-toolbar" data-editor-toolbar>
+            <button type="button" data-command="bold"><strong>B</strong></button><button type="button" data-command="italic"><em>I</em></button><button type="button" data-command="underline"><u>U</u></button>
+            <button type="button" data-block="h2">Heading</button><button type="button" data-block="p">Paragraph</button><button type="button" data-command="insertUnorderedList">Bullets</button>
+            <button type="button" data-link>Add Link</button><button type="button" data-cta>Add CTA Button</button><button type="button" data-command="removeFormat">Clear Style</button>
+          </div>
+          <div class="portal-editor" contenteditable="true" role="textbox" aria-multiline="true" data-news-editor><p>Hello {{first_name}},</p><h2>Living Word Bibles News</h2><p>Type your newsletter here. Highlight text and use the toolbar to add basic formatting and hyperlinks.</p></div>
+          <h3>Signature</h3>
+          <div class="portal-toolbar"><button type="button" data-signature-default>Restore Default Signature</button></div>
+          <div class="portal-editor portal-signature" contenteditable="true" role="textbox" aria-multiline="true" data-news-signature><p>Sincerely,</p><p><strong>Living Word Bibles</strong><br><em>Beautifully Formatted to Bring God’s Word to Life on Any Device</em></p></div>
+          <div class="portal-row" style="margin-top:16px"><div class="portal-field"><label>Test email</label><input type="email" data-test-email placeholder="Defaults to admin email"></div><div class="compact"><button class="btn secondary" type="button" data-news-test>Send Test</button></div><div class="compact"><button class="btn secondary" type="button" data-news-preview>Preview</button></div><div class="compact"><button class="btn" type="button" data-news-queue>Queue Newsletter</button></div></div>
+          <div class="portal-actions"><button class="btn secondary" type="button" data-news-process>Process Eligible Batch</button><button class="btn secondary portal-danger" type="button" data-news-stop>Stop Active Campaign</button></div>
+        </article>
+        <article class="portal-card" style="margin-top:18px" data-preview-card hidden><h2>Email Preview</h2><iframe class="portal-preview" sandbox="" title="Newsletter preview" data-news-preview-frame></iframe></article>
+      </section>
+
+      <section class="portal-panel" data-panel="accounts" hidden>
+        <article class="portal-card">
+          <h2>Accounts & Purchases</h2>
+          <form class="portal-row" data-customer-search-form><div class="portal-field"><label>Customer email</label><input type="email" name="email" required></div><div class="compact"><button class="btn" type="submit">Load Account</button></div></form>
+          <div data-customer-area hidden>
+            <div class="portal-two" style="margin-top:18px"><div><h3>Customer</h3><div data-customer-summary></div></div><div><h3>Reconcile PayPal Purchase</h3><form data-admin-reconcile-form><div class="portal-field"><label>PayPal transaction ID</label><input name="tx" required></div><label style="display:block;margin:10px 0"><input type="checkbox" name="force" value="true"> Allow reassignment if transaction is attached to another account</label><button class="btn" type="submit">Reconcile Purchase</button></form></div></div>
+            <hr style="margin:24px 0;border:0;border-top:1px solid #e5dccb">
+            <div class="portal-three">
+              <div><h3>Add Product to Library</h3><form data-entitlement-grant-form><div class="portal-field"><label>Eligible product</label><select name="product_id" data-product-select required></select></div><div class="portal-field"><label>Notes</label><input name="notes" placeholder="Optional admin note"></div><button class="btn" type="submit" style="margin-top:10px">Grant Product</button></form></div>
+              <div><h3>Add Manual Purchase</h3><form data-manual-purchase-form><div class="portal-field"><label>Eligible product</label><select name="product_id" data-product-select required></select></div><div class="portal-field"><label>Amount</label><input name="amount" type="number" min="0" step="0.01" placeholder="Use product price"></div><button class="btn" type="submit" style="margin-top:10px">Add Manual Purchase</button></form></div>
+              <div><h3>Account Rules</h3><p class="portal-muted">Only eBibles and the Ethiopian Bible PDF can be attached. The free KJV Special and Douay-Rheims products cannot be revoked.</p></div>
+            </div>
+            <h3 style="margin-top:24px">Entitlements</h3><div class="portal-scroll"><table class="portal-table"><thead><tr><th>Product</th><th>Status</th><th>Source</th><th>Order</th><th>Granted</th><th>Action</th></tr></thead><tbody data-entitlement-rows></tbody></table></div>
+            <h3 style="margin-top:24px">Orders</h3><div class="portal-scroll"><table class="portal-table"><thead><tr><th>Order</th><th>PayPal Tx</th><th>Status</th><th>Total</th><th>Date</th><th>Action</th></tr></thead><tbody data-order-rows></tbody></table></div>
+          </div>
+        </article>
+      </section>
+
+      <section class="portal-panel" data-panel="logs" hidden>
+        <article class="portal-card"><div class="portal-section-head"><div><h2>System Log</h2><p class="portal-muted">Recent rows from the existing System Log sheet, including page views, clicks, account operations, subscriber changes, newsletter batches, and portal actions.</p></div><button class="btn secondary" type="button" data-refresh-logs>Refresh</button></div><div class="portal-scroll"><table class="portal-table"><thead><tr><th>Time</th><th>Level</th><th>Event</th><th>Source</th><th>Email</th><th>Record</th><th>Message</th></tr></thead><tbody data-log-rows></tbody></table></div></article>
+      </section>
+    </section>
+  </main>
+  <div data-lwb-footer></div>
+  <script src="/assets/js/config.js" defer></script>
+  <script src="/assets/js/site.js" defer></script>
+  <script src="/assets/js/forms.js" defer></script>
+  <script src="/assets/js/portal.js" defer></script>
+</body>
+</html>

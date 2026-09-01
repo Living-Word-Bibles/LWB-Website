@@ -121,13 +121,26 @@
     .standards-card{padding:1rem;border:1px solid rgba(59,23,17,.14);border-radius:14px;background:#fffdf9}
     .standards-card h3{margin:0 0 .4rem}
     .standards-card p{margin:0}
+    .product-showcase{margin:1.35rem 0 1rem}
+    .product-showcase>h3{margin:0 0 .45rem;color:#3b1711;font-size:1.18rem}
+    .product-showcase>p{margin:.4rem 0 1rem}
+    .editorial-product-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8rem}
+    .editorial-product-card{display:flex;min-width:0;flex-direction:column;padding:1rem;border:1px solid rgba(59,23,17,.14);border-radius:16px;background:#fffdf9;box-shadow:0 8px 22px rgba(36,22,17,.045)}
+    .editorial-product-card h4{margin:0 0 .25rem;color:#3b1711;font-size:1rem;line-height:1.3}
+    .editorial-product-card h4 a{color:#3b1711;text-decoration-thickness:1px;text-underline-offset:.16em}
+    .editorial-product-type{display:block;margin-bottom:.65rem;color:#80683d;font-size:.73rem;font-weight:850;letter-spacing:.06em;text-transform:uppercase}
+    .editorial-product-art{display:flex;align-items:center;justify-content:center;min-height:112px;margin:.1rem 0 .7rem;padding:.65rem;border:1px solid rgba(59,23,17,.09);border-radius:12px;background:#faf7f0}
+    .editorial-product-art img{display:block;width:auto;max-width:112px;max-height:96px;height:auto;object-fit:contain;border-radius:6px}
+    .editorial-product-card p{margin:0 0 .75rem;color:#574b45;font-size:.88rem;line-height:1.5}
+    .editorial-product-link{display:inline-flex;align-items:center;justify-content:center;min-height:36px;margin-top:auto;padding:.5rem .7rem;border-radius:999px;background:#4b2118;color:#fff!important;text-decoration:none;font-size:.8rem;font-weight:800}
+    .editorial-product-link:hover,.editorial-product-link:focus{background:#34150f;color:#fff!important;text-decoration:none}
     .reference-list{display:grid;gap:.65rem;margin:1rem 0;padding:0;list-style:none}
     .reference-list li{padding:.85rem 1rem;border:1px solid rgba(59,23,17,.14);border-radius:12px;background:#fbf8f2}
     .legal-contact-card{margin-top:1rem;padding:clamp(1.35rem,3vw,2rem);min-height:240px;border:1px solid rgba(184,135,52,.34);border-radius:18px;background:linear-gradient(90deg,rgba(38,16,12,.94) 0%,rgba(51,22,16,.90) 42%,rgba(44,19,14,.78) 72%,rgba(31,13,10,.84) 100%),url('/assets/legal-banner.png') center center / cover no-repeat;color:#fff;box-shadow:0 14px 34px rgba(36,22,17,.14)}
     .legal-contact-card p,.legal-contact-card strong{color:#fff}
     .legal-contact-card a{color:#f5d89a}
-    @media(max-width:900px){.standards-layout{grid-template-columns:1fr}.standards-sidebar{position:static}.standards-sidebar nav{max-height:none;grid-template-columns:repeat(2,minmax(0,1fr))}}
-    @media(max-width:660px){.standards-shell{padding:1.35rem .9rem 3rem}.standards-content{padding:0 1.1rem .5rem}.standards-sidebar nav,.standards-grid{grid-template-columns:1fr}.standards-hero,.mission-box{border-radius:14px}.standards-hero img,.mission-box img{aspect-ratio:auto}}
+    @media(max-width:900px){.standards-layout{grid-template-columns:1fr}.standards-sidebar{position:static}.standards-sidebar nav{max-height:none;grid-template-columns:repeat(2,minmax(0,1fr))}.editorial-product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:660px){.standards-shell{padding:1.35rem .9rem 3rem}.standards-content{padding:0 1.1rem .5rem}.standards-sidebar nav,.standards-grid,.editorial-product-grid{grid-template-columns:1fr}.standards-hero,.mission-box{border-radius:14px}.standards-hero img,.mission-box img{aspect-ratio:auto}}
   </style>
 </head>
 
@@ -217,6 +230,183 @@
               <div class="standards-card"><h3>Reference and Visual Material</h3><p>Maps, timelines, charts, tables, photographs, manuscript images, illustrations, bibliographies, footnotes, cross-references, and metadata.</p></div>
               <div class="standards-card"><h3>Audio Bible</h3><p>Narrated Scripture, chapter audio, source recordings, playback interfaces, visual accompaniment, attribution, and audio metadata.</p></div>
               <div class="standards-card"><h3>Accounts &amp; Digital Libraries</h3><p>Customer libraries, digital-product entitlements, purchase reconciliation, free-product grants, download access, and administrative corrections to account records.</p></div>
+            </div>
+
+            <div class="product-showcase" aria-label="Living Word Bibles products and Bible editions">
+              <h3>Living Word Bibles Products &amp; Bible Editions</h3>
+              <p>Each edition below links directly to its Living Word Bibles eStore product, Bible reader, Audio Bible, or Ethiopian Bible product page.</p>
+              <div class="editorial-product-grid">
+                <article class="editorial-product-card">
+                  <h4><a href="/estore/p/the-holy-bible-king-james-version/">King James Version</a></h4>
+                  <span class="editorial-product-type">eStore eBible</span>
+                  <div class="editorial-product-art">
+                    <a href="/estore/p/the-holy-bible-king-james-version/" aria-label="Open eStore Product: King James Version">
+                      <img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="The Holy Bible: King James Version">
+                    </a>
+                  </div>
+                  <a class="editorial-product-link" href="/estore/p/the-holy-bible-king-james-version/">Open eStore Product</a>
+                </article>
+                <article class="editorial-product-card">
+                  <h4><a href="/read-the-bible-online/nkjv/">New King James Version</a></h4>
+                  <span class="editorial-product-type">Bible Reader</span>
+                  <div class="editorial-product-art">
+                    <a href="/read-the-bible-online/nkjv/" aria-label="Read Online: New King James Version">
+                      <img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="New King James Version">
+                    </a>
+                  </div>
+                  <a class="editorial-product-link" href="/read-the-bible-online/nkjv/">Read Online</a>
+                </article>
+                <article class="editorial-product-card">
+                  <h4><a href="/read-the-bible-online/niv/">New International Version</a></h4>
+                  <span class="editorial-product-type">Bible Reader</span>
+                  <div class="editorial-product-art">
+                    <a href="/read-the-bible-online/niv/" aria-label="Read Online: New International Version">
+                      <img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="New International Version">
+                    </a>
+                  </div>
+                  <a class="editorial-product-link" href="/read-the-bible-online/niv/">Read Online</a>
+                </article>
+                <article class="editorial-product-card">
+                  <h4><a href="/read-the-bible-online/esv/">English Standard Version</a></h4>
+                  <span class="editorial-product-type">Bible Reader</span>
+                  <div class="editorial-product-art">
+                    <a href="/read-the-bible-online/esv/" aria-label="Read Online: English Standard Version">
+                      <img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="English Standard Version">
+                    </a>
+                  </div>
+                  <a class="editorial-product-link" href="/read-the-bible-online/esv/">Read Online</a>
+                </article>
+                <article class="editorial-product-card">
+                  <h4><a href="/read-the-bible-online/net/">New English Translation</a></h4>
+                  <span class="editorial-product-type">Bible Reader</span>
+                  <div class="editorial-product-art">
+                    <a href="/read-the-bible-online/net/" aria-label="Read Online: New English Translation">
+                      <img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="New English Translation">
+                    </a>
+                  </div>
+                  <a class="editorial-product-link" href="/read-the-bible-online/net/">Read Online</a>
+                </article>
+                <article class="editorial-product-card">
+                  <h4><a href="/read-the-bible-online/leb/">Lexham English Bible</a></h4>
+                  <span class="editorial-product-type">Bible Reader</span>
+                  <div class="editorial-product-art">
+                    <a href="/read-the-bible-online/leb/" aria-label="Read Online: Lexham English Bible">
+                      <img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="Lexham English Bible">
+                    </a>
+                  </div>
+                  <a class="editorial-product-link" href="/read-the-bible-online/leb/">Read Online</a>
+                </article>
+                <article class="editorial-product-card">
+                  <h4><a href="/estore/p/the-holy-bible-american-standard-version-asv/">American Standard Version</a></h4>
+                  <span class="editorial-product-type">eStore eBible</span>
+                  <div class="editorial-product-art">
+                    <a href="/estore/p/the-holy-bible-american-standard-version-asv/" aria-label="Open eStore Product: American Standard Version">
+                      <img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="The Holy Bible: American Standard Version">
+                    </a>
+                  </div>
+                  <a class="editorial-product-link" href="/estore/p/the-holy-bible-american-standard-version-asv/">Open eStore Product</a>
+                </article>
+                <article class="editorial-product-card">
+                  <h4><a href="/estore/p/the-holy-bible-youngs-literal-translation-ylt/">Young’s Literal Translation</a></h4>
+                  <span class="editorial-product-type">eStore eBible</span>
+                  <div class="editorial-product-art">
+                    <a href="/estore/p/the-holy-bible-youngs-literal-translation-ylt/" aria-label="Open eStore Product: Young’s Literal Translation">
+                      <img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="The Holy Bible: Young’s Literal Translation">
+                    </a>
+                  </div>
+                  <a class="editorial-product-link" href="/estore/p/the-holy-bible-youngs-literal-translation-ylt/">Open eStore Product</a>
+                </article>
+                <article class="editorial-product-card">
+                  <h4><a href="/estore/p/the-holy-bible-world-english-bible-web/">World English Bible</a></h4>
+                  <span class="editorial-product-type">eStore eBible</span>
+                  <div class="editorial-product-art">
+                    <a href="/estore/p/the-holy-bible-world-english-bible-web/" aria-label="Open eStore Product: World English Bible">
+                      <img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="The Holy Bible: World English Bible">
+                    </a>
+                  </div>
+                  <a class="editorial-product-link" href="/estore/p/the-holy-bible-world-english-bible-web/">Open eStore Product</a>
+                </article>
+                <article class="editorial-product-card">
+                  <h4><a href="/read-the-bible-online/oeb/">Open English Bible</a></h4>
+                  <span class="editorial-product-type">Bible Reader</span>
+                  <div class="editorial-product-art">
+                    <a href="/read-the-bible-online/oeb/" aria-label="Read Online: Open English Bible">
+                      <img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="Open English Bible">
+                    </a>
+                  </div>
+                  <a class="editorial-product-link" href="/read-the-bible-online/oeb/">Read Online</a>
+                </article>
+                <article class="editorial-product-card">
+                  <h4><a href="/read-the-bible-online/dby/">Darby Translation</a></h4>
+                  <span class="editorial-product-type">Bible Reader</span>
+                  <div class="editorial-product-art">
+                    <a href="/read-the-bible-online/dby/" aria-label="Read Online: Darby Translation">
+                      <img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="Darby Translation">
+                    </a>
+                  </div>
+                  <a class="editorial-product-link" href="/read-the-bible-online/dby/">Read Online</a>
+                </article>
+                <article class="editorial-product-card">
+                  <h4><a href="/read-the-bible-online/gnv/">Geneva Bible</a></h4>
+                  <span class="editorial-product-type">Bible Reader</span>
+                  <div class="editorial-product-art">
+                    <a href="/read-the-bible-online/gnv/" aria-label="Read Online: Geneva Bible">
+                      <img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="Geneva Bible">
+                    </a>
+                  </div>
+                  <a class="editorial-product-link" href="/read-the-bible-online/gnv/">Read Online</a>
+                </article>
+                <article class="editorial-product-card">
+                  <h4><a href="/read-the-bible-online/bsb/">Berean Standard Bible</a></h4>
+                  <span class="editorial-product-type">Bible Reader</span>
+                  <div class="editorial-product-art">
+                    <a href="/read-the-bible-online/bsb/" aria-label="Read Online: Berean Standard Bible">
+                      <img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="Berean Standard Bible">
+                    </a>
+                  </div>
+                  <a class="editorial-product-link" href="/read-the-bible-online/bsb/">Read Online</a>
+                </article>
+                <article class="editorial-product-card">
+                  <h4><a href="/read-the-bible-online/bbe/">Bible in Basic English</a></h4>
+                  <span class="editorial-product-type">Bible Reader</span>
+                  <div class="editorial-product-art">
+                    <a href="/read-the-bible-online/bbe/" aria-label="Read Online: Bible in Basic English">
+                      <img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="Bible in Basic English">
+                    </a>
+                  </div>
+                  <a class="editorial-product-link" href="/read-the-bible-online/bbe/">Read Online</a>
+                </article>
+                <article class="editorial-product-card">
+                  <h4><a href="/estore/p/the-holy-bible-douay-rheims-bible/">Douay-Rheims Bible</a></h4>
+                  <span class="editorial-product-type">eStore eBible</span>
+                  <div class="editorial-product-art">
+                    <a href="/estore/p/the-holy-bible-douay-rheims-bible/" aria-label="Open eStore Product: Douay-Rheims Bible">
+                      <img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="The Holy Bible: Douay-Rheims Bible">
+                    </a>
+                  </div>
+                  <a class="editorial-product-link" href="/estore/p/the-holy-bible-douay-rheims-bible/">Open eStore Product</a>
+                </article>
+                <article class="editorial-product-card">
+                  <h4><a href="/audio-bible/">KJV Audio Bible</a></h4>
+                  <span class="editorial-product-type">Audio Bible</span>
+                  <div class="editorial-product-art">
+                    <a href="/audio-bible/" aria-label="Listen Now: KJV Audio Bible">
+                      <img src="/audio-bible/audio-bible.png" data-fallback="/assets/icons/lwb-mark.svg" alt="Living Word Bibles KJV Audio Bible">
+                    </a>
+                  </div>
+                  <a class="editorial-product-link" href="/audio-bible/">Listen Now</a>
+                </article>
+                <article class="editorial-product-card">
+                  <h4><a href="/ethiopian-bible/">The Complete Apocrypha of the Ethiopian Bible</a></h4>
+                  <span class="editorial-product-type">Digital PDF</span>
+                  <div class="editorial-product-art">
+                    <a href="/ethiopian-bible/" aria-label="View Product: The Complete Apocrypha of the Ethiopian Bible">
+                      <img src="/assets/EthiopianBibleCover.jpeg" data-fallback="/assets/icons/lwb-mark.svg" alt="The Complete Apocrypha of the Ethiopian Bible">
+                    </a>
+                  </div>
+                  <a class="editorial-product-link" href="/ethiopian-bible/">View Product</a>
+                </article>
+              </div>
             </div>
             <p>These standards work together with our <a href="/terms-of-service/">Terms of Service</a>, <a href="/copyright-notice/">Copyright Notice</a>, <a href="/licensing/">Publisher Licensing Notice</a>, <a href="/app-licensing/">App Licensing</a>, and <a href="/privacy-policy/">Privacy Policy</a>. Where a translation-specific license, rights-holder instruction, law, or contract imposes a stricter requirement, that requirement controls.</p>
           </section>

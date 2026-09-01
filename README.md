@@ -1,3 +1,4 @@
+[README.md](https://github.com/user-attachments/files/31715436/README.md)
 [README.md](https://github.com/user-attachments/files/31714041/README.md)
 <p align="center">
   <a href="https://www.livingwordbibles.com/">

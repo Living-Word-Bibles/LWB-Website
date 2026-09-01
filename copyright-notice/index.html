@@ -327,76 +327,17 @@
       line-height:1.58;
     }
 
-    /* Small cover-style icons for legal reference cards.
-       These are generated in HTML/CSS so no unlicensed publisher cover art is embedded. */
-    .translation-cover-link{
-      display:flex;
-      width:max-content;
-      margin:.05rem auto .85rem;
-      text-decoration:none;
-    }
 
-    .translation-cover-icon{
-      position:relative;
-      display:flex;
-      width:78px;
-      height:118px;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      gap:.32rem;
-      padding:.55rem .4rem;
-      border:1px solid rgba(255,255,255,.34);
-      border-radius:7px 10px 10px 7px;
-      background:
-        linear-gradient(90deg,rgba(0,0,0,.25) 0 7px,transparent 7px),
-        linear-gradient(145deg,#3b1711,#6b3426 62%,#2b110d);
-      box-shadow:0 7px 15px rgba(36,22,17,.16);
-      color:#fff8e9;
-      text-align:center;
-      overflow:hidden;
-      transition:transform .15s ease,box-shadow .15s ease;
+    .legal-bible-card{
+      width:132px;
+      min-height:190px;
+      margin:.1rem auto .85rem;
+      padding:.7rem;
+      border-radius:12px;
     }
-
-    .translation-cover-icon::after{
-      content:"";
-      position:absolute;
-      inset:7px 7px 7px 12px;
-      border:1px solid rgba(245,216,154,.34);
-      border-radius:3px 6px 6px 3px;
-      pointer-events:none;
-    }
-
-    .translation-cover-title{
-      position:relative;
-      z-index:1;
-      font:700 .52rem/1.15 Georgia,"Times New Roman",serif;
-      letter-spacing:.05em;
-      text-transform:uppercase;
-    }
-
-    .translation-cover-code{
-      position:relative;
-      z-index:1;
-      color:#f5d89a;
-      font:800 .94rem/1 Georgia,"Times New Roman",serif;
-      letter-spacing:.04em;
-    }
-
-    .translation-cover-brand{
-      position:relative;
-      z-index:1;
-      font-size:.44rem;
-      font-weight:800;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-    }
-
-    .translation-cover-link:hover .translation-cover-icon,
-    .translation-cover-link:focus .translation-cover-icon{
-      transform:translateY(-2px);
-      box-shadow:0 10px 20px rgba(36,22,17,.22);
-    }
+    .legal-bible-card h3{font-size:.86rem;margin:.15rem 0 .18rem;}
+    .legal-bible-card span{font-size:.72rem;line-height:1.15;}
+    .legal-bible-card img{width:50px;height:50px;margin:auto auto .05rem;}
 
     .publisher-notice{
       margin:.7rem 0;
@@ -634,11 +575,9 @@
         <div class="translation-grid">
 
           <section class="translation-card">
-            <h3><a href="/estore/p/the-holy-bible-king-james-version">King James Version (KJV)</a></h3>
+            <h3><a href="/read-the-bible-online/kjv/">King James Version (KJV)</a></h3>
             <span class="translation-status">Public Domain in the United States</span>
-            <a class="translation-cover-link" href="/estore/p/the-holy-bible-king-james-version" aria-label="Open the King James Version at Living Word Bibles">
-              <span class="translation-cover-icon" aria-hidden="true"><span class="translation-cover-title">Holy Bible</span><span class="translation-cover-code">KJV</span><span class="translation-cover-brand">Living Word Bibles</span></span>
-            </a>
+            <a href="/read-the-bible-online/kjv/" class="bible-card legal-bible-card" aria-label="Open King James Version"><h3>The Holy Bible</h3><span>King James Version</span><img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="Living Word Bibles logo"></a>
             <p><strong>Status:</strong> The historic King James Version text is public domain in the United States.</p>
             <p><strong>Credit/Notes:</strong> No LWB permission is required to reuse the public-domain KJV text itself in the United States. Special continuing rights apply in the United Kingdom; see the <a href="#kjv-uk">United Kingdom KJV Notice</a>.</p>
           </section>
@@ -646,9 +585,7 @@
           <section class="translation-card">
             <h3><a href="/read-the-bible-online/nkjv/">New King James Version (NKJV)</a></h3>
             <span class="translation-status">Copyrighted / Licensed</span>
-            <a class="translation-cover-link" href="/read-the-bible-online/nkjv/" aria-label="Open the New King James Version at Living Word Bibles">
-              <span class="translation-cover-icon" aria-hidden="true"><span class="translation-cover-title">Holy Bible</span><span class="translation-cover-code">NKJV</span><span class="translation-cover-brand">Living Word Bibles</span></span>
-            </a>
+            <a href="/read-the-bible-online/nkjv/" class="bible-card legal-bible-card" aria-label="Open New King James Version"><h3>The Holy Bible</h3><span>New King James Version</span><img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="Living Word Bibles logo"></a>
             <p><strong>Status:</strong> Presented by Living Word Bibles under license.</p>
             <div class="publisher-notice">Scripture taken from the New King James Version®. Copyright © 1982 by Thomas Nelson. Used by permission. All rights reserved.</div>
             <p>NKJV®, New King James Version®, and associated rights remain the property of their respective rights holder(s). LWB grants no sublicense in the NKJV text.</p>
@@ -658,9 +595,7 @@
           <section class="translation-card">
             <h3><a href="/read-the-bible-online/niv/">New International Version (NIV)</a></h3>
             <span class="translation-status">Copyrighted / Licensed</span>
-            <a class="translation-cover-link" href="/read-the-bible-online/niv/" aria-label="Open the New International Version at Living Word Bibles">
-              <span class="translation-cover-icon" aria-hidden="true"><span class="translation-cover-title">Holy Bible</span><span class="translation-cover-code">NIV</span><span class="translation-cover-brand">Living Word Bibles</span></span>
-            </a>
+            <a href="/read-the-bible-online/niv/" class="bible-card legal-bible-card" aria-label="Open New International Version"><h3>The Holy Bible</h3><span>New International Version</span><img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="Living Word Bibles logo"></a>
             <p><strong>Status:</strong> Presented by Living Word Bibles under license.</p>
             <div class="publisher-notice">Scripture quotations are from the Holy Bible, New International Version® (NIV®). Copyright © 1973, 1978, 1984, 2011 by Biblica, Inc.® Used by permission. All rights reserved worldwide. NIV® is a registered trademark of Biblica, Inc.®.</div>
             <p>LWB grants no sublicense in the NIV text. Uses outside LWB must comply with Biblica’s current permissions and any applicable territorial publishing arrangements.</p>
@@ -670,9 +605,7 @@
           <section class="translation-card">
             <h3><a href="/read-the-bible-online/esv/">English Standard Version (ESV® Bible®)</a></h3>
             <span class="translation-status">Copyrighted / Licensed</span>
-            <a class="translation-cover-link" href="/read-the-bible-online/esv/" aria-label="Open the English Standard Version at Living Word Bibles">
-              <span class="translation-cover-icon" aria-hidden="true"><span class="translation-cover-title">Holy Bible</span><span class="translation-cover-code">ESV</span><span class="translation-cover-brand">Living Word Bibles</span></span>
-            </a>
+            <a href="/read-the-bible-online/esv/" class="bible-card legal-bible-card" aria-label="Open English Standard Version"><h3>The Holy Bible</h3><span>English Standard Version</span><img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="Living Word Bibles logo"></a>
             <p><strong>Status:</strong> Copyright © 2001 by Crossway | A Publishing Ministry of Good News Publishers | All Rights Reserved.</p>
             <div class="publisher-notice">The ESV text may not be quoted in any publication made available to the public by a Creative Commons license. The ESV may not be translated in whole or in part into any other language. Used with permission.</div>
             <p><strong>Current text-edition notice:</strong> ESV Text Edition: 2025. LWB’s use remains subject to Crossway’s applicable permissions and any license issued to LWB.</p>
@@ -682,9 +615,7 @@
           <section class="translation-card">
             <h3><a href="/read-the-bible-online/leb/">Lexham English Bible (LEB)</a></h3>
             <span class="translation-status">Copyrighted / Conditional Open Use</span>
-            <a class="translation-cover-link" href="/read-the-bible-online/leb/" aria-label="Open the Lexham English Bible at Living Word Bibles">
-              <span class="translation-cover-icon" aria-hidden="true"><span class="translation-cover-title">Holy Bible</span><span class="translation-cover-code">LEB</span><span class="translation-cover-brand">Living Word Bibles</span></span>
-            </a>
+            <a href="/read-the-bible-online/leb/" class="bible-card legal-bible-card" aria-label="Open Lexham English Bible"><h3>The Holy Bible</h3><span>Lexham English Bible</span><img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="Living Word Bibles logo"></a>
             <p><strong>Status:</strong> Copyright 2012 by Logos Bible Software. Lexham is a registered trademark of Logos Bible Software.</p>
             <div class="publisher-notice">You can give away the Lexham English Bible, but you can’t sell it on its own.</div>
             <p>The LEB license contains additional conditions concerning attribution, percentage of a larger work, verse quantities, commercial products, and reporting. LWB’s display and distribution must remain within the permission applicable to LWB.</p>
@@ -694,9 +625,7 @@
           <section class="translation-card">
             <h3><a href="/read-the-bible-online/net/">New English Translation (NET Bible®)</a></h3>
             <span class="translation-status">Copyrighted / Licensed</span>
-            <a class="translation-cover-link" href="/read-the-bible-online/net/" aria-label="Open the NET Bible at Living Word Bibles">
-              <span class="translation-cover-icon" aria-hidden="true"><span class="translation-cover-title">Holy Bible</span><span class="translation-cover-code">NET</span><span class="translation-cover-brand">Living Word Bibles</span></span>
-            </a>
+            <a href="/read-the-bible-online/net/" class="bible-card legal-bible-card" aria-label="Open New English Translation"><h3>The Holy Bible</h3><span>New English Translation</span><img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="Living Word Bibles logo"></a>
             <p><strong>Status:</strong> Copyright © Biblical Studies Press, L.L.C. NET Bible® is a registered trademark. Distribution and commercial publishing rights are subject to the applicable NET Bible permissions and any direct LWB license.</p>
             <div class="publisher-notice">Scripture quoted by permission. Quotations designated (NET) are from the NET Bible®. Copyright © Biblical Studies Press, L.L.C. All rights reserved.</div>
             <p>Because NET Bible permissions have varied by edition and mode of use, this Notice intentionally does not grant a visitor any numerical quotation allowance. Consult the current NET Bible copyright/permissions terms for your proposed use.</p>
@@ -706,9 +635,7 @@
           <section class="translation-card">
             <h3><a href="/read-the-bible-online/bsb/">Berean Standard Bible (BSB)</a></h3>
             <span class="translation-status">Public Domain — Dedicated 30 April 2023</span>
-            <a class="translation-cover-link" href="/read-the-bible-online/bsb/" aria-label="Open the Berean Standard Bible at Living Word Bibles">
-              <span class="translation-cover-icon" aria-hidden="true"><span class="translation-cover-title">Holy Bible</span><span class="translation-cover-code">BSB</span><span class="translation-cover-brand">Living Word Bibles</span></span>
-            </a>
+            <a href="/read-the-bible-online/bsb/" class="bible-card legal-bible-card" aria-label="Open Berean Standard Bible"><h3>The Holy Bible</h3><span>Berean Standard Bible</span><img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="Living Word Bibles logo"></a>
             <p><strong>Status:</strong> The Berean Bible and Majority Bible texts were officially dedicated to the public domain as of 30 April 2023. Licensing is not required for use of the Bible text.</p>
             <div class="publisher-notice">The Holy Bible, Berean Standard Bible, BSB is produced in cooperation with Bible Hub, Discovery Bible, OpenBible.com, and the Berean Bible Translation Committee. This text of God’s Word has been dedicated to the public domain.</div>
             <p>The Berean project describes that attribution as appreciated but not required. LWB’s separately created BSB page design, editorial history, metadata, artwork, and other LWB Protected Elements remain subject to this Notice.</p>
@@ -716,11 +643,9 @@
           </section>
 
           <section class="translation-card">
-            <h3><a href="/estore/p/the-holy-bible-world-english-bible-web">World English Bible (WEB™)</a></h3>
+            <h3><a href="/read-the-bible-online/web/">World English Bible (WEB™)</a></h3>
             <span class="translation-status">Public Domain Text / Trademarked Name</span>
-            <a class="translation-cover-link" href="/estore/p/the-holy-bible-world-english-bible-web" aria-label="Open the World English Bible product at Living Word Bibles">
-              <span class="translation-cover-icon" aria-hidden="true"><span class="translation-cover-title">Holy Bible</span><span class="translation-cover-code">WEB</span><span class="translation-cover-brand">Living Word Bibles</span></span>
-            </a>
+            <a href="/read-the-bible-online/web/" class="bible-card legal-bible-card" aria-label="Open World English Bible"><h3>The Holy Bible</h3><span>World English Bible</span><img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="Living Word Bibles logo"></a>
             <p><strong>Status:</strong> Text is Public Domain.</p>
             <div class="publisher-notice">World English Bible is a trademark. The World English Bible is not copyrighted. You may copy it freely, provided you do not misrepresent an altered text as the World English Bible.</div>
             <p>LWB claims no copyright in the underlying WEB text. The trademark and authenticity requirements associated with the name remain applicable.</p>
@@ -728,31 +653,25 @@
           </section>
 
           <section class="translation-card">
-            <h3><a href="/estore/p/the-holy-bible-american-standard-version-asv">American Standard Version (ASV)</a></h3>
+            <h3><a href="/read-the-bible-online/asv/">American Standard Version (ASV)</a></h3>
             <span class="translation-status">Public Domain</span>
-            <a class="translation-cover-link" href="/estore/p/the-holy-bible-american-standard-version-asv" aria-label="Open the American Standard Version product at Living Word Bibles">
-              <span class="translation-cover-icon" aria-hidden="true"><span class="translation-cover-title">Holy Bible</span><span class="translation-cover-code">ASV</span><span class="translation-cover-brand">Living Word Bibles</span></span>
-            </a>
+            <a href="/read-the-bible-online/asv/" class="bible-card legal-bible-card" aria-label="Open American Standard Version"><h3>The Holy Bible</h3><span>American Standard Version</span><img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="Living Word Bibles logo"></a>
             <p><strong>Status:</strong> Public Domain.</p>
             <p><strong>Credit/Notes:</strong> No LWB permission is required to reuse the underlying public-domain ASV text.</p>
           </section>
 
           <section class="translation-card">
-            <h3><a href="/estore/p/the-holy-bible-youngs-literal-translation-ylt">Young’s Literal Translation (YLT)</a></h3>
+            <h3><a href="/read-the-bible-online/ylt/">Young’s Literal Translation (YLT)</a></h3>
             <span class="translation-status">Public Domain</span>
-            <a class="translation-cover-link" href="/estore/p/the-holy-bible-youngs-literal-translation-ylt" aria-label="Open Young’s Literal Translation product at Living Word Bibles">
-              <span class="translation-cover-icon" aria-hidden="true"><span class="translation-cover-title">Holy Bible</span><span class="translation-cover-code">YLT</span><span class="translation-cover-brand">Living Word Bibles</span></span>
-            </a>
+            <a href="/read-the-bible-online/ylt/" class="bible-card legal-bible-card" aria-label="Open Young’s Literal Translation"><h3>The Holy Bible</h3><span>Young’s Literal Translation</span><img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="Living Word Bibles logo"></a>
             <p><strong>Status:</strong> Public Domain.</p>
             <p><strong>Credit/Notes:</strong> No LWB permission is required to reuse the underlying public-domain YLT text.</p>
           </section>
 
           <section class="translation-card">
-            <h3><a href="/estore/p/the-holy-bible-douay-rheims-bible">Douay-Rheims Bible (DRB)</a></h3>
+            <h3><a href="/read-the-bible-online/drb/">Douay-Rheims Bible (DRB)</a></h3>
             <span class="translation-status">Public Domain</span>
-            <a class="translation-cover-link" href="/estore/p/the-holy-bible-douay-rheims-bible" aria-label="Open the Douay-Rheims Bible product at Living Word Bibles">
-              <span class="translation-cover-icon" aria-hidden="true"><span class="translation-cover-title">Holy Bible</span><span class="translation-cover-code">DRB</span><span class="translation-cover-brand">Living Word Bibles</span></span>
-            </a>
+            <a href="/read-the-bible-online/drb/" class="bible-card legal-bible-card" aria-label="Open Douay-Rheims Bible"><h3>The Holy Bible</h3><span>Douay-Rheims Bible</span><img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="Living Word Bibles logo"></a>
             <p><strong>Status:</strong> Public Domain.</p>
             <p><strong>Credit/Notes:</strong> No LWB permission is required to reuse the underlying public-domain Douay-Rheims text used by LWB.</p>
           </section>
@@ -760,9 +679,7 @@
           <section class="translation-card">
             <h3><a href="/read-the-bible-online/gnv/">Geneva Bible (GNV)</a></h3>
             <span class="translation-status">Public Domain</span>
-            <a class="translation-cover-link" href="/read-the-bible-online/gnv/" aria-label="Open the Geneva Bible at Living Word Bibles">
-              <span class="translation-cover-icon" aria-hidden="true"><span class="translation-cover-title">Holy Bible</span><span class="translation-cover-code">GNV</span><span class="translation-cover-brand">Living Word Bibles</span></span>
-            </a>
+            <a href="/read-the-bible-online/gnv/" class="bible-card legal-bible-card" aria-label="Open Geneva Bible"><h3>The Holy Bible</h3><span>Geneva Bible</span><img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="Living Word Bibles logo"></a>
             <p><strong>Status:</strong> Public Domain.</p>
             <p><strong>Credit/Notes:</strong> No LWB permission is required to reuse the underlying public-domain Geneva Bible text used by LWB.</p>
           </section>
@@ -770,9 +687,7 @@
           <section class="translation-card">
             <h3><a href="/read-the-bible-online/dby/">Darby Translation (DBY)</a></h3>
             <span class="translation-status">Public Domain</span>
-            <a class="translation-cover-link" href="/read-the-bible-online/dby/" aria-label="Open the Darby Translation at Living Word Bibles">
-              <span class="translation-cover-icon" aria-hidden="true"><span class="translation-cover-title">Holy Bible</span><span class="translation-cover-code">DBY</span><span class="translation-cover-brand">Living Word Bibles</span></span>
-            </a>
+            <a href="/read-the-bible-online/dby/" class="bible-card legal-bible-card" aria-label="Open Darby Translation"><h3>The Holy Bible</h3><span>Darby Translation</span><img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="Living Word Bibles logo"></a>
             <p><strong>Status:</strong> Public Domain.</p>
             <p><strong>Credit/Notes:</strong> No LWB permission is required to reuse the underlying public-domain Darby text used by LWB.</p>
           </section>
@@ -780,9 +695,7 @@
           <section class="translation-card">
             <h3><a href="/read-the-bible-online/bbe/">Bible in Basic English (BBE)</a></h3>
             <span class="translation-status">Public Domain</span>
-            <a class="translation-cover-link" href="/read-the-bible-online/bbe/" aria-label="Open the Bible in Basic English at Living Word Bibles">
-              <span class="translation-cover-icon" aria-hidden="true"><span class="translation-cover-title">Holy Bible</span><span class="translation-cover-code">BBE</span><span class="translation-cover-brand">Living Word Bibles</span></span>
-            </a>
+            <a href="/read-the-bible-online/bbe/" class="bible-card legal-bible-card" aria-label="Open Bible in Basic English"><h3>The Holy Bible</h3><span>Bible in Basic English</span><img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="Living Word Bibles logo"></a>
             <p><strong>Status:</strong> Public Domain. Public Bible-distribution sources identify the BBE as public domain, and Cambridge University Press has been reported as confirming that the work is out of copyright.</p>
             <p><strong>Credit/Notes:</strong> No LWB permission is required to reuse the underlying BBE text itself.</p>
             <a class="source-link" href="https://ebible.org/engBBE/copyright.htm" target="_blank" rel="noopener noreferrer">BBE Copyright Information</a>
@@ -791,9 +704,7 @@
           <section class="translation-card">
             <h3><a href="/read-the-bible-online/oeb/">Open English Bible (OEB)</a></h3>
             <span class="translation-status">CC0 / Public Domain Dedication</span>
-            <a class="translation-cover-link" href="/read-the-bible-online/oeb/" aria-label="Open the Open English Bible at Living Word Bibles">
-              <span class="translation-cover-icon" aria-hidden="true"><span class="translation-cover-title">Holy Bible</span><span class="translation-cover-code">OEB</span><span class="translation-cover-brand">Living Word Bibles</span></span>
-            </a>
+            <a href="/read-the-bible-online/oeb/" class="bible-card legal-bible-card" aria-label="Open Open English Bible"><h3>The Holy Bible</h3><span>Open English Bible</span><img src="/assets/LivingWordBibles01.png" data-fallback="/assets/icons/lwb-mark.svg" alt="Living Word Bibles logo"></a>
             <p><strong>Status:</strong> CC0 / Public Domain dedication.</p>
             <div class="publisher-notice">The Open English Bible is copyright-free and released under a CC0 Public Domain dedication.</div>
             <p>LWB claims no copyright in the underlying OEB text. LWB’s separate editorial and presentation elements remain protected to the extent provided by law.</p>

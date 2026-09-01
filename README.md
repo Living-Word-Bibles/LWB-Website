@@ -1,4 +1,4 @@
-[README-v2.5.5.md](https://github.com/user-attachments/files/31693157/README-v2.5.5.md)
+[READMEv2.5.6.md](https://github.com/user-attachments/files/31704738/READMEv2.5.6.md)
 <p align="center">
   <a href="https://www.livingwordbibles.com/">
     <img src="assets/LivingWordBibles01.png" alt="Living Word Bibles" width="320">
@@ -11,7 +11,7 @@
 
 <p align="center">
   <a href="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml/badge.svg?branch=main"></a>
-  <img alt="Frontend package v2.5.4" src="https://img.shields.io/badge/frontend-v2.5.5-555555">
+  <img alt="Frontend package v2.5.6" src="https://img.shields.io/badge/frontend-v2.5.6-555555">
   <img alt="Backend API v3.0.0" src="https://img.shields.io/badge/backend%20API-v3.0.0-555555">
   <img alt="Hosting GitHub Pages" src="https://img.shields.io/badge/hosting-GitHub%20Pages-555555">
 </p>
@@ -22,7 +22,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 01 September 2026 at 13:04:43Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 01 September 2026 at 17:42:08Z UTC</sub></p>
 
 ---
 
@@ -40,14 +40,54 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 |---|---|
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
-| Frontend package version | `2.5.5` |
+| Frontend package version | `2.5.6` |
 | Google Apps Script API version | `3.0.0` |
 | Apps Script build stamp | `27 August 2026 at 15:20:42Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `01 September 2026 at 13:04:43Z UTC` |
+| README revision | `01 September 2026 at 17:42:08Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
+
+---
+
+## What's New in v2.5.6
+
+- Added the new canonical **About the Ethiopian Bible** page at `/ethiopian-bible/about/`.  Also updated Ethiopian Bible page `/ethiopian-bible/`  to include link to Print Books `/print-books/`.
+- Added approximately **4,450 words of original long-form historical content** covering the rise of Christianity in Aksum, the translation of Scripture into Geʿez, the Garima Gospels, Ethiopian manuscript culture, the traditional eighty-one-book canon, distinctive books, worship, commentary, later revision, printing, modern translation, textual scholarship, common misconceptions, and responsible study.
+- Explained the Ethiopian Orthodox Tewahedo Church's traditional **eighty-one-book canonical total** while carefully distinguishing book-counting conventions, the commonly described narrower and broader canons, and the difference between the Ethiopian Meqabyan books and the Greek Maccabean books.
+- Added focused discussions of **1 Enoch, Jubilees, 1–3 Meqabyan, Sinodos, the Books of Covenant, Ethiopic Clement, and the Ethiopic Didascalia**.
+- Added a prominent responsive YouTube embed near the top of the page using the supplied video `https://www.youtube.com/watch?v=f9Fs2A8_C-Q` through YouTube's privacy-enhanced `youtube-nocookie.com` embed domain.
+- Added the locally bundled Ethiopian manuscript photograph at `/ethiopian-bible/about/ethiopian-bible-manuscript.jpg` with descriptive alternative text, responsive dimensions, visible creator/source attribution, and a direct license link.
+- Preserved the photograph's actual **Creative Commons Attribution-ShareAlike 2.0** licensing information. Although the source gallery provides free downloads, the source identifies this Mark Fischer photograph as **CC BY-SA 2.0 rather than public domain**.
+- Added a **Chicago-style annotated bibliography** drawing on current and foundational scholarship, the Ethiopian Orthodox Tewahedo Church's published canonical list, Oxford Academic, the Ethiopian Heritage Fund, manuscript research, and standard studies of Enoch, Jubilees, Geʿez translation, Aksum, and Ethiopian biblical interpretation.
+- Added linked scholarly notes throughout the article and accessible return links from the notes to the main page content.
+- Added responsive quick-fact cards, book-summary cards, licensed-image captioning, privacy-enhanced video presentation, mobile breakpoints, and scoped Garamond typography consistent with the established Living Word Bibles translation-history pages.
+- Added complete page metadata for search and social sharing, including the canonical URL, description, Open Graph fields, Twitter Card fields, article image, publication/update dates, Article schema, WebPage schema, Organization/WebSite relationships, and breadcrumb structured data.
+- Added an **Explore the Ethiopian Bible Edition** button on the new About page linking back to `/ethiopian-bible/`.
+- Updated `/ethiopian-bible/index.html` with a centered gold **About the Ethiopian Bible** button linking to `/ethiopian-bible/about/`, creating reciprocal navigation between the educational history and the existing digital-edition purchase page.
+- Placed the new button beneath the Ethiopian Bible product-page introduction and above the existing two-column purchase grid so visitors can reach the history without disrupting the product presentation.
+- Updated the production `sitemap.xml` to add `/ethiopian-bible/about`, increasing the canonical XML sitemap from **309 to 310 public URLs**.
+- Updated the human-readable `/site-map/` page to add **About the Ethiopian Bible** beside the existing Ethiopian Bible entry and changed its displayed canonical-page total from **309 to 310**.
+- Preserved the Ethiopian Bible PayPal Hosted Button ID `8Z63ZMZEALLG4`, product slug `ethiopian-bible`, digital-download instructions, fulfillment flow, support contacts, shared header/footer includes, and existing product JavaScript.
+- Preserved the site's **plain static GitHub Pages architecture**. The new history is checked-in HTML with one local image asset and uses the established shared site shell.
+
+### Ethiopian Bible page relationship in v2.5.6
+
+| Path | Purpose | Reciprocal destination |
+|---|---|---|
+| `/ethiopian-bible/` | Living Word Bibles digital Ethiopian Bible edition and PayPal purchase page | `/ethiopian-bible/about/` |
+| `/ethiopian-bible/about/` | Long-form Ethiopian Bible history, canon guide, media, notes, and annotated bibliography | `/ethiopian-bible/` |
+| `/ethiopian-bible/about/ethiopian-bible-manuscript.jpg` | Locally bundled Mark Fischer manuscript photograph, CC BY-SA 2.0 | Displayed on the About page |
+
+### Release safeguards
+
+- No Google Apps Script backend code, API version, endpoint, spreadsheet schema, authentication logic, account behavior, entitlement logic, or download-signing behavior was changed.
+- No PayPal merchant configuration, Hosted Button ID, purchase redirect, product slug, checkout logic, or fulfillment behavior was changed.
+- No shared header, shared footer, global CSS, global JavaScript, or existing translation-history page was modified.
+- The new About page contains exactly one locally bundled image and uses the existing `/assets/css/site.css`, `/assets/js/config.js`, `/assets/js/site.js`, and `/assets/js/forms.js` resources.
+- The new canonical route is present in both `sitemap.xml` and the human-readable `/site-map/`; both now represent the same **310-URL** public inventory.
+- `PUBLIC-PAGE-REGISTRY.json` was not supplied or modified in this change and should be synchronized to the new 310-route canonical inventory in the next route-maintenance pass.
 
 ---
 
@@ -264,6 +304,9 @@ The public website and the operational backend are deliberately separated:
 | `assets/js/products.js` | Product and PayPal-related front-end behavior |
 | `audio-bible/index.html` | KJV Audio Bible application |
 | `audio-bible/slides/images.json` | Audio Bible public-domain slideshow manifest |
+| `ethiopian-bible/index.html` | Ethiopian Bible digital-edition and PayPal purchase page |
+| `ethiopian-bible/about/index.html` | Long-form Ethiopian Bible history, canon guide, media, notes, and bibliography |
+| `ethiopian-bible/about/ethiopian-bible-manuscript.jpg` | CC BY-SA 2.0 Ethiopian manuscript photograph used by the About page |
 | `site-map/index.html` | Human-readable HTML version of the canonical public sitemap |
 | `apps-script/Code.gs` | Source-controlled Google Apps Script backend |
 | `scripts/validate-links.mjs` | Static route, anchor, and asset validation only |
@@ -273,7 +316,7 @@ The public website and the operational backend are deliberately separated:
 | `404.html` | Branded static 404 page |
 | `CNAME` | Production custom-domain configuration |
 
-Major content areas include Bible translation pages, online Bible readers, the KJV Audio Bible, Catholic Bible/deuterocanonical resources, Bible history, Holy Land maps, Bible Study and verse studies, Common Prayers, digital eBibles, the seven-edition Amazon-linked Print Bibles catalog, the Ethiopian Bible, support/legal pages, donation/social pages, and the Living Word Bibles app. The About Us page also now points visitors directly to both the Audio Bible and Print Bibles experiences.
+Major content areas include Bible translation pages, online Bible readers, the KJV Audio Bible, Catholic Bible/deuterocanonical resources, Bible history, Holy Land maps, Bible Study and verse studies, Common Prayers, digital eBibles, the seven-edition Amazon-linked Print Bibles catalog, the Ethiopian Bible digital edition and its expanded historical guide, support/legal pages, donation/social pages, and the Living Word Bibles app. The About Us page also points visitors directly to both the Audio Bible and Print Bibles experiences.
 
 ---
 
@@ -433,7 +476,7 @@ The human-readable equivalent is:
 /site-map/
 ```
 
-As of v2.5.4, the HTML Site Map is synchronized to the same **309 canonical public URLs** represented in `sitemap.xml`.
+As of v2.5.6, `sitemap.xml` and the human-readable `/site-map/` are synchronized at **310 canonical public URLs**, including `/ethiopian-bible/about`. `PUBLIC-PAGE-REGISTRY.json` remains pending synchronization because it was not supplied in this release pass.
 
 ---
 
@@ -479,8 +522,8 @@ Before merging a production change:
 **Repository architecture revision:** `2026-08-27T22:28:20Z`  
 **Apps Script build stamp:** `27 August 2026 at 15:20:42Z UTC`  
 **Backend API version:** `3.0.0`  
-**README last updated:** **01 September 2026 at 13:04:43Z UTC**
+**README last updated:** **01 September 2026 at 17:42:08Z UTC**
 
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 01 September 2026 at 13:04:43Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 01 September 2026 at 17:42:08Z UTC</strong></p>

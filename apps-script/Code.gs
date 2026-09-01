@@ -1,22 +1,28 @@
 /**
- * Living Word Bibles Backend v2.0.0
+ * Living Word Bibles Backend v2.0.1
  * Core Website API
  *
  * Account: gospellivingwordbibles@gmail.com
  * Spreadsheet: LWB Website
  * Legal display date: 27 August 2026
- * Build timestamp: 01 September 2026 at 20:47:21Z UTC
+ * Build timestamp: 01 September 2026 at 21:22:11Z UTC
  *
- * v2.0.0 highlights:
- * - Account purchase reconciliation by verified PayPal transaction ID.
- * - Only account-eligible digital products can be attached: eBooks plus the
- *   Living Word Bibles Ethiopian Bible PDF.
- * - Every verified account receives the KJV Special Edition and Douay-Rheims
- *   Bible automatically, without duplicate entitlements.
- * - Existing newsletter opt-out behavior is preserved.
- * - Branded HTML account and newsletter email system with personalized opt-out.
- * - Newsletter campaigns send no more than 99 recipients per batch and only
- *   on staggered weekdays (Monday, Wednesday, Friday).
+ * v2.0.1 highlights:
+ * - Adds the /portal administrative console using the existing Settings,
+ *   Newsletter Subscribers, Newsletter Campaigns, Customers, Orders,
+ *   Order Items, Entitlements, and System Log sheets.
+ * - Portal login reads the existing Settings rows admin_user, admin_password,
+ *   admin_display_name, admin_email, admin_enabled, admin_session_minutes,
+ *   admin_created_at, and admin_updated_at. The admin password remains
+ *   plain text in Settings as requested; no admin-password hash is stored.
+ * - Portal tools manage subscribers, compose branded HTML newsletters,
+ *   reconcile PayPal purchases, and grant/revoke account entitlements.
+ * - Newsletter campaigns remain capped at 99 recipients per batch and send
+ *   only Monday, Wednesday, and Friday.
+ * - Site page views and clicks can be appended to the existing System Log;
+ *   form values, passwords, and URL query strings are intentionally excluded.
+ * - v2.0.0 purchase reconciliation, free KJV Special/DRB entitlements,
+ *   Ethiopian Bible PDF eligibility, and branded transactional email remain.
  *
  * THIS SCRIPT DOES NOT:
  * - create or rebuild website pages
@@ -32,8 +38,8 @@
  */
 
 const LWB = Object.freeze({
-  VERSION: '2.0.0',
-  BUILD_UTC: '01 September 2026 at 20:47:21Z UTC',
+  VERSION: '2.0.1',
+  BUILD_UTC: '01 September 2026 at 21:22:11Z UTC',
   SITE_URL: 'https://www.livingwordbibles.com',
   CONTACT_EMAIL: 'gospellivingwordbibles@gmail.com',
   SPREADSHEET_ID: '1xnzdo1UJsEOTqcO2066Nfb6ayqKn8Zg5RbNLdpbaTcc',
@@ -193,12 +199,30 @@ function doGet(e) {
 }
 
 function doPost(e) {
+  /*
+   * Telemetry is intentionally lock-free so ordinary page clicks cannot block
+   * account, payment, newsletter, or portal writes behind a global script lock.
+   */
+  const parsed = parsePost_(e);
+  const parsedAction = String(parsed.action || '').toLowerCase();
+
+  if (parsedAction === 'activity-log' || parsedAction === 'activity-log-batch') {
+    try {
+      const telemetryPayload = parsedAction === 'activity-log-batch'
+        ? activityLogBatch_(parsed)
+        : activityLog_(parsed);
+      return output_(telemetryPayload, parsed.callback);
+    } catch (err) {
+      return output_({ ok: false, error: safeError_(err) }, parsed.callback);
+    }
+  }
+
   const lock = LockService.getScriptLock();
   lock.waitLock(30000);
 
   try {
-    const data = parsePost_(e);
-    const action = String(data.action || '').toLowerCase();
+    const data = parsed;
+    const action = parsedAction;
     let payload;
 
     switch (action) {
@@ -235,13 +259,69 @@ function doPost(e) {
       case 'free-download':
         payload = createFreeEntitlement_(data);
         break;
+
+      /* Admin portal */
+      case 'admin-login':
+        payload = adminLogin_(data);
+        break;
+      case 'admin-session':
+        payload = adminSession_(data);
+        break;
+      case 'admin-dashboard':
+        payload = adminDashboard_(data);
+        break;
+      case 'admin-subscribers':
+        payload = adminSubscribers_(data);
+        break;
+      case 'admin-subscriber-add':
+        payload = adminSubscriberAdd_(data);
+        break;
+      case 'admin-subscriber-remove':
+        payload = adminSubscriberRemove_(data);
+        break;
+      case 'admin-newsletter-test':
+        payload = adminNewsletterTest_(data);
+        break;
+      case 'admin-newsletter-queue':
+        payload = adminNewsletterQueue_(data);
+        break;
+      case 'admin-newsletter-process':
+        payload = adminNewsletterProcess_(data);
+        break;
+      case 'admin-newsletter-stop':
+        payload = adminNewsletterStop_(data);
+        break;
+      case 'admin-customer':
+        payload = adminCustomer_(data);
+        break;
+      case 'admin-entitlement-grant':
+        payload = adminEntitlementGrant_(data);
+        break;
+      case 'admin-entitlement-revoke':
+        payload = adminEntitlementRevoke_(data);
+        break;
+      case 'admin-reconcile-purchase':
+        payload = adminReconcilePurchase_(data);
+        break;
+      case 'admin-manual-purchase-add':
+        payload = adminManualPurchaseAdd_(data);
+        break;
+      case 'admin-manual-purchase-remove':
+        payload = adminManualPurchaseRemove_(data);
+        break;
+      case 'admin-logs':
+        payload = adminLogs_(data);
+        break;
+
       default:
         payload = { ok: false, error: 'Unknown POST action' };
     }
 
     return output_(payload, data.callback);
   } catch (err) {
-    logSystem_('ERROR', 'POST', '', '', 'web-app', safeError_(err), {});
+    logSystem_('ERROR', 'POST', '', '', 'web-app', safeError_(err), {
+      action: parsedAction
+    });
     return output_({ ok: false, error: safeError_(err) }, null);
   } finally {
     try { lock.releaseLock(); } catch (_) {}
@@ -474,13 +554,16 @@ function processNewsletterCampaign() {
   }
 
   const now = new Date();
-  const weekday = now.getDay();
+  const sendTimeZone = Session.getScriptTimeZone() || 'America/Indiana/Indianapolis';
+  const weekday = Number(Utilities.formatDate(now, sendTimeZone, 'u'));
   if (LWB.NEWSLETTER_WEEKDAYS.indexOf(weekday) === -1) {
     return { ok: true, sent: 0, message: 'Newsletter batches send only Monday, Wednesday, and Friday.' };
   }
 
-  const today = Utilities.formatDate(now, Session.getScriptTimeZone() || 'America/Indiana/Indianapolis', 'yyyy-MM-dd');
-  if (state.last_batch_date === today) {
+  const today = Utilities.formatDate(now, sendTimeZone, 'yyyy-MM-dd');
+  const props = PropertiesService.getScriptProperties();
+  const globalLastBatchDate = props.getProperty('LWB_NEWSLETTER_LAST_BATCH_DATE') || '';
+  if (state.last_batch_date === today || globalLastBatchDate === today) {
     return { ok: true, sent: 0, message: 'A newsletter batch has already been sent today.' };
   }
 
@@ -506,12 +589,16 @@ function processNewsletterCampaign() {
 
   slice.forEach(function(recipient) {
     try {
-      sendNewsletterTemplateEmail_(recipient.email, recipient.name || '', state.template_key);
+      if (String(state.mode || '') === 'custom') {
+        sendCustomNewsletterEmail_(recipient.email, recipient.name || '', state);
+      } else {
+        sendNewsletterTemplateEmail_(recipient.email, recipient.name || '', state.template_key);
+      }
       sent++;
     } catch (err) {
       failed++;
       logSystem_('ERROR', 'NEWSLETTER_SEND_FAILED', recipient.email, state.campaign_id,
-        'newsletter', safeError_(err), { template_key: state.template_key });
+        'newsletter', safeError_(err), { template_key: state.template_key || '', subject: state.subject || '' });
     }
   });
 
@@ -519,6 +606,7 @@ function processNewsletterCampaign() {
   state.total = recipients.length;
   state.last_batch_date = today;
   state.last_batch_at = now.toISOString();
+  props.setProperty('LWB_NEWSLETTER_LAST_BATCH_DATE', today);
   state.last_batch_sent = sent;
   state.last_batch_failed = failed;
 
@@ -588,7 +676,10 @@ function writeCampaignStatus_(state, status) {
   try {
     appendObject_(sheet_(LWB.SHEETS.CAMPAIGNS), {
       campaign_id: state.campaign_id,
-      template_key: state.template_key,
+      template_key: state.template_key || '',
+      subject: state.subject || '',
+      preheader: state.preheader || '',
+      campaign_type: state.mode || 'template',
       status: status,
       recipient_count: Number(state.total || 0),
       sent_count: Number(state.cursor || 0),
@@ -596,7 +687,8 @@ function writeCampaignStatus_(state, status) {
       created_at: state.started_at || new Date(),
       updated_at: new Date(),
       last_batch_at: state.last_batch_at || '',
-      notes: 'Max 99 recipients per batch; Monday/Wednesday/Friday stagger.'
+      notes: (state.mode === 'custom' ? 'Portal custom HTML newsletter. ' : '') +
+        'Max 99 recipients per batch; Monday/Wednesday/Friday stagger.'
     });
   } catch (_) {}
 }
@@ -1542,8 +1634,12 @@ function accountData_(data) {
 
   const orders = readObjects_(sheet_(LWB.SHEETS.ORDERS))
     .filter(function(order) {
-      return (customerId && String(order.customer_id || '') === customerId) ||
-        normalizeEmail_(order.email) === email;
+      if (String(order.status || '').toLowerCase() === 'removed') return false;
+      const attachedCustomerId = String(order.customer_id || '');
+      if (attachedCustomerId) {
+        return Boolean(customerId && attachedCustomerId === customerId);
+      }
+      return normalizeEmail_(order.email) === email;
     })
     .sort(function(a, b) {
       return new Date(b.created_at || 0) - new Date(a.created_at || 0);
@@ -1557,8 +1653,9 @@ function accountData_(data) {
 
   const activeEntitlements = readObjects_(sheet_(LWB.SHEETS.ENTITLEMENTS)).filter(function(entitlement) {
     if (String(entitlement.status || '').toLowerCase() !== 'active') return false;
-    const belongsToCustomer = customerId && String(entitlement.customer_id || '') === customerId;
-    const belongsToEmail = email && normalizeEmail_(entitlement.email) === email;
+    const attachedCustomerId = String(entitlement.customer_id || '');
+    const belongsToCustomer = customerId && attachedCustomerId === customerId;
+    const belongsToEmail = !attachedCustomerId && email && normalizeEmail_(entitlement.email) === email;
     if (!belongsToCustomer && !belongsToEmail) return false;
     if (entitlement.expires_at) {
       const expires = new Date(entitlement.expires_at).getTime();
@@ -1756,6 +1853,995 @@ function allowAuthAttempt_(bucket, key, limit, seconds) {
   } catch (_) {
     return true;
   }
+}
+
+
+/* ========================================================================== */
+/* SITE ACTIVITY / EXISTING SYSTEM LOG                                        */
+/* ========================================================================== */
+
+/**
+ * Appends one sanitized site event to the existing System Log sheet.
+ * Values typed into forms, passwords, and URL query strings are never logged.
+ */
+function activityLog_(data) {
+  const event = normalizeActivityEvent_(data);
+  if (!event) return { ok: true, logged: 0 };
+
+  const identity = activityIdentity_(data);
+  logSystem_(
+    'INFO',
+    event.event_type,
+    identity.email,
+    '',
+    identity.source,
+    event.path,
+    event.metadata
+  );
+
+  return { ok: true, logged: 1 };
+}
+
+function activityLogBatch_(data) {
+  const events = Array.isArray(data.events) ? data.events.slice(0, 25) : [];
+  const identity = activityIdentity_(data);
+  let logged = 0;
+
+  events.forEach(function(raw) {
+    const event = normalizeActivityEvent_(raw);
+    if (!event) return;
+
+    logSystem_(
+      'INFO',
+      event.event_type,
+      identity.email,
+      '',
+      identity.source,
+      event.path,
+      event.metadata
+    );
+    logged++;
+  });
+
+  return { ok: true, logged: logged };
+}
+
+function activityIdentity_(data) {
+  let email = '';
+  let source = 'website';
+
+  const portalToken = String(data.admin_token || '');
+  if (portalToken) {
+    try {
+      const admin = verifyAdminSessionToken_(portalToken);
+      email = normalizeEmail_(admin.email || '');
+      source = 'portal';
+      return { email: email, source: source };
+    } catch (_) {}
+  }
+
+  const accountToken = String(data.account_token || '');
+  if (accountToken) {
+    try {
+      const customer = verifySessionToken_(accountToken);
+      email = normalizeEmail_(customer.email || '');
+      source = 'account';
+    } catch (_) {}
+  }
+
+  return { email: email, source: source };
+}
+
+function normalizeActivityEvent_(raw) {
+  raw = raw || {};
+  const kind = String(raw.kind || raw.event_type || 'click').toLowerCase();
+  const eventType = kind === 'pageview' ? 'PAGE_VIEW' : 'SITE_CLICK';
+  const path = safeActivityPath_(raw.path || '/');
+
+  const metadata = {
+    href: safeActivityHref_(raw.href || ''),
+    label: cleanActivityText_(raw.label || '', 240),
+    tag: cleanActivityText_(raw.tag || '', 40),
+    id: cleanActivityText_(raw.id || '', 120),
+    class_name: cleanActivityText_(raw.class_name || raw.className || '', 240),
+    title: cleanActivityText_(raw.title || '', 240),
+    referrer_path: safeActivityPath_(raw.referrer_path || ''),
+    viewport: cleanActivityText_(raw.viewport || '', 40),
+    session_id: cleanActivityText_(raw.session_id || '', 100),
+    client_time: cleanActivityText_(raw.client_time || '', 80)
+  };
+
+  return {
+    event_type: eventType,
+    path: path,
+    metadata: metadata
+  };
+}
+
+function safeActivityPath_(value) {
+  let path = String(value || '').trim();
+  if (!path) return '';
+
+  path = path.split('?')[0].split('#')[0];
+  path = path.replace(/^https?:\/\/[^/]+/i, '');
+  if (!path) path = '/';
+  if (path.charAt(0) !== '/') path = '/' + path.replace(/^\/+/, '');
+
+  return clean_(path, 600);
+}
+
+function safeActivityHref_(value) {
+  let href = String(value || '').trim();
+  if (!href) return '';
+
+  href = href.split('?')[0].split('#')[0];
+
+  if (/^https?:\/\//i.test(href)) {
+    const ownOrigin = LWB.SITE_URL.replace(/\/+$/, '');
+    if (href.indexOf(ownOrigin) === 0) {
+      href = href.slice(ownOrigin.length) || '/';
+    }
+  }
+
+  return clean_(href, 600);
+}
+
+function cleanActivityText_(value, max) {
+  return String(value || '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, max || 240);
+}
+
+/* ========================================================================== */
+/* ADMIN PORTAL — EXISTING SHEET ARCHITECTURE                                 */
+/* ========================================================================== */
+
+function getSettingValue_(key) {
+  const row = readObjects_(sheet_(LWB.SHEETS.SETTINGS)).find(function(item) {
+    return String(item.key || '').trim() === String(key || '').trim();
+  });
+  return row ? row.value : '';
+}
+
+function adminSettings_() {
+  return {
+    user: String(getSettingValue_('admin_user') || '').trim(),
+    password: String(getSettingValue_('admin_password') || ''),
+    display_name: String(getSettingValue_('admin_display_name') || 'Living Word Bibles').trim(),
+    email: normalizeEmail_(getSettingValue_('admin_email') || LWB.CONTACT_EMAIL),
+    enabled: truthy_(getSettingValue_('admin_enabled')),
+    session_minutes: Math.min(720, Math.max(15, Number(getSettingValue_('admin_session_minutes') || 90))),
+    created_at: getSettingValue_('admin_created_at') || '',
+    updated_at: getSettingValue_('admin_updated_at') || ''
+  };
+}
+
+function adminCredentialFingerprint_(settings) {
+  ensureAuthSecrets_();
+  const secret = PropertiesService.getScriptProperties().getProperty('AUTH_SESSION_SECRET');
+  return Utilities.base64EncodeWebSafe(
+    Utilities.computeHmacSha256Signature(
+      String(settings.user) + '|' + String(settings.password) + '|' + String(settings.updated_at || ''),
+      secret
+    )
+  ).replace(/=+$/, '');
+}
+
+function createAdminSessionToken_(settings) {
+  ensureAuthSecrets_();
+  const secret = PropertiesService.getScriptProperties().getProperty('AUTH_SESSION_SECRET');
+  const now = Date.now();
+  const payload = {
+    type: 'lwb-admin',
+    user: settings.user,
+    fingerprint: adminCredentialFingerprint_(settings),
+    issued_at: now,
+    expires: now + settings.session_minutes * 60 * 1000
+  };
+
+  const body = Utilities.base64EncodeWebSafe(
+    JSON.stringify(payload),
+    Utilities.Charset.UTF_8
+  ).replace(/=+$/, '');
+
+  const signature = Utilities.base64EncodeWebSafe(
+    Utilities.computeHmacSha256Signature('admin:' + body, secret)
+  ).replace(/=+$/, '');
+
+  return body + '.' + signature;
+}
+
+function verifyAdminSessionToken_(token) {
+  const parts = String(token || '').split('.');
+  if (parts.length !== 2) throw new Error('Your portal session is invalid. Sign in again.');
+
+  ensureAuthSecrets_();
+  const secret = PropertiesService.getScriptProperties().getProperty('AUTH_SESSION_SECRET');
+  const expected = Utilities.base64EncodeWebSafe(
+    Utilities.computeHmacSha256Signature('admin:' + parts[0], secret)
+  ).replace(/=+$/, '');
+
+  if (!constantTimeEqual_(expected, parts[1])) {
+    throw new Error('Your portal session is invalid. Sign in again.');
+  }
+
+  const payload = JSON.parse(
+    Utilities.newBlob(Utilities.base64DecodeWebSafe(parts[0])).getDataAsString()
+  );
+
+  if (payload.type !== 'lwb-admin' || Number(payload.expires || 0) < Date.now()) {
+    throw new Error('Your portal session has expired. Sign in again.');
+  }
+
+  const settings = adminSettings_();
+  if (!settings.enabled || !settings.user || !settings.password) {
+    throw new Error('Portal administration is disabled or incomplete in Settings.');
+  }
+
+  if (!constantTimeEqual_(String(payload.user || ''), String(settings.user))) {
+    throw new Error('Your portal session is no longer valid.');
+  }
+
+  if (!constantTimeEqual_(String(payload.fingerprint || ''), adminCredentialFingerprint_(settings))) {
+    throw new Error('Portal credentials changed. Sign in again.');
+  }
+
+  return settings;
+}
+
+function publicAdmin_(settings) {
+  return {
+    user: settings.user,
+    display_name: settings.display_name,
+    email: settings.email,
+    session_minutes: settings.session_minutes,
+    created_at: settings.created_at,
+    updated_at: settings.updated_at
+  };
+}
+
+function adminLogin_(data) {
+  const settings = adminSettings_();
+  const user = String(data.admin_user || data.username || '').trim();
+  const password = String(data.admin_password || data.password || '');
+
+  if (!settings.enabled) return { ok: false, error: 'The administration portal is disabled in Settings.' };
+  if (!settings.user || !settings.password) {
+    return { ok: false, error: 'The administration portal credentials are incomplete in Settings.' };
+  }
+
+  if (!allowAuthAttempt_('admin', user || 'portal', 10, 900)) {
+    return { ok: false, error: 'Too many portal sign-in attempts. Try again later.' };
+  }
+
+  const validUser = constantTimeEqual_(user, settings.user);
+  const validPassword = constantTimeEqual_(password, settings.password);
+
+  if (!validUser || !validPassword) {
+    logSystem_('WARN', 'ADMIN_LOGIN_FAILED', '', '', 'portal', 'invalid credentials', {
+      attempted_user: clean_(user, 120)
+    });
+    return { ok: false, error: 'Invalid portal username or password.' };
+  }
+
+  const token = createAdminSessionToken_(settings);
+  logSystem_('INFO', 'ADMIN_LOGIN', settings.email, '', 'portal', settings.user, {});
+
+  return {
+    ok: true,
+    token: token,
+    admin: publicAdmin_(settings)
+  };
+}
+
+function adminSession_(data) {
+  const settings = verifyAdminSessionToken_(data.token);
+  return { ok: true, admin: publicAdmin_(settings) };
+}
+
+function adminDashboard_(data) {
+  const settings = verifyAdminSessionToken_(data.token);
+  const subscribers = readObjects_(sheet_(LWB.SHEETS.SUBSCRIBERS));
+  const customers = readObjects_(sheet_(LWB.SHEETS.CUSTOMERS));
+  const orders = readObjects_(sheet_(LWB.SHEETS.ORDERS));
+  const entitlements = readObjects_(sheet_(LWB.SHEETS.ENTITLEMENTS));
+  const state = getNewsletterCampaignState_();
+
+  return {
+    ok: true,
+    admin: publicAdmin_(settings),
+    counts: {
+      subscribers_active: subscribers.filter(function(row) {
+        return String(row.status || '').toLowerCase() === 'subscribed';
+      }).length,
+      subscribers_unsubscribed: subscribers.filter(function(row) {
+        return String(row.status || '').toLowerCase() === 'unsubscribed';
+      }).length,
+      customers: customers.length,
+      customers_active: customers.filter(function(row) {
+        return String(row.status || '').toLowerCase() === 'active';
+      }).length,
+      orders_completed: orders.filter(function(row) {
+        return String(row.status || '').toLowerCase() === 'completed';
+      }).length,
+      entitlements_active: entitlements.filter(function(row) {
+        return String(row.status || '').toLowerCase() === 'active';
+      }).length
+    },
+    campaign: publicNewsletterCampaignState_(state),
+    eligible_products: accountEligibleProducts_(),
+    recent_logs: recentSystemLogs_(25),
+    newsletter_rules: {
+      batch_max: LWB.NEWSLETTER_BATCH_MAX,
+      weekdays: ['Monday', 'Wednesday', 'Friday']
+    }
+  };
+}
+
+function accountEligibleProducts_() {
+  return readObjects_(sheet_(LWB.SHEETS.PRODUCTS))
+    .map(publicProduct_)
+    .filter(function(product) {
+      return String(product.status || '').toLowerCase() === 'active' &&
+        isAccountEligibleProduct_(product);
+    })
+    .sort(function(a, b) {
+      return Number(a.sort_order || 0) - Number(b.sort_order || 0);
+    });
+}
+
+function adminSubscribers_(data) {
+  verifyAdminSessionToken_(data.token);
+  const query = String(data.query || '').trim().toLowerCase();
+  const limit = Math.min(300, Math.max(1, Number(data.limit || 150)));
+
+  const rows = readObjects_(sheet_(LWB.SHEETS.SUBSCRIBERS))
+    .filter(function(row) {
+      if (!query) return true;
+      return String(row.email || '').toLowerCase().indexOf(query) >= 0 ||
+        String(row.name || '').toLowerCase().indexOf(query) >= 0 ||
+        String(row.status || '').toLowerCase().indexOf(query) >= 0;
+    })
+    .sort(function(a, b) {
+      return new Date(b.updated_at || b.subscribed_at || 0) -
+        new Date(a.updated_at || a.subscribed_at || 0);
+    })
+    .slice(0, limit)
+    .map(function(row) {
+      return pick_(row, [
+        'subscriber_id', 'email', 'name', 'status', 'source',
+        'subscribed_at', 'unsubscribed_at', 'updated_at'
+      ]);
+    });
+
+  return { ok: true, subscribers: rows };
+}
+
+function adminSubscriberAdd_(data) {
+  const admin = verifyAdminSessionToken_(data.token);
+  const email = normalizeEmail_(data.email);
+  const name = clean_(data.name || '', 160);
+  const overrideDne = truthy_(data.override_dne);
+
+  if (!validEmail_(email)) return { ok: false, error: 'Enter a valid subscriber email address.' };
+
+  if (overrideDne) {
+    removeDneByEmail_(email);
+  }
+
+  const result = subscribe_({
+    email: email,
+    name: name,
+    source: 'admin-portal',
+    consent_version: LWB.CONSENT_VERSION,
+    user_agent: clean_(data.userAgent || '', 500)
+  });
+
+  if (result.ok) {
+    logSystem_('INFO', 'ADMIN_SUBSCRIBER_ADD', admin.email, result.email, 'portal',
+      'subscriber added or reactivated', { subscriber_email: result.email, override_dne: overrideDne });
+  }
+
+  return result;
+}
+
+function adminSubscriberRemove_(data) {
+  const admin = verifyAdminSessionToken_(data.token);
+  const email = normalizeEmail_(data.email);
+
+  if (!validEmail_(email)) return { ok: false, error: 'Enter a valid subscriber email address.' };
+
+  const result = unsubscribe_({
+    email: email,
+    source: 'admin-portal',
+    reason: clean_(data.reason || 'removed in administration portal', 200),
+    user_agent: clean_(data.userAgent || '', 500)
+  });
+
+  if (result.ok) {
+    logSystem_('INFO', 'ADMIN_SUBSCRIBER_REMOVE', admin.email, email, 'portal',
+      'subscriber unsubscribed', { subscriber_email: email });
+  }
+
+  return result;
+}
+
+function removeDneByEmail_(email) {
+  const dneSheet = sheet_(LWB.SHEETS.DNE);
+  const values = dneSheet.getDataRange().getValues();
+  if (values.length < 2) return 0;
+  const headers = values[0].map(String);
+  const emailIndex = headers.indexOf('email');
+  if (emailIndex < 0) return 0;
+
+  let removed = 0;
+  for (let i = values.length - 1; i >= 1; i--) {
+    if (normalizeEmail_(values[i][emailIndex]) === normalizeEmail_(email)) {
+      dneSheet.deleteRow(i + 1);
+      removed++;
+    }
+  }
+  return removed;
+}
+
+function adminNewsletterTest_(data) {
+  const admin = verifyAdminSessionToken_(data.token);
+  const target = normalizeEmail_(data.test_email || admin.email);
+  if (!validEmail_(target)) return { ok: false, error: 'Enter a valid test email address.' };
+
+  const state = buildCustomNewsletterState_(data, 'test_' + uuid_());
+  sendCustomNewsletterEmail_(target, admin.display_name || '', state);
+
+  logSystem_('INFO', 'ADMIN_NEWSLETTER_TEST', admin.email, '', 'portal', state.subject, {
+    test_email: target
+  });
+
+  return { ok: true, message: 'Test newsletter sent.', email: target };
+}
+
+function adminNewsletterQueue_(data) {
+  const admin = verifyAdminSessionToken_(data.token);
+  const existing = getNewsletterCampaignState_();
+  if (existing && existing.status === 'active') {
+    return {
+      ok: false,
+      error: 'A newsletter campaign is already active. Stop or finish it before queueing another.'
+    };
+  }
+
+  const recipients = newsletterRecipients_();
+  const campaignId = 'campaign_' + uuid_();
+  const state = buildCustomNewsletterState_(data, campaignId);
+  state.cursor = 0;
+  state.total = recipients.length;
+  state.status = 'active';
+  state.started_at = new Date().toISOString();
+  state.last_batch_date = '';
+
+  const serialized = JSON.stringify(state);
+  if (Utilities.newBlob(serialized).getBytes().length > 8500) {
+    return {
+      ok: false,
+      error: 'This newsletter is too large for the campaign queue. Shorten the body or signature.'
+    };
+  }
+
+  saveNewsletterCampaignState_(state);
+  writeCampaignStatus_(state, 'queued');
+
+  logSystem_('INFO', 'ADMIN_NEWSLETTER_QUEUED', admin.email, campaignId, 'portal', state.subject, {
+    recipients: recipients.length,
+    batch_max: LWB.NEWSLETTER_BATCH_MAX,
+    weekdays: ['Monday', 'Wednesday', 'Friday']
+  });
+
+  return {
+    ok: true,
+    campaign: publicNewsletterCampaignState_(state),
+    message: 'Newsletter queued. Subscriber batches send only Monday, Wednesday, and Friday.'
+  };
+}
+
+function buildCustomNewsletterState_(data, campaignId) {
+  const subject = clean_(data.subject || '', 200);
+  const preheader = clean_(data.preheader || '', 240);
+  const rawHtml = String(data.html || data.body_html || '');
+  const rawSignature = String(data.signature_html || '');
+
+  if (!subject) throw new Error('Newsletter subject is required.');
+  if (!rawHtml.trim()) throw new Error('Newsletter body is required.');
+  if (rawHtml.length > 6000) throw new Error('Newsletter body must be 6,000 characters or fewer.');
+  if (rawSignature.length > 1200) throw new Error('Newsletter signature must be 1,200 characters or fewer.');
+
+  return {
+    campaign_id: campaignId,
+    mode: 'custom',
+    template_key: '',
+    subject: subject,
+    preheader: preheader,
+    html: sanitizeNewsletterHtml_(rawHtml),
+    signature_html: sanitizeNewsletterHtml_(rawSignature)
+  };
+}
+
+function adminNewsletterProcess_(data) {
+  const admin = verifyAdminSessionToken_(data.token);
+  const result = processNewsletterCampaign();
+  logSystem_('INFO', 'ADMIN_NEWSLETTER_PROCESS', admin.email,
+    result.campaign_id || '', 'portal', result.message || ('sent=' + Number(result.sent || 0)), {
+      sent: Number(result.sent || 0),
+      failed: Number(result.failed || 0),
+      complete: Boolean(result.complete)
+    });
+  return result;
+}
+
+function adminNewsletterStop_(data) {
+  const admin = verifyAdminSessionToken_(data.token);
+  const result = stopNewsletterCampaign();
+  logSystem_('INFO', 'ADMIN_NEWSLETTER_STOP', admin.email, '', 'portal', 'campaign stopped', {});
+  return result;
+}
+
+function publicNewsletterCampaignState_(state) {
+  if (!state) return null;
+  return {
+    campaign_id: state.campaign_id || '',
+    mode: state.mode || 'template',
+    template_key: state.template_key || '',
+    subject: state.subject || '',
+    status: state.status || '',
+    cursor: Number(state.cursor || 0),
+    total: Number(state.total || 0),
+    started_at: state.started_at || '',
+    last_batch_at: state.last_batch_at || '',
+    last_batch_date: state.last_batch_date || '',
+    last_batch_sent: Number(state.last_batch_sent || 0),
+    last_batch_failed: Number(state.last_batch_failed || 0),
+    completed_at: state.completed_at || ''
+  };
+}
+
+function adminCustomer_(data) {
+  verifyAdminSessionToken_(data.token);
+  const customer = findAdminCustomer_(data);
+  if (!customer) return { ok: false, error: 'Customer account not found.' };
+
+  if (truthy_(customer.email_verified) && String(customer.status || '').toLowerCase() === 'active') {
+    ensureDefaultFreeEntitlements_(customer);
+  }
+
+  return adminCustomerResponse_(customer);
+}
+
+function findAdminCustomer_(data) {
+  const customerId = clean_(data.customer_id || '', 200);
+  const email = normalizeEmail_(data.email || '');
+
+  if (customerId) return findBy_(sheet_(LWB.SHEETS.CUSTOMERS), 'customer_id', customerId);
+  if (email) return findBy_(sheet_(LWB.SHEETS.CUSTOMERS), 'email', email);
+  return null;
+}
+
+function adminCustomerResponse_(customer) {
+  const customerId = String(customer.customer_id || '');
+  const email = normalizeEmail_(customer.email);
+
+  const orders = readObjects_(sheet_(LWB.SHEETS.ORDERS))
+    .filter(function(order) {
+      return (customerId && String(order.customer_id || '') === customerId) ||
+        (email && normalizeEmail_(order.email) === email);
+    })
+    .sort(function(a, b) {
+      return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+    })
+    .slice(0, 100)
+    .map(function(order) {
+      return pick_(order, [
+        'order_id', 'paypal_order_id', 'paypal_capture_id', 'customer_id',
+        'email', 'status', 'currency', 'subtotal', 'total', 'created_at', 'updated_at'
+      ]);
+    });
+
+  const entitlements = readObjects_(sheet_(LWB.SHEETS.ENTITLEMENTS))
+    .filter(function(row) {
+      return (customerId && String(row.customer_id || '') === customerId) ||
+        (email && normalizeEmail_(row.email) === email);
+    })
+    .sort(function(a, b) {
+      return new Date(b.granted_at || 0) - new Date(a.granted_at || 0);
+    })
+    .slice(0, 150)
+    .map(function(row) {
+      const product = getProductById_(row.product_id);
+      return {
+        entitlement_id: row.entitlement_id || '',
+        product_id: row.product_id || '',
+        title: product ? product.title : row.product_id,
+        status: row.status || '',
+        source: row.source || '',
+        order_id: row.order_id || '',
+        granted_at: row.granted_at || '',
+        revoked_at: row.revoked_at || '',
+        required_free: LWB.FREE_ACCOUNT_PRODUCTS.indexOf(String(row.product_id || '')) >= 0
+      };
+    });
+
+  return {
+    ok: true,
+    customer: pick_(customer, [
+      'customer_id', 'email', 'display_name', 'status', 'email_verified',
+      'created_at', 'updated_at', 'last_login_at'
+    ]),
+    orders: orders,
+    entitlements: entitlements,
+    eligible_products: accountEligibleProducts_()
+  };
+}
+
+function adminEntitlementGrant_(data) {
+  const admin = verifyAdminSessionToken_(data.token);
+  const customer = findAdminCustomer_(data);
+  if (!customer) return { ok: false, error: 'Customer account not found.' };
+
+  const product = getProductById_(clean_(data.product_id || '', 200));
+  if (!product || !isAccountEligibleProduct_(product)) {
+    return { ok: false, error: 'Only eBible products and the Ethiopian Bible PDF can be attached to accounts.' };
+  }
+
+  const result = grantEntitlement_({
+    customer_id: customer.customer_id,
+    email: customer.email,
+    product_id: product.product_id,
+    order_id: '',
+    source: 'admin-portal-manual',
+    notes: clean_(data.notes || 'Manually added in administration portal', 500)
+  });
+
+  logSystem_('INFO', 'ADMIN_ENTITLEMENT_GRANTED', admin.email, result.entitlement_id,
+    'portal', product.product_id, { customer_id: customer.customer_id, customer_email: customer.email });
+
+  return Object.assign({
+    ok: true,
+    product: product
+  }, result);
+}
+
+function adminEntitlementRevoke_(data) {
+  const admin = verifyAdminSessionToken_(data.token);
+  const entitlementId = clean_(data.entitlement_id || '', 200);
+  const entitlementSheet = sheet_(LWB.SHEETS.ENTITLEMENTS);
+  const entitlement = findBy_(entitlementSheet, 'entitlement_id', entitlementId);
+
+  if (!entitlement) return { ok: false, error: 'Entitlement not found.' };
+  if (LWB.FREE_ACCOUNT_PRODUCTS.indexOf(String(entitlement.product_id || '')) >= 0) {
+    return {
+      ok: false,
+      error: 'The KJV Special Edition and Douay-Rheims Bible are required free account products and cannot be removed.'
+    };
+  }
+
+  entitlement.status = 'revoked';
+  entitlement.revoked_at = new Date();
+  entitlement.notes = clean_(
+    (entitlement.notes ? String(entitlement.notes) + ' | ' : '') +
+    (data.notes || 'Revoked in administration portal'),
+    500
+  );
+  upsertByKey_(entitlementSheet, 'entitlement_id', entitlementId, entitlement);
+
+  logSystem_('INFO', 'ADMIN_ENTITLEMENT_REVOKED', admin.email, entitlementId,
+    'portal', entitlement.product_id || '', {
+      customer_id: entitlement.customer_id || '',
+      customer_email: entitlement.email || ''
+    });
+
+  return { ok: true, entitlement_id: entitlementId, status: 'revoked' };
+}
+
+function adminReconcilePurchase_(data) {
+  const admin = verifyAdminSessionToken_(data.token);
+  const customer = findAdminCustomer_(data);
+  if (!customer) return { ok: false, error: 'Customer account not found.' };
+
+  const tx = clean_(data.tx || data.txn_id || data.transaction_id || '', 200);
+  if (!tx) return { ok: false, error: 'Enter a PayPal transaction ID.' };
+
+  let order = findBy_(sheet_(LWB.SHEETS.ORDERS), 'paypal_capture_id', tx);
+  if (!order || String(order.status || '').toLowerCase() !== 'completed') {
+    const verified = verifyPayPalPdtUnlocked_({ tx: tx });
+    if (!verified || !verified.ok) {
+      return { ok: false, error: (verified && verified.error) || 'PayPal could not verify that transaction.' };
+    }
+    order = findBy_(sheet_(LWB.SHEETS.ORDERS), 'paypal_capture_id', tx);
+  }
+
+  if (!order || String(order.status || '').toLowerCase() !== 'completed') {
+    return { ok: false, error: 'The transaction could not be located as a completed payment.' };
+  }
+
+  const targetCustomerId = String(customer.customer_id || '');
+  const oldCustomerId = String(order.customer_id || '');
+  const force = truthy_(data.force);
+
+  if (oldCustomerId && oldCustomerId !== targetCustomerId && !force) {
+    return {
+      ok: false,
+      error: 'That transaction is already attached to another customer. Check “Allow reassignment” to move it.'
+    };
+  }
+
+  const items = orderItemsForOrder_(order.order_id);
+  const eligible = [];
+  const rejected = [];
+
+  items.forEach(function(item) {
+    const product = getProductById_(item.product_id);
+    if (product && isAccountEligibleProduct_(product)) {
+      eligible.push(product);
+    } else {
+      rejected.push(item.product_id || '');
+    }
+  });
+
+  if (!eligible.length) {
+    return { ok: false, error: 'This order has no account-eligible eBible or Ethiopian Bible PDF products.' };
+  }
+
+  if (force && oldCustomerId && oldCustomerId !== targetCustomerId) {
+    revokeEntitlementsForOrderCustomer_(order.order_id, oldCustomerId, admin.email);
+  }
+
+  order.customer_id = targetCustomerId;
+  order.updated_at = new Date();
+  upsertByKey_(sheet_(LWB.SHEETS.ORDERS), 'order_id', order.order_id, order);
+
+  const attached = eligible.map(function(product) {
+    return {
+      product_id: product.product_id,
+      title: product.title,
+      entitlement: grantEntitlement_({
+        customer_id: targetCustomerId,
+        email: customer.email,
+        product_id: product.product_id,
+        order_id: order.order_id,
+        source: 'admin-portal-reconcile'
+      })
+    };
+  });
+
+  ensureDefaultFreeEntitlements_(customer);
+
+  logSystem_('INFO', 'ADMIN_PURCHASE_RECONCILED', admin.email, order.order_id,
+    'portal', tx, {
+      customer_id: targetCustomerId,
+      customer_email: customer.email,
+      previous_customer_id: oldCustomerId,
+      force_reassigned: Boolean(force && oldCustomerId && oldCustomerId !== targetCustomerId),
+      attached_products: attached.map(function(row) { return row.product_id; }),
+      rejected_products: rejected
+    });
+
+  return {
+    ok: true,
+    order_id: order.order_id,
+    transaction_id: tx,
+    attached_products: attached,
+    skipped_products: rejected
+  };
+}
+
+function revokeEntitlementsForOrderCustomer_(orderId, customerId, adminEmail) {
+  const entitlementSheet = sheet_(LWB.SHEETS.ENTITLEMENTS);
+  readObjects_(entitlementSheet)
+    .filter(function(row) {
+      return String(row.order_id || '') === String(orderId || '') &&
+        String(row.customer_id || '') === String(customerId || '') &&
+        String(row.status || '').toLowerCase() === 'active';
+    })
+    .forEach(function(row) {
+      row.status = 'revoked';
+      row.revoked_at = new Date();
+      row.notes = clean_((row.notes ? String(row.notes) + ' | ' : '') +
+        'Revoked during admin purchase reassignment', 500);
+      upsertByKey_(entitlementSheet, 'entitlement_id', row.entitlement_id, row);
+      logSystem_('INFO', 'ADMIN_REASSIGN_REVOKE', adminEmail, row.entitlement_id,
+        'portal', row.product_id || '', { order_id: orderId, old_customer_id: customerId });
+    });
+}
+
+function adminManualPurchaseAdd_(data) {
+  const admin = verifyAdminSessionToken_(data.token);
+  const customer = findAdminCustomer_(data);
+  if (!customer) return { ok: false, error: 'Customer account not found.' };
+
+  const product = getProductById_(clean_(data.product_id || '', 200));
+  if (!product || !isAccountEligibleProduct_(product)) {
+    return { ok: false, error: 'Only eBible products and the Ethiopian Bible PDF can be added as account purchases.' };
+  }
+
+  const amount = data.amount === '' || data.amount === undefined
+    ? Number(product.price || 0)
+    : Number(data.amount);
+
+  if (!isFinite(amount) || amount < 0) {
+    return { ok: false, error: 'Enter a valid non-negative purchase amount.' };
+  }
+
+  const orderId = 'manual_' + uuid_();
+  const order = recordOrder_({
+    order_id: orderId,
+    paypal_order_id: '',
+    paypal_capture_id: '',
+    customer_id: customer.customer_id,
+    email: customer.email,
+    status: 'completed',
+    currency: product.currency || 'USD',
+    subtotal: amount,
+    total: amount,
+    payer_country: '',
+    raw_event_id: 'admin-manual:' + uuid_()
+  });
+
+  recordOrderItem_({
+    order_id: order.order_id,
+    product_id: product.product_id,
+    quantity: 1,
+    unit_price: amount,
+    line_total: amount
+  });
+
+  const entitlement = grantEntitlement_({
+    customer_id: customer.customer_id,
+    email: customer.email,
+    product_id: product.product_id,
+    order_id: order.order_id,
+    source: 'admin-manual-purchase',
+    notes: clean_(data.notes || 'Manual purchase added in administration portal', 500)
+  });
+
+  logSystem_('INFO', 'ADMIN_MANUAL_PURCHASE_ADDED', admin.email, order.order_id,
+    'portal', product.product_id, {
+      customer_id: customer.customer_id,
+      customer_email: customer.email,
+      amount: amount
+    });
+
+  return {
+    ok: true,
+    order_id: order.order_id,
+    product: product,
+    entitlement_id: entitlement.entitlement_id
+  };
+}
+
+function adminManualPurchaseRemove_(data) {
+  const admin = verifyAdminSessionToken_(data.token);
+  const orderId = clean_(data.order_id || '', 200);
+  const orderSheet = sheet_(LWB.SHEETS.ORDERS);
+  const order = findBy_(orderSheet, 'order_id', orderId);
+
+  if (!order) return { ok: false, error: 'Order not found.' };
+  if (String(order.order_id || '').indexOf('manual_') !== 0 &&
+      String(order.raw_event_id || '').indexOf('admin-manual:') !== 0) {
+    return { ok: false, error: 'Only portal-created manual purchases can be removed with this action.' };
+  }
+
+  order.status = 'removed';
+  order.updated_at = new Date();
+  upsertByKey_(orderSheet, 'order_id', order.order_id, order);
+
+  const entitlementSheet = sheet_(LWB.SHEETS.ENTITLEMENTS);
+  readObjects_(entitlementSheet)
+    .filter(function(row) {
+      return String(row.order_id || '') === orderId &&
+        String(row.status || '').toLowerCase() === 'active';
+    })
+    .forEach(function(row) {
+      if (LWB.FREE_ACCOUNT_PRODUCTS.indexOf(String(row.product_id || '')) >= 0) return;
+      row.status = 'revoked';
+      row.revoked_at = new Date();
+      row.notes = clean_((row.notes ? String(row.notes) + ' | ' : '') +
+        'Manual purchase removed in administration portal', 500);
+      upsertByKey_(entitlementSheet, 'entitlement_id', row.entitlement_id, row);
+    });
+
+  logSystem_('INFO', 'ADMIN_MANUAL_PURCHASE_REMOVED', admin.email, orderId,
+    'portal', 'manual purchase removed', { customer_id: order.customer_id || '', email: order.email || '' });
+
+  return { ok: true, order_id: orderId, status: 'removed' };
+}
+
+function adminLogs_(data) {
+  verifyAdminSessionToken_(data.token);
+  return {
+    ok: true,
+    logs: recentSystemLogs_(Math.min(300, Math.max(1, Number(data.limit || 150))))
+  };
+}
+
+function recentSystemLogs_(limit) {
+  return readObjects_(sheet_(LWB.SHEETS.LOG))
+    .sort(function(a, b) {
+      return new Date(b.timestamp || 0) - new Date(a.timestamp || 0);
+    })
+    .slice(0, limit || 100)
+    .map(function(row) {
+      return pick_(row, [
+        'timestamp', 'level', 'event', 'email', 'record_id',
+        'source', 'message', 'metadata_json'
+      ]);
+    });
+}
+
+/* ========================================================================== */
+/* CUSTOM PORTAL NEWSLETTER EMAIL                                             */
+/* ========================================================================== */
+
+function sendCustomNewsletterEmail_(email, displayName, state) {
+  const context = {
+    first_name: firstName_(displayName),
+    email: normalizeEmail_(email)
+  };
+
+  const subject = newsletterTokenReplace_(state.subject || 'Living Word Bibles', context);
+  const preheader = newsletterTokenReplace_(state.preheader || '', context);
+  const body = newsletterTokenReplace_(state.html || '', context);
+  const signature = newsletterTokenReplace_(state.signature_html || '', context);
+
+  const html = body +
+    (signature ? '<div style="margin-top:28px;padding-top:18px;border-top:1px solid #eee6d8">' +
+      signature + '</div>' : '');
+
+  sendBrandedEmail_({
+    to: email,
+    subject: subject,
+    preheader: preheader,
+    html: html,
+    text: stripHtmlForEmail_(html),
+    newsletter: true,
+    optOutEmail: email
+  });
+}
+
+function newsletterTokenReplace_(value, context) {
+  return String(value || '')
+    .replace(/\{\{\s*first_name\s*\}\}/gi, escapeHtml_(context.first_name || ''))
+    .replace(/\{\{\s*email\s*\}\}/gi, escapeHtml_(context.email || ''));
+}
+
+function stripHtmlForEmail_(value) {
+  return String(value || '')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/p>/gi, '\n\n')
+    .replace(/<\/h[1-6]>/gi, '\n\n')
+    .replace(/<li[^>]*>/gi, '• ')
+    .replace(/<\/li>/gi, '\n')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&amp;/gi, '&')
+    .replace(/&lt;/gi, '<')
+    .replace(/&gt;/gi, '>')
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;/gi, "'")
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
+function sanitizeNewsletterHtml_(value) {
+  let html = String(value || '');
+
+  html = html
+    .replace(/<!--[\s\S]*?-->/g, '')
+    .replace(/<(script|style|iframe|object|embed|form|input|textarea|select|option|meta|link)\b[\s\S]*?<\/\1>/gi, '')
+    .replace(/<(script|style|iframe|object|embed|form|input|textarea|select|option|meta|link)\b[^>]*\/?>/gi, '')
+    .replace(/\son[a-z]+\s*=\s*"[^"]*"/gi, '')
+    .replace(/\son[a-z]+\s*=\s*'[^']*'/gi, '')
+    .replace(/\son[a-z]+\s*=\s*[^\s>]+/gi, '')
+    .replace(/javascript\s*:/gi, '');
+
+  return html;
 }
 
 /* ========================================================================== */
@@ -2271,6 +3357,6 @@ function escapeHtml_(value) {
 
 /*
 ==========================================================================================
-END OF LWB BACKEND v2.0.0 | Copyright © 2026 Living Word Bibles. All Rights Reserved. Developed by Cook Technology Services. Last Updated on 01 September 2026 at 20:47:21Z UTC.
+END OF LWB BACKEND v2.0.1 | Copyright © 2026 Living Word Bibles. All Rights Reserved. Developed by Cook Technology Services. Last Updated on 01 September 2026 at 21:22:11Z UTC.
 ==========================================================================================
 */

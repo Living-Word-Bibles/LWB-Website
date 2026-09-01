@@ -1,0 +1,299 @@
+{
+  "version": 3,
+  "title": "Living Word Bibles Audio Bible — Public-Domain Visual Library",
+  "maxImages": 1200,
+  "rotationSeconds": 12,
+  "strategy": "seed-images-plus-public-domain-commons-collections",
+  "manifestLocation": "/audio-bible/images.json",
+  "licensePolicy": {
+    "allow": [
+      "Public domain",
+      "CC0"
+    ],
+    "note": "The Audio Bible page checks Wikimedia Commons file metadata at runtime and admits only files identified as public domain/CC0 or not copyrighted. Files carrying attribution/share-alike/non-PD licenses are skipped."
+  },
+  "sources": [
+    {
+      "name": "Wikimedia Commons — Gustave Doré Bible illustrations",
+      "url": "https://commons.wikimedia.org/wiki/Category:Bible_illustrations_by_Gustave_Dor%C3%A9",
+      "rights": "Individual files are checked for public-domain/CC0 metadata before use."
+    },
+    {
+      "name": "Wikimedia Commons — James Tissot Bible art",
+      "url": "https://commons.wikimedia.org/wiki/Category:Bible_art_by_James_Tissot",
+      "rights": "Individual files are checked for public-domain/CC0 metadata before use."
+    },
+    {
+      "name": "Wikimedia Commons — Julius Schnorr von Carolsfeld, Die Bibel in Bildern",
+      "url": "https://commons.wikimedia.org/wiki/Category:Die_Bibel_in_Bildern_by_Julius_Schnorr_von_Carolsfeld",
+      "rights": "Individual files are checked for public-domain/CC0 metadata before use."
+    },
+    {
+      "name": "Wikimedia Commons — King James Bible",
+      "url": "https://commons.wikimedia.org/wiki/Category:King_James_Bible",
+      "rights": "Individual files are checked for public-domain/CC0 metadata before use."
+    }
+  ],
+  "collections": [
+    {
+      "id": "dore-old-testament",
+      "provider": "wikimedia-commons-category",
+      "category": "Art depicting the Old Testament by Gustave Doré",
+      "testament": "Old Testament",
+      "artist": "Gustave Doré",
+      "maxItems": 164
+    },
+    {
+      "id": "dore-new-testament",
+      "provider": "wikimedia-commons-category",
+      "category": "Art depicting the New Testament by Gustave Doré",
+      "testament": "New Testament",
+      "artist": "Gustave Doré",
+      "maxItems": 98
+    },
+    {
+      "id": "tissot-old-testament",
+      "provider": "wikimedia-commons-category",
+      "category": "Old Testament by James Tissot",
+      "testament": "Old Testament",
+      "artist": "James Tissot",
+      "maxItems": 345
+    },
+    {
+      "id": "tissot-life-of-christ",
+      "provider": "wikimedia-commons-category",
+      "category": "The Life of Jesus Christ by James Tissot",
+      "testament": "New Testament",
+      "artist": "James Tissot",
+      "maxItems": 444
+    },
+    {
+      "id": "schnorr-bibel-in-bildern",
+      "provider": "wikimedia-commons-category",
+      "category": "Die Bibel in Bildern by Julius Schnorr von Carolsfeld",
+      "testament": "Bible",
+      "artist": "Julius Schnorr von Carolsfeld",
+      "maxItems": 250
+    },
+    {
+      "id": "king-james-bible",
+      "provider": "wikimedia-commons-category",
+      "category": "King James Bible",
+      "testament": "Reference",
+      "artist": "Various / historic editions",
+      "maxItems": 132
+    }
+  ],
+  "images": [
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/001.The%20Creation%20of%20Light.jpg",
+      "alt": "Gustave Doré illustration of the Creation of Light",
+      "caption": "The Creation of Light",
+      "source": "https://commons.wikimedia.org/wiki/File:001.The_Creation_of_Light.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Genesis",
+      "artist": "Gustave Doré"
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/002.The%20Creation%20of%20Eve.jpg",
+      "alt": "Gustave Doré illustration of the Creation of Eve",
+      "caption": "The Creation of Eve",
+      "source": "https://commons.wikimedia.org/wiki/File:002.The_Creation_of_Eve.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Genesis",
+      "artist": "Gustave Doré"
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/003.Adam%20and%20Eve%20Are%20Driven%20out%20of%20Eden.jpg",
+      "alt": "Gustave Doré illustration of Adam and Eve leaving Eden",
+      "caption": "Adam and Eve Are Driven out of Eden",
+      "source": "https://commons.wikimedia.org/wiki/File:003.Adam_and_Eve_Are_Driven_out_of_Eden.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Genesis",
+      "artist": "Gustave Doré"
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/004.Cain%20and%20Abel%20Offer%20Their%20Sacrifices.jpg",
+      "alt": "Gustave Doré illustration of Cain and Abel offering sacrifices",
+      "caption": "Cain and Abel Offer Their Sacrifices",
+      "source": "https://commons.wikimedia.org/wiki/File:004.Cain_and_Abel_Offer_Their_Sacrifices.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Genesis",
+      "artist": "Gustave Doré"
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/005.Cain%20Slays%20Abel.jpg",
+      "alt": "Gustave Doré illustration of Cain and Abel",
+      "caption": "Cain Slays Abel",
+      "source": "https://commons.wikimedia.org/wiki/File:005.Cain_Slays_Abel.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Genesis",
+      "artist": "Gustave Doré"
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/006.The%20World%20Is%20Destroyed%20by%20Water.jpg",
+      "alt": "Gustave Doré illustration of the Flood",
+      "caption": "The World Is Destroyed by Water",
+      "source": "https://commons.wikimedia.org/wiki/File:006.The_World_Is_Destroyed_by_Water.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Genesis",
+      "artist": "Gustave Doré"
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/007.The%20Great%20Flood.jpg",
+      "alt": "Gustave Doré illustration of the Great Flood",
+      "caption": "The Great Flood",
+      "source": "https://commons.wikimedia.org/wiki/File:007.The_Great_Flood.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Genesis",
+      "artist": "Gustave Doré"
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/008.A%20Dove%20Is%20Sent%20Forth%20from%20the%20Ark.jpg",
+      "alt": "Gustave Doré illustration of Noah sending a dove from the Ark",
+      "caption": "A Dove Is Sent Forth from the Ark",
+      "source": "https://commons.wikimedia.org/wiki/File:008.A_Dove_Is_Sent_Forth_from_the_Ark.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Genesis",
+      "artist": "Gustave Doré"
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/010.The%20Tower%20of%20Babel.jpg",
+      "alt": "Gustave Doré illustration of the Tower of Babel",
+      "caption": "The Tower of Babel",
+      "source": "https://commons.wikimedia.org/wiki/File:010.The_Tower_of_Babel.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Genesis",
+      "artist": "Gustave Doré"
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/011.Abraham%20Goes%20to%20the%20Land%20of%20Canaan.jpg",
+      "alt": "Gustave Doré illustration of Abraham journeying to Canaan",
+      "caption": "Abraham Goes to the Land of Canaan",
+      "source": "https://commons.wikimedia.org/wiki/File:011.Abraham_Goes_to_the_Land_of_Canaan.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Genesis",
+      "artist": "Gustave Doré"
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/012.Abraham%20and%20the%20Three%20Angels.jpg",
+      "alt": "Gustave Doré illustration of Abraham and the three angels",
+      "caption": "Abraham and the Three Angels",
+      "source": "https://commons.wikimedia.org/wiki/File:012.Abraham_and_the_Three_Angels.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Genesis",
+      "artist": "Gustave Doré"
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/013.Lot%20Flees%20as%20Sodom%20and%20Gomorrah%20Burn.jpg",
+      "alt": "Gustave Doré illustration of Lot fleeing Sodom and Gomorrah",
+      "caption": "Lot Flees as Sodom and Gomorrah Burn",
+      "source": "https://commons.wikimedia.org/wiki/File:013.Lot_Flees_as_Sodom_and_Gomorrah_Burn.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Genesis",
+      "artist": "Gustave Doré"
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/016.The%20Testing%20of%20Abraham%27s%20Faith.jpg",
+      "alt": "Gustave Doré illustration of the testing of Abraham",
+      "caption": "The Testing of Abraham's Faith",
+      "source": "https://commons.wikimedia.org/wiki/File:016.The_Testing_of_Abraham's_Faith.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Genesis",
+      "artist": "Gustave Doré"
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/021.Jacob%27s%20Dream.jpg",
+      "alt": "Gustave Doré illustration of Jacob's dream",
+      "caption": "Jacob's Dream",
+      "source": "https://commons.wikimedia.org/wiki/File:021.Jacob's_Dream.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Genesis",
+      "artist": "Gustave Doré"
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/024.Jacob%20Wrestles%20with%20the%20Angel.jpg",
+      "alt": "Gustave Doré illustration of Jacob wrestling with the angel",
+      "caption": "Jacob Wrestles with the Angel",
+      "source": "https://commons.wikimedia.org/wiki/File:024.Jacob_Wrestles_with_the_Angel.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Genesis",
+      "artist": "Gustave Doré"
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/030.The%20Child%20Moses%20on%20the%20Nile.jpg",
+      "alt": "Gustave Doré illustration of the infant Moses on the Nile",
+      "caption": "The Child Moses on the Nile",
+      "source": "https://commons.wikimedia.org/wiki/File:030.The_Child_Moses_on_the_Nile.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Exodus",
+      "artist": "Gustave Doré"
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/038.The%20Giving%20of%20the%20Law%20on%20Mount%20Sinai.jpg",
+      "alt": "Gustave Doré illustration of the giving of the Law at Mount Sinai",
+      "caption": "The Giving of the Law on Mount Sinai",
+      "source": "https://commons.wikimedia.org/wiki/File:038.The_Giving_of_the_Law_on_Mount_Sinai.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Exodus",
+      "artist": "Gustave Doré"
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/046.The%20Walls%20of%20Jericho%20Fall%20Down.jpg",
+      "alt": "Gustave Doré illustration of the fall of Jericho",
+      "caption": "The Walls of Jericho Fall Down",
+      "source": "https://commons.wikimedia.org/wiki/File:046.The_Walls_of_Jericho_Fall_Down.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "Old Testament",
+      "book": "Joshua",
+      "artist": "Gustave Doré"
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Dore%20Bible%20Sermon%20on%20the%20Mount.jpg",
+      "alt": "Gustave Doré illustration of the Sermon on the Mount",
+      "caption": "The Sermon on the Mount",
+      "source": "https://commons.wikimedia.org/wiki/File:Dore_Bible_Sermon_on_the_Mount.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "New Testament",
+      "book": "Matthew",
+      "artist": "Gustave Doré"
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Crucifixion-dore.jpg",
+      "alt": "Gustave Doré illustration of the Crucifixion",
+      "caption": "The Crucifixion",
+      "source": "https://commons.wikimedia.org/wiki/File:Crucifixion-dore.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "New Testament",
+      "book": "Luke",
+      "artist": "Gustave Doré"
+    },
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Gusta%20Dore%20-%20The%20Ascension.jpg",
+      "alt": "Gustave Doré illustration of the Ascension",
+      "caption": "The Ascension",
+      "source": "https://commons.wikimedia.org/wiki/File:Gusta_Dore_-_The_Ascension.jpg",
+      "sourceLabel": "Wikimedia Commons — source & rights",
+      "testament": "New Testament",
+      "book": "Mark",
+      "artist": "Gustave Doré"
+    }
+  ]
+}

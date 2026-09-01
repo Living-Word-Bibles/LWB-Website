@@ -1,4 +1,4 @@
-[READMEv2.5.6.md](https://github.com/user-attachments/files/31704738/READMEv2.5.6.md)
+[READMEv2.5.7.md](https://github.com/user-attachments/files/31705976/READMEv2.5.7.md)
 <p align="center">
   <a href="https://www.livingwordbibles.com/">
     <img src="assets/LivingWordBibles01.png" alt="Living Word Bibles" width="320">
@@ -11,7 +11,7 @@
 
 <p align="center">
   <a href="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml/badge.svg?branch=main"></a>
-  <img alt="Frontend package v2.5.6" src="https://img.shields.io/badge/frontend-v2.5.6-555555">
+  <img alt="Frontend package v2.5.7" src="https://img.shields.io/badge/frontend-v2.5.7-555555">
   <img alt="Backend API v3.0.0" src="https://img.shields.io/badge/backend%20API-v3.0.0-555555">
   <img alt="Hosting GitHub Pages" src="https://img.shields.io/badge/hosting-GitHub%20Pages-555555">
 </p>
@@ -22,7 +22,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 01 September 2026 at 17:42:08Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 01 September 2026 at 18:30:30Z UTC</sub></p>
 
 ---
 
@@ -40,20 +40,67 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 |---|---|
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
-| Frontend package version | `2.5.6` |
+| Frontend package version | `2.5.7` |
 | Google Apps Script API version | `3.0.0` |
 | Apps Script build stamp | `27 August 2026 at 15:20:42Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `01 September 2026 at 17:42:08Z UTC` |
+| README revision | `01 September 2026 at 18:30:30Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
 
 ---
 
+## What's New in v2.5.7
+
+- Revised the canonical **About the Ethiopian Bible** page at `/ethiopian-bible/about/` so its title, metadata, structured data, headline, quick facts, article language, calls to action, bibliography annotations, and notes consistently identify the Living Word Bibles edition as an **88-book Ethiopian Bible**.
+- Documented the edition's counting method as the familiar **66-book Protestant Bible plus 22 additional complete books**, producing the 88-book total used by Living Word Bibles.
+- Added a concise **marketing-count clarification** explaining that the Ethiopian Bible product page uses the phrase **“20 Missing Books”** because **I, II, and III Meqabyan are grouped as one combined volume** for that presentation. Counting the three Meqabyan books individually produces 22 additional books and 88 books overall.
+- Preserved the historical discussion of the Ethiopian Orthodox Tewahedo Church's commonly cited **81-book reckoning**, while explaining that book totals can differ when related writings, continuations, and multi-part works are grouped differently.
+- Preserved the direct reference link to `/assets/products/EthiopianApocryphaPDF.pdf`, the long-form Geʿez and manuscript history, the embedded video, scholarly notes, and the Chicago-style annotated bibliography.
+- Added an **Ethiopian Bible** button to the top navigation links on `/history-of-the-bible/`, positioned immediately after **King James Version** and linked directly to `/ethiopian-bible/about/`.
+- Confirmed the Ethiopian Bible product page links readers to the print storefront through **Shop Ethiopian Bible in Print** at `/estore/print-bibles/`.
+- Corrected the earlier README reference from the nonexistent `/print-books/` path to the checked-in and deployed `/estore/print-bibles/` route.
+- Confirmed that the About page, Ethiopian Bible product page, History of the Bible page, and Print Bibles storefront all return successful production responses after deployment.
+
+### Repository, commit, workflow, and Pages review
+
+The public `main` branch and the release notes recorded in its commit messages were reviewed on 1 September 2026. The recent Ethiopian Bible sequence is consistent with the deployed files:
+
+| Commit | Recorded change |
+|---|---|
+| [`7b8f01c`](https://github.com/Living-Word-Bibles/LWB-Website/commit/7b8f01c2dcf24fc0f565cd8304fc9c19e7ecfd76) | Uploaded `/ethiopian-bible/about/index.html` |
+| [`0a73f93`](https://github.com/Living-Word-Bibles/LWB-Website/commit/0a73f936aa9706295b44f0c83b183e2d17613ee1) | Added the About-page link to `/ethiopian-bible/index.html` |
+| [`e40c508`](https://github.com/Living-Word-Bibles/LWB-Website/commit/e40c50825993f910c0d7e2a02d2a42c67024103a) | Corrected the Ethiopian Bible image URL |
+| [`674d26e`](https://github.com/Living-Word-Bibles/LWB-Website/commit/674d26e1b6d807f2cefedfbb26f9de13d2a77d3e) | Added the About page to `sitemap.xml` |
+| [`0d98260`](https://github.com/Living-Word-Bibles/LWB-Website/commit/0d982609113cea17e63dafd2b18b10f39f44fb4d) | Added the About page to `/site-map/index.html` |
+| [`f489ea3`](https://github.com/Living-Word-Bibles/LWB-Website/commit/f489ea3d15185ed6bbe5b707ce920be1323d72b4d) | Linked the Ethiopian Bible product page to the Print Bibles storefront |
+| [`39102bb`](https://github.com/Living-Word-Bibles/LWB-Website/commit/39102bb5f889591713ad45cdd0765f70f177c382) | Updated the About page to the full 88-book presentation |
+| [`8d7489f`](https://github.com/Living-Word-Bibles/LWB-Website/commit/8d7489fdb39a2fd000780b953d7f87bcbc4c6141) | Added the About the Ethiopian Bible link to the History page |
+
+The checked-in `.github/workflows/deploy-pages.yml` remains a normal push-driven GitHub Pages workflow rather than a scheduled deployment. It:
+
+- runs on pushes to `main` and on manual `workflow_dispatch` requests;
+- checks out the repository, installs the locked Node dependencies with `npm ci`, and runs `npm run validate`;
+- verifies the required static entry files and shared includes;
+- uploads the checked-in repository root as the Pages artifact; and
+- publishes only after the validation job succeeds.
+
+The GitHub Actions run for commit `8d7489f`—**Update Bible History page | /history-of-the-bible/index.html**—completed successfully on its first attempt. Both **Validate checked-in static site** and **Publish website** passed, confirming that the latest checked-in page tree validated and deployed through GitHub Pages.
+
+### Release safeguards
+
+- No Google Apps Script backend code, API version, endpoint, spreadsheet schema, authentication, account, entitlement, or download-signing behavior was changed.
+- No PayPal Hosted Button ID, merchant configuration, checkout flow, purchase redirect, or digital fulfillment behavior was changed.
+- No shared header, shared footer, global stylesheet, or global JavaScript file was changed by the v2.5.7 content pass.
+- The History page change is limited to one top-navigation link; the Ethiopian Bible About-page revision preserves its existing route, image, video, sources, notes, and bibliography.
+- The established **310-URL** XML and human-readable sitemap inventory remains unchanged in v2.5.7 because no new canonical route was added.
+
+---
+
 ## What's New in v2.5.6
 
-- Added the new canonical **About the Ethiopian Bible** page at `/ethiopian-bible/about/`.  Also updated Ethiopian Bible page `/ethiopian-bible/`  to include link to Print Books `/print-books/`.
+- Added the new canonical **About the Ethiopian Bible** page at `/ethiopian-bible/about/`. Also updated the Ethiopian Bible page at `/ethiopian-bible/` to include a link to Print Bibles at `/estore/print-bibles/`.
 - Added approximately **4,450 words of original long-form historical content** covering the rise of Christianity in Aksum, the translation of Scripture into Geʿez, the Garima Gospels, Ethiopian manuscript culture, the traditional eighty-one-book canon, distinctive books, worship, commentary, later revision, printing, modern translation, textual scholarship, common misconceptions, and responsible study.
 - Explained the Ethiopian Orthodox Tewahedo Church's traditional **eighty-one-book canonical total** while carefully distinguishing book-counting conventions, the commonly described narrower and broader canons, and the difference between the Ethiopian Meqabyan books and the Greek Maccabean books.
 - Added focused discussions of **1 Enoch, Jubilees, 1–3 Meqabyan, Sinodos, the Books of Covenant, Ethiopic Clement, and the Ethiopic Didascalia**.

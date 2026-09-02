@@ -1,3 +1,4 @@
+[README.md](https://github.com/user-attachments/files/31756923/README.md)
 [README.md](https://github.com/user-attachments/files/31749968/README.md)
 <p align="center">
   <a href="https://www.livingwordbibles.com/">
@@ -22,7 +23,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 02 September 2026 at 17:44:30Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 02 September 2026 at 20:23:12Z UTC</sub></p>
 
 ---
 
@@ -45,7 +46,7 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 | Apps Script build stamp | `02 September 2026 at 13:11:09Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `02 September 2026 at 17:44:30Z UTC` |
+| README revision | `02 September 2026 at 20:23:12Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
 
@@ -55,7 +56,7 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 
 ## What's New in v2.6.2 Alpha — Public Release Marker & Shared-Shell Refinement
 
-Released **02 September 2026 at 17:44:30Z UTC**.
+Released **02 September 2026 at 20:23:12Z UTC**.
 
 ### Public-facing refinements
 
@@ -64,6 +65,36 @@ Released **02 September 2026 at 17:44:30Z UTC**.
 - Added a public **Change Log** page at `/change-log.html` for visitor-facing release history.
 - Added a compact public version marker to the far-right side of the desktop footer legal line; on mobile it appears beneath the legal links.
 - The footer version marker reads the current **Frontend package version** and **README last updated** values from `README.md`, so routine README release updates propagate to the public footer without a second manual version edit.
+
+### Ethiopian Bible EPUB edition and product-page update
+
+- Added a professionally formatted **EPUB 3** edition of **The Complete Apocrypha of the Ethiopian Bible** with Living Word Bibles as the author/publisher metadata.
+- Added the production EPUB asset at:
+
+```text
+/assets/products/ethiopian.epub
+```
+
+- The EPUB includes the official Living Word Bibles cover, reflowable text, a structured hyperlinked Table of Contents, direct book/chapter navigation, and reader-friendly EPUB formatting.
+- Updated `/ethiopian-bible/` to present **two separate digital products side by side**:
+  - **EPUB eBook Edition** on the left; and
+  - **PDF Edition** on the right.
+- Preserved the existing PayPal Hosted Button presentation so each PayPal product card continues to render its own product image rather than duplicating a separate cover image in the page layout.
+- Added a dedicated EPUB PayPal Hosted Button:
+
+```text
+BSYFSH79KT8VC
+```
+
+- Preserved the existing Ethiopian Bible PDF Hosted Button:
+
+```text
+8Z63ZMZEALLG4
+```
+
+- Expanded the Ethiopian Bible page's **What's Included** section to explain the shared collection and the difference between the EPUB and PDF reading experiences.
+- Updated public copy so the Ethiopian Bible page no longer describes the offering as PDF-only.
+- This storefront change does **not** alter the existing Ethiopian Bible PDF account-entitlement or Valois Lumière backend configuration unless that EPUB product is separately added to the account/product data model.
 
 ---
 
@@ -689,7 +720,7 @@ Server-side secrets such as `DOWNLOAD_TOKEN_SECRET`, account-authentication secr
 
 ## eStore, Print Bibles, and PayPal
 
-The core eStore presents free and paid digital Bible editions. The Ethiopian Bible PDF is offered through its dedicated page at `/ethiopian-bible/`. Print Bibles remain separate at:
+The core eStore presents free and paid digital Bible editions. The Ethiopian Bible is offered through its dedicated page at `/ethiopian-bible/` in separate **EPUB** and **PDF** editions. Print Bibles remain separate at:
 
 ```text
 /estore/print-bibles/
@@ -705,6 +736,7 @@ Print Bibles are external Amazon purchases and are **not** Living Word Bibles ac
 | ASV eBible | `KBJTWT23LA6JN` |
 | YLT eBible | `5A5Z2VDH74DFG` |
 | WEB eBible | `K7C2SJYLCDKMU` |
+| Ethiopian Bible EPUB | `BSYFSH79KT8VC` |
 | Ethiopian Bible PDF | `8Z63ZMZEALLG4` |
 | LWB Bible App | `4HCP6WRVGQNV2` |
 | Donate | `QQDSDMS4D9FC4` |
@@ -783,6 +815,8 @@ Before merging or deploying this release:
 - Confirm `PAYPAL_PDT_IDENTITY_TOKEN` remains configured in Apps Script Properties before testing reconciliation of previously unrecorded transactions.
 - Confirm the Ethiopian Bible product exists in `Products` and uses Hosted Button ID `8Z63ZMZEALLG4`.
 - Confirm `/assets/products/EthiopianApocryphaPDF.pdf` resolves in production.
+- Confirm `/assets/products/ethiopian.epub` resolves in production.
+- Confirm `/ethiopian-bible/` renders the EPUB product on the left and PDF product on the right with both PayPal Hosted Buttons and their hosted product images intact.
 - Confirm `prod_kjv_special` and `prod_drb` remain active Products rows.
 - Test a brand-new account: verify email, sign in, and confirm both free Bibles appear in Library.
 - Test an existing account to confirm the free products are added once without duplicates.
@@ -816,8 +850,8 @@ Before merging or deploying this release:
 **Apps Script build stamp:** `02 September 2026 at 13:11:09Z UTC`  
 **Google Apps Script version:** `2.0.5`  
 **Frontend package version:** `2.6.2`  
-**README last updated:** **02 September 2026 at 17:44:30Z UTC**
+**README last updated:** **02 September 2026 at 20:23:12Z UTC**
 
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 02 September 2026 at 17:44:30Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 02 September 2026 at 20:23:12Z UTC</strong></p>

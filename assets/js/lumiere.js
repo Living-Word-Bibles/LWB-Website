@@ -320,6 +320,13 @@
     }, {passive:true});
   }
 
+  function readerErrorMessage(error) {
+    if (error instanceof Error && error.message) return error.message;
+    if (typeof error === 'string' && error.trim()) return error.trim();
+    if (error && typeof error.message === 'string' && error.message.trim()) return error.message.trim();
+    return 'Reader access is temporarily unavailable.';
+  }
+
   function showInlineReaderError(error) {
     console.error('Valois Lumière reader error:', error);
   }
@@ -352,11 +359,14 @@
     // EPUB.js documents Book.open() as accepting an ArrayBuffer. Opening the
     // already-fetched bytes explicitly avoids the constructor ambiguity that can
     // occur when an archived EPUB URL fails internally.
-    epubBook = window.ePub({ replacements:'blobUrl' });
-    epubBook.on('openFailed', showInlineReaderError);
+    // ArrayBuffer/Uint8Array input is binary archive data. EPUB.js 0.3.x
+    // must open it as "binary"; forcing "epub" makes EPUB.js treat the
+    // ArrayBuffer as a URL and routes it through its request layer.
+    const epubBinary = new Uint8Array(epubBytes);
+    epubBook = window.ePub({ replacements:'blobUrl', encoding:'binary' });
 
     await timeoutPromise(
-      epubBook.open(epubBytes, 'epub'),
+      epubBook.open(epubBinary, 'binary'),
       30000,
       'Valois Lumière timed out while opening this EPUB.'
     );
@@ -472,7 +482,7 @@
       await openEpub(readerMeta);
     } catch (error) {
       console.error('Valois Lumière initialization error:', error);
-      emptyState('Valois Lumière could not open this title.', error?.message || 'Reader access is temporarily unavailable.');
+      emptyState('Valois Lumière could not open this title.', readerErrorMessage(error));
     }
   }
 

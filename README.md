@@ -1,3 +1,4 @@
+[README.md](https://github.com/user-attachments/files/31741424/README.md)
 [README.md](https://github.com/user-attachments/files/31715436/README.md)
 [README.md](https://github.com/user-attachments/files/31714041/README.md)
 <p align="center">
@@ -12,8 +13,8 @@
 
 <p align="center">
   <a href="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml/badge.svg?branch=main"></a>
-  <img alt="Frontend package v2.6.0" src="https://img.shields.io/badge/frontend-v2.6.0-555555">
-  <img alt="Google Apps Script v2.0.1" src="https://img.shields.io/badge/Google%20Apps%20Script-v2.0.1-555555">
+  <img alt="Frontend package v2.6.1" src="https://img.shields.io/badge/frontend-v2.6.1-555555">
+  <img alt="Google Apps Script v2.0.5" src="https://img.shields.io/badge/Google%20Apps%20Script-v2.0.5-555555">
   <img alt="Hosting GitHub Pages" src="https://img.shields.io/badge/hosting-GitHub%20Pages-555555">
 </p>
 
@@ -23,7 +24,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 01 September 2026 at 22:08:45Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 02 September 2026 at 14:03:35Z UTC</sub></p>
 
 ---
 
@@ -41,18 +42,173 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 |---|---|
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
-| Frontend package version | `2.6.0` |
-| Google Apps Script version | `2.0.1` |
-| Apps Script build stamp | `01 September 2026 at 21:22:11Z UTC` |
+| Frontend package version | `2.6.1` |
+| Google Apps Script version | `2.0.5` |
+| Apps Script build stamp | `02 September 2026 at 13:11:09Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `01 September 2026 at 22:08:45Z UTC` |
+| README revision | `02 September 2026 at 14:03:35Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
 
 ---
 
 
+
+## What's New in v2.6.1 / Google Apps Script v2.0.5 — Valois Lumière Online eBible Reader
+
+Released **02 September 2026 at 14:03:35Z UTC**.
+
+### Valois Lumière account-reader integration
+
+Living Word Bibles accounts can now open entitled digital Bible products online through **Valois Lumière**, the Valois Media Holdings browser reader integrated at:
+
+```text
+https://www.livingwordbibles.com/lumiere/
+```
+
+The reader is launched from the signed-in account Library through **Read Online** controls. The route is a private account utility, is marked `noindex,nofollow,noarchive`, and is not intended for public sitemap discovery.
+
+Supported repository-hosted reader assets include:
+
+```text
+/assets/products/kjvspecial.epub
+/assets/products/drb.epub
+/assets/products/kjv.epub
+/assets/products/asv.epub
+/assets/products/ylt.epub
+/assets/products/web.epub
+/assets/products/EthiopianApocryphaPDF.pdf
+```
+
+The EPUB editions remain ordinary `.epub` files. Separate ZIP copies are neither required nor used.
+
+### Repository-only digital product source
+
+The working reader and account-library architecture uses the checked-in **GitHub Pages product files** under `/assets/products/` as the canonical eBible/PDF source.
+
+For the supported Living Word Bibles products, the backend maps product IDs directly to repository paths:
+
+```text
+prod_kjv_special -> /assets/products/kjvspecial.epub
+prod_drb         -> /assets/products/drb.epub
+prod_kjv         -> /assets/products/kjv.epub
+prod_asv         -> /assets/products/asv.epub
+prod_ylt         -> /assets/products/ylt.epub
+prod_web         -> /assets/products/web.epub
+```
+
+The Ethiopian Bible / Complete Apocrypha product continues to use:
+
+```text
+/assets/products/EthiopianApocryphaPDF.pdf
+```
+
+**Google Drive is not a product-delivery source for this architecture.** Reader access, account downloads, free downloads, and digital fulfillment resolve through repository paths. Existing spreadsheet records may continue to contain historical Digital Assets data, but Drive file IDs are not used as the canonical product source.
+
+### Entitlement-gated reader authorization
+
+Google Apps Script v2.0.5 keeps authorization separate from file rendering.
+
+The `reader-manifest` POST action:
+
+1. validates the normal Living Word Bibles account session;
+2. resolves the requested product;
+3. confirms that the product is eligible for the account library;
+4. verifies an active entitlement belonging to the signed-in customer/email;
+5. resolves the canonical repository asset; and
+6. returns reader metadata and the authorized repository URL.
+
+Apps Script **does not unzip or parse EPUB chapters server-side**. The earlier server-side chapter bridge and `reader-chapter` action are no longer part of the working design.
+
+### Browser EPUB rendering
+
+Valois Lumière renders EPUBs in the browser with **EPUB.js + JSZip**.
+
+The production reader:
+
+- downloads the entitled EPUB from its repository-backed Living Word Bibles URL;
+- validates that EPUB/ZIP bytes were actually received;
+- opens downloaded binary data through EPUB.js's binary archive path;
+- renders the first readable section without blocking on table-of-contents metadata;
+- loads navigation/metadata after reader initialization;
+- provides previous/next controls;
+- provides table-of-contents navigation;
+- provides reader font-size controls;
+- provides Light, Sepia, and Dark themes;
+- retains local reader preferences/progress where supported; and
+- provides explicit reader errors instead of leaving the interface indefinitely on `Opening eBible…`.
+
+The final alpha repair corrected an EPUB.js input-mode mismatch in which an `ArrayBuffer` was incorrectly opened as `"epub"` rather than as binary archive data. The source EPUBs themselves were valid and did not require conversion or repackaging.
+
+### PDF reading
+
+Entitled PDF products use the same account authorization flow and are displayed directly from their repository PDF URL. The Ethiopian Bible remains the current account-eligible PDF product.
+
+### Valois Media Holdings branding
+
+The reader identifies the underlying reader technology as **Valois Lumière** and includes Valois Media Holdings / Lumière branding linked to:
+
+```text
+https://www.valoismedia.com
+```
+
+The Valois branding assets are referenced from Valois Media rather than duplicated into the Living Word Bibles asset tree.
+
+The reader footer includes a dynamic-year copyright line in the form:
+
+```text
+Copyright © [year] | Valois Media Holdings | All Rights Reserved
+```
+
+`Valois Media Holdings` links to `https://www.valoismedia.com`.
+
+### Account integration
+
+The account Library remains the authority for which digital products a signed-in customer may access.
+
+The existing account architecture still provides:
+
+- automatic KJV Special and Douay-Rheims free entitlements;
+- paid eBible entitlement reconciliation;
+- Ethiopian Bible PDF entitlement support;
+- manual entitlement corrections through `/portal/`; and
+- ordinary product download controls.
+
+Valois Lumière adds **online reading** without creating a second customer database, second entitlement model, or separate reader account.
+
+### Lumière file set
+
+The integrated reader is maintained through:
+
+```text
+/lumiere/index.html
+/assets/js/lumiere.js
+/assets/js/lumiere-library.js
+/account/library/index.html
+/apps-script/Code.gs
+```
+
+The final EPUB.js alpha stabilization itself required only:
+
+```text
+/lumiere/index.html
+/assets/js/lumiere.js
+```
+
+No product EPUB/PDF replacement, Google Drive upload, Products-sheet schema change, PayPal change, or new spreadsheet tab is required.
+
+### Backend v2.0.5
+
+Google Apps Script v2.0.5 preserves the v2.0.1 portal, newsletter, account, purchase-reconciliation, entitlement, PayPal PDT, and System Log functionality while adding the repository-backed `reader-manifest` authorization endpoint.
+
+Current backend build stamp:
+
+```text
+02 September 2026 at 13:11:09Z UTC
+```
+
+---
 
 ## What's New in v2.6.0 — Legal, Licensing & Editorial Alignment
 
@@ -428,6 +584,7 @@ The daily trigger may execute every day, but `processNewsletterCampaign()` sends
 | `/account/library/` | Digital eBible/PDF library |
 | `/account/orders/` | Account order history |
 | `/account/profile/` | Account profile |
+| `/lumiere/?product=...` | Entitlement-gated Valois Lumière online eBible/PDF reader |
 | `/payment-complete/?reconcile=1` | Reconcile eligible PayPal purchases with the signed-in account |
 
 All four account pages expose **Reconcile Purchase(s)** in the account navigation.
@@ -446,8 +603,8 @@ Current backend metadata:
 
 ```text
 Service: LWB Website API
-Version: 2.0.0
-Apps Script build stamp: 01 September 2026 at 20:47:21Z UTC
+Version: 2.0.5
+Apps Script build stamp: 02 September 2026 at 13:11:09Z UTC
 ```
 
 The backend is a **data/API service only**. It does not create, regenerate, or overwrite website HTML.
@@ -457,7 +614,7 @@ The backend is a **data/API service only**. It does not create, regenerate, or o
 | Resource | Value |
 |---|---|
 | Google Sheet | `LWB Website` |
-| Product folder | `LWB Product Files` |
+| Canonical digital-product source | Repository paths under `/assets/products/` |
 | Public contact | `gospellivingwordbibles@gmail.com` |
 
 ### Current public API actions
@@ -485,6 +642,7 @@ The backend is a **data/API service only**. It does not create, regenerate, or o
 - `reset-password`
 - `verify-email`
 - `account`
+- `reader-manifest`
 - `reconcile-purchase`
 - `free-download`
 
@@ -582,7 +740,7 @@ Deployment remains handled by `.github/workflows/deploy-pages.yml`.
 
 A push to `main` validates the repository and publishes the **repository root (`.`)** directly to GitHub Pages. There is no generated production output directory.
 
-For Apps Script v2.0.1, replace the Apps Script source with `/apps-script/Code.gs`, save it in the existing Apps Script project, and deploy a new Web App version using the same production configuration. If the production Web App URL remains the same deployment URL, no frontend config change is necessary.
+For Apps Script v2.0.5, replace the Apps Script source with `/apps-script/Code.gs`, save it in the existing Apps Script project, and deploy a new Web App version using the same production configuration. If the production Web App URL remains the same deployment URL, no frontend config change is necessary.
 
 ---
 
@@ -621,13 +779,18 @@ Before merging or deploying this release:
 - Test `/opt-out/?email=example@example.com` and confirm the email field pre-fills and the existing unsubscribe logic updates `Newsletter Subscribers`.
 - Run a newsletter template test before starting a campaign.
 - Confirm newsletter processing never exceeds 99 recipients per batch and only sends on Monday, Wednesday, and Friday.
+- Confirm `/assets/products/kjvspecial.epub`, `/assets/products/drb.epub`, `/assets/products/kjv.epub`, `/assets/products/asv.epub`, `/assets/products/ylt.epub`, and `/assets/products/web.epub` resolve from production.
+- Sign in to an entitled account and open **Read Online** for KJV Special in `/lumiere/`.
+- Confirm EPUB navigation, previous/next controls, font sizing, and reader themes work.
+- Confirm the Ethiopian Bible PDF opens through the same entitlement-gated Lumière route.
+- Confirm an account without an entitlement cannot authorize the corresponding reader manifest.
 - Push only the files intentionally changed.
 
 ---
 
 ## Repository identity
 
-**Living Word Bibles** develops and publishes Bible reading resources, translation histories, Catholic Bible resources, digital Bible editions, audio Bible resources, and related study material for the web and supported devices.
+**Living Word Bibles** develops and publishes Bible reading resources, translation histories, Catholic Bible resources, digital Bible editions, audio Bible resources, account-based online reading through Valois Lumière, and related study material for the web and supported devices.
 
 - **Production:** https://www.livingwordbibles.com/
 - **Public email:** gospellivingwordbibles@gmail.com
@@ -637,11 +800,11 @@ Before merging or deploying this release:
 ---
 
 **Repository architecture revision:** `2026-08-27T22:28:20Z`  
-**Apps Script build stamp:** `01 September 2026 at 21:22:11Z UTC`  
-**Google Apps Script version:** `2.0.1`  
-**Frontend package version:** `2.5.9`  
-**README last updated:** **01 September 2026 at 21:22:11Z UTC**
+**Apps Script build stamp:** `02 September 2026 at 13:11:09Z UTC`  
+**Google Apps Script version:** `2.0.5`  
+**Frontend package version:** `2.6.1`  
+**README last updated:** **02 September 2026 at 14:03:35Z UTC**
 
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 01 September 2026 at 22:08:45Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 02 September 2026 at 14:03:35Z UTC</strong></p>

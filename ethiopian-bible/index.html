@@ -5,19 +5,19 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
 
   <title>The Complete Apocrypha of the Ethiopian Bible | Living Word Bibles</title>
-  <meta name="description" content="Download The Complete Apocrypha of the Ethiopian Bible, a Living Word Bibles digital edition featuring 20 books missing from the Protestant canon.">
+  <meta name="description" content="Purchase The Complete Apocrypha of the Ethiopian Bible from Living Word Bibles in reflowable EPUB 3 or paginated PDF format.">
   <link rel="canonical" href="https://www.livingwordbibles.com/ethiopian-bible/">
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Living Word Bibles">
   <meta property="og:title" content="The Complete Apocrypha of the Ethiopian Bible | Living Word Bibles">
-  <meta property="og:description" content="Download The Complete Apocrypha of the Ethiopian Bible, a Living Word Bibles digital edition featuring 20 books missing from the Protestant canon.">
+  <meta property="og:description" content="Purchase The Complete Apocrypha of the Ethiopian Bible from Living Word Bibles in reflowable EPUB 3 or paginated PDF format.">
   <meta property="og:url" content="https://www.livingwordbibles.com/ethiopian-bible/">
   <meta property="og:image" content="https://www.livingwordbibles.com/assets/lwbbanner.webp">
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="The Complete Apocrypha of the Ethiopian Bible | Living Word Bibles">
-  <meta name="twitter:description" content="Download The Complete Apocrypha of the Ethiopian Bible, a Living Word Bibles digital edition featuring 20 books missing from the Protestant canon.">
+  <meta name="twitter:description" content="Purchase The Complete Apocrypha of the Ethiopian Bible from Living Word Bibles in reflowable EPUB 3 or paginated PDF format.">
   <meta name="twitter:image" content="https://www.livingwordbibles.com/assets/lwbbanner.webp">
 
   <link rel="icon" href="/favicon.ico" sizes="any">
@@ -29,42 +29,92 @@
   <link rel="stylesheet" href="/assets/css/site.css">
 
   <style>
-    /* Ethiopian Bible purchase layout.
-       Keep the existing global design system; only arrange the two purchase columns. */
-    .ethiopian-purchase-grid{
-      align-items:start;
+    /* Ethiopian Bible product layout.
+       Preserve the global Living Word Bibles design system while presenting
+       the EPUB and PDF editions as equal, side-by-side products. */
+    .ethiopian-products{
+      align-items:stretch;
       margin-top:2rem;
+      gap:1.5rem;
     }
 
-    .ethiopian-purchase-left{
+    .ethiopian-product-card{
+      display:flex;
+      flex-direction:column;
       min-width:0;
+      height:100%;
     }
 
-    .ethiopian-purchase-logo{
-      margin:0 0 1.5rem;
-    }
-
-    .ethiopian-purchase-logo img{
-      width:min(100%,320px);
-      height:auto;
-    }
-
-    .ethiopian-included-card h2,
-    .ethiopian-purchase-card h2{
+    .ethiopian-product-card h2{
       margin-top:0;
     }
 
-    .ethiopian-included-card ul{
-      margin-bottom:0;
+    .ethiopian-product-cover{
+      margin:0 auto 1.35rem;
+      text-align:center;
     }
 
-    @media(max-width:560px){
-      .ethiopian-purchase-grid{
-        margin-top:1.5rem;
+    .ethiopian-product-cover img{
+      display:block;
+      width:min(100%,300px);
+      height:auto;
+      margin:0 auto;
+      border-radius:4px;
+      box-shadow:0 10px 28px rgba(0,0,0,.18);
+    }
+
+    .ethiopian-format-label{
+      display:inline-block;
+      margin:0 0 .8rem;
+      padding:.35rem .7rem;
+      border:1px solid currentColor;
+      border-radius:999px;
+      font-size:.78rem;
+      font-weight:700;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .ethiopian-product-features{
+      margin:1rem 0 1.25rem;
+    }
+
+    .ethiopian-product-features li + li{
+      margin-top:.45rem;
+    }
+
+    .ethiopian-paypal{
+      margin-top:auto;
+      padding-top:.5rem;
+    }
+
+    .ethiopian-included{
+      margin-top:1.5rem;
+    }
+
+    .ethiopian-included-grid{
+      align-items:start;
+      gap:1.5rem;
+      margin-top:1rem;
+    }
+
+    .ethiopian-included-grid h3{
+      margin-top:0;
+    }
+
+    .ethiopian-note{
+      font-size:.94rem;
+      opacity:.88;
+    }
+
+    @media(max-width:760px){
+      .ethiopian-products,
+      .ethiopian-included-grid{
+        grid-template-columns:1fr;
       }
 
-      .ethiopian-purchase-logo{
-        margin-bottom:1rem;
+      .ethiopian-products{
+        margin-top:1.5rem;
       }
     }
   </style>
@@ -109,7 +159,7 @@
         "@id":"https://www.livingwordbibles.com/ethiopian-bible/#webpage",
         "url":"https://www.livingwordbibles.com/ethiopian-bible/",
         "name":"The Complete Apocrypha of the Ethiopian Bible | Living Word Bibles",
-        "description":"Download The Complete Apocrypha of the Ethiopian Bible, a Living Word Bibles digital edition featuring 20 books missing from the Protestant canon.",
+        "description":"Purchase The Complete Apocrypha of the Ethiopian Bible from Living Word Bibles in reflowable EPUB 3 or paginated PDF format.",
         "isPartOf":{
           "@id":"https://www.livingwordbibles.com/#website"
         },
@@ -169,11 +219,12 @@
         <h2>20 Missing Books of The Protestant Canon</h2>
 
         <p>
-          Explore a Living Word Bibles digital edition of
+          Explore the Living Word Bibles digital edition of
           <strong>The Complete Apocrypha of the Ethiopian Bible</strong>,
-          featuring wisdom literature, Enochic writings, apocryphal books,
-          and traditional prayers presented in a clean PDF format for study,
-          devotion, and reference.
+          featuring wisdom literature, the Meqabyan books, Enochic writings,
+          apocryphal and deuterocanonical works, and traditional prayers.
+          Choose the reflowable EPUB 3 edition for eBook reading or the
+          paginated PDF edition for fixed-page study and reference.
         </p>
 
         <div class="button-row" style="justify-content:center;margin-top:1.25rem">
@@ -182,76 +233,161 @@
         </div>
       </header>
 
-      <div
-        class="grid two ethiopian-purchase-grid"
-        data-product-card
-        data-product-slug="ethiopian-bible"
-      >
+      <div class="grid two ethiopian-products">
 
-        <div class="ethiopian-purchase-left">
-          <figure class="center ethiopian-purchase-logo">
-            <img
-              src="/assets/LivingWordBibles01.png"
-              data-fallback="/assets/icons/lwb-mark.svg"
-              alt="Living Word Bibles logo"
-            >
-          </figure>
+        <section class="content-card ethiopian-product-card">
+          <div>
+            <span class="ethiopian-format-label">EPUB 3 eBook</span>
 
-          <section class="content-card ethiopian-included-card">
-            <h2>What’s Included</h2>
+            <figure class="ethiopian-product-cover">
+              <img
+                src="/assets/products/ethiopian-bible-cover.jpeg"
+                alt="Cover of The Complete Apocrypha of the Ethiopian Bible by Living Word Bibles"
+              >
+            </figure>
 
-            <ul>
-              <li>20 apocryphal and deuterocanonical books connected to the Ethiopian Bible tradition</li>
-              <li>Wisdom, Enoch, Giants, Watchers, Angels, Sirach, Susanna, and more</li>
-              <li>Traditional Prayers of the Ethiopian Bible</li>
-              <li>Paginated PDF edition with Table of Contents</li>
+            <h2>The Complete Apocrypha of the Ethiopian Bible — EPUB Edition</h2>
+
+            <p>
+              A professionally formatted, reflowable eBook edition designed
+              for comfortable reading on phones, tablets, computers, and
+              compatible eReader applications.
+            </p>
+
+            <ul class="ethiopian-product-features">
+              <li>Reflowable EPUB 3 format that adapts to your screen and text-size settings</li>
+              <li>Hyperlinked Table of Contents with direct book and chapter navigation</li>
+              <li>Official Living Word Bibles cover and clean digital typography</li>
+              <li>Supports reader-controlled font sizing, spacing, and light or dark reading modes where supported</li>
+              <li>Ideal for Apple Books, Kobo, and other EPUB-compatible reading apps and devices</li>
+            </ul>
+          </div>
+
+          <div class="ethiopian-paypal">
+            <div id="paypal-container-BSYFSH79KT8VC"></div>
+
+            <p class="ethiopian-note">
+              After purchase, PayPal will redirect you to the download
+              destination configured for the EPUB edition.
+            </p>
+          </div>
+        </section>
+
+        <section
+          class="content-card ethiopian-product-card"
+          data-product-card
+          data-product-slug="ethiopian-bible"
+        >
+          <div>
+            <span class="ethiopian-format-label">PDF Edition</span>
+
+            <h2>The Complete Apocrypha of the Ethiopian Bible — PDF Edition</h2>
+
+            <p>
+              The original paginated Living Word Bibles digital edition,
+              preserving a fixed-page layout for study, reference, printing,
+              and readers who prefer a traditional book-style presentation.
+            </p>
+
+            <ul class="ethiopian-product-features">
+              <li>Fixed-layout, paginated PDF edition</li>
+              <li>Traditional page-based Table of Contents</li>
+              <li>Consistent page appearance across supported devices</li>
+              <li>Well suited for desktop study, reference, and personal printing</li>
               <li>Instant digital access after checkout</li>
             </ul>
-          </section>
-        </div>
+          </div>
 
-        <section class="content-card ethiopian-purchase-card">
-          <h2>Purchase PDF Download</h2>
+          <div class="ethiopian-paypal">
+            <div
+              id="paypal-ethiopian-bible"
+              class="paypal-hosted"
+              data-paypal-button="8Z63ZMZEALLG4"
+            ></div>
 
-          <p>
-            Purchase the Living Word Bibles digital PDF edition for
-            convenient study, devotional reading, and reference.
-          </p>
-
-          <div
-            id="paypal-ethiopian-bible"
-            class="paypal-hosted"
-            data-paypal-button="8Z63ZMZEALLG4"
-          ></div>
-
-          <p>
-            After purchase, PayPal will redirect you to the download
-            destination configured for this edition.
-          </p>
+            <p class="ethiopian-note">
+              After purchase, PayPal will redirect you to the download
+              destination configured for the PDF edition.
+            </p>
+          </div>
         </section>
 
       </div>
 
-      <section class="content-card">
-        <h2>Digital Download</h2>
+      <section class="content-card ethiopian-included">
+        <h2>What’s Included</h2>
 
         <p>
-          This is a digital PDF edition. After checkout, PayPal will redirect
-          you to the download destination configured for this product.
+          Both editions contain the same Living Word Bibles collection. The
+          difference is how the book is formatted and how you prefer to read it.
+        </p>
+
+        <div class="grid two ethiopian-included-grid">
+          <div>
+            <h3>Included in Both Editions</h3>
+            <ul>
+              <li>The Wisdom of Solomon</li>
+              <li>I Meqabyan, II Meqabyan, and III Meqabyan</li>
+              <li>Enochic writings, including the Book of Watchers, Book of Parables, Book of Noah, Book of the Luminaries of Heaven, Book of Dream and Vision, and Epistle of Enoch</li>
+              <li>Esdras, the Epistle of Jeremiah, Baruc, and Additions to Esther</li>
+              <li>Psalm 151 and the Wisdom of Jesus Son of Sirach (Ecclesiasticus)</li>
+              <li>Tobit, Judith, Bel and the Dragon, and Susanna</li>
+              <li>Traditional Prayers of the Ethiopian Bible</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3>Which Edition Should I Choose?</h3>
+            <p>
+              <strong>Choose EPUB</strong> if you want an eBook experience:
+              adjustable text, responsive pages, and direct chapter navigation.
+              It is the best choice for extended reading on a phone, tablet,
+              or eReader.
+            </p>
+            <p>
+              <strong>Choose PDF</strong> if you want the original fixed-page
+              presentation, stable page numbers, or a format that is convenient
+              for desktop reference and personal printing.
+            </p>
+            <p>
+              The EPUB and PDF are separate digital products. Purchase the
+              format that best fits the way you plan to read and study.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-card">
+        <h2>Digital Editions</h2>
+
+        <p>
+          Both products are digital downloads. No physical book is included
+          with either purchase on this page. For a printed edition, use the
+          <a href="/estore/print-bibles/">Print Bibles</a> page.
         </p>
 
         <p>
-          This edition is prepared for personal study, devotional reading,
-          and reference in a clean digital format.
+          The EPUB file is prepared for EPUB-compatible reading applications.
+          The PDF file preserves the fixed-page layout of the Living Word Bibles
+          digital edition.
         </p>
       </section>
+
+      <script
+        src="https://www.paypal.com/sdk/js?client-id=BAADY3HmA8ip1D8X4DGaJ9V3YBlg1INapOOrbKRCDd1nTP9KQN6WxKo9Tn5ZWectpb3LYEoeDYH6a3i1dA&components=hosted-buttons&enable-funding=venmo&currency=USD">
+      </script>
+      <script>
+        paypal.HostedButtons({
+          hostedButtonId: "BSYFSH79KT8VC",
+        }).render("#paypal-container-BSYFSH79KT8VC");
+      </script>
 
       <section>
         <h2>Need Help With Your Order?</h2>
 
         <p>
           If you have completed your purchase but have trouble accessing the
-          Ethiopian Bible PDF, please
+          Ethiopian Bible EPUB or PDF, please
           <a href="mailto:gospellivingwordbibles@gmail.com?subject=RE%3A%20Technical%20Support">contact Living Word Bibles Support</a>
           or
           <a href="mailto:cookservicescompany@gmail.com?subject=RE%3A%20Technical%20Support">Cook Services Company Support</a>.

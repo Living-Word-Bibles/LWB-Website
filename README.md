@@ -1,6 +1,4 @@
-[README.md](https://github.com/user-attachments/files/31741424/README.md)
-[README.md](https://github.com/user-attachments/files/31715436/README.md)
-[README.md](https://github.com/user-attachments/files/31714041/README.md)
+[README.md](https://github.com/user-attachments/files/31749968/README.md)
 <p align="center">
   <a href="https://www.livingwordbibles.com/">
     <img src="assets/LivingWordBibles01.png" alt="Living Word Bibles" width="320">
@@ -13,7 +11,7 @@
 
 <p align="center">
   <a href="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml/badge.svg?branch=main"></a>
-  <img alt="Frontend package v2.6.1" src="https://img.shields.io/badge/frontend-v2.6.1-555555">
+  <img alt="Frontend package v2.6.2" src="https://img.shields.io/badge/frontend-v2.6.2-555555">
   <img alt="Google Apps Script v2.0.5" src="https://img.shields.io/badge/Google%20Apps%20Script-v2.0.5-555555">
   <img alt="Hosting GitHub Pages" src="https://img.shields.io/badge/hosting-GitHub%20Pages-555555">
 </p>
@@ -24,7 +22,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 02 September 2026 at 14:03:35Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 02 September 2026 at 17:44:30Z UTC</sub></p>
 
 ---
 
@@ -42,17 +40,32 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 |---|---|
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
-| Frontend package version | `2.6.1` |
+| Frontend package version | `2.6.2` |
 | Google Apps Script version | `2.0.5` |
 | Apps Script build stamp | `02 September 2026 at 13:11:09Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `02 September 2026 at 14:03:35Z UTC` |
+| README revision | `02 September 2026 at 17:44:30Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
 
 ---
 
+
+
+## What's New in v2.6.2 Alpha — Public Release Marker & Shared-Shell Refinement
+
+Released **02 September 2026 at 17:44:30Z UTC**.
+
+### Public-facing refinements
+
+- Refined the shared Living Word Bibles header logo presentation and removed redundant brand text beside the logo.
+- Refined the shared footer logo proportions for a cleaner visual balance.
+- Added a public **Change Log** page at `/change-log.html` for visitor-facing release history.
+- Added a compact public version marker to the far-right side of the desktop footer legal line; on mobile it appears beneath the legal links.
+- The footer version marker reads the current **Frontend package version** and **README last updated** values from `README.md`, so routine README release updates propagate to the public footer without a second manual version edit.
+
+---
 
 
 ## What's New in v2.6.1 / Google Apps Script v2.0.5 — Valois Lumière Online eBible Reader
@@ -802,9 +815,9 @@ Before merging or deploying this release:
 **Repository architecture revision:** `2026-08-27T22:28:20Z`  
 **Apps Script build stamp:** `02 September 2026 at 13:11:09Z UTC`  
 **Google Apps Script version:** `2.0.5`  
-**Frontend package version:** `2.6.1`  
-**README last updated:** **02 September 2026 at 14:03:35Z UTC**
+**Frontend package version:** `2.6.2`  
+**README last updated:** **02 September 2026 at 17:44:30Z UTC**
 
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 02 September 2026 at 14:03:35Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 02 September 2026 at 17:44:30Z UTC</strong></p>

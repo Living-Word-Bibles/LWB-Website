@@ -1,18 +1,20 @@
 /**
- * Living Word Bibles Backend v2.0.2
+ * Living Word Bibles Backend v2.0.5
  * Core Website API
  *
  * Account: gospellivingwordbibles@gmail.com
  * Spreadsheet: LWB Website
  * Legal display date: 27 August 2026
- * Build timestamp: 02 September 2026 at 12:18:00Z UTC
+ * Build timestamp: 02 September 2026 at 13:11:09Z UTC
  *
- * v2.0.2 highlights:
- * - Integrates Valois Lumière online reading with existing LWB account entitlements.
- * - Adds lock-free reader-manifest and reader-chapter API actions for entitled titles.
- * - Supports repository/Drive EPUB reading and the existing Ethiopian Bible PDF.
- * - Reuses existing Customers, Products, Digital Assets, and Entitlements sheets.
- * - Adds no new sheets or columns and does not change PayPal, portal, or account auth.
+ * v2.0.5 highlights:
+ * - Corrects Valois Lumière to render archived EPUB files in the browser with EPUB.js + JSZip.
+ * - Apps Script now authorizes reader access and returns the entitled repository asset URL only;
+ *   it does not fetch, unzip, parse, sanitize, or stream EPUB chapters.
+ * - All current eBible/PDF product files resolve from the LWB GitHub Pages repository under
+ *   /assets/products/. Google Drive is not used for reader or product delivery.
+ * - Keeps existing Customers, Products, Digital Assets, Entitlements, PayPal, portal, and auth logic.
+ * - Adds no new sheets or columns.
  * v2.0.1 highlights:
  * - Adds the /portal administrative console using the existing Settings,
  *   Newsletter Subscribers, Newsletter Campaigns, Customers, Orders,
@@ -40,16 +42,14 @@
  *
  * Existing resources:
  * Spreadsheet ID: 1xnzdo1UJsEOTqcO2066Nfb6ayqKn8Zg5RbNLdpbaTcc
- * Product folder ID: 1G6H26CknI1XI090cMVVjb8aVYxM94APP
  */
 
 const LWB = Object.freeze({
-  VERSION: '2.0.2',
-  BUILD_UTC: '02 September 2026 at 12:18:00Z UTC',
+  VERSION: '2.0.5',
+  BUILD_UTC: '02 September 2026 at 13:11:09Z UTC',
   SITE_URL: 'https://www.livingwordbibles.com',
   CONTACT_EMAIL: 'gospellivingwordbibles@gmail.com',
   SPREADSHEET_ID: '1xnzdo1UJsEOTqcO2066Nfb6ayqKn8Zg5RbNLdpbaTcc',
-  PRODUCT_FOLDER_ID: '1G6H26CknI1XI090cMVVjb8aVYxM94APP',
   CONSENT_VERSION: '2026-08-27',
   LOGO_URL: 'https://www.livingwordbibles.com/assets/LivingWordBibles01.png',
   NEWSLETTER_BATCH_MAX: 99,
@@ -67,6 +67,14 @@ const LWB = Object.freeze({
   ]),
   ETHIOPIAN_PAYPAL_BUTTON_ID: '8Z63ZMZEALLG4',
   ETHIOPIAN_PDF_PATH: '/assets/products/EthiopianApocryphaPDF.pdf',
+  REPOSITORY_ASSETS: Object.freeze({
+    prod_kjv_special: '/assets/products/kjvspecial.epub',
+    prod_drb: '/assets/products/drb.epub',
+    prod_kjv: '/assets/products/kjv.epub',
+    prod_asv: '/assets/products/asv.epub',
+    prod_ylt: '/assets/products/ylt.epub',
+    prod_web: '/assets/products/web.epub'
+  }),
   EMAIL_RE: /^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$/,
   CALLBACK_RE: /^[A-Za-z_$][0-9A-Za-z_$\.]{0,80}$/,
   SHEETS: Object.freeze({
@@ -98,7 +106,6 @@ function step4ConfigureCoreApi() {
   const props = PropertiesService.getScriptProperties();
 
   props.setProperty('LWB_SHEET_ID', LWB.SPREADSHEET_ID);
-  props.setProperty('LWB_DRIVE_FOLDER_ID', LWB.PRODUCT_FOLDER_ID);
 
   if (!props.getProperty('DOWNLOAD_TOKEN_SECRET')) {
     props.setProperty(
@@ -111,11 +118,10 @@ function step4ConfigureCoreApi() {
   ensureCustomerAuthColumns_();
 
   const ss = SpreadsheetApp.openById(LWB.SPREADSHEET_ID);
-  const folder = DriveApp.getFolderById(LWB.PRODUCT_FOLDER_ID);
 
   Logger.log('LWB v' + LWB.VERSION + ' CONFIGURATION COMPLETE');
   Logger.log('Spreadsheet OK: ' + ss.getName());
-  Logger.log('Product folder OK: ' + folder.getName());
+  Logger.log('Product delivery: GitHub Pages repository /assets/products/');
   Logger.log('Public contact: ' + LWB.CONTACT_EMAIL);
   Logger.log('PayPal settings: UNCHANGED');
 }
@@ -223,12 +229,9 @@ function doPost(e) {
     }
   }
 
-  if (parsedAction === 'reader-manifest' || parsedAction === 'reader-chapter') {
+  if (parsedAction === 'reader-manifest') {
     try {
-      const readerPayload = parsedAction === 'reader-manifest'
-        ? readerManifest_(parsed)
-        : readerChapter_(parsed);
-      return output_(readerPayload, parsed.callback);
+      return output_(readerManifest_(parsed), parsed.callback);
     } catch (err) {
       return output_({ ok: false, error: safeError_(err) }, parsed.callback);
     }
@@ -908,79 +911,40 @@ function existingProductIdForOrder_(orderId) {
 }
 
 /* ========================================================================== */
-/* VALOIS LUMIÈRE ONLINE READER                                              */
+/* VALOIS LUMIÈRE ONLINE READER                                               */
 /* ========================================================================== */
 
+/**
+ * Reader authorization only.
+ *
+ * EPUB parsing/rendering is intentionally performed in the browser by
+ * EPUB.js + JSZip. Apps Script verifies the account/entitlement and returns
+ * the canonical GitHub Pages repository asset URL. This avoids all server-side
+ * EPUB unzip/parsing and keeps product delivery off Google Drive.
+ */
 function readerManifest_(data) {
   const access = readerRequireAccess_(data);
   const product = access.product;
-  const asset = readerFindAsset_(product);
-  const format = readerAssetFormat_(asset, product);
-
-  if (format === 'pdf') {
-    if (!asset.repository_path) {
-      throw new Error('Online PDF reading is not configured for this title.');
-    }
-    return {
-      ok: true,
-      reader: {
-        format: 'pdf',
-        product_id: product.product_id,
-        slug: product.slug,
-        title: product.title,
-        source_url: readerRepositoryUrl_(asset.repository_path)
-      }
-    };
+  const asset = repositoryAssetForProduct_(product);
+  if (!asset || !asset.repository_path) {
+    throw new Error('The repository file for this title is not configured.');
   }
 
-  if (format !== 'epub') {
+  const format = readerAssetFormat_(asset, product);
+  if (format !== 'epub' && format !== 'pdf') {
     throw new Error('This title is not available in Valois Lumière.');
   }
 
-  const epub = readerLoadEpub_(asset);
   return {
     ok: true,
     reader: {
-      format: 'epub',
+      format: format,
       product_id: product.product_id,
       slug: product.slug,
       title: product.title,
-      spine: epub.spine.map(function(item, index) {
-        return {
-          id: item.id,
-          href: item.href,
-          title: item.title || ('Section ' + (index + 1))
-        };
-      })
-    }
-  };
-}
-
-function readerChapter_(data) {
-  const access = readerRequireAccess_(data);
-  const product = access.product;
-  const asset = readerFindAsset_(product);
-
-  if (readerAssetFormat_(asset, product) !== 'epub') {
-    throw new Error('This title is not an EPUB eBible.');
-  }
-
-  const epub = readerLoadEpub_(asset);
-  const chapterId = clean_(data.chapter || '', 500);
-  const item = epub.spine.find(function(row) {
-    return String(row.id) === chapterId;
-  });
-
-  if (!item) throw new Error('The requested reader section is unavailable.');
-  const blob = epub.blobs[item.path];
-  if (!blob) throw new Error('The requested EPUB file is unavailable.');
-
-  return {
-    ok: true,
-    chapter: {
-      id: item.id,
-      title: item.title || '',
-      html: readerSanitizeChapter_(blob.getDataAsString())
+      short_title: product.short_title || '',
+      cover_path: product.cover_path || '',
+      source_url: readerRepositoryUrl_(asset.repository_path)
     }
   };
 }
@@ -1016,217 +980,58 @@ function readerRequireAccess_(data) {
   return { customer: customer, product: product, entitlement: entitlement };
 }
 
-function readerFindAsset_(product) {
+/**
+ * Canonical repository asset resolver.
+ * Known LWB products always use the repository files below. For future
+ * products, Digital Assets may provide an active repository_path, but Drive
+ * fields are intentionally ignored.
+ */
+function repositoryAssetForProduct_(product) {
+  if (!product) return null;
+
   const productId = String(product.product_id || '');
-  const expected = String(product.product_type || '').toLowerCase() === 'pdf' || isEthiopianProduct_(product)
-    ? 'pdf'
-    : 'epub';
+  let path = LWB.REPOSITORY_ASSETS[productId] || '';
 
-  const configured = readObjects_(sheet_(LWB.SHEETS.ASSETS)).find(function(asset) {
-    if (String(asset.product_id || '') !== productId || !truthy_(asset.active)) return false;
-    if (!asset.drive_file_id && !asset.repository_path) return false;
+  if (!path && isEthiopianProduct_(product)) {
+    path = LWB.ETHIOPIAN_PDF_PATH;
+  }
 
-    const type = String(asset.asset_type || '').toLowerCase();
-    const mime = String(asset.mime_type || '').toLowerCase();
-    const name = String(asset.drive_file_name || asset.download_name || asset.repository_path || '').toLowerCase();
+  if (!path) {
+    const configured = readObjects_(sheet_(LWB.SHEETS.ASSETS)).find(function(asset) {
+      return String(asset.product_id || '') === productId &&
+        truthy_(asset.active) && Boolean(String(asset.repository_path || '').trim());
+    });
+    if (configured) path = String(configured.repository_path || '').trim();
+  }
 
-    if (expected === 'pdf') {
-      return type === 'pdf' || mime.indexOf('application/pdf') >= 0 || /\.pdf(?:$|[?#])/.test(name);
-    }
-    return type === 'epub' || mime.indexOf('epub') >= 0 || /\.epub(?:$|[?#])/.test(name);
-  });
+  if (!path) return null;
+  if (/drive\.google\.com/i.test(path)) return null;
 
-  if (configured) return configured;
-
-  // Preserves the existing Ethiopian repository-path fallback.
-  const fallback = findAssetForProduct_(productId);
-  if (fallback) return fallback;
-
-  throw new Error('The digital asset for this title is not configured.');
+  return {
+    asset_id: 'repo_' + productId,
+    product_id: productId,
+    repository_path: path,
+    active: true,
+    file_type: /\.pdf(?:$|[?#])/i.test(path) ? 'pdf' : 'epub'
+  };
 }
 
 function readerAssetFormat_(asset, product) {
+  if (!asset) return '';
   if (String(product.product_type || '').toLowerCase() === 'pdf' || isEthiopianProduct_(product)) {
     return 'pdf';
   }
-  const type = String(asset.asset_type || asset.file_type || '').toLowerCase();
-  const mime = String(asset.mime_type || '').toLowerCase();
-  const name = String(asset.drive_file_name || asset.download_name || asset.repository_path || '').toLowerCase();
-  if (type === 'pdf' || mime.indexOf('application/pdf') >= 0 || /\.pdf(?:$|[?#])/.test(name)) return 'pdf';
-  if (type === 'epub' || mime.indexOf('epub') >= 0 || /\.epub(?:$|[?#])/.test(name)) return 'epub';
-  return '';
-}
-
-function readerLoadEpub_(asset) {
-  let sourceBlob;
-
-  if (asset.drive_file_id) {
-    sourceBlob = DriveApp.getFileById(String(asset.drive_file_id)).getBlob();
-  } else if (asset.repository_path) {
-    const response = UrlFetchApp.fetch(readerRepositoryUrl_(asset.repository_path), {
-      followRedirects: true,
-      muteHttpExceptions: true
-    });
-    const code = response.getResponseCode();
-    if (code < 200 || code >= 300) {
-      throw new Error('The repository EPUB could not be loaded.');
-    }
-    sourceBlob = response.getBlob();
-  } else {
-    throw new Error('The EPUB source is unavailable.');
-  }
-
-  let unzipped;
-  try {
-    unzipped = Utilities.unzip(sourceBlob);
-  } catch (_) {
-    throw new Error('The eBible file is not a readable EPUB.');
-  }
-
-  const blobs = {};
-  unzipped.forEach(function(blob) {
-    blobs[readerNormalizePath_(blob.getName())] = blob;
-  });
-
-  const container = blobs['META-INF/container.xml'];
-  if (!container) throw new Error('Invalid EPUB container.');
-
-  const containerXml = container.getDataAsString();
-  const packageMatch = containerXml.match(/full-path=["']([^"']+)["']/i);
-  if (!packageMatch) throw new Error('EPUB package file is missing.');
-
-  const opfPath = readerNormalizePath_(readerXmlDecode_(packageMatch[1]));
-  const opfBlob = blobs[opfPath];
-  if (!opfBlob) throw new Error('EPUB package file is unavailable.');
-
-  const xml = opfBlob.getDataAsString();
-  const manifest = {};
-
-  (xml.match(/<item\b[^>]*>/gi) || []).forEach(function(tag) {
-    const id = readerAttr_(tag, 'id');
-    const href = readerXmlDecode_(readerAttr_(tag, 'href'));
-    if (!id || !href) return;
-    manifest[id] = {
-      id: id,
-      href: href,
-      media: readerAttr_(tag, 'media-type'),
-      properties: readerAttr_(tag, 'properties'),
-      path: readerResolvePath_(opfPath, href)
-    };
-  });
-
-  const titleMap = readerTitleMap_(xml, opfPath, manifest, blobs);
-  const spine = [];
-  (xml.match(/<itemref\b[^>]*>/gi) || []).forEach(function(tag) {
-    const idref = readerAttr_(tag, 'idref');
-    if (!manifest[idref]) return;
-    const item = Object.assign({}, manifest[idref]);
-    item.title = titleMap[item.path] || titleMap[readerNormalizePath_(item.href)] || '';
-    spine.push(item);
-  });
-
-  if (!spine.length) throw new Error('The EPUB reading order is empty.');
-  return { spine: spine, blobs: blobs };
-}
-
-function readerTitleMap_(opfXml, opfPath, manifest, blobs) {
-  const map = {};
-  const items = Object.keys(manifest).map(function(key) { return manifest[key]; });
-  const navItem = items.find(function(item) {
-    return String(item.properties || '').split(/\s+/).indexOf('nav') >= 0;
-  });
-
-  if (navItem && blobs[navItem.path]) {
-    const nav = blobs[navItem.path].getDataAsString();
-    const anchorRe = /<a\b[^>]*href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi;
-    let match;
-    while ((match = anchorRe.exec(nav))) {
-      const path = readerResolvePath_(navItem.path, readerXmlDecode_(match[1]));
-      const label = readerPlainText_(match[2]);
-      if (path && label && !map[path]) map[path] = label;
-    }
-  }
-
-  const ncxItem = items.find(function(item) {
-    return String(item.media || '').toLowerCase() === 'application/x-dtbncx+xml';
-  });
-
-  if (ncxItem && blobs[ncxItem.path]) {
-    const ncx = blobs[ncxItem.path].getDataAsString();
-    const pointRe = /<navPoint\b[\s\S]*?<navLabel\b[\s\S]*?<text\b[^>]*>([\s\S]*?)<\/text>[\s\S]*?<content\b[^>]*src=["']([^"']+)["'][^>]*>[\s\S]*?<\/navPoint>/gi;
-    let match;
-    while ((match = pointRe.exec(ncx))) {
-      const label = readerPlainText_(match[1]);
-      const path = readerResolvePath_(ncxItem.path, readerXmlDecode_(match[2]));
-      if (path && label && !map[path]) map[path] = label;
-    }
-  }
-
-  return map;
-}
-
-function readerAttr_(tag, name) {
-  const match = String(tag || '').match(new RegExp('(?:\\s|^)' + name + '=["\\\']([^"\\\']*)["\\\']', 'i'));
-  return match ? match[1] : '';
-}
-
-function readerResolvePath_(base, relative) {
-  let rel = readerNormalizePath_(readerXmlDecode_(relative || ''));
-  if (!rel) return '';
-  if (/^[a-z][a-z0-9+.-]*:/i.test(rel)) return rel;
-  if (rel.charAt(0) === '/') rel = rel.replace(/^\/+/, '');
-
-  const parts = readerNormalizePath_(base || '').split('/');
-  parts.pop();
-  rel.split('/').forEach(function(part) {
-    if (!part || part === '.') return;
-    if (part === '..') parts.pop();
-    else parts.push(part);
-  });
-  return readerNormalizePath_(parts.join('/'));
-}
-
-function readerNormalizePath_(value) {
-  let path = String(value || '').split('#')[0].split('?')[0].replace(/\\/g, '/');
-  try { path = decodeURIComponent(path); } catch (_) {}
-  return path.replace(/^\.\//, '').replace(/\/+/g, '/');
-}
-
-function readerXmlDecode_(value) {
-  return String(value || '')
-    .replace(/&amp;/g, '&')
-    .replace(/&quot;/g, '"')
-    .replace(/&apos;/g, "'")
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>');
-}
-
-function readerPlainText_(html) {
-  return readerXmlDecode_(String(html || '').replace(/<[^>]+>/g, ' '))
-    .replace(/\s+/g, ' ')
-    .trim()
-    .slice(0, 180);
-}
-
-function readerSanitizeChapter_(html) {
-  let value = String(html || '');
-
-  value = value
-    .replace(/<(script|style|iframe|object|embed|form|input|button|textarea|select|video|audio|canvas|svg)\b[\s\S]*?<\/\1\s*>/gi, '')
-    .replace(/<(script|style|iframe|object|embed|form|input|button|textarea|select|video|audio|canvas|svg)\b[^>]*\/?>/gi, '')
-    .replace(/<link\b[^>]*>/gi, '')
-    .replace(/<meta\b[^>]*>/gi, '')
-    .replace(/<base\b[^>]*>/gi, '')
-    .replace(/\sstyle\s*=\s*(["'])[\s\S]*?\1/gi, '')
-    .replace(/\son\w+\s*=\s*(["'])[\s\S]*?\1/gi, '')
-    .replace(/\s(href|src)\s*=\s*(["'])\s*(javascript:|data:text\/html)[\s\S]*?\2/gi, '');
-
-  const body = value.match(/<body\b[^>]*>([\s\S]*?)<\/body>/i);
-  return body ? body[1] : value;
+  const path = String(asset.repository_path || '').toLowerCase();
+  if (/\.pdf(?:$|[?#])/.test(path)) return 'pdf';
+  if (/\.epub(?:$|[?#])/.test(path)) return 'epub';
+  return String(asset.file_type || '').toLowerCase();
 }
 
 function readerRepositoryUrl_(path) {
   const value = String(path || '').trim();
+  if (!value || /drive\.google\.com/i.test(value)) {
+    throw new Error('The repository product path is unavailable.');
+  }
   if (/^https?:\/\//i.test(value)) return value;
   return LWB.SITE_URL + (value.charAt(0) === '/' ? value : '/' + value);
 }
@@ -1236,23 +1041,8 @@ function readerRepositoryUrl_(path) {
 /* ========================================================================== */
 
 function findAssetForProduct_(productId) {
-  const configured = readObjects_(sheet_(LWB.SHEETS.ASSETS)).find(function(asset) {
-    return String(asset.product_id) === String(productId) && truthy_(asset.active) &&
-      (asset.drive_file_id || asset.repository_path);
-  });
-  if (configured) return configured;
-
   const product = getProductById_(productId);
-  if (isEthiopianProduct_(product)) {
-    return {
-      asset_id: 'repo_ethiopian_apocrypha_pdf',
-      product_id: productId,
-      repository_path: LWB.ETHIOPIAN_PDF_PATH,
-      active: true,
-      file_type: 'pdf'
-    };
-  }
-  return null;
+  return repositoryAssetForProduct_(product);
 }
 
 function freeDownloadLink_(params) {
@@ -1263,24 +1053,14 @@ function freeDownloadLink_(params) {
   }
 
   const asset = findAssetForProduct_(product.product_id);
-  if (!asset) return { ok: false, error: 'Download asset not configured' };
-
-  if (asset.repository_path) {
-    return { ok: true, product: product, download_url: LWB.SITE_URL + asset.repository_path };
+  if (!asset || !asset.repository_path) {
+    return { ok: false, error: 'Repository download asset not configured' };
   }
-
-  const token = createDownloadToken_({
-    asset_id: asset.asset_id,
-    product_id: product.product_id,
-    email: '',
-    order_id: 'free',
-    expires: Date.now() + 24 * 60 * 60 * 1000
-  });
 
   return {
     ok: true,
     product: product,
-    download_url: ScriptApp.getService().getUrl() + '?action=download&token=' + encodeURIComponent(token)
+    download_url: readerRepositoryUrl_(asset.repository_path)
   };
 }
 
@@ -1320,36 +1100,17 @@ function verifyDownloadToken_(token) {
 function downloadRedirect_(params) {
   try {
     const payload = verifyDownloadToken_(params.token);
-    let asset = findBy_(sheet_(LWB.SHEETS.ASSETS), 'asset_id', payload.asset_id);
+    const asset = findAssetForProduct_(payload.product_id);
+    if (!asset || !asset.repository_path) throw new Error('Repository download asset unavailable.');
 
-    if (!asset && payload.asset_id === 'repo_ethiopian_apocrypha_pdf') {
-      asset = {
-        asset_id: payload.asset_id,
-        repository_path: LWB.ETHIOPIAN_PDF_PATH,
-        active: true
-      };
-    }
-
-    if (!asset || !truthy_(asset.active)) throw new Error('Download asset unavailable.');
-
-    let target = '';
-    if (asset.repository_path) {
-      target = LWB.SITE_URL + asset.repository_path;
-    } else if (asset.drive_file_id) {
-      target = 'https://drive.google.com/uc?export=download&id=' + encodeURIComponent(asset.drive_file_id);
-      if (asset.drive_resource_key) {
-        target += '&resourcekey=' + encodeURIComponent(asset.drive_resource_key);
-      }
-    } else {
-      throw new Error('Drive file is not linked.');
-    }
+    const target = readerRepositoryUrl_(asset.repository_path);
 
     logDownload_({
       email: payload.email,
       customer_id: payload.customer_id,
       product_id: payload.product_id,
       asset_id: asset.asset_id,
-      result: 'redirected',
+      result: 'redirected-to-repository',
       token_id: String(params.token).slice(-16)
     });
 
@@ -1578,34 +1339,16 @@ function normalizeProductKey_(value) {
 
 function fulfillmentResponse_(order, product, email) {
   const asset = findAssetForProduct_(product.product_id);
-  if (!asset) {
-    return { ok: false, error: 'The digital asset is not linked in Digital Assets.' };
+  if (!asset || !asset.repository_path) {
+    return { ok: false, error: 'The repository digital asset is not configured.' };
   }
-
-  if (asset.repository_path) {
-    return {
-      ok: true,
-      order_id: order.order_id,
-      email: email,
-      product: product,
-      download_url: LWB.SITE_URL + asset.repository_path
-    };
-  }
-
-  const token = createDownloadToken_({
-    asset_id: asset.asset_id,
-    product_id: product.product_id,
-    email: email,
-    order_id: order.order_id,
-    expires: Date.now() + 24 * 60 * 60 * 1000
-  });
 
   return {
     ok: true,
     order_id: order.order_id,
     email: email,
     product: product,
-    download_url: ScriptApp.getService().getUrl() + '?action=download&token=' + encodeURIComponent(token)
+    download_url: readerRepositoryUrl_(asset.repository_path)
   };
 }
 
@@ -2024,23 +1767,9 @@ function accountData_(data) {
     if (!product || !isAccountEligibleProduct_(product)) return null;
 
     const asset = findAssetForProduct_(productId);
-    let downloadUrl = '';
-
-    if (asset) {
-      if (asset.repository_path) {
-        downloadUrl = LWB.SITE_URL + asset.repository_path;
-      } else if (asset.drive_file_id) {
-        const token = createDownloadToken_({
-          asset_id: asset.asset_id,
-          product_id: productId,
-          email: email,
-          order_id: entitlement.order_id || '',
-          customer_id: customerId,
-          expires: Date.now() + 24 * 60 * 60 * 1000
-        });
-        downloadUrl = ScriptApp.getService().getUrl() + '?action=download&token=' + encodeURIComponent(token);
-      }
-    }
+    const downloadUrl = asset && asset.repository_path
+      ? readerRepositoryUrl_(asset.repository_path)
+      : '';
 
     return {
       entitlement_id: entitlement.entitlement_id,
@@ -3457,11 +3186,10 @@ function firstName_(displayName) {
 
 function healthCheck_() {
   const ss = SpreadsheetApp.openById(LWB.SPREADSHEET_ID);
-  const folder = DriveApp.getFolderById(LWB.PRODUCT_FOLDER_ID);
 
   const checks = {
     spreadsheet: { ok: Boolean(ss), id: ss.getId(), name: ss.getName() },
-    product_folder: { ok: Boolean(folder), id: folder.getId(), name: folder.getName() },
+    product_delivery: { ok: true, source: 'GitHub Pages /assets/products/' },
     sheets: {},
     account_products: {}
   };
@@ -3473,27 +3201,34 @@ function healthCheck_() {
 
   ['prod_kjv_special', 'prod_drb', 'prod_kjv', 'prod_asv', 'prod_ylt', 'prod_web'].forEach(function(productId) {
     const product = getProductById_(productId);
+    const asset = product ? findAssetForProduct_(productId) : null;
     checks.account_products[productId] = {
       exists: Boolean(product),
       eligible: Boolean(product && isAccountEligibleProduct_(product)),
-      asset_linked: Boolean(product && findAssetForProduct_(productId))
+      repository_path: asset ? asset.repository_path : '',
+      asset_linked: Boolean(asset && asset.repository_path)
     };
   });
 
   const ethProduct = readObjects_(sheet_(LWB.SHEETS.PRODUCTS))
     .map(publicProduct_)
     .find(isEthiopianProduct_);
+  const ethAsset = ethProduct ? findAssetForProduct_(ethProduct.product_id) : null;
   checks.account_products.ethiopian_bible_pdf = {
     exists: Boolean(ethProduct),
     product_id: ethProduct ? ethProduct.product_id : '',
     eligible: Boolean(ethProduct && isAccountEligibleProduct_(ethProduct)),
-    asset_linked: Boolean(ethProduct && findAssetForProduct_(ethProduct.product_id))
+    repository_path: ethAsset ? ethAsset.repository_path : '',
+    asset_linked: Boolean(ethAsset && ethAsset.repository_path)
   };
 
   const allSheets = Object.keys(checks.sheets).every(function(name) { return checks.sheets[name]; });
+  const allCoreAssets = Object.keys(checks.account_products).every(function(key) {
+    return !checks.account_products[key].exists || checks.account_products[key].asset_linked;
+  });
 
   return {
-    ok: checks.spreadsheet.ok && checks.product_folder.ok && allSheets,
+    ok: checks.spreadsheet.ok && allSheets && allCoreAssets,
     service: 'LWB Website API',
     version: LWB.VERSION,
     build_utc: LWB.BUILD_UTC,
@@ -3698,6 +3433,6 @@ function escapeHtml_(value) {
 
 /*
 ==========================================================================================
-END OF LWB BACKEND v2.0.2 | Copyright © 2026 Living Word Bibles. All Rights Reserved. Developed by Cook Technology Services. Last Updated on 02 September 2026 at 12:18:00Z UTC.
+END OF LWB BACKEND v2.0.5 | Copyright © 2026 Living Word Bibles. All Rights Reserved. Developed by Cook Technology Services. Last Updated on 02 September 2026 at 13:11:09Z UTC.
 ==========================================================================================
 */

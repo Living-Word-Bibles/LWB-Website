@@ -13,42 +13,323 @@ html{background:#04090e}
 body{margin:0;color:var(--text);background:radial-gradient(circle at top,#102334 0,#071019 42%,#04090e 100%);font-family:Verdana,Arial,sans-serif;font-size:14px;line-height:1.6}
 body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.08;background:repeating-linear-gradient(to bottom,transparent 0,transparent 3px,#fff 4px);mix-blend-mode:soft-light}
 a{color:var(--cyan)} a:hover{color:#fff}
-.shell{width:min(920px,calc(100% - 28px));margin:28px auto 46px;border:1px solid #47708d;background:linear-gradient(180deg,rgba(17,33,48,.97),rgba(6,14,21,.98));box-shadow:0 24px 70px var(--shadow),inset 0 1px rgba(255,255,255,.08)}
+.shell{width:min(980px,calc(100% - 28px));margin:28px auto 46px;border:1px solid #47708d;background:linear-gradient(180deg,rgba(17,33,48,.97),rgba(6,14,21,.98));box-shadow:0 24px 70px var(--shadow),inset 0 1px rgba(255,255,255,.08)}
 .titlebar{display:flex;align-items:center;gap:10px;padding:7px 10px;border-bottom:1px solid #48677f;background:linear-gradient(#203a4f,#112536);font:700 12px/1.2 "Courier New",monospace;letter-spacing:.04em;color:#d9ecfb;text-transform:uppercase}
 .lights{display:flex;gap:5px}.lights i{display:block;width:8px;height:8px;border:1px solid #20313f;border-radius:50%;background:#7aa0b9}.lights i:first-child{background:#e97878}.lights i:nth-child(2){background:#e7c975}.lights i:nth-child(3){background:#7ed69f}
 .hero{display:grid;grid-template-columns:150px 1fr;gap:24px;align-items:center;padding:28px;border-bottom:1px solid var(--line);background:linear-gradient(135deg,rgba(12,25,36,.9),rgba(14,39,50,.45))}
 .hero img{display:block;width:140px;height:auto;filter:drop-shadow(0 8px 18px rgba(0,0,0,.45))}
-h1{margin:0 0 7px;font:700 clamp(25px,5vw,42px)/1.05 Georgia,"Times New Roman",serif;color:#fff;text-shadow:0 2px #000}.tag{margin:0;color:var(--green);font:700 13px/1.5 "Courier New",monospace}.range{display:inline-block;margin-top:11px;padding:5px 8px;border:1px solid #3b627d;background:#07131d;color:#cfe9f7;font:700 12px/1.35 "Courier New",monospace}
-.content{padding:26px}.release-current{margin:0 0 24px;padding:16px;border:1px solid #527c96;background:linear-gradient(180deg,#10283a,#0b1a26);box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}
-.release-current .prompt{color:var(--green);font:700 13px/1.45 "Courier New",monospace}.release-current h2{margin:7px 0 5px;font:700 24px/1.2 Georgia,"Times New Roman",serif;color:#fff}.release-current p{margin:5px 0;color:#c8d4dd}
-.timeline{border-left:2px solid #284a61;margin-left:8px;padding-left:22px}.entry{position:relative;margin:0 0 24px;padding:0 0 21px;border-bottom:1px dashed #263d4f}.entry:last-child{border-bottom:0;margin-bottom:0}.entry:before{content:"";position:absolute;left:-29px;top:7px;width:10px;height:10px;border:2px solid #071019;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 1px #4a7996}.entry h3{margin:0 0 3px;color:#f4f8fb;font:700 18px/1.3 "Courier New",monospace}.entry time{color:var(--amber);font:700 12px/1.4 "Courier New",monospace}.entry ul{margin:8px 0 0;padding-left:19px}.entry li{margin:.32rem 0;color:#c5d0d9}.heritage{margin-top:26px;padding:16px;border:1px solid #4a4d43;background:#161712;color:#d5d7ce}.heritage strong{color:#fff}.heritage p{margin:.25rem 0}.heritage .amen{color:var(--amber);font-family:Georgia,"Times New Roman",serif;font-style:italic}
-.bottom{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:25px;padding-top:16px;border-top:1px solid #274152;color:var(--muted);font:12px/1.5 "Courier New",monospace}.home{display:inline-block;padding:7px 10px;border:1px outset #55758c;background:#173044;color:#fff;text-decoration:none}.home:active{border-style:inset}
-@media(max-width:640px){.shell{width:min(100% - 14px,920px);margin:7px auto 18px}.hero{grid-template-columns:1fr;text-align:center;padding:22px 16px}.hero img{width:125px;margin:auto}.content{padding:18px 14px}.bottom{display:block}.bottom .home{margin-top:12px}}
+h1{margin:0 0 7px;font:700 clamp(25px,5vw,42px)/1.05 Georgia,"Times New Roman",serif;color:#fff;text-shadow:0 2px #000}
+.tag{margin:0;color:var(--green);font:700 13px/1.5 "Courier New",monospace}
+.range{display:inline-block;margin-top:11px;padding:5px 8px;border:1px solid #3b627d;background:#07131d;color:#cfe9f7;font:700 12px/1.35 "Courier New",monospace}
+.content{padding:26px}
+.release-current{margin:0 0 24px;padding:16px;border:1px solid #527c96;background:linear-gradient(180deg,#10283a,#0b1a26);box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}
+.release-current .prompt{color:var(--green);font:700 13px/1.45 "Courier New",monospace}
+.release-current h2{margin:7px 0 5px;font:700 24px/1.2 Georgia,"Times New Roman",serif;color:#fff}
+.release-current p{margin:5px 0;color:#c8d4dd}
+.timeline{border-left:2px solid #284a61;margin-left:8px;padding-left:22px}
+.entry{position:relative;margin:0 0 24px;padding:0 0 21px;border-bottom:1px dashed #263d4f}
+.entry:last-child{border-bottom:0;margin-bottom:0}
+.entry:before{content:"";position:absolute;left:-29px;top:7px;width:10px;height:10px;border:2px solid #071019;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 1px #4a7996}
+.entry h3{margin:0 0 3px;color:#f4f8fb;font:700 18px/1.3 "Courier New",monospace}
+.entry time,.entry .date{color:var(--amber);font:700 12px/1.4 "Courier New",monospace}
+.entry ul{margin:8px 0 0;padding-left:19px}
+.entry li{margin:.32rem 0;color:#c5d0d9}
+.entry p{color:#c5d0d9}
+.milestone{padding:16px;border:1px solid #466b7f;background:linear-gradient(180deg,rgba(16,40,58,.72),rgba(7,20,30,.72))}
+.milestone h4{margin:.25rem 0 .35rem;color:var(--green);font:700 14px/1.4 "Courier New",monospace}
+.domain-row{display:flex;flex-wrap:wrap;gap:.5rem;margin:.75rem 0 1rem}
+.domain-row a{display:inline-block;padding:.35rem .55rem;border:1px solid #36566d;background:#07131d;font:700 12px/1.3 "Courier New",monospace;text-decoration:none}
+.db-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0 4px;padding:0;list-style:none}
+.db-grid li{margin:0;padding:9px 10px;border:1px solid #29485f;background:#091723}
+.db-grid a{font-weight:700;text-decoration:none}
+.db-grid small{display:block;margin-top:2px;color:var(--muted);font:11px/1.35 "Courier New",monospace}
+.product-links{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+.product-links a{display:inline-block;padding:5px 8px;border:1px solid #3b627d;background:#0b1b27;text-decoration:none;font:700 11px/1.3 "Courier New",monospace}
+.heritage{margin-top:26px;padding:16px;border:1px solid #4a4d43;background:#161712;color:#d5d7ce}
+.heritage strong{color:#fff}.heritage p{margin:.25rem 0}
+.heritage .amen{color:var(--amber);font-family:Georgia,"Times New Roman",serif;font-style:italic}
+.bottom{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:25px;padding-top:16px;border-top:1px solid #274152;color:var(--muted);font:12px/1.5 "Courier New",monospace}
+.home{display:inline-block;padding:7px 10px;border:1px outset #55758c;background:#173044;color:#fff;text-decoration:none}.home:active{border-style:inset}
+@media(max-width:760px){.db-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){
+  .shell{width:min(100% - 14px,980px);margin:7px auto 18px}
+  .hero{grid-template-columns:1fr;text-align:center;padding:22px 16px}
+  .hero img{width:125px;margin:auto}
+  .content{padding:18px 14px}
+  .db-grid{grid-template-columns:1fr}
+  .bottom{display:block}.bottom .home{margin-top:12px}
+}
 </style>
 </head>
 <body>
 <main class="shell">
 <div class="titlebar"><span class="lights"><i></i><i></i><i></i></span>livingwordbibles.com :: public_change_log</div>
+
 <section class="hero">
 <a href="/" aria-label="Living Word Bibles homepage"><img src="/assets/LivingWordBibles01.png" alt="Living Word Bibles"></a>
-<div><h1>Public Change Log</h1><p class="tag">// visitor-facing release history &amp; improvements</p><span class="range">v1.0.0 Alpha — 30 September 2025 — Present</span></div>
-</section>
-<div class="content">
-<section class="release-current" aria-labelledby="current-release"><div class="prompt">&gt; current_release --public</div><h2 id="current-release" data-current-release>v2.6.2 Alpha</h2><p data-current-updated>Last Updated on 02 Sep 2026 @ 17:44:30Z</p></section>
-<div class="timeline">
-<section class="entry"><h3>v2.6.2 Alpha</h3><time datetime="2026-09-02T17:44:30Z">02 September 2026</time><ul><li>Refined the Living Word Bibles header and footer branding for a cleaner presentation across desktop and mobile.</li><li>Added this public change log and a compact release marker in the site footer.</li><li>Improved the way visitors can identify the currently published website release.</li></ul></section>
-<section class="entry"><h3>v2.6.1 Alpha</h3><time datetime="2026-09-02">02 September 2026</time><ul><li>Introduced the Valois Lumière online reading experience for eligible digital Bible editions.</li><li>Expanded account-library reading options for supported eBibles and the Ethiopian Bible PDF.</li><li>Improved reader navigation, display preferences, and reading continuity.</li></ul></section>
-<section class="entry"><h3>v2.6.0 Alpha</h3><time datetime="2026-09-01">01 September 2026</time><ul><li>Refreshed public legal, licensing, editorial, and equal-employment information.</li><li>Improved translation and product presentation across copyright and licensing pages.</li><li>Expanded public standards covering digital editions, audio resources, and editorial accuracy.</li></ul></section>
-<section class="entry"><h3>v2.5.x Alpha</h3><time datetime="2026-08-31">August–September 2026</time><ul><li>Added the KJV Audio Bible experience and expanded print Bible offerings.</li><li>Expanded Ethiopian Bible history, product information, and navigation.</li><li>Improved the public sitemap, translation histories, account features, and Bible-reading resources.</li></ul></section>
-<section class="entry"><h3>v2.4.x Alpha</h3><time datetime="2026-08-28">28 August 2026</time><ul><li>Refined the global header, footer, homepage presentation, mobile navigation, and featured Bible resources.</li><li>Expanded About Us, Christian Living, Bible Study, and History of the Bible experiences.</li></ul></section>
-<section class="entry"><h3>v2.3.0 Alpha</h3><time datetime="2026-08-28">28 August 2026</time><ul><li>Added the Bible Study center, expanded Scripture studies, and introduced Common Prayers resources.</li></ul></section>
-<section class="entry"><h3>v2.0.x Alpha</h3><time datetime="2026-08-27">August 2026</time><ul><li>Expanded Living Word Bibles accounts, digital libraries, ordering support, and subscriber communications.</li><li>Improved free digital Bible access and purchase reconciliation for eligible editions.</li></ul></section>
-<section class="entry"><h3>v1.0.0 Alpha</h3><time datetime="2025-09-30">30 September 2025</time><ul><li>Beginning of the current public Living Word Bibles release history following the acquisition of www.livingwordbibles.com.</li><li>This release numbering supersedes any version labels used before 30 September 2025.</li></ul></section>
+<div>
+  <h1>Public Change Log</h1>
+  <p class="tag">// public release history, Bible resources &amp; visitor-facing improvements</p>
+  <span class="range">v1.0.0 Alpha — 30 September 2025 — Present</span>
 </div>
-<section class="heritage"><p><strong>Living Word Bibles heritage:</strong> www.livingwordbibles.com has remained in continuous operation since <strong>31 December 1999</strong>.</p><p class="amen">In the Year of Our Lord. Amen.</p></section>
-<div class="bottom"><span>PUBLIC RECORD // No private operational or security information is published here.</span><a class="home" href="/">[ Return to Living Word Bibles ]</a></div>
+</section>
+
+<div class="content">
+<section class="release-current" aria-labelledby="current-release">
+  <div class="prompt">&gt; current_release --public</div>
+  <h2 id="current-release" data-current-release>v2.6.2 Alpha</h2>
+  <p data-current-updated>Last Updated on 02 Sep 2026 @ 17:44:30Z</p>
+</section>
+
+<div class="timeline">
+
+<section class="entry">
+  <h3>v2.6.2 Alpha</h3>
+  <time datetime="2026-09-02T17:44:30Z">02 September 2026</time>
+  <ul>
+    <li>Refined the Living Word Bibles header and footer branding for a cleaner presentation across desktop and mobile.</li>
+    <li>Added this <a href="/change-log.html">Public Change Log</a> and the release marker shown throughout the site footer.</li>
+    <li>Improved public release identification while preserving a simple, visitor-focused presentation.</li>
+  </ul>
+</section>
+
+<section class="entry">
+  <h3>v2.6.1 Alpha</h3>
+  <time datetime="2026-09-02">02 September 2026</time>
+  <ul>
+    <li>Introduced the Valois Lumière online reading experience for eligible digital Bible editions.</li>
+    <li>Expanded account-library reading options for supported eBibles and the Ethiopian Bible PDF.</li>
+    <li>Improved reader navigation, display preferences, reading continuity, and access to eligible editions available through the <a href="/estore/">eStore</a>.</li>
+  </ul>
+</section>
+
+<section class="entry">
+  <h3>v2.6.0 Alpha</h3>
+  <time datetime="2026-09-01">01 September 2026</time>
+  <ul>
+    <li>Refreshed public <a href="/terms-of-service/">Terms</a>, <a href="/privacy-policy/">Privacy</a>, <a href="/licensing/">Licensing</a>, <a href="/editorial-standards/">Editorial Standards</a>, and <a href="/eeo/">Equal Opportunity</a> information.</li>
+    <li>Improved translation and product presentation across copyright and licensing pages.</li>
+    <li>Expanded public standards covering digital editions, audio resources, editorial accuracy, and publisher-facing information.</li>
+  </ul>
+</section>
+
+<section class="entry">
+  <h3>v2.5.9 Alpha</h3>
+  <time datetime="2026-09-01">01 September 2026</time>
+  <ul>
+    <li>Expanded customer-support tools for subscriber management, account assistance, purchase review, and digital Bible access.</li>
+    <li>Added richer newsletter composition and improved subscriber preference handling.</li>
+    <li>Strengthened site activity auditing and support workflows while keeping public-facing account and newsletter experiences straightforward.</li>
+  </ul>
+</section>
+
+<section class="entry">
+  <h3>v2.5.8 Alpha</h3>
+  <time datetime="2026-09-01">01 September 2026</time>
+  <ul>
+    <li>Added account purchase reconciliation for eligible digital Bible purchases.</li>
+    <li>Expanded the free account library and Ethiopian Bible PDF account support.</li>
+    <li>Improved newsletter opt-out handling and Living Word Bibles branded email communications.</li>
+  </ul>
+</section>
+
+<section class="entry">
+  <h3>v2.5.7 Alpha</h3>
+  <time datetime="2026-09-01">01 September 2026</time>
+  <ul>
+    <li>Finalized the 88-book Ethiopian Bible historical presentation and connected Ethiopian Bible history navigation.</li>
+    <li>Expanded connections between the <a href="/ethiopian-bible/">Ethiopian Bible</a> resource and the wider <a href="/history-of-the-bible/">History of the Bible</a> collection.</li>
+  </ul>
+</section>
+
+<section class="entry">
+  <h3>v2.5.6 Alpha</h3>
+  <time datetime="2026-09-01">01 September 2026</time>
+  <ul>
+    <li>Added the long-form <a href="/ethiopian-bible/">About the Ethiopian Bible</a> page.</li>
+    <li>Added reciprocal product/history navigation, bibliography, media, and public site-map coverage.</li>
+  </ul>
+</section>
+
+<section class="entry">
+  <h3>v2.5.5 Alpha</h3>
+  <time datetime="2026-09-01">01 September 2026</time>
+  <ul>
+    <li>Expanded <a href="/estore/print-bibles/">Print Bibles</a> to seven linked editions.</li>
+    <li>Expanded <a href="/about-us/">About Us</a> with KJV Audio Bible and Print Bible information.</li>
+  </ul>
+</section>
+
+<section class="entry">
+  <h3>v2.5.4 Alpha</h3>
+  <time datetime="2026-08-31">31 August 2026</time>
+  <ul>
+    <li>Repaired the <a href="/audio-bible/">KJV Audio Bible</a> slideshow presentation.</li>
+    <li>Synchronized the human-readable site map with the expanding public resource collection.</li>
+  </ul>
+</section>
+
+<section class="entry">
+  <h3>v2.5.3 Alpha</h3>
+  <time datetime="2026-08-31">31 August 2026</time>
+  <ul>
+    <li>Added the <a href="/audio-bible/">KJV Audio Bible</a> listening experience with LibriVox playback and a Scripture-image slideshow.</li>
+    <li>Added shared navigation access and a homepage feature for the Audio Bible.</li>
+  </ul>
+</section>
+
+<section class="entry">
+  <h3>v2.5.2 Alpha</h3>
+  <time datetime="2026-08-31">31 August 2026</time>
+  <ul>
+    <li>Added the <a href="/estore/print-bibles/">Print Bibles storefront</a> and connected print editions to the broader Living Word Bibles eStore.</li>
+  </ul>
+</section>
+
+<section class="entry">
+  <h3>v2.5.1 Alpha</h3>
+  <time datetime="2026-08-30">30 August 2026</time>
+  <ul>
+    <li>Enhanced <a href="/history-of-the-bible/#bible-translation-histories">Bible Translation History</a> pages with historical imagery and expanded source notes.</li>
+  </ul>
+</section>
+
+<section class="entry">
+  <h3>v2.5.0 Alpha</h3>
+  <time datetime="2026-08-30">30 August 2026</time>
+  <ul>
+    <li>Rebuilt the canonical public site-map inventory to reflect Living Word Bibles readers, histories, study resources, legal pages, products, and public information pages.</li>
+  </ul>
+</section>
+
+<section class="entry">
+  <h3>v2.4.1 Alpha</h3>
+  <time datetime="2026-08-28">28 August 2026</time>
+  <ul>
+    <li>Refined homepage resource presentation, trusted-seller links, free eBible cards, and public reading calls to action.</li>
+  </ul>
+</section>
+
+<section class="entry">
+  <h3>v2.4.0 Alpha</h3>
+  <time datetime="2026-08-28">28 August 2026</time>
+  <ul>
+    <li>Refined the shared header and footer, homepage presentation, mobile navigation, and featured Bible resources.</li>
+    <li>Expanded the <a href="/ios/">Living Word Bibles iOS</a> presentation and mobile experience.</li>
+  </ul>
+</section>
+
+<section class="entry">
+  <h3>v2.3.0 Alpha</h3>
+  <time datetime="2026-08-28">28 August 2026</time>
+  <ul>
+    <li>Added the <a href="/bible-study/">Bible Study</a> center.</li>
+    <li>Expanded Scripture verse studies and introduced <a href="/prayers/">Common Prayers</a> resources.</li>
+  </ul>
+</section>
+
+<section class="entry">
+  <h3>v2.2.0 Alpha</h3>
+  <time datetime="2026-08-28">28 August 2026</time>
+  <ul>
+    <li>Expanded the <a href="/bibles/">Books of the Bible</a> historical collection and strengthened History navigation across the 66-book Protestant canon.</li>
+  </ul>
+</section>
+
+<section class="entry">
+  <h3>v2.1.0 Alpha</h3>
+  <time datetime="2026-08-27">27 August 2026</time>
+  <ul>
+    <li>Improved digital Bible purchase and download flows.</li>
+    <li>Expanded <a href="/editorial-standards/">Editorial Standards</a> and public presentation of Living Word Bibles publishing practices.</li>
+  </ul>
+</section>
+
+<section class="entry">
+  <h3>v2.0.x Alpha</h3>
+  <time datetime="2026-08-27">August 2026</time>
+  <ul>
+    <li>Expanded Living Word Bibles accounts, digital libraries, ordering support, subscriber communications, and account-based access to eligible digital editions.</li>
+    <li>Improved free digital Bible access and customer purchase reconciliation.</li>
+  </ul>
+</section>
+
+<section class="entry">
+  <h3>v1.1.0 Alpha</h3>
+  <time datetime="2026-06-06">06 June 2026 — Public Release</time>
+  <ul>
+    <li>On <strong>05 June 2026</strong>, Living Word Bibles began its migration from Squarespace to the current independent Living Word Bibles website.</li>
+    <li><strong>v1.1.0 Alpha was released publicly on 06 June 2026.</strong></li>
+    <li>The migration established the foundation for the modern <a href="/bibles/">Bible directory</a>, <a href="/read-the-bible-online/">online Bible readers</a>, <a href="/history-of-the-bible/">Bible history</a>, and expanding digital publishing experience in use today.</li>
+  </ul>
+</section>
+
+<section class="entry milestone">
+  <h3>Public Milestone — Living Word Bibles Repository &amp; Bible Database</h3>
+  <time datetime="2025-10-29">29 October 2025</time>
+  <p>Living Word Bibles began operating its Living Word Bibles Repository and Bible Database on the Living Word Bibles domain. These Scripture collections are hosted and presented through:</p>
+  <div class="domain-row">
+    <a href="https://www.livingwordbibles.com/">www.livingwordbibles.com</a>
+    <a href="https://the-holy-bible.online/" rel="noopener">the-holy-bible.online</a>
+  </div>
+  <h4>&gt; current_bible_databases</h4>
+  <p>The current public collection includes fifteen online Bible translation databases:</p>
+  <ul class="db-grid">
+    <li><a href="/read-the-bible-online/kjv/">King James Version</a><small>KJV</small></li>
+    <li><a href="/read-the-bible-online/nkjv/">New King James Version</a><small>NKJV</small></li>
+    <li><a href="/read-the-bible-online/niv/">New International Version</a><small>NIV</small></li>
+    <li><a href="/read-the-bible-online/esv/">English Standard Version</a><small>ESV</small></li>
+    <li><a href="/read-the-bible-online/net/">New English Translation</a><small>NET</small></li>
+    <li><a href="/read-the-bible-online/leb/">Lexham English Bible</a><small>LEB</small></li>
+    <li><a href="/read-the-bible-online/asv/">American Standard Version</a><small>ASV</small></li>
+    <li><a href="/read-the-bible-online/ylt/">Young’s Literal Translation</a><small>YLT</small></li>
+    <li><a href="/read-the-bible-online/web/">World English Bible</a><small>WEB</small></li>
+    <li><a href="/read-the-bible-online/oeb/">Open English Bible</a><small>OEB</small></li>
+    <li><a href="/read-the-bible-online/dby/">Darby Translation</a><small>DBY</small></li>
+    <li><a href="/read-the-bible-online/gnv/">Geneva Bible</a><small>GNV</small></li>
+    <li><a href="/read-the-bible-online/bsb/">Berean Standard Bible</a><small>BSB</small></li>
+    <li><a href="/read-the-bible-online/bbe/">Bible in Basic English</a><small>BBE</small></li>
+    <li><a href="/read-the-bible-online/drb/">Douay-Rheims Bible</a><small>DRB</small></li>
+  </ul>
+
+  <h4>&gt; related_public_editions</h4>
+  <div class="product-links">
+    <a href="/estore/p/the-holy-bible-king-james-version-special-edition/">KJV Special Edition</a>
+    <a href="/estore/p/the-holy-bible-king-james-version/">KJV eBible</a>
+    <a href="/estore/p/the-holy-bible-american-standard-version-asv/">ASV eBible</a>
+    <a href="/estore/p/the-holy-bible-youngs-literal-translation-ylt/">YLT eBible</a>
+    <a href="/estore/p/the-holy-bible-world-english-bible-web/">WEB eBible</a>
+    <a href="/estore/p/the-holy-bible-douay-rheims-bible/">Douay-Rheims eBible</a>
+    <a href="/ethiopian-bible/">Ethiopian Bible</a>
+    <a href="/audio-bible/">KJV Audio Bible</a>
+    <a href="/estore/print-bibles/">Print Bibles</a>
+    <a href="/ios/">Living Word Bibles iOS</a>
+  </div>
+</section>
+
+<section class="entry">
+  <h3>v1.0.0 Alpha</h3>
+  <time datetime="2025-09-30">30 September 2025</time>
+  <ul>
+    <li>Beginning of the current public Living Word Bibles release history following the acquisition of <a href="https://www.livingwordbibles.com/">www.livingwordbibles.com</a>.</li>
+    <li>This release numbering supersedes any version labels used before 30 September 2025.</li>
+  </ul>
+</section>
+
+</div>
+
+<section class="heritage">
+  <p>The current public version history begins with <strong>v1.0.0 Alpha on 30 September 2025</strong> and supersedes previous version numbering.</p>
+  <p><strong>Living Word Bibles heritage:</strong> Living Word Bibles has remained in continuous operation since <strong>31 December 1999</strong>. <strong><p class="amen">In the Year of Our Lord. Amen.</strong></p></p>
+</section>
+
+<div class="bottom">
+  <span>PUBLIC CHANGE LOG // Visitor-facing release history</span>
+  <a class="home" href="/">[ Return to Living Word Bibles ]</a>
+</div>
 </div>
 </main>
+
 <script>
 (() => {
   'use strict';

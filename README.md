@@ -1,4 +1,4 @@
-[README.md](https://github.com/user-attachments/files/31756923/README.md)
+[README.md](https://github.com/user-attachments/files/31757607/README.md)
 [README.md](https://github.com/user-attachments/files/31749968/README.md)
 <p align="center">
   <a href="https://www.livingwordbibles.com/">
@@ -23,7 +23,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 02 September 2026 at 20:23:12Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 02 September 2026 at 20:41:24Z UTC</sub></p>
 
 ---
 
@@ -46,7 +46,7 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 | Apps Script build stamp | `02 September 2026 at 13:11:09Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `02 September 2026 at 20:23:12Z UTC` |
+| README revision | `02 September 2026 at 20:41:24Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
 
@@ -56,7 +56,7 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 
 ## What's New in v2.6.2 Alpha — Public Release Marker & Shared-Shell Refinement
 
-Released **02 September 2026 at 20:23:12Z UTC**.
+Released **02 September 2026 at 20:41:24Z UTC**.
 
 ### Public-facing refinements
 
@@ -65,6 +65,18 @@ Released **02 September 2026 at 20:23:12Z UTC**.
 - Added a public **Change Log** page at `/change-log.html` for visitor-facing release history.
 - Added a compact public version marker to the far-right side of the desktop footer legal line; on mobile it appears beneath the legal links.
 - The footer version marker reads the current **Frontend package version** and **README last updated** values from `README.md`, so routine README release updates propagate to the public footer without a second manual version edit.
+
+### Social Media update
+
+- Added the new **The Complete Apocrypha of the Ethiopian Bible** promotional post as the first item in the Instagram gallery on `/social-media/`.
+- The featured Instagram post links to:
+
+```text
+https://www.instagram.com/p/DczHZkHmRHW/
+```
+
+- Preserved all previously curated Instagram posts and their existing order after the new featured post.
+- The Social Media page continues to use Instagram's official embed presentation with the direct **Open on Instagram** fallback link.
 
 ### Ethiopian Bible EPUB edition and product-page update
 
@@ -817,6 +829,7 @@ Before merging or deploying this release:
 - Confirm `/assets/products/EthiopianApocryphaPDF.pdf` resolves in production.
 - Confirm `/assets/products/ethiopian.epub` resolves in production.
 - Confirm `/ethiopian-bible/` renders the EPUB product on the left and PDF product on the right with both PayPal Hosted Buttons and their hosted product images intact.
+- Confirm `/social-media/` shows `https://www.instagram.com/p/DczHZkHmRHW/` as the first Instagram post and preserves the existing Instagram gallery after it.
 - Confirm `prod_kjv_special` and `prod_drb` remain active Products rows.
 - Test a brand-new account: verify email, sign in, and confirm both free Bibles appear in Library.
 - Test an existing account to confirm the free products are added once without duplicates.
@@ -850,8 +863,8 @@ Before merging or deploying this release:
 **Apps Script build stamp:** `02 September 2026 at 13:11:09Z UTC`  
 **Google Apps Script version:** `2.0.5`  
 **Frontend package version:** `2.6.2`  
-**README last updated:** **02 September 2026 at 20:23:12Z UTC**
+**README last updated:** **02 September 2026 at 20:41:24Z UTC**
 
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 02 September 2026 at 20:23:12Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 02 September 2026 at 20:41:24Z UTC</strong></p>

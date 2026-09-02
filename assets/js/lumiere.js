@@ -28,6 +28,69 @@
   const apiBase = () => String(window.LWB_SITE_CONFIG?.apiBase || '').trim();
   const storageKey = () => `lwbLumiereState:${productKey}`;
 
+  function timeoutPromise(promise, ms, message) {
+    let timer;
+    const timeout = new Promise((_, reject) => {
+      timer = setTimeout(() => reject(new Error(message)), ms);
+    });
+    return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
+  }
+
+  function normalizeRepositorySource(value) {
+    const source = String(value || '').trim();
+    if (!source) return '';
+    try {
+      const url = new URL(source, location.href);
+      const host = url.hostname.toLowerCase();
+      if (host === 'www.livingwordbibles.com' || host === 'livingwordbibles.com') {
+        return url.pathname + url.search + url.hash;
+      }
+      return url.href;
+    } catch (_) {
+      return source;
+    }
+  }
+
+  async function fetchEpubBytes(source) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 30000);
+    try {
+      const response = await fetch(source, {
+        method:'GET',
+        credentials:'same-origin',
+        cache:'no-store',
+        redirect:'follow',
+        signal:controller.signal
+      });
+      if (!response.ok) {
+        throw new Error(`The eBible file could not be loaded (HTTP ${response.status}).`);
+      }
+
+      const contentType = String(response.headers.get('content-type') || '').toLowerCase();
+      if (contentType.includes('text/html')) {
+        throw new Error('The eBible URL returned a web page instead of the EPUB file.');
+      }
+
+      const bytes = await response.arrayBuffer();
+      if (!bytes || bytes.byteLength < 4) {
+        throw new Error('The eBible download was empty.');
+      }
+
+      const signature = new Uint8Array(bytes, 0, Math.min(4, bytes.byteLength));
+      if (signature[0] !== 0x50 || signature[1] !== 0x4b) {
+        throw new Error('The eBible URL did not return EPUB/ZIP data.');
+      }
+      return bytes;
+    } catch (error) {
+      if (error?.name === 'AbortError') {
+        throw new Error('The eBible download timed out.');
+      }
+      throw error;
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
   function readState() {
     try {
       const value = JSON.parse(localStorage.getItem(storageKey()) || 'null');
@@ -215,7 +278,7 @@
         <button type="button" data-theme="sepia" aria-pressed="false">Sepia</button>
         <button type="button" data-theme="dark" aria-pressed="false">Dark</button>
       </div>
-      <div class="lwb-reader-stage"><div id="epub-viewer" class="lwb-epub-viewer" aria-label="${safe(reader.title || 'eBible reader')}"><div class="lwb-reader-loading">Opening eBible…</div></div></div>
+      <div class="lwb-reader-stage"><div id="epub-viewer" class="lwb-epub-viewer" aria-label="${safe(reader.title || 'eBible reader')}"><div class="lwb-reader-loading" data-reader-loading>Opening eBible…</div></div></div>
       <div class="lwb-lumiere-copyright">${copyrightLine()}</div>`;
     setYear();
     applyShellTheme();
@@ -261,28 +324,52 @@
     console.error('Valois Lumière reader error:', error);
   }
 
+  function setEpubLoading(message) {
+    const viewer = shell.querySelector('#epub-viewer');
+    if (!viewer) return;
+    viewer.innerHTML = `<div class="lwb-reader-loading" data-reader-loading>${safe(message || 'Opening eBible…')}</div>`;
+  }
+
   async function openEpub(reader) {
     if (typeof window.ePub !== 'function' || typeof window.JSZip !== 'function') {
       throw new Error('Valois Lumière reader libraries did not load. Refresh the page and try again.');
     }
 
-    const source = String(reader.source_url || '').trim();
+    const source = normalizeRepositorySource(reader.source_url);
     if (!source) throw new Error('The repository EPUB source is unavailable.');
     if (!/\.epub(?:$|[?#])/i.test(source)) throw new Error('The authorized repository file is not an EPUB.');
 
     epubShell(reader);
+    setEpubLoading('Downloading eBible…');
 
-    // EPUB.js requests the archived .epub directly from the GitHub Pages-hosted
-    // LWB repository path. openAs:'epub' forces archived EPUB handling even if a
-    // server/browser reports a generic download MIME type.
-    epubBook = window.ePub(source, {
-      openAs:'epub',
-      replacements:'blobUrl'
-    });
+    // Fetch the original GitHub Pages-hosted EPUB as binary data ourselves.
+    // This prevents EPUB.js request/constructor failures from becoming unresolved
+    // loading promises and lets us verify that the URL really returned ZIP data.
+    const epubBytes = await fetchEpubBytes(source);
 
-    epubBook.on('openFailed', error => showInlineReaderError(error));
+    setEpubLoading('Opening eBible…');
 
-    rendition = epubBook.renderTo('epub-viewer', {
+    // EPUB.js documents Book.open() as accepting an ArrayBuffer. Opening the
+    // already-fetched bytes explicitly avoids the constructor ambiguity that can
+    // occur when an archived EPUB URL fails internally.
+    epubBook = window.ePub({ replacements:'blobUrl' });
+    epubBook.on('openFailed', showInlineReaderError);
+
+    await timeoutPromise(
+      epubBook.open(epubBytes, 'epub'),
+      30000,
+      'Valois Lumière timed out while opening this EPUB.'
+    );
+
+    const viewer = shell.querySelector('#epub-viewer');
+    if (!viewer) throw new Error('The Valois Lumière reading area is unavailable.');
+
+    // IMPORTANT: remove the loading element before EPUB.js renders into this
+    // container. Leaving it here creates a full-height first child that can make
+    // the reader look permanently stuck on "Opening eBible…" even after render.
+    viewer.replaceChildren();
+
+    rendition = epubBook.renderTo(viewer, {
       width:'100%',
       height:'100%',
       spread:'none',
@@ -304,32 +391,47 @@
       if (key === 'ArrowRight') rendition.next();
     });
 
-    document.addEventListener('keydown', event => {
+    const keyHandler = event => {
       if (!rendition) return;
       if (event.key === 'ArrowLeft') rendition.prev();
       if (event.key === 'ArrowRight') rendition.next();
-    });
+    };
+    document.addEventListener('keydown', keyHandler);
 
-    const [navigation, metadata] = await Promise.all([
-      epubBook.loaded.navigation,
-      epubBook.loaded.metadata
-    ]);
-
-    populateToc(navigation?.toc || []);
-    const titleNode = shell.querySelector('[data-reader-title]');
-    if (titleNode && metadata?.title) titleNode.textContent = metadata.title;
-
+    // Display the book FIRST. Navigation and metadata are enhancements and must
+    // never block the first page from appearing.
     try {
-      await rendition.display(savedCfi || undefined);
+      await timeoutPromise(
+        rendition.display(savedCfi || undefined),
+        20000,
+        'Valois Lumière timed out while displaying this EPUB.'
+      );
     } catch (error) {
-      if (savedCfi) {
-        savedCfi = '';
-        writeState();
-        await rendition.display();
-      } else {
-        throw error;
-      }
+      if (!savedCfi) throw error;
+      savedCfi = '';
+      writeState();
+      await timeoutPromise(
+        rendition.display(),
+        20000,
+        'Valois Lumière timed out while displaying the first page of this EPUB.'
+      );
     }
+
+    // Load TOC and metadata only after the first page is visible. A malformed or
+    // unusual navigation document must not prevent the Bible itself from opening.
+    Promise.resolve(epubBook.loaded.navigation)
+      .then(navigation => populateToc(navigation?.toc || []))
+      .catch(error => {
+        showInlineReaderError(error);
+        populateToc([]);
+      });
+
+    Promise.resolve(epubBook.loaded.metadata)
+      .then(metadata => {
+        const titleNode = shell.querySelector('[data-reader-title]');
+        if (titleNode && metadata?.title) titleNode.textContent = metadata.title;
+      })
+      .catch(showInlineReaderError);
   }
 
   function pdfShell(reader) {

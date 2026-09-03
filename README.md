@@ -56,7 +56,7 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 
 ## What's New in v2.6.2 Alpha — Public Release Marker & Shared-Shell Refinement
 
-Released **02 September 2026C**. Last Updated: **03 September 2026 at 15:37:00Z UTC**
+Released **02 September 2026**. Last Updated: **03 September 2026 at 15:37:00Z UTC**
 
 ### Public-facing refinements
 

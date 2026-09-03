@@ -863,7 +863,7 @@ Before merging or deploying this release:
 **Apps Script build stamp:** `02 September 2026 at 13:11:09Z UTC`  
 **Google Apps Script version:** `2.0.5`  
 **Frontend package version:** `2.6.2`  
-**README last updated:** **02 September 2026 at 15:37:00Z UTC**
+**README last updated:** **03 September 2026 at 15:37:00Z UTC**
 
 ---
 

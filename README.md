@@ -1,3 +1,4 @@
+[README.md](https://github.com/user-attachments/files/31836688/README.md)
 [README.md](https://github.com/user-attachments/files/31757607/README.md)
 [README.md](https://github.com/user-attachments/files/31749968/README.md)
 <p align="center">
@@ -12,7 +13,7 @@
 
 <p align="center">
   <a href="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml/badge.svg?branch=main"></a>
-  <img alt="Frontend package v2.6.2" src="https://img.shields.io/badge/frontend-v2.6.2-555555">
+  <img alt="Frontend package v2.6.3" src="https://img.shields.io/badge/frontend-v2.6.3-555555">
   <img alt="Google Apps Script v2.0.5" src="https://img.shields.io/badge/Google%20Apps%20Script-v2.0.5-555555">
   <img alt="Hosting GitHub Pages" src="https://img.shields.io/badge/hosting-GitHub%20Pages-555555">
 </p>
@@ -23,7 +24,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 03 September 2026 at 15:37:00Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 04 September 2026 at 13:08:51Z UTC</sub></p>
 
 ---
 
@@ -41,18 +42,43 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 |---|---|
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
-| Frontend package version | `2.6.2` |
+| Frontend package version | `2.6.3` |
 | Google Apps Script version | `2.0.5` |
 | Apps Script build stamp | `02 September 2026 at 13:11:09Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `03 September 2026 at 15:37:00Z UTC` |
+| README revision | `04 September 2026 at 13:08:51Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
 
 ---
 
 
+
+## What's New in v2.6.3 Alpha — Updated eBible Products & Bible Maps
+
+Released **04 September 2026**. Last Updated: **04 September 2026 at 13:08:51Z UTC**
+
+### Updated digital Bible products
+
+- Uploaded updated production EPUB files for the following Living Word Bibles digital Bible products:
+  - **The Holy Bible: King James Version Special Edition**
+  - **The Holy Bible: Douay-Rheims Bible**
+  - **The Holy Bible: American Standard Version (ASV)**
+  - **The Holy Bible: World English Bible (WEB)**
+  - **The Holy Bible: Young's Literal Translation (YLT)**
+- Refreshed the production eBible assets used by the eStore, customer library, downloads, and Valois Lumière where applicable.
+- Preserved the existing product identities, storefront organization, and account-library architecture while replacing the underlying updated EPUB product files.
+
+### Bible maps presentation
+
+- Updated the **Living Word Bibles homepage** to reflect the addition of maps to Living Word Bibles Bible editions.
+- Updated the main **eStore** presentation to highlight maps as part of the Bible product experience.
+- Updated the **KJV Special Edition** product page to reflect the addition of maps.
+- Updated the **Douay-Rheims Bible** product page to reflect the addition of maps.
+- These updates improve public product descriptions and merchandising so visitors can clearly see that maps are included in the applicable Living Word Bibles editions.
+
+---
 
 ## What's New in v2.6.2 Alpha — Public Release Marker & Shared-Shell Refinement
 
@@ -862,9 +888,9 @@ Before merging or deploying this release:
 **Repository architecture revision:** `2026-08-27T22:28:20Z`  
 **Apps Script build stamp:** `02 September 2026 at 13:11:09Z UTC`  
 **Google Apps Script version:** `2.0.5`  
-**Frontend package version:** `2.6.2`  
-**README last updated:** **03 September 2026 at 15:37:00Z UTC**
+**Frontend package version:** `2.6.3`  
+**README last updated:** **04 September 2026 at 13:08:51Z UTC**
 
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 03 September 2026 at 15:37:00Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 04 September 2026 at 13:08:51Z UTC</strong></p>

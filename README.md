@@ -1,3 +1,4 @@
+[README.md](https://github.com/user-attachments/files/31864373/README.md)
 [README.md](https://github.com/user-attachments/files/31836688/README.md)
 [README.md](https://github.com/user-attachments/files/31757607/README.md)
 [README.md](https://github.com/user-attachments/files/31749968/README.md)
@@ -24,7 +25,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 04 September 2026 at 13:08:51Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 05 September 2026 at 13:02:07Z UTC</sub></p>
 
 ---
 
@@ -47,7 +48,7 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 | Apps Script build stamp | `02 September 2026 at 13:11:09Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `04 September 2026 at 13:08:51Z UTC` |
+| README revision | `05 September 2026 at 13:02:07Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
 
@@ -57,7 +58,7 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 
 ## What's New in v2.6.3 Alpha — Updated eBible Products & Bible Maps
 
-Released **04 September 2026**. Last Updated: **04 September 2026 at 13:08:51Z UTC**
+Released **04 September 2026**. Last Updated: **05 September 2026 at 13:02:07Z UTC**
 
 ### Updated digital Bible products
 
@@ -78,6 +79,30 @@ Released **04 September 2026**. Last Updated: **04 September 2026 at 13:08:51Z U
 - Updated the **Douay-Rheims Bible** product page to reflect the addition of maps.
 - These updates improve public product descriptions and merchandising so visitors can clearly see that maps are included in the applicable Living Word Bibles editions.
 
+
+### Social Media expansion — 05 September 2026
+
+- Expanded the curated Instagram gallery on `/social-media/` with five new Living Word Bibles posts while preserving every previously featured Instagram post beneath them.
+- The current newest-first Instagram sequence now begins with:
+  1. **Isaiah 40:31 (KJV) — renewed strength / wings as eagles**  
+     `https://www.instagram.com/p/Dc595vMFf0b/`
+  2. **Discover the Catholic Bible**  
+     `https://www.instagram.com/p/Dc59FqUFfqB/`
+  3. **Walk Through the World of Scripture**  
+     `https://www.instagram.com/p/Dc5834wlfYW/`
+  4. **From Manuscript to Modern Scripture**  
+     `https://www.instagram.com/p/Dc58fQWlf_g/`
+  5. **Living Word Bibles iOS app promotion**  
+     `https://www.instagram.com/p/Dc57XbJFQha/`
+- Preserved Instagram's official embed rendering and the existing direct **Open on Instagram** fallback behavior.
+- Expanded Living Word Bibles public outreach around Scripture, Bible history, Biblical geography, Catholic Bible resources, and the Living Word Bibles iOS app.
+- This documentation refresh remains part of **Frontend package v2.6.3 Alpha**; Google Apps Script remains **v2.0.5**.
+
+### v2.6.3 documentation refresh
+
+- Updated the README and Public Change Log to reflect the visitor-facing work completed since the previous **04 September 2026 at 13:08:51Z UTC** documentation stamp.
+- No frontend version bump was made; the current public release remains **v2.6.3 Alpha**.
+- README revision updated to **05 September 2026 at 13:02:07Z UTC**.
 ---
 
 ## What's New in v2.6.2 Alpha — Public Release Marker & Shared-Shell Refinement
@@ -856,6 +881,7 @@ Before merging or deploying this release:
 - Confirm `/assets/products/ethiopian.epub` resolves in production.
 - Confirm `/ethiopian-bible/` renders the EPUB product on the left and PDF product on the right with both PayPal Hosted Buttons and their hosted product images intact.
 - Confirm `/social-media/` shows `https://www.instagram.com/p/DczHZkHmRHW/` as the first Instagram post and preserves the existing Instagram gallery after it.
+- For the current v2.6.3 social-media update, confirm the gallery now begins, in order, with `Dc595vMFf0b`, `Dc59FqUFfqB`, `Dc5834wlfYW`, `Dc58fQWlf_g`, and `Dc57XbJFQha`, with all previously curated posts preserved beneath them.
 - Confirm `prod_kjv_special` and `prod_drb` remain active Products rows.
 - Test a brand-new account: verify email, sign in, and confirm both free Bibles appear in Library.
 - Test an existing account to confirm the free products are added once without duplicates.
@@ -889,8 +915,8 @@ Before merging or deploying this release:
 **Apps Script build stamp:** `02 September 2026 at 13:11:09Z UTC`  
 **Google Apps Script version:** `2.0.5`  
 **Frontend package version:** `2.6.3`  
-**README last updated:** **04 September 2026 at 13:08:51Z UTC**
+**README last updated:** **05 September 2026 at 13:02:07Z UTC**
 
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 04 September 2026 at 13:08:51Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 05 September 2026 at 13:02:07Z UTC</strong></p>

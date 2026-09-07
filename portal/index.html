@@ -44,6 +44,8 @@
         <button type="button" data-tab="subscribers" aria-selected="false">Subscribers</button>
         <button type="button" data-tab="newsletter" aria-selected="false">Newsletter</button>
         <button type="button" data-tab="accounts" aria-selected="false">Accounts & Purchases</button>
+        <button type="button" data-tab="analytics" aria-selected="false">Analytics</button>
+        <button type="button" data-tab="consent" aria-selected="false">Consent</button>
         <button type="button" data-tab="logs" aria-selected="false">System Log</button>
       </nav>
 
@@ -107,6 +109,68 @@
             <h3 style="margin-top:24px">Entitlements</h3><div class="portal-scroll"><table class="portal-table"><thead><tr><th>Product</th><th>Status</th><th>Source</th><th>Order</th><th>Granted</th><th>Action</th></tr></thead><tbody data-entitlement-rows></tbody></table></div>
             <h3 style="margin-top:24px">Orders</h3><div class="portal-scroll"><table class="portal-table"><thead><tr><th>Order</th><th>PayPal Tx</th><th>Status</th><th>Total</th><th>Date</th><th>Action</th></tr></thead><tbody data-order-rows></tbody></table></div>
           </div>
+        </article>
+      </section>
+
+
+      <section class="portal-panel" data-panel="analytics" hidden>
+        <article class="portal-card">
+          <div class="portal-section-head">
+            <div>
+              <h2>Website Analytics</h2>
+              <p class="portal-muted">Consent-gated website analytics calculated only from the existing System Log sheet. No separate Analytics sheet or columns are used.</p>
+            </div>
+            <div class="portal-row" style="margin:0">
+              <div class="portal-field compact">
+                <label for="analytics-range">Date range</label>
+                <select id="analytics-range" data-analytics-range>
+                  <option value="1">Today / Last 24 Hours</option>
+                  <option value="7" selected>Last 7 Days</option>
+                  <option value="30">Last 30 Days</option>
+                  <option value="0">All Time</option>
+                </select>
+              </div>
+              <div class="compact"><button class="btn secondary" type="button" data-refresh-analytics>Refresh</button></div>
+            </div>
+          </div>
+
+          <div class="portal-grid" data-analytics-stats style="margin-top:18px"></div>
+
+          <div class="portal-two" style="margin-top:18px">
+            <div><h3>Countries</h3><div class="portal-scroll"><table class="portal-table"><thead><tr><th>Country</th><th>Pageviews</th></tr></thead><tbody data-analytics-countries></tbody></table></div></div>
+            <div><h3>Regions / States</h3><div class="portal-scroll"><table class="portal-table"><thead><tr><th>Region</th><th>Pageviews</th></tr></thead><tbody data-analytics-regions></tbody></table></div></div>
+          </div>
+
+          <div class="portal-two" style="margin-top:18px">
+            <div><h3>Top Pages</h3><div class="portal-scroll"><table class="portal-table"><thead><tr><th>Page</th><th>Views</th></tr></thead><tbody data-analytics-pages></tbody></table></div></div>
+            <div><h3>Landing Pages</h3><div class="portal-scroll"><table class="portal-table"><thead><tr><th>Landing Page</th><th>Sessions</th></tr></thead><tbody data-analytics-landings></tbody></table></div></div>
+          </div>
+
+          <div class="portal-two" style="margin-top:18px">
+            <div><h3>Referrers</h3><div class="portal-scroll"><table class="portal-table"><thead><tr><th>Referrer</th><th>Pageviews</th></tr></thead><tbody data-analytics-referrers></tbody></table></div></div>
+            <div><h3>Devices</h3><div class="portal-scroll"><table class="portal-table"><thead><tr><th>Device</th><th>Pageviews</th></tr></thead><tbody data-analytics-devices></tbody></table></div></div>
+          </div>
+
+          <div class="portal-two" style="margin-top:18px">
+            <div><h3>Browsers</h3><div class="portal-scroll"><table class="portal-table"><thead><tr><th>Browser</th><th>Pageviews</th></tr></thead><tbody data-analytics-browsers></tbody></table></div></div>
+            <div><h3>Operating Systems</h3><div class="portal-scroll"><table class="portal-table"><thead><tr><th>Operating System</th><th>Pageviews</th></tr></thead><tbody data-analytics-os></tbody></table></div></div>
+          </div>
+
+          <h3 style="margin-top:24px">Recent Analytics Activity</h3>
+          <div class="portal-scroll"><table class="portal-table"><thead><tr><th>Time</th><th>Event</th><th>Page</th><th>Country</th><th>Device</th><th>Browser</th><th>Visitor</th><th>Session</th></tr></thead><tbody data-analytics-recent></tbody></table></div>
+        </article>
+      </section>
+
+      <section class="portal-panel" data-panel="consent" hidden>
+        <article class="portal-card">
+          <div class="portal-section-head">
+            <div>
+              <h2>Consent</h2>
+              <p class="portal-muted">Cookie/privacy choices and EU/EEA digital-delivery consent records from the existing System Log. These records also remain visible in System Log.</p>
+            </div>
+            <button class="btn secondary" type="button" data-refresh-consent>Refresh</button>
+          </div>
+          <div class="portal-scroll" style="margin-top:18px"><table class="portal-table"><thead><tr><th>Time</th><th>Event</th><th>Choice / Status</th><th>Analytics</th><th>Advertising</th><th>Country</th><th>Product / Page</th><th>Email</th><th>Record</th></tr></thead><tbody data-consent-rows></tbody></table></div>
         </article>
       </section>
 

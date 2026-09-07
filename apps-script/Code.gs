@@ -1,12 +1,21 @@
 /**
- * Living Word Bibles Backend v2.0.5
+ * Living Word Bibles Backend v2.0.6
  * Core Website API
  *
  * Account: gospellivingwordbibles@gmail.com
  * Spreadsheet: LWB Website
  * Legal display date: 27 August 2026
- * Build timestamp: 02 September 2026 at 13:11:09Z UTC
+ * Build timestamp: 07 September 2026 at 23:15:32Z UTC
  *
+ * v2.0.6 highlights:
+ * - Adds worldwide privacy/cookie consent audit events to the existing System Log.
+ * - Expands consent-gated website analytics with visitor/session, page, referrer,
+ *   country/region, device, browser, and operating-system metadata.
+ * - Adds Analytics and Consent views to the existing administration portal without
+ *   creating any new Google Sheet, tab, or column.
+ * - Sends EU/EEA digital-purchase consent confirmation email after successful
+ *   PayPal PDT verification for qualifying paid digital products.
+ * - Preserves the existing System Log as the single analytics/consent data source.
  * v2.0.5 highlights:
  * - Corrects Valois Lumière to render archived EPUB files in the browser with EPUB.js + JSZip.
  * - Apps Script now authorizes reader access and returns the entitled repository asset URL only;
@@ -45,12 +54,23 @@
  */
 
 const LWB = Object.freeze({
-  VERSION: '2.0.5',
-  BUILD_UTC: '02 September 2026 at 13:11:09Z UTC',
+  VERSION: '2.0.6',
+  BUILD_UTC: '07 September 2026 at 23:15:32Z UTC',
   SITE_URL: 'https://www.livingwordbibles.com',
   CONTACT_EMAIL: 'gospellivingwordbibles@gmail.com',
   SPREADSHEET_ID: '1xnzdo1UJsEOTqcO2066Nfb6ayqKn8Zg5RbNLdpbaTcc',
   CONSENT_VERSION: '2026-08-27',
+  PRIVACY_NOTICE_VERSION: '2026-09-07',
+  EU_EEA_CONSENT_VERSION: '2026-09-07',
+  EU_EEA_CONSENT_TEXT: 'EU/EEA Right of Withdrawal: This notice applies only to consumers in the European Union (EU) or European Economic Area (EEA). By checking this box, you expressly consent to the immediate delivery of this digital product and acknowledge that you will lose any applicable right of withdrawal once the digital download begins.  If you do not consent, please do not purchase this product.',
+  EU_EEA_COUNTRY_CODES: Object.freeze([
+    'AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE',
+    'IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO'
+  ]),
+  PAID_DIGITAL_PAYPAL_BUTTONS: Object.freeze([
+    'YXUZPMWTKME24','KBJTWT23LA6JN','5A5Z2VDH74DFG','K7C2SJYLCDKMU',
+    'BSYFSH79KT8VC','8Z63ZMZEALLG4','4HCP6WRVGQNV2'
+  ]),
   LOGO_URL: 'https://www.livingwordbibles.com/assets/LivingWordBibles01.png',
   NEWSLETTER_BATCH_MAX: 99,
   NEWSLETTER_WEEKDAYS: Object.freeze([1, 3, 5]), // Monday, Wednesday, Friday
@@ -218,11 +238,23 @@ function doPost(e) {
   const parsed = parsePost_(e);
   const parsedAction = String(parsed.action || '').toLowerCase();
 
-  if (parsedAction === 'activity-log' || parsedAction === 'activity-log-batch') {
+  if (
+    parsedAction === 'activity-log' ||
+    parsedAction === 'activity-log-batch' ||
+    parsedAction === 'privacy-consent' ||
+    parsedAction === 'eu-eea-digital-consent'
+  ) {
     try {
-      const telemetryPayload = parsedAction === 'activity-log-batch'
-        ? activityLogBatch_(parsed)
-        : activityLog_(parsed);
+      let telemetryPayload;
+      if (parsedAction === 'activity-log-batch') {
+        telemetryPayload = activityLogBatch_(parsed);
+      } else if (parsedAction === 'activity-log') {
+        telemetryPayload = activityLog_(parsed);
+      } else if (parsedAction === 'privacy-consent') {
+        telemetryPayload = privacyConsentLog_(parsed);
+      } else {
+        telemetryPayload = euEeaDigitalConsentLog_(parsed);
+      }
       return output_(telemetryPayload, parsed.callback);
     } catch (err) {
       return output_({ ok: false, error: safeError_(err) }, parsed.callback);
@@ -328,6 +360,12 @@ function doPost(e) {
         break;
       case 'admin-manual-purchase-remove':
         payload = adminManualPurchaseRemove_(data);
+        break;
+      case 'admin-analytics':
+        payload = adminAnalytics_(data);
+        break;
+      case 'admin-consent':
+        payload = adminConsent_(data);
         break;
       case 'admin-logs':
         payload = adminLogs_(data);
@@ -1150,6 +1188,174 @@ function logDownload_(data) {
 /* PAYPAL PDT                                                                 */
 /* ========================================================================== */
 
+
+function isEuEeaCountryCode_(value) {
+  return LWB.EU_EEA_COUNTRY_CODES.indexOf(String(value || '').toUpperCase()) >= 0;
+}
+
+function requiresEuEeaDigitalConsent_(product) {
+  product = product || {};
+  const price = Number(product.price || 0);
+  if (!(price > 0)) return false;
+
+  const buttonId = String(product.paypal_button_id || '').trim();
+  if (buttonId && LWB.PAID_DIGITAL_PAYPAL_BUTTONS.indexOf(buttonId) >= 0) return true;
+
+  const type = String(product.product_type || '').toLowerCase();
+  return ['ebook', 'pdf', 'app', 'digital', 'software'].indexOf(type) >= 0;
+}
+
+function systemLogHasEventRecord_(eventName, recordId) {
+  const event = String(eventName || '').toUpperCase();
+  const record = String(recordId || '');
+  if (!event || !record) return false;
+
+  return readObjects_(sheet_(LWB.SHEETS.LOG)).some(function(row) {
+    return String(row.event || '').toUpperCase() === event &&
+      String(row.record_id || '') === record;
+  });
+}
+
+function sendEuEeaDigitalConsentConfirmation_(order, product, options) {
+  options = options || {};
+  if (!order || !product) return { ok: true, sent: false, reason: 'missing-data' };
+
+  const country = String(order.payer_country || '').toUpperCase();
+  const tx = clean_(order.paypal_capture_id || '', 200);
+  const email = normalizeEmail_(order.email || '');
+
+  if (!isEuEeaCountryCode_(country)) {
+    return { ok: true, sent: false, reason: 'not-eu-eea' };
+  }
+  if (!requiresEuEeaDigitalConsent_(product)) {
+    return { ok: true, sent: false, reason: 'not-covered-product' };
+  }
+  if (!tx || !validEmail_(email)) {
+    return { ok: true, sent: false, reason: 'missing-transaction-or-email' };
+  }
+
+  if (systemLogHasEventRecord_('EU_EEA_CONSENT_EMAIL_SENT', tx)) {
+    return { ok: true, sent: false, reason: 'already-sent' };
+  }
+
+  if (options.retryOnly === true &&
+      !systemLogHasEventRecord_('EU_EEA_CONSENT_EMAIL_FAILED', tx)) {
+    return { ok: true, sent: false, reason: 'no-retry-needed' };
+  }
+
+  const purchaseDate = order.created_at || new Date();
+  let purchaseIso = '';
+  try {
+    purchaseIso = new Date(purchaseDate).toISOString();
+  } catch (_) {
+    purchaseIso = new Date().toISOString();
+  }
+
+  const productTitle = clean_(product.title || product.short_title || product.product_id || 'Digital Product', 500);
+  const productUrl = product.canonical_path
+    ? LWB.SITE_URL + String(product.canonical_path)
+    : LWB.SITE_URL + '/estore/';
+  const orderRef = clean_(order.order_id || '', 200);
+  const paypalOrder = clean_(order.paypal_order_id || '', 200);
+
+  const consentHtml = escapeHtml_(LWB.EU_EEA_CONSENT_TEXT)
+    .replace('begins.  If', 'begins.&nbsp; If');
+
+  const html =
+    '<h1 style="font-family:Georgia,serif;font-size:28px;line-height:1.2;margin:0 0 16px;color:#1d2a34">Digital Purchase &amp; EU/EEA Consent Confirmation</h1>' +
+    '<p>This transactional email confirms your completed Living Word Bibles digital purchase and the EU/EEA digital-delivery consent presented before checkout.</p>' +
+    '<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:20px 0;border-collapse:collapse">' +
+      '<tr><td style="padding:8px;border-bottom:1px solid #eee6d8"><strong>Product</strong></td><td style="padding:8px;border-bottom:1px solid #eee6d8"><a href="' + escapeHtml_(productUrl) + '">' + escapeHtml_(productTitle) + '</a></td></tr>' +
+      '<tr><td style="padding:8px;border-bottom:1px solid #eee6d8"><strong>PayPal transaction</strong></td><td style="padding:8px;border-bottom:1px solid #eee6d8">' + escapeHtml_(tx) + '</td></tr>' +
+      '<tr><td style="padding:8px;border-bottom:1px solid #eee6d8"><strong>Order reference</strong></td><td style="padding:8px;border-bottom:1px solid #eee6d8">' + escapeHtml_(orderRef || '—') + '</td></tr>' +
+      (paypalOrder ? '<tr><td style="padding:8px;border-bottom:1px solid #eee6d8"><strong>PayPal order</strong></td><td style="padding:8px;border-bottom:1px solid #eee6d8">' + escapeHtml_(paypalOrder) + '</td></tr>' : '') +
+      '<tr><td style="padding:8px;border-bottom:1px solid #eee6d8"><strong>Purchaser email</strong></td><td style="padding:8px;border-bottom:1px solid #eee6d8">' + escapeHtml_(email) + '</td></tr>' +
+      '<tr><td style="padding:8px;border-bottom:1px solid #eee6d8"><strong>Country</strong></td><td style="padding:8px;border-bottom:1px solid #eee6d8">' + escapeHtml_(country) + '</td></tr>' +
+      '<tr><td style="padding:8px;border-bottom:1px solid #eee6d8"><strong>Purchase timestamp</strong></td><td style="padding:8px;border-bottom:1px solid #eee6d8">' + escapeHtml_(purchaseIso) + '</td></tr>' +
+      '<tr><td style="padding:8px"><strong>Consent version</strong></td><td style="padding:8px">' + escapeHtml_(LWB.EU_EEA_CONSENT_VERSION) + '</td></tr>' +
+    '</table>' +
+    '<div style="padding:16px;border:1px solid #ded6c6;border-radius:10px;background:#faf7f0">' +
+      '<p style="margin:0"><strong>EU/EEA Right of Withdrawal:</strong> ' +
+      consentHtml.replace(/^EU\/EEA Right of Withdrawal:\s*/i, '') +
+      '</p>' +
+    '</div>' +
+    '<p style="margin-top:20px">This confirmation is provided as a durable record of the digital-delivery acknowledgment associated with your purchase.  Living Word Bibles is operated by Cook Services Company, LLC.</p>' +
+    '<p><a href="' + LWB.SITE_URL + '/support/">Support</a> &nbsp;•&nbsp; ' +
+      '<a href="' + LWB.SITE_URL + '/terms-of-service/">Terms of Service</a> &nbsp;•&nbsp; ' +
+      '<a href="' + LWB.SITE_URL + '/privacy-policy/">Privacy Policy</a></p>';
+
+  const text =
+    'Living Word Bibles — Digital Purchase & EU/EEA Consent Confirmation\n\n' +
+    'This transactional email confirms your completed Living Word Bibles digital purchase and the EU/EEA digital-delivery consent presented before checkout.\n\n' +
+    'Product: ' + productTitle + '\n' +
+    'Product URL: ' + productUrl + '\n' +
+    'PayPal transaction: ' + tx + '\n' +
+    'Order reference: ' + (orderRef || '—') + '\n' +
+    (paypalOrder ? 'PayPal order: ' + paypalOrder + '\n' : '') +
+    'Purchaser email: ' + email + '\n' +
+    'Country: ' + country + '\n' +
+    'Purchase timestamp: ' + purchaseIso + '\n' +
+    'Consent version: ' + LWB.EU_EEA_CONSENT_VERSION + '\n\n' +
+    LWB.EU_EEA_CONSENT_TEXT + '\n\n' +
+    'This confirmation is provided as a durable record of the digital-delivery acknowledgment associated with your purchase.  Living Word Bibles is operated by Cook Services Company, LLC.\n\n' +
+    'Website: ' + LWB.SITE_URL + '\n' +
+    'Terms: ' + LWB.SITE_URL + '/terms-of-service/\n' +
+    'Privacy: ' + LWB.SITE_URL + '/privacy-policy/\n' +
+    'Support: ' + LWB.SITE_URL + '/support/';
+
+  try {
+    sendBrandedEmail_({
+      to: email,
+      subject: 'Living Word Bibles — Digital Purchase & EU/EEA Consent Confirmation',
+      preheader: 'Your digital purchase and EU/EEA consent confirmation.',
+      html: html,
+      text: text,
+      newsletter: false
+    });
+
+    logSystem_(
+      'INFO',
+      'EU_EEA_CONSENT_EMAIL_SENT',
+      email,
+      tx,
+      'paypal',
+      productTitle,
+      {
+        transaction_id: tx,
+        order_id: orderRef,
+        paypal_order_id: paypalOrder,
+        payer_country: country,
+        product_id: product.product_id || '',
+        product_title: productTitle,
+        consent_version: LWB.EU_EEA_CONSENT_VERSION,
+        sent_utc: new Date().toISOString()
+      }
+    );
+
+    return { ok: true, sent: true };
+  } catch (error) {
+    logSystem_(
+      'ERROR',
+      'EU_EEA_CONSENT_EMAIL_FAILED',
+      email,
+      tx,
+      'paypal',
+      safeError_(error),
+      {
+        transaction_id: tx,
+        order_id: orderRef,
+        payer_country: country,
+        product_id: product.product_id || '',
+        product_title: productTitle,
+        consent_version: LWB.EU_EEA_CONSENT_VERSION,
+        failed_utc: new Date().toISOString()
+      }
+    );
+
+    return { ok: false, sent: false, error: safeError_(error) };
+  }
+}
+
 function verifyPayPalPdt_(params) {
   const lock = LockService.getScriptLock();
   lock.waitLock(30000);
@@ -1172,6 +1378,7 @@ function verifyPayPalPdtUnlocked_(params) {
     if (!product) {
       return { ok: false, error: 'The transaction is recorded, but its product could not be matched.' };
     }
+    sendEuEeaDigitalConsentConfirmation_(existing, product, { retryOnly: true });
     return fulfillmentResponse_(existing, product, existing.email);
   }
 
@@ -1260,7 +1467,10 @@ function verifyPayPalPdtUnlocked_(params) {
   }
 
   logSystem_('INFO', 'PAYPAL_PDT_VERIFIED', email, order.order_id, 'paypal', product.product_id,
-    { txn_id: tx });
+    { txn_id: tx, payer_country: order.payer_country || '' });
+
+  // Transactional compliance email; failures are logged but never block fulfillment.
+  sendEuEeaDigitalConsentConfirmation_(order, product, { retryOnly: false });
 
   return fulfillmentResponse_(order, product, email);
 }
@@ -1930,6 +2140,92 @@ function allowAuthAttempt_(bucket, key, limit, seconds) {
 /* SITE ACTIVITY / EXISTING SYSTEM LOG                                        */
 /* ========================================================================== */
 
+
+function privacyConsentLog_(data) {
+  const identity = activityIdentity_(data);
+  const allowed = [
+    'PRIVACY_CONSENT',
+    'PRIVACY_PREFERENCES_UPDATED',
+    'PRIVACY_CONSENT_WITHDRAWN'
+  ];
+  let eventType = clean_(data.event_type || 'PRIVACY_CONSENT', 100).toUpperCase();
+  if (allowed.indexOf(eventType) < 0) eventType = 'PRIVACY_CONSENT';
+
+  const analytics = truthy_(data.analytics);
+  const advertising = truthy_(data.advertising);
+  const metadata = {
+    necessary: true,
+    analytics: analytics,
+    advertising: advertising,
+    consent_version: clean_(data.consent_version || '', 40),
+    notice_version: clean_(data.notice_version || LWB.PRIVACY_NOTICE_VERSION, 40),
+    choice_source: clean_(data.choice_source || '', 80),
+    previous_analytics: data.previous_analytics === null || data.previous_analytics === undefined
+      ? null : truthy_(data.previous_analytics),
+    previous_advertising: data.previous_advertising === null || data.previous_advertising === undefined
+      ? null : truthy_(data.previous_advertising),
+    client_time: clean_(data.client_time || '', 80),
+    path: safeActivityPath_(data.path || '/'),
+    session_id: clean_(data.session_id || '', 120),
+    visitor_id: clean_(data.visitor_id || '', 120),
+    user_agent: cleanActivityText_(data.userAgent || '', 500)
+  };
+
+  const eventId = clean_(data.event_id || uuid_(), 200);
+  const message =
+    'analytics=' + (analytics ? 'accepted' : 'rejected') +
+    '; advertising=' + (advertising ? 'accepted' : 'rejected');
+
+  logSystem_(
+    'INFO',
+    eventType,
+    identity.email,
+    eventId,
+    identity.source || 'website',
+    message,
+    metadata
+  );
+
+  return { ok: true, logged: 1, event: eventType, record_id: eventId };
+}
+
+function euEeaDigitalConsentLog_(data) {
+  const identity = activityIdentity_(data);
+  const consented = truthy_(data.consented);
+  const eventType = consented
+    ? 'EU_EEA_DIGITAL_CONSENT'
+    : 'EU_EEA_DIGITAL_CONSENT_WITHDRAWN';
+  const eventId = clean_(data.event_id || uuid_(), 200);
+  const metadata = {
+    consented: consented,
+    consent_version: clean_(data.consent_version || LWB.EU_EEA_CONSENT_VERSION, 40),
+    consent_text: clean_(data.consent_text || LWB.EU_EEA_CONSENT_TEXT, 1500),
+    client_time: clean_(data.client_time || '', 80),
+    path: safeActivityPath_(data.path || '/'),
+    page_url: safeActivityHref_(data.page_url || ''),
+    product_slug: clean_(data.product_slug || '', 300),
+    product_title: clean_(data.product_title || '', 500),
+    session_id: clean_(data.session_id || '', 120),
+    country_code: clean_(data.country_code || '', 3).toUpperCase(),
+    country_name: clean_(data.country_name || '', 80),
+    region: clean_(data.region || '', 100),
+    region_code: clean_(data.region_code || '', 20),
+    user_agent: cleanActivityText_(data.userAgent || '', 500)
+  };
+
+  logSystem_(
+    'INFO',
+    eventType,
+    identity.email,
+    eventId,
+    identity.source || 'website',
+    clean_(metadata.product_title || metadata.product_slug || metadata.path, 1000),
+    metadata
+  );
+
+  return { ok: true, logged: 1, event: eventType, record_id: eventId };
+}
+
 /**
  * Appends one sanitized site event to the existing System Log sheet.
  * Values typed into forms, passwords, and URL query strings are never logged.
@@ -2016,9 +2312,23 @@ function normalizeActivityEvent_(raw) {
     class_name: cleanActivityText_(raw.class_name || raw.className || '', 240),
     title: cleanActivityText_(raw.title || '', 240),
     referrer_path: safeActivityPath_(raw.referrer_path || ''),
+    referrer_domain: cleanActivityText_(raw.referrer_domain || '', 180),
     viewport: cleanActivityText_(raw.viewport || '', 40),
+    screen: cleanActivityText_(raw.screen || '', 40),
     session_id: cleanActivityText_(raw.session_id || '', 100),
-    client_time: cleanActivityText_(raw.client_time || '', 80)
+    visitor_id: cleanActivityText_(raw.visitor_id || '', 120),
+    landing_page: safeActivityPath_(raw.landing_page || ''),
+    session_started_at: cleanActivityText_(raw.session_started_at || '', 80),
+    client_time: cleanActivityText_(raw.client_time || '', 80),
+    device_type: cleanActivityText_(raw.device_type || '', 30),
+    browser: cleanActivityText_(raw.browser || '', 60),
+    operating_system: cleanActivityText_(raw.operating_system || '', 60),
+    language: cleanActivityText_(raw.language || '', 30),
+    country_code: cleanActivityText_(raw.country_code || '', 3).toUpperCase(),
+    country_name: cleanActivityText_(raw.country_name || '', 80),
+    region: cleanActivityText_(raw.region || '', 100),
+    region_code: cleanActivityText_(raw.region_code || '', 20),
+    timezone: cleanActivityText_(raw.timezone || '', 80)
   };
 
   return {
@@ -2823,6 +3133,177 @@ function adminManualPurchaseRemove_(data) {
   return { ok: true, order_id: orderId, status: 'removed' };
 }
 
+
+function parseSystemLogMetadata_(row) {
+  try {
+    const value = row && row.metadata_json;
+    if (!value) return {};
+    if (typeof value === 'object') return value;
+    const parsed = JSON.parse(String(value));
+    return parsed && typeof parsed === 'object' ? parsed : {};
+  } catch (_) {
+    return {};
+  }
+}
+
+function rankCounter_(counter, limit) {
+  return Object.keys(counter || {})
+    .map(function(label) {
+      return { label: label, count: counter[label] };
+    })
+    .sort(function(a, b) {
+      return b.count - a.count || String(a.label).localeCompare(String(b.label));
+    })
+    .slice(0, limit || 20);
+}
+
+function incrementCounter_(counter, value) {
+  const key = clean_(value || '', 300);
+  if (!key) return;
+  counter[key] = Number(counter[key] || 0) + 1;
+}
+
+function adminAnalytics_(data) {
+  verifyAdminSessionToken_(data.token);
+
+  const daysRaw = Number(data.days || 0);
+  const days = [1, 7, 30].indexOf(daysRaw) >= 0 ? daysRaw : 0;
+  const cutoff = days
+    ? new Date(Date.now() - (days * 24 * 60 * 60 * 1000))
+    : null;
+
+  const rows = readObjects_(sheet_(LWB.SHEETS.LOG))
+    .filter(function(row) {
+      const event = String(row.event || '').toUpperCase();
+      if (event !== 'PAGE_VIEW' && event !== 'SITE_CLICK') return false;
+      if (!cutoff) return true;
+      const stamp = new Date(row.timestamp || 0);
+      return !Number.isNaN(stamp.getTime()) && stamp >= cutoff;
+    })
+    .sort(function(a, b) {
+      return new Date(b.timestamp || 0) - new Date(a.timestamp || 0);
+    });
+
+  const pageviews = rows.filter(function(row) {
+    return String(row.event || '').toUpperCase() === 'PAGE_VIEW';
+  });
+  const clicks = rows.filter(function(row) {
+    return String(row.event || '').toUpperCase() === 'SITE_CLICK';
+  });
+
+  const visitors = {};
+  const sessions = {};
+  const countries = {};
+  const regions = {};
+  const pages = {};
+  const landingPages = {};
+  const referrers = {};
+  const devices = {};
+  const browsers = {};
+  const operatingSystems = {};
+  const landingSessionSeen = {};
+
+  pageviews.forEach(function(row) {
+    const meta = parseSystemLogMetadata_(row);
+    const visitorId = clean_(meta.visitor_id || '', 120);
+    const sessionId = clean_(meta.session_id || '', 120);
+    const visitorKey = visitorId || (sessionId ? 'session:' + sessionId : '');
+
+    if (visitorKey) visitors[visitorKey] = true;
+    if (sessionId) sessions[sessionId] = true;
+
+    const country = clean_(meta.country_name || meta.country_code || '', 100);
+    const region = clean_(meta.region || meta.region_code || '', 120);
+    const page = safeActivityPath_(meta.path || row.message || '/');
+    const landing = safeActivityPath_(meta.landing_page || '');
+    const referrer = clean_(meta.referrer_domain || '', 180);
+    const device = clean_(meta.device_type || '', 40);
+    const browser = clean_(meta.browser || '', 80);
+    const os = clean_(meta.operating_system || '', 80);
+
+    incrementCounter_(countries, country);
+    incrementCounter_(regions, region);
+    incrementCounter_(pages, page);
+    if (landing && sessionId && !landingSessionSeen[sessionId]) {
+      incrementCounter_(landingPages, landing);
+      landingSessionSeen[sessionId] = true;
+    }
+    incrementCounter_(referrers, referrer);
+    incrementCounter_(devices, device);
+    incrementCounter_(browsers, browser);
+    incrementCounter_(operatingSystems, os);
+  });
+
+  const visitorCount = Object.keys(visitors).length;
+  const sessionCount = Object.keys(sessions).length;
+  const pageviewCount = pageviews.length;
+
+  return {
+    ok: true,
+    range_days: days,
+    generated_at: new Date().toISOString(),
+    summary: {
+      visitors: visitorCount,
+      sessions: sessionCount,
+      pageviews: pageviewCount,
+      clicks: clicks.length,
+      pageviews_per_visitor: visitorCount
+        ? Number((pageviewCount / visitorCount).toFixed(2))
+        : 0,
+      pageviews_per_session: sessionCount
+        ? Number((pageviewCount / sessionCount).toFixed(2))
+        : 0
+    },
+    countries: rankCounter_(countries, 25),
+    regions: rankCounter_(regions, 25),
+    top_pages: rankCounter_(pages, 30),
+    landing_pages: rankCounter_(landingPages, 20),
+    referrers: rankCounter_(referrers, 20),
+    devices: rankCounter_(devices, 10),
+    browsers: rankCounter_(browsers, 15),
+    operating_systems: rankCounter_(operatingSystems, 15),
+    recent_activity: rows.slice(0, 100).map(function(row) {
+      return {
+        timestamp: row.timestamp,
+        event: row.event,
+        source: row.source,
+        email: row.email,
+        path: safeActivityPath_(parseSystemLogMetadata_(row).path || row.message || '/'),
+        metadata: parseSystemLogMetadata_(row)
+      };
+    })
+  };
+}
+
+function adminConsent_(data) {
+  verifyAdminSessionToken_(data.token);
+
+  const limit = Math.min(1000, Math.max(1, Number(data.limit || 500)));
+  const logs = readObjects_(sheet_(LWB.SHEETS.LOG))
+    .filter(function(row) {
+      const event = String(row.event || '').toUpperCase();
+      return event.indexOf('PRIVACY_') === 0 || event.indexOf('EU_EEA_') === 0;
+    })
+    .sort(function(a, b) {
+      return new Date(b.timestamp || 0) - new Date(a.timestamp || 0);
+    })
+    .slice(0, limit)
+    .map(function(row) {
+      return {
+        timestamp: row.timestamp,
+        level: row.level,
+        event: row.event,
+        email: row.email,
+        record_id: row.record_id,
+        source: row.source,
+        message: row.message,
+        metadata: parseSystemLogMetadata_(row)
+      };
+    });
+
+  return { ok: true, logs: logs };
+}
+
 function adminLogs_(data) {
   verifyAdminSessionToken_(data.token);
   return {
@@ -3433,6 +3914,6 @@ function escapeHtml_(value) {
 
 /*
 ==========================================================================================
-END OF LWB BACKEND v2.0.5 | Copyright © 2026 Living Word Bibles. All Rights Reserved. Developed by Cook Technology Services. Last Updated on 02 September 2026 at 13:11:09Z UTC.
+END OF LWB BACKEND v2.0.6 | Copyright © 2026 Living Word Bibles. All Rights Reserved. Developed by Cook Technology Services. Last Updated on 07 September 2026 at 23:15:32Z UTC.
 ==========================================================================================
 */

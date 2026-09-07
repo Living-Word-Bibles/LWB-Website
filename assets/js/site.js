@@ -3,7 +3,7 @@
 
   /*
    * Living Word Bibles — canonical shared shell runtime
-   * Runtime revision: 2026-08-28.4
+   * Runtime revision: 2026-09-07.1
    *
    * AUTHORITATIVE SHELL FILES
    *   /assets/includes/lwb-header.html
@@ -14,7 +14,7 @@
    * it does not generate or rewrite header/footer navigation markup.
    */
 
-  const RUNTIME_VERSION = '2026-08-28.4';
+  const RUNTIME_VERSION = '2026-09-07.1';
   const NAV_VERSION = '2026-08-28.4';
 
   /*
@@ -443,24 +443,314 @@
         });
       });
     }
+  }
 
+
+  /*
+   * Global privacy and cookie preferences.
+   * Applies worldwide. Necessary storage is always available; optional
+   * Analytics and Advertising/Marketing technologies remain off until the
+   * visitor gives consent.
+   */
+  const PRIVACY_STORAGE_KEY = 'lwbPrivacyChoicesV1';
+  const PRIVACY_VERSION = 1;
+
+  function defaultPrivacyChoices() {
+    return {
+      version: PRIVACY_VERSION,
+      necessary: true,
+      analytics: false,
+      advertising: false,
+      updatedAt: null
+    };
+  }
+
+  function readPrivacyChoices() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(PRIVACY_STORAGE_KEY) || 'null');
+
+      if (
+        saved &&
+        saved.version === PRIVACY_VERSION &&
+        typeof saved.analytics === 'boolean' &&
+        typeof saved.advertising === 'boolean'
+      ) {
+        return {
+          version: PRIVACY_VERSION,
+          necessary: true,
+          analytics: saved.analytics,
+          advertising: saved.advertising,
+          updatedAt: saved.updatedAt || null
+        };
+      }
+    } catch (_) {}
+
+    return null;
+  }
+
+  function writePrivacyChoices(choices) {
+    const normalized = {
+      version: PRIVACY_VERSION,
+      necessary: true,
+      analytics: Boolean(choices?.analytics),
+      advertising: Boolean(choices?.advertising),
+      updatedAt: new Date().toISOString()
+    };
+
+    try {
+      localStorage.setItem(PRIVACY_STORAGE_KEY, JSON.stringify(normalized));
+    } catch (_) {}
+
+    window.LWB_PRIVACY_CHOICES = normalized;
+
+    document.dispatchEvent(
+      new CustomEvent('lwb:privacy-consent-changed', {
+        detail: { ...normalized }
+      })
+    );
+
+    return normalized;
+  }
+
+  function loadAnalyticsTechnologies() {
+    if (!document.querySelector('script[data-lwb-activity-log]')) {
+      const script = document.createElement('script');
+      script.src = '/assets/js/activity-log.js';
+      script.defer = true;
+      script.dataset.lwbActivityLog = 'true';
+      document.body.appendChild(script);
+    }
+
+    const counterWrap = document.querySelector('[data-lwb-counter-wrap]');
+
+    if (counterWrap && !counterWrap.querySelector('iframe')) {
+      const iframe = document.createElement('iframe');
+      iframe.src = '/assets/counter.html';
+      iframe.title = 'Living Word Bibles site view counter';
+      iframe.scrolling = 'no';
+      iframe.loading = 'eager';
+      iframe.style.cssText =
+        'display:block;border:0;width:240px;height:90px;overflow:hidden;background:transparent;';
+      counterWrap.appendChild(iframe);
+    }
+  }
+
+  function loadAdvertisingTechnologies() {
     const config = window.LWB_PUBLIC_CONFIG || {};
 
-    if (config.adsEnabled === true && config.adsenseClient) {
-      const existingAdsense = document.querySelector(
-        'script[src*="pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"]'
-      );
+    if (config.adsEnabled !== true || !config.adsenseClient) return;
 
-      if (!existingAdsense) {
-        const script = document.createElement('script');
-        script.async = true;
-        script.crossOrigin = 'anonymous';
-        script.src =
-          'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js' +
-          `?client=${encodeURIComponent(config.adsenseClient)}`;
+    const existingAdsense = document.querySelector(
+      'script[src*="pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"]'
+    );
 
-        document.head.appendChild(script);
+    if (existingAdsense) return;
+
+    const script = document.createElement('script');
+    script.async = true;
+    script.crossOrigin = 'anonymous';
+    script.src =
+      'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js' +
+      `?client=${encodeURIComponent(config.adsenseClient)}`;
+
+    document.head.appendChild(script);
+  }
+
+  function applyPrivacyChoices(choices) {
+    const current = choices || readPrivacyChoices() || defaultPrivacyChoices();
+    window.LWB_PRIVACY_CHOICES = current;
+
+    if (current.analytics === true) {
+      loadAnalyticsTechnologies();
+    }
+
+    if (current.advertising === true) {
+      loadAdvertisingTechnologies();
+    }
+  }
+
+  function privacyMarkup() {
+    return `
+      <section class="lwb-privacy-banner" data-lwb-privacy-banner hidden
+        role="dialog" aria-label="Privacy and Cookie Choices">
+        <div class="lwb-privacy-banner-inner">
+          <p class="lwb-privacy-banner-copy">
+            <strong>Privacy &amp; Cookie Choices:</strong> Living Word Bibles uses necessary cookies and browser storage to operate and secure our website, maintain accounts and sessions, and remember your privacy choices. With your permission, we may also use optional analytics, advertising, and similar technologies to understand how our website is used and improve our Services. You may accept all optional technologies, reject them, or manage your preferences. You may change your choices at any time through Cookie Settings in the footer. For more information, please review our <a href="/privacy-policy/">Privacy Policy</a>.
+          </p>
+          <div class="lwb-privacy-banner-actions">
+            <button class="btn gold" type="button" data-lwb-privacy-accept>Accept All</button>
+            <button class="btn secondary" type="button" data-lwb-privacy-reject>Reject Optional</button>
+            <button class="btn ghost" type="button" data-lwb-privacy-settings>Cookie Settings</button>
+          </div>
+        </div>
+      </section>
+
+      <div class="lwb-privacy-modal-backdrop" data-lwb-privacy-modal-backdrop hidden>
+        <section class="lwb-privacy-modal" role="dialog" aria-modal="true"
+          aria-labelledby="lwb-privacy-modal-title">
+          <div class="lwb-privacy-modal-header">
+            <div>
+              <p class="eyebrow">Living Word Bibles</p>
+              <h2 id="lwb-privacy-modal-title">Cookie Settings</h2>
+            </div>
+            <button class="lwb-privacy-modal-close" type="button"
+              data-lwb-privacy-close aria-label="Close Cookie Settings">×</button>
+          </div>
+
+          <div class="lwb-privacy-modal-body">
+            <p class="lwb-privacy-modal-intro">
+              Choose which optional technologies Living Word Bibles may use on this device. Necessary technologies remain active because they support core website functions and remember your privacy choices.
+            </p>
+
+            <div class="lwb-privacy-category">
+              <div>
+                <h3>Necessary</h3>
+                <p>Required for core website operation, security, accounts, sessions, and saving your privacy choices.</p>
+              </div>
+              <span class="lwb-privacy-status">Always Active</span>
+            </div>
+
+            <div class="lwb-privacy-category">
+              <div>
+                <h3>Analytics</h3>
+                <p>Helps us understand visits and interactions so we can measure and improve the website.</p>
+              </div>
+              <label class="lwb-privacy-toggle">
+                <input type="checkbox" data-lwb-privacy-analytics>
+                <span>Allow</span>
+              </label>
+            </div>
+
+            <div class="lwb-privacy-category">
+              <div>
+                <h3>Advertising &amp; Marketing</h3>
+                <p>Allows optional advertising, marketing, and similar technologies when those services are enabled.</p>
+              </div>
+              <label class="lwb-privacy-toggle">
+                <input type="checkbox" data-lwb-privacy-advertising>
+                <span>Allow</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="lwb-privacy-modal-footer">
+            <button class="btn secondary" type="button" data-lwb-privacy-modal-reject>Reject Optional</button>
+            <button class="btn gold" type="button" data-lwb-privacy-save>Save Preferences</button>
+          </div>
+        </section>
+      </div>
+    `;
+  }
+
+  function initializePrivacyCenter() {
+    if (!document.querySelector('[data-lwb-privacy-banner]')) {
+      const host = document.createElement('div');
+      host.dataset.lwbPrivacyUi = 'true';
+      host.innerHTML = privacyMarkup();
+      document.body.appendChild(host);
+    }
+
+    const banner = document.querySelector('[data-lwb-privacy-banner]');
+    const backdrop = document.querySelector('[data-lwb-privacy-modal-backdrop]');
+    const analyticsToggle = document.querySelector('[data-lwb-privacy-analytics]');
+    const advertisingToggle = document.querySelector('[data-lwb-privacy-advertising]');
+
+    if (!banner || !backdrop || !analyticsToggle || !advertisingToggle) return;
+
+    const stored = readPrivacyChoices();
+
+    if (!stored) {
+      banner.hidden = false;
+    } else {
+      banner.hidden = true;
+      analyticsToggle.checked = stored.analytics === true;
+      advertisingToggle.checked = stored.advertising === true;
+      applyPrivacyChoices(stored);
+    }
+
+    const openSettings = () => {
+      const current = readPrivacyChoices() || defaultPrivacyChoices();
+      analyticsToggle.checked = current.analytics === true;
+      advertisingToggle.checked = current.advertising === true;
+      backdrop.hidden = false;
+      document.body.dataset.lwbPrivacyModalOpen = 'true';
+      document.querySelector('[data-lwb-privacy-close]')?.focus();
+    };
+
+    const closeSettings = () => {
+      backdrop.hidden = true;
+      delete document.body.dataset.lwbPrivacyModalOpen;
+    };
+
+    const commit = choices => {
+      const previous = readPrivacyChoices() || defaultPrivacyChoices();
+      const saved = writePrivacyChoices(choices);
+
+      banner.hidden = true;
+      closeSettings();
+
+      const disablingPreviouslyAllowed =
+        (previous.analytics === true && saved.analytics === false) ||
+        (previous.advertising === true && saved.advertising === false);
+
+      if (disablingPreviouslyAllowed) {
+        location.reload();
+        return;
       }
+
+      applyPrivacyChoices(saved);
+    };
+
+    if (banner.dataset.lwbPrivacyReady !== RUNTIME_VERSION) {
+      banner.dataset.lwbPrivacyReady = RUNTIME_VERSION;
+
+      banner.querySelector('[data-lwb-privacy-accept]')?.addEventListener('click', () => {
+        commit({ analytics: true, advertising: true });
+      });
+
+      banner.querySelector('[data-lwb-privacy-reject]')?.addEventListener('click', () => {
+        commit({ analytics: false, advertising: false });
+      });
+
+      banner.querySelector('[data-lwb-privacy-settings]')?.addEventListener('click', openSettings);
+    }
+
+    if (backdrop.dataset.lwbPrivacyReady !== RUNTIME_VERSION) {
+      backdrop.dataset.lwbPrivacyReady = RUNTIME_VERSION;
+
+      backdrop.querySelector('[data-lwb-privacy-close]')?.addEventListener('click', closeSettings);
+
+      backdrop.querySelector('[data-lwb-privacy-modal-reject]')?.addEventListener('click', () => {
+        analyticsToggle.checked = false;
+        advertisingToggle.checked = false;
+        commit({ analytics: false, advertising: false });
+      });
+
+      backdrop.querySelector('[data-lwb-privacy-save]')?.addEventListener('click', () => {
+        commit({
+          analytics: analyticsToggle.checked,
+          advertising: advertisingToggle.checked
+        });
+      });
+
+      backdrop.addEventListener('click', event => {
+        if (event.target === backdrop) closeSettings();
+      });
+
+      backdrop.addEventListener('keydown', event => {
+        if (event.key === 'Escape') closeSettings();
+      });
+    }
+
+    if (document.documentElement.dataset.lwbPrivacyDelegation !== RUNTIME_VERSION) {
+      document.documentElement.dataset.lwbPrivacyDelegation = RUNTIME_VERSION;
+
+      document.addEventListener('click', event => {
+        const trigger = event.target.closest?.('[data-lwb-cookie-settings]');
+        if (!trigger) return;
+        event.preventDefault();
+        openSettings();
+      });
     }
   }
 
@@ -524,6 +814,8 @@
     ]);
 
     initializeGeneralSiteBehavior();
+    initializePrivacyCenter();
+    applyPrivacyChoices(readPrivacyChoices() || defaultPrivacyChoices());
 
     document.dispatchEvent(
       new CustomEvent('lwb:layout-ready', {
@@ -545,6 +837,8 @@
      */
     await Promise.all([syncHeader(), syncFooter()]);
     initializeGeneralSiteBehavior();
+    initializePrivacyCenter();
+    applyPrivacyChoices(readPrivacyChoices() || defaultPrivacyChoices());
   }
 
   /*

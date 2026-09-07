@@ -77,11 +77,33 @@ h1{margin:0 0 7px;font:700 clamp(25px,5vw,42px)/1.05 Georgia,"Times New Roman",s
 <div class="content">
 <section class="release-current" aria-labelledby="current-release">
   <div class="prompt">&gt; current_release --public</div>
-  <h2 id="current-release" data-current-release>v2.6.3 Alpha</h2>
-  <p data-current-updated>Last Updated on 05 Sep 2026 @ 13:02:07Z</p>
+  <h2 id="current-release" data-current-release>v2.6.4 Alpha</h2>
+  <p data-current-updated>Last Updated on 07 Sep 2026 @ 23:15:32Z</p>
 </section>
 
 <div class="timeline">
+
+<section class="entry">
+  <h3>v2.6.4 Alpha / Google Apps Script v2.0.6</h3>
+  <time datetime="2026-09-07T23:15:32Z">07 September 2026</time>
+  <ul>
+    <li>Added worldwide <strong>Privacy &amp; Cookie Choices</strong> controls with Accept All, Reject Optional, and configurable Analytics / Advertising &amp; Marketing preferences.</li>
+    <li>Changed optional analytics and advertising behavior so those technologies remain disabled until the visitor affirmatively enables them, while necessary browser storage continues to support core website, account, security, and privacy-choice functions.</li>
+    <li>Added permanent <strong>Cookie Settings</strong> access through the shared footer and server-side privacy-choice audit events in the existing <strong>System Log</strong>.</li>
+    <li>Expanded consent-gated first-party website analytics to record privacy-safe visitor/session identifiers, pageviews, landing pages, referrers, approximate country/region, device category, browser, operating system, viewport/screen information, language, timezone, and UTC timestamps where available.</li>
+    <li>Added a new <strong>Analytics</strong> tab immediately after <strong>Accounts &amp; Purchases</strong> in the administration Portal. Analytics is calculated entirely from existing System Log rows and does not create a separate Analytics sheet or columns.</li>
+    <li>Added a new <strong>Consent</strong> tab immediately before <strong>System Log</strong> to surface worldwide cookie/privacy choices, consent changes/withdrawals, EU/EEA digital-delivery consent records, and EU/EEA confirmation-email status while retaining the same records in System Log.</li>
+    <li>Added server-side logging of EU/EEA digital-download consent from the affirmative withdrawal-right checkbox already used on applicable paid digital purchase paths.</li>
+    <li>Added automatic branded transactional <strong>Digital Purchase &amp; EU/EEA Consent Confirmation</strong> email after successful PayPal PDT verification of qualifying EU/EEA paid digital purchases, using the verified PayPal payer email/country and duplicate protection based on the existing System Log.</li>
+    <li>Preserved fulfillment if a compliance-confirmation email fails; failed sends are logged to System Log for review/retry rather than blocking the purchased digital product.</li>
+    <li>Updated the main <a href="/estore/">eStore</a>, <a href="/ethiopian-bible/">Ethiopian Bible</a>, <a href="/ios/">Living Word Bibles App</a>, and applicable paid digital-product pages with EU/EEA Right of Withdrawal consent gates.</li>
+    <li>Repaired <a href="/bible-study/">Bible Study</a> YouTube/video behavior for iOS and mobile visitors.</li>
+    <li>Refined the <a href="/copyright-notice/">Copyright Notice</a>, <a href="/licensing/">Licensing &amp; Publisher Notice</a>, and <a href="/terms-of-service/">Terms of Service</a> United Kingdom KJV language, including the Cambridge University Press patentee reference used in the current UK notice.</li>
+    <li>Refined Terms of Service liability/currency wording to identify the existing liability amount as <strong>$20 USD</strong>.</li>
+    <li>Added shared-footer operational attribution identifying <a href="https://www.cook-international.com">Cook Services Company, LLC</a> as operator and <a href="https://cts.cook-international.com">Cook Technology Services</a> as developer in Chicago, Illinois.</li>
+    <li>Preserved the existing Google Sheet infrastructure: <strong>no new sheets, no new columns, and no separate Analytics or Consent database</strong>. System Log and its existing <code>metadata_json</code> field remain the single source of truth for these records.</li>
+  </ul>
+</section>
 
 <section class="entry">
   <h3>v2.6.3 Alpha</h3>

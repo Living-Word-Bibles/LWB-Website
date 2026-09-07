@@ -1,3 +1,4 @@
+[README.md](https://github.com/user-attachments/files/31930491/README.md)
 [README.md](https://github.com/user-attachments/files/31864373/README.md)
 [README.md](https://github.com/user-attachments/files/31836688/README.md)
 [README.md](https://github.com/user-attachments/files/31757607/README.md)
@@ -14,8 +15,8 @@
 
 <p align="center">
   <a href="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml/badge.svg?branch=main"></a>
-  <img alt="Frontend package v2.6.3" src="https://img.shields.io/badge/frontend-v2.6.3-555555">
-  <img alt="Google Apps Script v2.0.5" src="https://img.shields.io/badge/Google%20Apps%20Script-v2.0.5-555555">
+  <img alt="Frontend package v2.6.4" src="https://img.shields.io/badge/frontend-v2.6.4-555555">
+  <img alt="Google Apps Script v2.0.6" src="https://img.shields.io/badge/Google%20Apps%20Script-v2.0.6-555555">
   <img alt="Hosting GitHub Pages" src="https://img.shields.io/badge/hosting-GitHub%20Pages-555555">
 </p>
 
@@ -25,7 +26,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 05 September 2026 at 13:02:07Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 07 September 2026 at 23:15:32Z UTC</sub></p>
 
 ---
 
@@ -43,18 +44,128 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 |---|---|
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
-| Frontend package version | `2.6.3` |
-| Google Apps Script version | `2.0.5` |
-| Apps Script build stamp | `02 September 2026 at 13:11:09Z UTC` |
+| Frontend package version | `2.6.4` |
+| Google Apps Script version | `2.0.6` |
+| Apps Script build stamp | `07 September 2026 at 23:15:32Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `05 September 2026 at 13:02:07Z UTC` |
+| README revision | `07 September 2026 at 23:15:32Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
 
 ---
 
 
+
+## What's New in v2.6.4 Alpha / Google Apps Script v2.0.6 — Worldwide Privacy Choices, Analytics & EU/EEA Consent Records
+
+Released **07 September 2026**. Last Updated: **07 September 2026 at 23:15:32Z UTC**
+
+### Worldwide Privacy & Cookie Choices
+
+- Added a worldwide **Privacy & Cookie Choices** control rather than limiting the privacy interface to EU/EEA visitors.
+- Visitors can choose **Accept All**, **Reject Optional**, or open **Cookie Settings**.
+- Necessary browser storage remains available for core site operation, accounts/sessions, security, and remembering privacy choices.
+- Optional **Analytics** and **Advertising & Marketing** technologies remain disabled until the visitor affirmatively permits them.
+- Cookie/privacy preferences are stored locally for the visitor and may be reopened through the permanent **Cookie Settings** control in the shared footer.
+- Privacy-choice actions are now also written to the existing **System Log** as compliance/audit events, including initial consent, preference updates, and withdrawal of optional consent.
+- No new Google Sheet, spreadsheet tab, or spreadsheet column was created.
+
+### Consent-gated website analytics
+
+- Expanded `/assets/js/activity-log.js` into a consent-gated first-party analytics logger.
+- Analytics runs only after the visitor enables **Analytics** in the worldwide privacy settings.
+- Analytics events continue to use the existing **System Log** sheet and `metadata_json`.
+- Available analytics metadata now includes, where available:
+  - privacy-safe visitor ID created only after Analytics consent;
+  - session ID and landing page;
+  - pageviews and site interactions;
+  - page path and title;
+  - referring domain;
+  - approximate country and region/state;
+  - device category;
+  - browser;
+  - operating system;
+  - viewport and screen dimensions;
+  - language and timezone; and
+  - UTC client timestamps.
+- Raw form values, passwords, verification/reset tokens, and URL query strings remain excluded from ordinary analytics telemetry.
+- Approximate country/region analytics does not store the visitor's raw IP address in System Log.
+
+### Portal Analytics
+
+- Added a new **Analytics** tab immediately after **Accounts & Purchases** in `/portal/`.
+- Analytics is calculated entirely from existing `PAGE_VIEW` and `SITE_CLICK` rows in **System Log**.
+- The Portal now summarizes:
+  - visitors;
+  - sessions;
+  - pageviews;
+  - clicks;
+  - pageviews per visitor/session;
+  - countries;
+  - regions/states;
+  - top pages;
+  - landing pages;
+  - referrers;
+  - device types;
+  - browsers;
+  - operating systems; and
+  - recent analytics activity.
+- Added date-range views for the last 24 hours, 7 days, 30 days, and all available System Log history.
+
+### Portal Consent
+
+- Added a new **Consent** tab immediately before **System Log**.
+- Consent is a filtered view of the existing System Log and does not create a separate Consent sheet.
+- The Consent tab surfaces:
+  - worldwide cookie/privacy choices;
+  - preference changes and withdrawal;
+  - EU/EEA digital-download consent events;
+  - EU/EEA consent-confirmation email status;
+  - applicable country/product/page information; and
+  - existing account/email identity only where already legitimately associated with the request.
+- Consent events remain visible in the ordinary **System Log** as well.
+
+### EU/EEA digital-download compliance
+
+- Added EU/EEA Right of Withdrawal consent gates to the main eStore, Ethiopian Bible digital-product page, Living Word Bibles app page, and applicable paid digital-product pages.
+- EU/EEA visitors must affirmatively consent to immediate digital delivery and acknowledge the applicable loss of the right of withdrawal before paid digital checkout becomes available.
+- The global site runtime now records affirmative EU/EEA checkbox actions to System Log, including the consent-language version, page/product context, UTC timestamp, session reference, and approximate country/region where available.
+- Google Apps Script v2.0.6 uses the existing PayPal PDT verification flow to send a branded transactional **Digital Purchase & EU/EEA Consent Confirmation** email after a qualifying EU/EEA paid digital purchase is successfully verified as `Completed`.
+- The confirmation uses the verified PayPal payer email and payer country already returned by PDT.
+- Duplicate confirmation emails are prevented by the existing System Log using the PayPal transaction ID; failed sends are logged without blocking digital-product fulfillment.
+- The United Kingdom and Switzerland are not treated as EU/EEA countries for this confirmation flow.
+
+### Additional repository changes since the prior v2.6.3 documentation stamp
+
+- Repaired **Bible Study** YouTube/video behavior for iOS and mobile visitors.
+- Refined the **Copyright Notice**, **Licensing & Publisher Notice**, and **Terms of Service** United Kingdom KJV language, including the current Cambridge University Press patentee reference used by the site's UK notice.
+- Refined Terms of Service liability/currency wording to identify the existing liability amount as **$20 USD**.
+- Added the shared-footer operational attribution lines identifying **Cook Services Company, LLC** as operator and **Cook Technology Services** as developer in Chicago, Illinois.
+- Added the worldwide cookie/privacy UI, global optional-technology gating, and permanent footer **Cookie Settings** access.
+- Refreshed the EU/EEA compliance treatment across the eStore and paid digital-product purchase paths while preserving existing PayPal Hosted Button IDs, prices, product content, and account-entitlement rules.
+
+### Spreadsheet architecture remains unchanged
+
+Google Apps Script v2.0.6 continues to use the existing operational sheets, including the existing **System Log**. This release creates **no new sheets and no new columns**. Analytics and Consent are Portal views over existing System Log events and `metadata_json`.
+
+### Surgical file set for v2.6.4 / v2.0.6
+
+This implementation updates:
+
+```text
+/assets/js/site.js
+/assets/js/activity-log.js
+/apps-script/Code.gs
+/portal/index.html
+/assets/js/portal.js
+/change-log.html
+/README.md
+```
+
+Existing cookie UI styling and the shared footer Cookie Settings control remain in their already-deployed files and do not require another structural rewrite in this pass.
+
+---
 
 ## What's New in v2.6.3 Alpha — Updated eBible Products & Bible Maps
 
@@ -710,8 +821,8 @@ Current backend metadata:
 
 ```text
 Service: LWB Website API
-Version: 2.0.5
-Apps Script build stamp: 02 September 2026 at 13:11:09Z UTC
+Version: 2.0.6
+Apps Script build stamp: 07 September 2026 at 23:15:32Z UTC
 ```
 
 The backend is a **data/API service only**. It does not create, regenerate, or overwrite website HTML.
@@ -752,6 +863,12 @@ The backend is a **data/API service only**. It does not create, regenerate, or o
 - `reader-manifest`
 - `reconcile-purchase`
 - `free-download`
+- `activity-log`
+- `activity-log-batch`
+- `privacy-consent`
+- `eu-eea-digital-consent`
+- `admin-analytics`
+- `admin-consent`
 
 ### Backend data model
 
@@ -825,7 +942,7 @@ No shared header/footer replacement is required for v2.5.8.
 
 `assets/js/config.js` remains the single public runtime configuration file for the Apps Script Web App URL and public contact email. Individual pages should not hard-code alternate backend deployments.
 
-No `assets/js/config.js` replacement is required for this release unless the Apps Script deployment URL itself changes after publishing v2.0.1.
+No `assets/js/config.js` replacement is required for this release unless the Apps Script deployment URL itself changes after publishing v2.0.6.
 
 ---
 
@@ -848,7 +965,7 @@ Deployment remains handled by `.github/workflows/deploy-pages.yml`.
 
 A push to `main` validates the repository and publishes the **repository root (`.`)** directly to GitHub Pages. There is no generated production output directory.
 
-For Apps Script v2.0.5, replace the Apps Script source with `/apps-script/Code.gs`, save it in the existing Apps Script project, and deploy a new Web App version using the same production configuration. If the production Web App URL remains the same deployment URL, no frontend config change is necessary.
+For Apps Script v2.0.6, replace the Apps Script source with `/apps-script/Code.gs`, save it in the existing Apps Script project, and deploy a new Web App version using the same production configuration. If the production Web App URL remains the same deployment URL, no frontend config change is necessary.
 
 ---
 
@@ -896,6 +1013,16 @@ Before merging or deploying this release:
 - Confirm EPUB navigation, previous/next controls, font sizing, and reader themes work.
 - Confirm the Ethiopian Bible PDF opens through the same entitlement-gated Lumière route.
 - Confirm an account without an entitlement cannot authorize the corresponding reader manifest.
+- Confirm a first-time visitor sees the worldwide Privacy & Cookie Choices interface before optional analytics/advertising loads.
+- Confirm **Reject Optional** leaves `activity-log.js`, the optional counter, and advertising technologies disabled.
+- Confirm **Accept All** or Analytics permission starts the consent-gated activity logger and creates System Log analytics events with visitor/session metadata.
+- Confirm Privacy choices create `PRIVACY_CONSENT`, `PRIVACY_PREFERENCES_UPDATED`, or `PRIVACY_CONSENT_WITHDRAWN` System Log records as appropriate.
+- Confirm an EU/EEA withdrawal checkbox creates an `EU_EEA_DIGITAL_CONSENT` event and an unchecked withdrawal creates `EU_EEA_DIGITAL_CONSENT_WITHDRAWN`.
+- Confirm Portal tab order is **Dashboard → Subscribers → Newsletter → Accounts & Purchases → Analytics → Consent → System Log**.
+- Confirm Analytics and Consent read only from the existing System Log and do not create new Sheets or columns.
+- Confirm a newly verified qualifying EU/EEA PayPal PDT transaction sends one branded consent-confirmation email and logs `EU_EEA_CONSENT_EMAIL_SENT`.
+- Confirm repeated verification does not send a duplicate EU/EEA confirmation email.
+- Confirm a confirmation-email failure logs `EU_EEA_CONSENT_EMAIL_FAILED` without blocking fulfillment.
 - Push only the files intentionally changed.
 
 ---
@@ -912,11 +1039,11 @@ Before merging or deploying this release:
 ---
 
 **Repository architecture revision:** `2026-08-27T22:28:20Z`  
-**Apps Script build stamp:** `02 September 2026 at 13:11:09Z UTC`  
-**Google Apps Script version:** `2.0.5`  
-**Frontend package version:** `2.6.3`  
-**README last updated:** **05 September 2026 at 13:02:07Z UTC**
+**Apps Script build stamp:** `07 September 2026 at 23:15:32Z UTC`  
+**Google Apps Script version:** `2.0.6`  
+**Frontend package version:** `2.6.4`  
+**README last updated:** **07 September 2026 at 23:15:32Z UTC**
 
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 05 September 2026 at 13:02:07Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 07 September 2026 at 23:15:32Z UTC</strong></p>

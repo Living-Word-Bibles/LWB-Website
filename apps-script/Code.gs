@@ -60,6 +60,8 @@ const LWB = Object.freeze({
   CONTACT_EMAIL: 'gospellivingwordbibles@gmail.com',
   SPREADSHEET_ID: '1xnzdo1UJsEOTqcO2066Nfb6ayqKn8Zg5RbNLdpbaTcc',
   CONSENT_VERSION: '2026-08-27',
+  TERMS_VERSION: '2026-09-08',
+  PRIVACY_POLICY_VERSION: '2026-09-08',
   PRIVACY_NOTICE_VERSION: '2026-09-07',
   EU_EEA_CONSENT_VERSION: '2026-09-07',
   EU_EEA_CONSENT_TEXT: 'EU/EEA Right of Withdrawal: This notice applies only to consumers in the European Union (EU) or European Economic Area (EEA). By checking this box, you expressly consent to the immediate delivery of this digital product and acknowledge that you will lose any applicable right of withdrawal once the digital download begins.  If you do not consent, please do not purchase this product.',
@@ -1707,6 +1709,24 @@ function registerAccount_(data) {
   const email = normalizeEmail_(data.email);
   const displayName = clean_(data.display_name || data.name || '', 160);
   const password = String(data.password || '');
+  const termsReviewed = truthy_(data.terms_reviewed);
+  const privacyReviewed = truthy_(data.privacy_reviewed);
+  const legalAcceptance = truthy_(data.legal_acceptance);
+  const termsVersion = clean_(data.terms_version || '', 40);
+  const privacyVersion = clean_(data.privacy_version || '', 40);
+
+  if (!termsReviewed || !privacyReviewed || !legalAcceptance) {
+    return {
+      ok: false,
+      error: 'You must open and review the Terms of Service and Privacy Policy and accept the required account agreement before creating an account.'
+    };
+  }
+  if (termsVersion !== LWB.TERMS_VERSION || privacyVersion !== LWB.PRIVACY_POLICY_VERSION) {
+    return {
+      ok: false,
+      error: 'The legal documents were updated. Please reopen and review the current Terms of Service and Privacy Policy before creating your account.'
+    };
+  }
 
   if (!validEmail_(email)) return { ok: false, error: 'Please enter a valid email address.' };
   const passwordError = passwordValidationError_(password);
@@ -1755,6 +1775,26 @@ function registerAccount_(data) {
 
   const verification = issueVerificationToken_(customer);
   appendObject_(customerSheet, customer);
+
+  logSystem_(
+    'INFO',
+    'ACCOUNT_LEGAL_ACCEPTANCE',
+    email,
+    customerId,
+    'register',
+    'Terms of Service accepted; Privacy Policy reviewed',
+    {
+      terms_reviewed: true,
+      privacy_reviewed: true,
+      legal_acceptance: true,
+      terms_version: termsVersion,
+      privacy_version: privacyVersion,
+      accepted_at_server: now.toISOString(),
+      accepted_at_client: clean_(data.legal_accepted_at_client || '', 80),
+      path: clean_(data.legal_acceptance_source || '/register/', 200),
+      user_agent: clean_(data.userAgent || '', 500)
+    }
+  );
 
   try {
     sendWelcomeVerificationEmail_(email, displayName, verification.token);

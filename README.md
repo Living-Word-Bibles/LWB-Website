@@ -1,3 +1,4 @@
+[README.md](https://github.com/user-attachments/files/31957675/README.md)
 [README.md](https://github.com/user-attachments/files/31930491/README.md)
 [README.md](https://github.com/user-attachments/files/31864373/README.md)
 [README.md](https://github.com/user-attachments/files/31836688/README.md)
@@ -16,7 +17,7 @@
 <p align="center">
   <a href="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml/badge.svg?branch=main"></a>
   <img alt="Frontend package v2.6.4" src="https://img.shields.io/badge/frontend-v2.6.4-555555">
-  <img alt="Google Apps Script v2.0.6" src="https://img.shields.io/badge/Google%20Apps%20Script-v2.0.6-555555">
+  <img alt="Google Apps Script v2.0.6.1" src="https://img.shields.io/badge/Google%20Apps%20Script-v2.0.6.1-555555">
   <img alt="Hosting GitHub Pages" src="https://img.shields.io/badge/hosting-GitHub%20Pages-555555">
 </p>
 
@@ -26,7 +27,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 07 September 2026 at 23:15:32Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 08 September 2026 at 12:49:31Z UTC</sub></p>
 
 ---
 
@@ -45,11 +46,11 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
 | Frontend package version | `2.6.4` |
-| Google Apps Script version | `2.0.6` |
-| Apps Script build stamp | `07 September 2026 at 23:15:32Z UTC` |
+| Google Apps Script version | `2.0.6.1` |
+| Apps Script build stamp | `08 September 2026 at 12:22:55Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `07 September 2026 at 23:15:32Z UTC` |
+| README revision | `08 September 2026 at 12:49:31Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
 
@@ -57,9 +58,9 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 
 
 
-## What's New in v2.6.4 Alpha / Google Apps Script v2.0.6 — Worldwide Privacy Choices, Analytics & EU/EEA Consent Records
+## What's New in v2.6.4 Alpha / Google Apps Script v2.0.6.1 — Worldwide Privacy Choices, Analytics & Legal Compliance
 
-Released **07 September 2026**. Last Updated: **07 September 2026 at 23:15:32Z UTC**
+Released **07 September 2026**. Last Updated: **08 September 2026 at 12:49:31Z UTC**
 
 ### Worldwide Privacy & Cookie Choices
 
@@ -145,11 +146,32 @@ Released **07 September 2026**. Last Updated: **07 September 2026 at 23:15:32Z U
 - Added the worldwide cookie/privacy UI, global optional-technology gating, and permanent footer **Cookie Settings** access.
 - Refreshed the EU/EEA compliance treatment across the eStore and paid digital-product purchase paths while preserving existing PayPal Hosted Button IDs, prices, product content, and account-entitlement rules.
 
+### 08 September 2026 — Account legal acceptance & privacy-policy compliance refresh
+
+- Updated `/register/index.html` so new accounts require an affirmative legal-review flow before registration can be submitted.
+- Registration now requires the visitor to open both the **Terms of Service** and **Privacy Policy**, after which each is marked **✓ Reviewed**; only then can the required legal-acceptance checkbox be enabled.
+- The registration acceptance states: **“By creating a Living Word Bibles account, you agree to be bound by our Terms of Service & Privacy Policy.”**
+- Updated `/assets/js/auth.js` to enforce the legal-review state in the browser and include the applicable Terms/Privacy versions with the registration request.
+- Updated `/apps-script/Code.gs` to **v2.0.6.1** with build stamp **08 September 2026 at 12:22:55Z UTC**. The registration endpoint now independently validates the required legal-acceptance state and records the acceptance through the existing audit architecture.
+- Updated `/assets/css/site.css` with responsive and accessible presentation for the registration legal-review dialog and status indicators.
+- Updated `/terms-of-service/` without removing existing provisions, adding account-registration acceptance language that corresponds to the new affirmative signup flow.
+- Expanded `/privacy-policy/` without removing existing provisions, including:
+  - the current worldwide Privacy & Cookie Choices system and a working **Cookie Settings** link;
+  - current consent-gated analytics and privacy-choice disclosures;
+  - account legal-acceptance/audit records and retention treatment;
+  - additional California online-tracking disclosure;
+  - expanded state-by-state U.S. privacy-law coverage;
+  - Washington and Nevada consumer-health-data treatment relevant to voluntarily submitted prayer-request information;
+  - EU/EEA and UK required-data/transparency language;
+  - international-transfer disclosures; and
+  - clarification that LWB currently has no designated EU/EEA or UK representative.
+- Frontend release remains **v2.6.4 Alpha**; this is a documentation/compliance refresh and backend patch, not a frontend version bump.
+
 ### Spreadsheet architecture remains unchanged
 
-Google Apps Script v2.0.6 continues to use the existing operational sheets, including the existing **System Log**. This release creates **no new sheets and no new columns**. Analytics and Consent are Portal views over existing System Log events and `metadata_json`.
+Google Apps Script v2.0.6.1 continues to use the existing operational sheets, including the existing **System Log**. This release creates **no new sheets and no new columns**. Analytics and Consent are Portal views over existing System Log events and `metadata_json`.
 
-### Surgical file set for v2.6.4 / v2.0.6
+### Surgical file set for v2.6.4 / v2.0.6.1
 
 This implementation updates:
 
@@ -159,6 +181,11 @@ This implementation updates:
 /apps-script/Code.gs
 /portal/index.html
 /assets/js/portal.js
+/register/index.html
+/assets/js/auth.js
+/assets/css/site.css
+/terms-of-service/index.html
+/privacy-policy/index.html
 /change-log.html
 /README.md
 ```
@@ -821,8 +848,8 @@ Current backend metadata:
 
 ```text
 Service: LWB Website API
-Version: 2.0.6
-Apps Script build stamp: 07 September 2026 at 23:15:32Z UTC
+Version: 2.0.6.1
+Apps Script build stamp: 08 September 2026 at 12:22:55Z UTC
 ```
 
 The backend is a **data/API service only**. It does not create, regenerate, or overwrite website HTML.
@@ -965,7 +992,7 @@ Deployment remains handled by `.github/workflows/deploy-pages.yml`.
 
 A push to `main` validates the repository and publishes the **repository root (`.`)** directly to GitHub Pages. There is no generated production output directory.
 
-For Apps Script v2.0.6, replace the Apps Script source with `/apps-script/Code.gs`, save it in the existing Apps Script project, and deploy a new Web App version using the same production configuration. If the production Web App URL remains the same deployment URL, no frontend config change is necessary.
+For Apps Script v2.0.6.1, replace the Apps Script source with `/apps-script/Code.gs`, save it in the existing Apps Script project, and deploy a new Web App version using the same production configuration. If the production Web App URL remains the same deployment URL, no frontend config change is necessary.
 
 ---
 
@@ -1039,11 +1066,11 @@ Before merging or deploying this release:
 ---
 
 **Repository architecture revision:** `2026-08-27T22:28:20Z`  
-**Apps Script build stamp:** `07 September 2026 at 23:15:32Z UTC`  
-**Google Apps Script version:** `2.0.6`  
+**Apps Script build stamp:** `08 September 2026 at 12:22:55Z UTC`  
+**Google Apps Script version:** `2.0.6.1`  
 **Frontend package version:** `2.6.4`  
-**README last updated:** **07 September 2026 at 23:15:32Z UTC**
+**README last updated:** **08 September 2026 at 12:49:31Z UTC**
 
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 07 September 2026 at 23:15:32Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 08 September 2026 at 12:49:31Z UTC</strong></p>

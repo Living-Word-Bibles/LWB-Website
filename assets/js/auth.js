@@ -78,6 +78,119 @@
     const type = authRoot.dataset.authPage;
     const form = authRoot.querySelector('form');
 
+    let legalGate = null;
+
+    if (type === 'register' && form) {
+      const legalRoot = authRoot.querySelector('[data-account-legal-review]');
+      const modal = document.querySelector('[data-account-legal-modal]');
+      const accept = document.querySelector('[data-account-legal-accept]');
+      const submit = form.querySelector('[type="submit"]');
+      const help = document.querySelector('[data-account-legal-help]');
+      const termsVersion = legalRoot?.dataset.termsVersion || '';
+      const privacyVersion = legalRoot?.dataset.privacyVersion || '';
+      const state = { terms:false, privacy:false };
+
+      const setReviewStatus = key => {
+        const reviewed = state[key] === true;
+        document.querySelectorAll(`[data-legal-status="${key}"], [data-legal-summary="${key}"]`).forEach(el => {
+          el.textContent = reviewed ? '✓ Reviewed' : 'Review Required';
+          el.dataset.state = reviewed ? 'reviewed' : 'required';
+        });
+      };
+
+      const updateLegalGate = () => {
+        setReviewStatus('terms');
+        setReviewStatus('privacy');
+        const documentsReviewed = state.terms && state.privacy;
+        if (accept) {
+          accept.disabled = !documentsReviewed;
+          if (!documentsReviewed) accept.checked = false;
+        }
+        const accepted = documentsReviewed && accept?.checked === true;
+        if (submit) submit.disabled = !accepted;
+        if (help) {
+          help.textContent = documentsReviewed
+            ? (accepted ? '✓ Legal review complete. You may create your account.' : 'Check the box above to enable Create Account.')
+            : 'Open both documents to enable the required checkbox.';
+          help.dataset.state = accepted ? 'reviewed' : 'required';
+        }
+      };
+
+      const openModal = () => {
+        if (!modal) return;
+        modal.hidden = false;
+        document.body.dataset.accountLegalModalOpen = 'true';
+        modal.querySelector('[data-account-legal-document]')?.focus();
+      };
+
+      const closeModal = () => {
+        if (!modal) return;
+        modal.hidden = true;
+        delete document.body.dataset.accountLegalModalOpen;
+      };
+
+      document.querySelectorAll('[data-account-legal-open]').forEach(btn => {
+        btn.addEventListener('click', openModal);
+      });
+
+      document.querySelectorAll('[data-account-legal-close]').forEach(btn => {
+        btn.addEventListener('click', closeModal);
+      });
+
+      modal?.addEventListener('click', event => {
+        if (event.target === modal) closeModal();
+      });
+
+      modal?.addEventListener('keydown', event => {
+        if (event.key === 'Escape') closeModal();
+      });
+
+      document.querySelectorAll('[data-account-legal-document]').forEach(link => {
+        link.addEventListener('click', () => {
+          const key = link.dataset.accountLegalDocument;
+          if (key === 'terms' || key === 'privacy') {
+            state[key] = true;
+            updateLegalGate();
+          }
+        });
+      });
+
+      accept?.addEventListener('change', updateLegalGate);
+
+      legalGate = {
+        state,
+        accept,
+        submit,
+        termsVersion,
+        privacyVersion,
+        openModal,
+        update: updateLegalGate,
+        ready() {
+          return state.terms && state.privacy && accept?.checked === true;
+        },
+        requestData() {
+          return {
+            terms_reviewed: state.terms === true,
+            privacy_reviewed: state.privacy === true,
+            legal_acceptance: accept?.checked === true,
+            terms_version: termsVersion,
+            privacy_version: privacyVersion,
+            legal_accepted_at_client: new Date().toISOString(),
+            legal_acceptance_source: '/register/'
+          };
+        },
+        reset() {
+          state.terms = false;
+          state.privacy = false;
+          if (accept) accept.checked = false;
+          closeModal();
+          updateLegalGate();
+        }
+      };
+
+      updateLegalGate();
+    }
+
     if (type === 'verify-email') {
       const email = query.get('email') || '';
       const token = query.get('token') || '';
@@ -104,11 +217,20 @@
 
     form?.addEventListener('submit', async event => {
       event.preventDefault();
+
+      if (type === 'register' && legalGate && !legalGate.ready()) {
+        setStatus('Open and review both legal documents, then check the required agreement box before creating your account.');
+        legalGate.openModal();
+        legalGate.update();
+        return;
+      }
+
       const submit = form.querySelector('[type="submit"]');
       const oldText = submit?.textContent;
       if (submit) { submit.disabled = true; submit.textContent = 'Processing…'; }
       setStatus('Processing…', true);
       const data = Object.fromEntries(new FormData(form).entries());
+      if (type === 'register' && legalGate) Object.assign(data, legalGate.requestData());
       try {
         if (type === 'login') {
           const payload = await request('login', data);
@@ -119,6 +241,7 @@
           const payload = await request('register', data);
           setStatus(payload.message || 'Account created. Check your email to verify your address.', true);
           form.reset();
+          legalGate?.reset();
         } else if (type === 'forgot-password') {
           const payload = await request('forgot-password', data);
           setStatus(payload.message || 'If an account exists for that address, a password-reset email has been sent.', true);
@@ -132,7 +255,14 @@
       } catch (error) {
         setStatus(error.message || 'The account request failed.');
       } finally {
-        if (submit) { submit.disabled = false; submit.textContent = oldText; }
+        if (submit) {
+          submit.textContent = oldText;
+          if (type === 'register' && legalGate) {
+            legalGate.update();
+          } else {
+            submit.disabled = false;
+          }
+        }
       }
     });
   }

@@ -251,3 +251,114 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   }
 }
 
+/* Account registration legal review */
+.account-legal-review{
+  margin:1rem 0;
+  padding:1rem;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:var(--paper-2);
+  font-family:var(--sans);
+}
+.account-legal-review p{margin:.25rem 0 .75rem;color:var(--muted);font-size:.86rem;line-height:1.45}
+.account-legal-summary{display:grid;gap:.3rem;margin:.7rem 0;font-size:.82rem;line-height:1.4}
+.account-legal-summary strong[data-state="reviewed"],
+.account-legal-document [data-state="reviewed"],
+.account-legal-help[data-state="reviewed"]{color:#27723c}
+.account-legal-summary strong[data-state="required"],
+.account-legal-document [data-state="required"],
+.account-legal-help[data-state="required"]{color:var(--wine)}
+.account-legal-modal-backdrop{
+  position:fixed;
+  inset:0;
+  z-index:2147482200;
+  display:grid;
+  place-items:center;
+  padding:1rem;
+  background:rgba(20,13,10,.68);
+}
+.account-legal-modal-backdrop[hidden]{display:none!important}
+.account-legal-modal{
+  width:min(100%,650px);
+  max-height:min(88vh,760px);
+  overflow:auto;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:#fffdf8;
+  color:var(--ink);
+  box-shadow:0 24px 80px rgba(0,0,0,.38);
+  font-family:var(--sans);
+}
+.account-legal-modal-header,
+.account-legal-modal-body,
+.account-legal-modal-footer{padding:1.1rem 1.2rem}
+.account-legal-modal-header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:1rem;
+  border-bottom:1px solid var(--line);
+}
+.account-legal-modal-header h2{margin:0;font:700 1.35rem/1.2 var(--serif)}
+.account-legal-modal-close{
+  display:inline-grid;
+  place-items:center;
+  width:40px;
+  height:40px;
+  flex:0 0 40px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:#fff;
+  color:var(--ink);
+  font:700 1.15rem/1 var(--sans);
+}
+.account-legal-modal-body>p{margin-top:0;font-size:.9rem;line-height:1.55}
+.account-legal-document{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:.75rem;
+  align-items:center;
+  padding:.9rem 0;
+  border-top:1px solid var(--line);
+}
+.account-legal-document a{font-size:.95rem}
+.account-legal-document span{
+  white-space:nowrap;
+  color:var(--wine);
+  font:700 .78rem/1.2 var(--sans);
+  text-transform:uppercase;
+  letter-spacing:.03em;
+}
+.account-legal-checkbox{
+  display:grid;
+  grid-template-columns:24px minmax(0,1fr);
+  gap:.7rem;
+  align-items:start;
+  margin:1rem 0 .4rem;
+  padding:1rem;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#fff;
+  font-size:.88rem;
+  line-height:1.5;
+}
+.account-legal-checkbox input{
+  width:20px;
+  height:20px;
+  margin:.15rem 0 0;
+  accent-color:var(--wine);
+}
+.account-legal-checkbox:has(input:disabled){opacity:.65}
+.account-legal-help{margin:.5rem 0 0;color:var(--muted);font-size:.8rem;line-height:1.45}
+.account-legal-modal-footer{
+  display:flex;
+  justify-content:flex-end;
+  border-top:1px solid var(--line);
+}
+@media(max-width:620px){
+  .account-legal-modal-backdrop{align-items:end;padding:.6rem}
+  .account-legal-modal{width:100%;max-height:92vh;border-radius:18px 18px 12px 12px}
+  .account-legal-document{grid-template-columns:1fr}
+  .account-legal-document span{white-space:normal}
+}
+

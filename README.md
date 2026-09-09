@@ -1,3 +1,4 @@
+[README.md](https://github.com/user-attachments/files/32015792/README.md)
 [README.md](https://github.com/user-attachments/files/31957675/README.md)
 [README.md](https://github.com/user-attachments/files/31930491/README.md)
 [README.md](https://github.com/user-attachments/files/31864373/README.md)
@@ -16,7 +17,7 @@
 
 <p align="center">
   <a href="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml/badge.svg?branch=main"></a>
-  <img alt="Frontend package v2.6.4" src="https://img.shields.io/badge/frontend-v2.6.4-555555">
+  <img alt="Frontend package v2.6.5" src="https://img.shields.io/badge/frontend-v2.6.5-555555">
   <img alt="Google Apps Script v2.0.6.1" src="https://img.shields.io/badge/Google%20Apps%20Script-v2.0.6.1-555555">
   <img alt="Hosting GitHub Pages" src="https://img.shields.io/badge/hosting-GitHub%20Pages-555555">
 </p>
@@ -27,7 +28,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 08 September 2026 at 12:49:31Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 09 September 2026 at 15:39:20Z UTC</sub></p>
 
 ---
 
@@ -45,18 +46,123 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 |---|---|
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
-| Frontend package version | `2.6.4` |
+| Frontend package version | `2.6.5` |
 | Google Apps Script version | `2.0.6.1` |
 | Apps Script build stamp | `08 September 2026 at 12:22:55Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `08 September 2026 at 12:49:31Z UTC` |
+| README revision | `09 September 2026 at 15:39:20Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
 
 ---
 
 
+
+
+## What's New in v2.6.5 Alpha — NKJV, NIV & ESV eBibles, Promotional Pricing & Print Bible Expansion
+
+Released **09 September 2026**. Last Updated: **09 September 2026 at 15:39:20Z UTC**
+
+### New NKJV, NIV, and ESV digital eBible products
+
+- Added three new Living Word Bibles digital eBible products to the production repository and eStore:
+  - **The Holy Bible: New King James Version**
+  - **The Holy Bible: New International Version**
+  - **The Holy Bible: English Standard Version**
+- Added the production EPUB assets:
+  - `/assets/products/nkjv.epub`
+  - `/assets/products/niv.epub`
+  - `/assets/products/esv.epub`
+- Added the corresponding Living Word Bibles cover artwork:
+  - `/assets/NKJV-Cover.png`
+  - `/assets/NIV-Cover.png`
+  - `/assets/ESV-Cover.png`
+- Added dedicated product pages:
+  - `/estore/p/the-holy-bible-new-king-james-version/`
+  - `/estore/p/the-holy-bible-new-international-version/`
+  - `/estore/p/the-holy-bible-english-standard-version/`
+- Each product page follows the existing Living Word Bibles eBible product architecture, including product metadata, responsive layout, PayPal Hosted Button checkout, and the existing EU/EEA digital-download withdrawal-consent gate.
+- Product descriptions identify the complete Old and New Testaments and include **over a dozen Maps of the Holy Land** as a featured edition benefit.
+
+### eStore expansion and BEST VALUE pricing
+
+- Expanded the main `/estore/` from **seven to ten digital Bible editions**.
+- Inserted the new editions immediately below the first eStore row in this order:
+  1. **NKJV**
+  2. **NIV**
+  3. **ESV**
+- Each of the three new eBibles is presented at the promotional price:
+  - **$1.99**
+  - regular price **$9.99** shown struck through.
+- Added a red **BEST VALUE!** starburst to the NKJV, NIV, and ESV eStore cards and their dedicated product pages.
+- Added and mapped the new PayPal Hosted Buttons:
+  - **NKJV:** `9W2EN24VW72FG`
+  - **NIV:** `YJACA9BHDHE8A`
+  - **ESV:** `PRDELF74A4T88`
+- Existing PayPal Hosted Button IDs and existing product prices remain unchanged except where expressly documented in this release.
+
+### Copyright Notice and Editorial Standards
+
+- Updated `/copyright-notice/` to add the NKJV, NIV, and ESV eBible product cards with their actual Living Word Bibles cover artwork and direct eStore links.
+- The Copyright Notice now identifies **nine eStore digital eBible products** in its eStore-products section; the Ethiopian Bible remains separately documented in its dedicated product/rights section.
+- Updated the Copyright Notice revision date to **9 September 2026**.
+- Updated `/editorial-standards/` to add NKJV, NIV, and ESV to the eStore product showcase with their actual cover artwork and direct product links.
+- Updated the Editorial Standards modification date to **9 September 2026**.
+- The repository commit history records both the Copyright Notice and Editorial Standards updates as **reviewed and approved by legal counsel**.
+
+### Ethiopian Bible promotional pricing
+
+- Updated the dedicated `/ethiopian-bible/` purchase presentation with visible sale pricing and an animated red **ON SALE** starburst.
+- Refined the starburst to the **left side** of the purchase cards, including responsive mobile placement.
+- Current promotional presentation:
+  - **EPUB eBook:** **$9.99** with **$19.99** struck through.
+  - **PDF:** **$0.99** with **$1.99** struck through.
+- Updated the Ethiopian eBible listing in the main eStore to display **$9.99** with **$19.99** struck through.
+- Updated the dedicated Ethiopian eStore product page to identify the eBook as continuously presented at its sale price.
+
+### Print Bible expansion and Amazon price refresh
+
+- Added two additional Amazon-linked print editions to `/estore/print-bibles/`:
+  - **CSB Deluxe Gift Bible, Black LeatherTouch**
+  - **NLT Large Print Premium Thinline Bible, Filament Enabled, LeatherLike**
+- Added their local Amazon product images:
+  - `/estore/print-bibles/csb-aa.jpg`
+  - `/estore/print-bibles/nlt-aa.jpg`
+- Refreshed displayed Amazon pricing for existing print listings, including the NKJV and NET print editions, while retaining the notice that marketplace prices are subject to change.
+- Print purchases remain external Amazon transactions and do **not** create Living Word Bibles digital-library entitlements.
+
+### Backend and spreadsheet architecture
+
+- Google Apps Script remains **v2.0.6.1** with build stamp **08 September 2026 at 12:22:55Z UTC**.
+- v2.6.5 introduces **no new Google Sheet, spreadsheet tab, or spreadsheet column**.
+- No Apps Script backend version bump is required for the visitor-facing eStore, pricing, legal-product-card, or Print Bible changes documented in this frontend release.
+
+### Surgical file set for v2.6.5
+
+```text
+/assets/products/nkjv.epub
+/assets/products/niv.epub
+/assets/products/esv.epub
+/assets/NKJV-Cover.png
+/assets/NIV-Cover.png
+/assets/ESV-Cover.png
+/estore/p/the-holy-bible-new-king-james-version/index.html
+/estore/p/the-holy-bible-new-international-version/index.html
+/estore/p/the-holy-bible-english-standard-version/index.html
+/estore/index.html
+/copyright-notice/index.html
+/editorial-standards/index.html
+/ethiopian-bible/index.html
+/estore/p/the-complete-apocrypha-of-the-ethiopian-bible/index.html
+/estore/print-bibles/csb-aa.jpg
+/estore/print-bibles/nlt-aa.jpg
+/estore/print-bibles/index.html
+/README.md
+/change-log.html
+```
+
+---
 
 ## What's New in v2.6.4 Alpha / Google Apps Script v2.0.6.1 — Worldwide Privacy Choices, Analytics & Legal Compliance
 
@@ -927,7 +1033,7 @@ Server-side secrets such as `DOWNLOAD_TOKEN_SECRET`, account-authentication secr
 
 ## eStore, Print Bibles, and PayPal
 
-The core eStore presents free and paid digital Bible editions. The Ethiopian Bible is offered through its dedicated page at `/ethiopian-bible/` in separate **EPUB** and **PDF** editions. Print Bibles remain separate at:
+The core eStore now presents **ten digital Bible editions**, including the newly added NKJV, NIV, and ESV eBibles. The Ethiopian Bible is also offered through its dedicated page at `/ethiopian-bible/` in separate **EPUB** and **PDF** editions. Print Bibles remain separate at:
 
 ```text
 /estore/print-bibles/
@@ -940,6 +1046,9 @@ Print Bibles are external Amazon purchases and are **not** Living Word Bibles ac
 | Purpose | Hosted Button ID |
 |---|---|
 | KJV eBible | `YXUZPMWTKME24` |
+| NKJV eBible | `9W2EN24VW72FG` |
+| NIV eBible | `YJACA9BHDHE8A` |
+| ESV eBible | `PRDELF74A4T88` |
 | ASV eBible | `KBJTWT23LA6JN` |
 | YLT eBible | `5A5Z2VDH74DFG` |
 | WEB eBible | `K7C2SJYLCDKMU` |
@@ -948,7 +1057,7 @@ Print Bibles are external Amazon purchases and are **not** Living Word Bibles ac
 | LWB Bible App | `4HCP6WRVGQNV2` |
 | Donate | `QQDSDMS4D9FC4` |
 
-**v2.0.0 does not change any PayPal Hosted Button ID, receiver email, product price, or merchant configuration.**
+**v2.6.5 adds the three NKJV/NIV/ESV Hosted Button IDs shown above. Existing Hosted Button IDs remain unchanged, and the new product pricing is documented in the v2.6.5 release section.**
 
 ---
 
@@ -1068,9 +1177,9 @@ Before merging or deploying this release:
 **Repository architecture revision:** `2026-08-27T22:28:20Z`  
 **Apps Script build stamp:** `08 September 2026 at 12:22:55Z UTC`  
 **Google Apps Script version:** `2.0.6.1`  
-**Frontend package version:** `2.6.4`  
-**README last updated:** **08 September 2026 at 12:49:31Z UTC**
+**Frontend package version:** `2.6.5`  
+**README last updated:** **09 September 2026 at 15:39:20Z UTC**
 
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 08 September 2026 at 12:49:31Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 09 September 2026 at 15:39:20Z UTC</strong></p>

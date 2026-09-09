@@ -1,3 +1,4 @@
+[README.md](https://github.com/user-attachments/files/32029662/README.md)
 [README.md](https://github.com/user-attachments/files/32015792/README.md)
 [README.md](https://github.com/user-attachments/files/31957675/README.md)
 [README.md](https://github.com/user-attachments/files/31930491/README.md)
@@ -28,7 +29,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 09 September 2026 at 15:39:20Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 09 September 2026 at 22:47:50Z UTC</sub></p>
 
 ---
 
@@ -51,7 +52,7 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 | Apps Script build stamp | `08 September 2026 at 12:22:55Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `09 September 2026 at 15:39:20Z UTC` |
+| README revision | `09 September 2026 at 22:47:50Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
 
@@ -60,9 +61,9 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 
 
 
-## What's New in v2.6.5 Alpha — NKJV, NIV & ESV eBibles, Promotional Pricing & Print Bible Expansion
+## What's New in v2.6.5 Alpha — NKJV, NIV & ESV eBibles, Promotional Pricing, Print Bibles & Christian Books
 
-Released **09 September 2026**. Last Updated: **09 September 2026 at 15:39:20Z UTC**
+Released **09 September 2026**. Last Updated: **09 September 2026 at 22:47:50Z UTC**
 
 ### New NKJV, NIV, and ESV digital eBible products
 
@@ -129,8 +130,27 @@ Released **09 September 2026**. Last Updated: **09 September 2026 at 15:39:20Z U
 - Added their local Amazon product images:
   - `/estore/print-bibles/csb-aa.jpg`
   - `/estore/print-bibles/nlt-aa.jpg`
-- Refreshed displayed Amazon pricing for existing print listings, including the NKJV and NET print editions, while retaining the notice that marketplace prices are subject to change.
+- Refreshed displayed Amazon pricing for existing print listings, including the NIV and NET print editions, while retaining the notice that Amazon prices are subject to change.
 - Print purchases remain external Amazon transactions and do **not** create Living Word Bibles digital-library entitlements.
+
+### Print Books / Christian Books storefront
+
+- Added a new **Print Books** category to the eStore navigation after **Print Bibles**.
+- Added the new `/estore/christian-books/` storefront for selected Christian print books purchased through Amazon.
+- The initial Christian Books collection includes nine distinct titles:
+  - **Seeking God: Finding Another Kind of Life with St. Ignatius and Dallas Willard** — Trevor Hudson
+  - **Twelve Ordinary Men: How the Master Shaped His Disciples for Greatness, and What He Wants to Do with You** — John MacArthur
+  - **30 Days to Growing in Your Faith: Enrich Your Life in 15 Minutes a Day** — Max Anders
+  - **30 Days to Understanding the Bible, 30th Anniversary: Unlock the Scriptures in 15 Minutes a Day** — Max Anders
+  - **Padre Pio: The True Story, Revised and Expanded, 3rd Edition** — C. Bernard Ruffin
+  - **Fisherman's Apprentice: The Making of a Fisher of Men** — Dan Floen
+  - **Faithful to Christ: A Challenge to Truly Live for Christ** — Charles H. Spurgeon
+  - **If a Church Pew Could Talk** — Cindy Carraway Williams
+  - **Don't Waste Your Life** — John Piper
+- Added Amazon Associates disclosure language and sponsored/nofollow treatment to the new Print Books storefront.
+- Refined both `/estore/print-bibles/` and `/estore/christian-books/` into consistent Amazon product-card presentations with product imagery, full product names, descriptions, displayed Amazon prices, and direct affiliate purchase links.
+- Refreshed the displayed Amazon prices on **09 September 2026**, including same-day corrections to Christian Books and Print Bibles so the storefront reflects the current Amazon print/paperback listing prices used for each selected product.
+- Amazon purchases remain external transactions and do **not** create Living Word Bibles digital-library entitlements.
 
 ### Backend and spreadsheet architecture
 
@@ -158,6 +178,7 @@ Released **09 September 2026**. Last Updated: **09 September 2026 at 15:39:20Z U
 /estore/print-bibles/csb-aa.jpg
 /estore/print-bibles/nlt-aa.jpg
 /estore/print-bibles/index.html
+/estore/christian-books/index.html
 /README.md
 /change-log.html
 ```
@@ -1178,8 +1199,8 @@ Before merging or deploying this release:
 **Apps Script build stamp:** `08 September 2026 at 12:22:55Z UTC`  
 **Google Apps Script version:** `2.0.6.1`  
 **Frontend package version:** `2.6.5`  
-**README last updated:** **09 September 2026 at 15:39:20Z UTC**
+**README last updated:** **09 September 2026 at 22:47:50Z UTC**
 
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 09 September 2026 at 15:39:20Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 09 September 2026 at 22:47:50Z UTC</strong></p>

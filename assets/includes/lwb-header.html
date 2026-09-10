@@ -111,6 +111,7 @@
   if (!link || !label) return;
 
   const SESSION_KEY = 'lwbAccountSession';
+  const DISPLAY_NAME_KEY = 'lwbAccountDisplayName';
   const CACHE_KEY = 'lwbHeaderAccountCache';
   const CACHE_MS = 5 * 60 * 1000;
 
@@ -134,8 +135,19 @@
     label.textContent = name;
   };
 
+  const saveDisplayName = value => {
+    const clean = String(value || '').trim();
+    if (!clean) return;
+    try { localStorage.setItem(DISPLAY_NAME_KEY, clean); } catch (_) {}
+  };
+
+  const savedDisplayName = () => {
+    try { return localStorage.getItem(DISPLAY_NAME_KEY) || ''; } catch (_) { return ''; }
+  };
+
   const clearSession = () => {
     try { localStorage.removeItem(SESSION_KEY); } catch (_) {}
+    try { localStorage.removeItem(DISPLAY_NAME_KEY); } catch (_) {}
     try { sessionStorage.removeItem(CACHE_KEY); } catch (_) {}
     loggedOut();
   };
@@ -151,6 +163,9 @@
     }
   };
 
+  const isDefinitiveSessionError = message =>
+    /session (?:is )?(?:invalid|expired)|sign in again|account could not be found|account is not active/i.test(String(message || ''));
+
   loggedOut();
 
   let token = '';
@@ -163,24 +178,22 @@
     return;
   }
 
+  const immediateDisplayName = String(decoded?.display_name || savedDisplayName() || '').trim();
+  loggedIn({display_name: immediateDisplayName});
+
   const fingerprint = token.slice(-24);
   try {
     const cached = JSON.parse(sessionStorage.getItem(CACHE_KEY) || 'null');
     if (cached && cached.fingerprint === fingerprint && cached.user &&
         Date.now() - Number(cached.checkedAt || 0) < CACHE_MS) {
       loggedIn(cached.user);
+      saveDisplayName(cached.user.display_name || '');
       return;
     }
   } catch (_) {}
 
   const apiUrl = window.LWB_SITE_CONFIG?.apiBase || '';
-  if (!apiUrl) {
-    link.classList.add('is-authenticated');
-    link.href = '/account/';
-    link.setAttribute('aria-label','Open your Living Word Bibles account');
-    label.textContent = 'Account';
-    return;
-  }
+  if (!apiUrl) return;
 
   fetch(apiUrl, {
     method:'POST',
@@ -188,13 +201,16 @@
     body:JSON.stringify({action:'account',token,userAgent:navigator.userAgent}),
     redirect:'follow'
   })
-  .then(response => {
-    if (!response.ok) throw new Error('Account validation failed.');
-    return response.json();
+  .then(async response => {
+    let payload = null;
+    try { payload = await response.json(); } catch (_) {}
+    if (!response.ok) throw new Error(payload?.error || 'Account validation could not be completed.');
+    if (!payload?.ok || !payload?.user) throw new Error(payload?.error || 'Account validation failed.');
+    return payload;
   })
   .then(payload => {
-    if (!payload?.ok || !payload?.user) throw new Error(payload?.error || 'Account validation failed.');
     loggedIn(payload.user);
+    saveDisplayName(payload.user.display_name || '');
     try {
       sessionStorage.setItem(CACHE_KEY, JSON.stringify({
         fingerprint,
@@ -203,7 +219,9 @@
       }));
     } catch (_) {}
   })
-  .catch(clearSession);
+  .catch(error => {
+    if (isDefinitiveSessionError(error?.message)) clearSession();
+  });
 })();
 </script>
 </header>

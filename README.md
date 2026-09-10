@@ -1,3 +1,4 @@
+[README.md](https://github.com/user-attachments/files/32073316/README.md)
 [README.md](https://github.com/user-attachments/files/32057178/README.md)
 [README.md](https://github.com/user-attachments/files/32029662/README.md)
 [README.md](https://github.com/user-attachments/files/32015792/README.md)
@@ -20,7 +21,7 @@
 <p align="center">
   <a href="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml/badge.svg?branch=main"></a>
   <img alt="Frontend package v2.6.5" src="https://img.shields.io/badge/frontend-v2.6.5-555555">
-  <img alt="Google Apps Script v2.0.7" src="https://img.shields.io/badge/Google%20Apps%20Script-v2.0.7-555555">
+  <img alt="Google Apps Script v2.0.8" src="https://img.shields.io/badge/Google%20Apps%20Script-v2.0.8-555555">
   <img alt="Hosting GitHub Pages" src="https://img.shields.io/badge/hosting-GitHub%20Pages-555555">
 </p>
 
@@ -49,11 +50,11 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
 | Frontend package version | `2.6.5` |
-| Google Apps Script version | `2.0.7` |
-| Apps Script build stamp | `10 September 2026 at 11:34:18Z UTC` |
+| Google Apps Script version | `2.0.8` |
+| Apps Script build stamp | `10 September 2026 at 19:10:59Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `10 September 2026 at 11:51:39Z UTC` |
+| README revision | `10 September 2026 at 19:10:59Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
 
@@ -62,9 +63,9 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 
 
 
-## What's New in v2.6.5 Alpha — NKJV, NIV & ESV eBibles, Promotional Pricing, Print Bibles & Christian Books
+## What's New in v2.6.5 Alpha — NKJV, NIV, ESV & Trump Bible eBooks, Promotional Pricing, Print Bibles & Christian Books
 
-Released **09 September 2026**. Last Updated: **10 September 2026 at 11:51:39Z UTC**
+Released **09 September 2026**. Last Updated: **10 September 2026 at 19:10:59Z UTC**
 
 ### New NKJV, NIV, and ESV digital eBible products
 
@@ -89,7 +90,7 @@ Released **09 September 2026**. Last Updated: **10 September 2026 at 11:51:39Z U
 
 ### 10 September 2026 — Account and Valois Lumière stabilization
 
-- Updated the current backend to **Google Apps Script v2.0.7** with build stamp **10 September 2026 at 11:34:18Z UTC**.
+- Updated the backend to **Google Apps Script v2.0.7** with build stamp **10 September 2026 at 11:34:18Z UTC**.
 - Added explicit repository-backed reader mappings for the new eBible products:
   - `prod_nkjv` → `/assets/products/nkjv.epub`
   - `prod_niv` → `/assets/products/niv.epub`
@@ -103,9 +104,25 @@ Released **09 September 2026**. Last Updated: **10 September 2026 at 11:51:39Z U
 - Refined the one Living Word Bibles™ brand mark in the shared footer so the `™` is smaller and superscripted without changing other trademark symbols.
 - This stabilization uses the existing Products, Digital Assets, Customers, Entitlements, and account/session architecture. **No new Google Sheet, spreadsheet tab, or spreadsheet column is required.**
 
+### 10 September 2026 — Donald J. Trump Make America Great Again Bible
+
+- Added **The Donald J. Trump Make America Great Again Bible** as a Living Word Bibles digital eBook product while keeping the frontend release at **v2.6.5 Alpha**.
+- Added the dedicated public feature page at `/trump-bible/` and the matching eStore product page at `/estore/p/donald-j-trump-make-america-great-again-bible/`.
+- Added the production EPUB asset at `/assets/products/trumpbible.epub` and the Living Word Bibles cover artwork at `/assets/TrumpMAGABibleCover.png`.
+- Added a homepage promotional banner at `/assets/trump-banner.png` linking visitors to `/trump-bible/`.
+- Added the Trump Bible to the main eStore at **$19.99**, with the regular **$39.99** price shown as the original price.
+- Added the PayPal Hosted Button `VSFW4TDM4U2XG` for the Trump Bible product.
+- Added EU/EEA immediate-delivery / right-of-withdrawal consent gating to the applicable Trump Bible checkout presentation, using the same Europe-only behavior as the other paid digital products.
+- Added the Trump Bible product and public feature page to the public sitemap coverage.
+- Added account/library product records and manual entitlements for the requested existing customer accounts.
+- Updated the backend to **Google Apps Script v2.0.8** with build stamp **10 September 2026 at 19:10:59Z UTC**.
+- Added the reader mapping `prod_trump_bible` → `/assets/products/trumpbible.epub` so entitled users can open the Trump Bible through **Valois Lumière**.
+- Added the Trump Bible Hosted Button to the existing paid-digital product handling used for digital-purchase compliance and fulfillment logic.
+- No Lumière frontend code change is required: the existing reader already handles any authorized EPUB returned by `reader-manifest`.
+
 ### eStore expansion and BEST VALUE pricing
 
-- Expanded the main `/estore/` from **seven to ten digital Bible editions**.
+- Expanded the main `/estore/` from **seven to ten digital Bible editions** with NKJV, NIV, and ESV; the subsequent Trump Bible addition brings the current eStore total to **eleven digital Bible editions**.
 - Inserted the new editions immediately below the first eStore row in this order:
   1. **NKJV**
   2. **NIV**
@@ -171,9 +188,9 @@ Released **09 September 2026**. Last Updated: **10 September 2026 at 11:51:39Z U
 
 ### Backend and spreadsheet architecture
 
-- The current Google Apps Script backend is **v2.0.7** with build stamp **10 September 2026 at 11:34:18Z UTC**.
-- v2.0.7 adds the reader-asset mappings and account/Lumière stabilization documented above while preserving the existing account, entitlement, purchase, newsletter, privacy, analytics, and administrative architecture.
-- v2.6.5 / v2.0.7 introduces **no new Google Sheet, spreadsheet tab, or spreadsheet column**.
+- The current Google Apps Script backend is **v2.0.8** with build stamp **10 September 2026 at 19:10:59Z UTC**.
+- v2.0.8 adds the Trump Bible reader/delivery mapping and paid-digital product handling while preserving the v2.0.7 NKJV/NIV/ESV/Ethiopian reader stabilization and the existing account, entitlement, purchase, newsletter, privacy, analytics, and administrative architecture.
+- v2.6.5 / v2.0.8 introduces **no new Google Sheet, spreadsheet tab, or spreadsheet column**.
 
 ### Surgical file set for v2.6.5
 
@@ -196,6 +213,14 @@ Released **09 September 2026**. Last Updated: **10 September 2026 at 11:51:39Z U
 /estore/print-bibles/nlt-aa.jpg
 /estore/print-bibles/index.html
 /estore/christian-books/index.html
+/trump-bible/index.html
+/estore/p/donald-j-trump-make-america-great-again-bible/index.html
+/assets/products/trumpbible.epub
+/assets/TrumpMAGABibleCover.png
+/assets/trump-banner.png
+/index.html
+/sitemap.xml
+/sitemap.html
 /apps-script/Code.gs
 /assets/includes/lwb-header.html
 /assets/includes/lwb-footer.html
@@ -996,8 +1021,8 @@ Current backend metadata:
 
 ```text
 Service: LWB Website API
-Version: 2.0.7
-Apps Script build stamp: 10 September 2026 at 11:34:18Z UTC
+Version: 2.0.8
+Apps Script build stamp: 10 September 2026 at 19:10:59Z UTC
 ```
 
 The backend is a **data/API service only**. It does not create, regenerate, or overwrite website HTML.
@@ -1075,7 +1100,7 @@ Server-side secrets such as `DOWNLOAD_TOKEN_SECRET`, account-authentication secr
 
 ## eStore, Print Bibles, and PayPal
 
-The core eStore now presents **ten digital Bible editions**, including the newly added NKJV, NIV, and ESV eBibles. The Ethiopian Bible is also offered through its dedicated page at `/ethiopian-bible/` in separate **EPUB** and **PDF** editions. Print Bibles remain separate at:
+The core eStore now presents **eleven digital Bible editions**, including NKJV, NIV, ESV, and the newly added Donald J. Trump Make America Great Again Bible. The Ethiopian Bible is also offered through its dedicated page at `/ethiopian-bible/` in separate **EPUB** and **PDF** editions. Print Bibles remain separate at:
 
 ```text
 /estore/print-bibles/
@@ -1091,6 +1116,7 @@ Print Bibles are external Amazon purchases and are **not** Living Word Bibles ac
 | NKJV eBible | `9W2EN24VW72FG` |
 | NIV eBible | `YJACA9BHDHE8A` |
 | ESV eBible | `PRDELF74A4T88` |
+| Donald J. Trump Make America Great Again Bible | `VSFW4TDM4U2XG` |
 | ASV eBible | `KBJTWT23LA6JN` |
 | YLT eBible | `5A5Z2VDH74DFG` |
 | WEB eBible | `K7C2SJYLCDKMU` |
@@ -1099,7 +1125,7 @@ Print Bibles are external Amazon purchases and are **not** Living Word Bibles ac
 | LWB Bible App | `4HCP6WRVGQNV2` |
 | Donate | `QQDSDMS4D9FC4` |
 
-**v2.6.5 adds the three NKJV/NIV/ESV Hosted Button IDs shown above. Existing Hosted Button IDs remain unchanged, and the new product pricing is documented in the v2.6.5 release section.**
+**v2.6.5 adds the NKJV/NIV/ESV Hosted Button IDs and, on 10 September 2026, the Trump Bible Hosted Button shown above. Existing unrelated Hosted Button IDs remain unchanged.**
 
 ---
 
@@ -1120,7 +1146,7 @@ No shared header/footer replacement is required for v2.5.8.
 
 `assets/js/config.js` remains the single public runtime configuration file for the Apps Script Web App URL and public contact email. Individual pages should not hard-code alternate backend deployments.
 
-No `assets/js/config.js` replacement is required for this release unless the Apps Script deployment URL itself changes after publishing v2.0.7.
+No `assets/js/config.js` replacement is required for this release unless the Apps Script deployment URL itself changes after publishing v2.0.8.
 
 ---
 
@@ -1143,7 +1169,7 @@ Deployment remains handled by `.github/workflows/deploy-pages.yml`.
 
 A push to `main` validates the repository and publishes the **repository root (`.`)** directly to GitHub Pages. There is no generated production output directory.
 
-For Apps Script v2.0.7, replace the Apps Script source with `/apps-script/Code.gs`, save it in the existing Apps Script project, and deploy a new Web App version using the same production configuration. If the production Web App URL remains the same deployment URL, no frontend config change is necessary.
+For Apps Script v2.0.8, replace the Apps Script source with `/apps-script/Code.gs`, save it in the existing Apps Script project, and deploy a new Web App version using the same production configuration. If the production Web App URL remains the same deployment URL, no frontend config change is necessary.
 
 ---
 
@@ -1186,8 +1212,9 @@ Before merging or deploying this release:
 - Test `/opt-out/?email=example@example.com` and confirm the email field pre-fills and the existing unsubscribe logic updates `Newsletter Subscribers`.
 - Run a newsletter template test before starting a campaign.
 - Confirm newsletter processing never exceeds 99 recipients per batch and only sends on Monday, Wednesday, and Friday.
-- Confirm `/assets/products/kjvspecial.epub`, `/assets/products/drb.epub`, `/assets/products/kjv.epub`, `/assets/products/asv.epub`, `/assets/products/ylt.epub`, `/assets/products/web.epub`, `/assets/products/nkjv.epub`, `/assets/products/niv.epub`, `/assets/products/esv.epub`, and `/assets/products/ethiopian.epub` resolve from production.
-- Sign in to entitled accounts and confirm NKJV, NIV, ESV, and the Ethiopian EPUB each open through **Read Online** in Valois Lumière with the correct edition title.
+- Confirm `/assets/products/kjvspecial.epub`, `/assets/products/drb.epub`, `/assets/products/kjv.epub`, `/assets/products/asv.epub`, `/assets/products/ylt.epub`, `/assets/products/web.epub`, `/assets/products/nkjv.epub`, `/assets/products/niv.epub`, `/assets/products/esv.epub`, `/assets/products/ethiopian.epub`, and `/assets/products/trumpbible.epub` resolve from production.
+- Confirm `prod_trump_bible` is active, account-eligible, linked to the Trump Bible EPUB, and has the expected entitled customer records.
+- Sign in to entitled accounts and confirm NKJV, NIV, ESV, the Ethiopian EPUB, and the Trump Bible each open through **Read Online** in Valois Lumière with the correct edition title.
 - Confirm the Ethiopian EPUB opens as EPUB content and the Ethiopian PDF continues to open as PDF content.
 - Confirm the shared header shows the signed-in customer's first name and that a temporary account-request failure does not erase a valid stored session.
 - Sign in to an entitled account and open **Read Online** for KJV Special in `/lumiere/`.
@@ -1220,11 +1247,11 @@ Before merging or deploying this release:
 ---
 
 **Repository architecture revision:** `2026-08-27T22:28:20Z`  
-**Apps Script build stamp:** `10 September 2026 at 11:34:18Z UTC`  
-**Google Apps Script version:** `2.0.7`  
+**Apps Script build stamp:** `10 September 2026 at 19:10:59Z UTC`  
+**Google Apps Script version:** `2.0.8`  
 **Frontend package version:** `2.6.5`  
-**README last updated:** **10 September 2026 at 11:51:39Z UTC**
+**README last updated:** **10 September 2026 at 19:10:59Z UTC**
 
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 10 September 2026 at 11:51:39Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 10 September 2026 at 19:10:59Z UTC</strong></p>

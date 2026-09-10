@@ -127,6 +127,29 @@
       padding-top: 14px;
       border-top: 1px solid #ece2cb;
     }
+    .eu-eea-withdrawal-notice {
+      margin: 1.25rem 0;
+      padding: 1rem 1.1rem;
+      border: 1px solid rgba(120, 91, 62, .28);
+      border-radius: 12px;
+      background: rgba(120, 91, 62, .06);
+    }
+    .eu-eea-withdrawal-notice label {
+      display: flex;
+      align-items: flex-start;
+      gap: .7rem;
+      cursor: pointer;
+      line-height: 1.5;
+    }
+    .eu-eea-withdrawal-notice input[type="checkbox"] {
+      margin-top: .25rem;
+      flex: 0 0 auto;
+    }
+    .eu-eea-checkout-locked {
+      pointer-events: none;
+      opacity: .5;
+      filter: grayscale(.15);
+    }
     .small-note {
       font-size: .92rem;
       color: var(--muted);
@@ -222,9 +245,10 @@
               <p>A special Living Word Bibles edition featuring the complete King James Version, a foreword by Donald J. Trump, and a collection of foundational American texts.</p>
               <div class="price-note">Marked down from $39.99</div>
               <p class="small-note">Includes the Declaration of Independence, U.S. Constitution with Amendments I–XXVII, Federalist Papers Nos. 1–85, the full <em>Star-Spangled Banner</em>, the Pledge of Allegiance, a map of the United States, and Maps of the Holy Land.</p>
+              <div class="eu-eea-withdrawal-notice" id="eu-eea-withdrawal-notice" hidden><label for="eu-eea-withdrawal-consent"><input type="checkbox" id="eu-eea-withdrawal-consent"><span><strong>EU/EEA Right of Withdrawal:</strong> This notice applies only to consumers in the European Union (EU) or European Economic Area (EEA). By checking this box, you expressly consent to the immediate delivery of this digital product and acknowledge that you will lose any applicable right of withdrawal once the digital download begins.  If you do not consent, please do not purchase this product.</span></label></div>
               <div class="paypal-wrap">
                 <script src="https://www.paypal.com/sdk/js?client-id=BAADY3HmA8ip1D8X4DGaJ9V3YBlg1INapOOrbKRCDd1nTP9KQN6WxKo9Tn5ZWectpb3LYEoeDYH6a3i1dA&components=hosted-buttons&enable-funding=venmo&currency=USD"></script>
-                <div id="paypal-container-VSFW4TDM4U2XG"></div>
+                <div id="paypal-container-VSFW4TDM4U2XG" class="paypal-hosted"></div>
                 <script>
                   paypal.HostedButtons({ hostedButtonId: "VSFW4TDM4U2XG" }).render("#paypal-container-VSFW4TDM4U2XG");
                 </script>
@@ -281,6 +305,42 @@
   </main>
 
   <div data-lwb-footer></div>
+  <script>
+    (function(){
+      const EU_EEA_COUNTRIES = new Set(["AT","BE","BG","HR","CY","CZ","DK","EE","FI","FR","DE","GR","HU","IE","IT","LV","LT","LU","MT","NL","PL","PT","RO","SK","SI","ES","SE","IS","LI","NO"]);
+      const notice = document.getElementById("eu-eea-withdrawal-notice");
+      const consent = document.getElementById("eu-eea-withdrawal-consent");
+      const checkout = document.querySelector(".paypal-hosted");
+      if (!notice || !consent || !checkout) return;
+
+      function setCheckoutLocked(locked) {
+        checkout.classList.toggle("eu-eea-checkout-locked", locked);
+        checkout.setAttribute("aria-disabled", locked ? "true" : "false");
+      }
+
+      setCheckoutLocked(true);
+      fetch("https://ipapi.co/json/", { cache: "no-store" })
+        .then(function(response){
+          if (!response.ok) throw new Error("Location lookup failed");
+          return response.json();
+        })
+        .then(function(location){
+          const countryCode = String(location.country_code || "").toUpperCase();
+          if (EU_EEA_COUNTRIES.has(countryCode)) {
+            notice.hidden = false;
+            setCheckoutLocked(!consent.checked);
+            consent.addEventListener("change", function(){
+              setCheckoutLocked(!consent.checked);
+            });
+          } else {
+            setCheckoutLocked(false);
+          }
+        })
+        .catch(function(){
+          setCheckoutLocked(false);
+        });
+    })();
+  </script>
   <script src="/assets/js/config.js" defer></script>
   <script src="/assets/js/site.js" defer></script>
   <script src="/assets/js/forms.js" defer></script>

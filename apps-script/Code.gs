@@ -1,12 +1,17 @@
 /**
- * Living Word Bibles Backend v2.0.6
+ * Living Word Bibles Backend v2.0.7
  * Core Website API
  *
  * Account: gospellivingwordbibles@gmail.com
  * Spreadsheet: LWB Website
- * Legal display date: 27 August 2026
- * Build timestamp: 07 September 2026 at 23:15:32Z UTC
+ * Legal display date: 10 September 2026
+ * Build timestamp: 10 September 2026 at 11:34:18Z UTC
  *
+ * v2.0.7 highlights:
+ * - Adds repository delivery mappings for NKJV, NIV, ESV, and the Ethiopian Apocrypha EPUB.
+ * - Corrects Ethiopian EPUB routing so EPUB products no longer resolve as the Ethiopian PDF.
+ * - Expands the health check to validate every active account-eligible digital title.
+ * - Adds display_name to newly issued account session payloads so the shared header can show the first name immediately after sign-in.
  * v2.0.6 highlights:
  * - Adds worldwide privacy/cookie consent audit events to the existing System Log.
  * - Expands consent-gated website analytics with visitor/session, page, referrer,
@@ -54,8 +59,8 @@
  */
 
 const LWB = Object.freeze({
-  VERSION: '2.0.6',
-  BUILD_UTC: '07 September 2026 at 23:15:32Z UTC',
+  VERSION: '2.0.7',
+  BUILD_UTC: '10 September 2026 at 11:34:18Z UTC',
   SITE_URL: 'https://www.livingwordbibles.com',
   CONTACT_EMAIL: 'gospellivingwordbibles@gmail.com',
   SPREADSHEET_ID: '1xnzdo1UJsEOTqcO2066Nfb6ayqKn8Zg5RbNLdpbaTcc',
@@ -79,12 +84,14 @@ const LWB = Object.freeze({
   FREE_ACCOUNT_PRODUCTS: Object.freeze(['prod_kjv_special', 'prod_drb']),
   ETHIOPIAN_PRODUCT_IDS: Object.freeze([
     'prod_ethiopian_apocrypha',
+    'prod_ethiopian_apocrypha_epub',
     'prod_ethiopian_bible',
     'prod_ethiopian'
   ]),
   ETHIOPIAN_SLUGS: Object.freeze([
     'ethiopian-bible',
     'ethiopian-bible-complete-apocrypha',
+    'ethiopian-bible-complete-apocrypha-epub',
     'the-ethiopian-bible-complete-apocrypha'
   ]),
   ETHIOPIAN_PAYPAL_BUTTON_ID: '8Z63ZMZEALLG4',
@@ -95,7 +102,12 @@ const LWB = Object.freeze({
     prod_kjv: '/assets/products/kjv.epub',
     prod_asv: '/assets/products/asv.epub',
     prod_ylt: '/assets/products/ylt.epub',
-    prod_web: '/assets/products/web.epub'
+    prod_web: '/assets/products/web.epub',
+    prod_ethiopian_apocrypha: '/assets/products/EthiopianApocryphaPDF.pdf',
+    prod_ethiopian_apocrypha_epub: '/assets/products/ethiopian.epub',
+    prod_nkjv: '/assets/products/nkjv.epub',
+    prod_niv: '/assets/products/niv.epub',
+    prod_esv: '/assets/products/esv.epub'
   }),
   EMAIL_RE: /^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$/,
   CALLBACK_RE: /^[A-Za-z_$][0-9A-Za-z_$\.]{0,80}$/,
@@ -981,7 +993,7 @@ function readerManifest_(data) {
       format: format,
       product_id: product.product_id,
       slug: product.slug,
-      title: product.title,
+      title: product.title || product.short_title || 'Digital Bible',
       short_title: product.short_title || '',
       cover_path: product.cover_path || '',
       source_url: readerRepositoryUrl_(asset.repository_path)
@@ -1032,7 +1044,7 @@ function repositoryAssetForProduct_(product) {
   const productId = String(product.product_id || '');
   let path = LWB.REPOSITORY_ASSETS[productId] || '';
 
-  if (!path && isEthiopianProduct_(product)) {
+  if (!path && String(product.product_type || '').trim().toLowerCase() === 'pdf' && isEthiopianProduct_(product)) {
     path = LWB.ETHIOPIAN_PDF_PATH;
   }
 
@@ -1058,12 +1070,13 @@ function repositoryAssetForProduct_(product) {
 
 function readerAssetFormat_(asset, product) {
   if (!asset) return '';
-  if (String(product.product_type || '').toLowerCase() === 'pdf' || isEthiopianProduct_(product)) {
-    return 'pdf';
-  }
   const path = String(asset.repository_path || '').toLowerCase();
   if (/\.pdf(?:$|[?#])/.test(path)) return 'pdf';
   if (/\.epub(?:$|[?#])/.test(path)) return 'epub';
+
+  const productType = String(product && product.product_type || '').trim().toLowerCase();
+  if (productType === 'pdf') return 'pdf';
+  if (productType === 'ebook') return 'epub';
   return String(asset.file_type || '').toLowerCase();
 }
 
@@ -2102,6 +2115,7 @@ function createSessionToken_(customer) {
   const payload = {
     customer_id: customer.customer_id,
     email: normalizeEmail_(customer.email),
+    display_name: customer.display_name || '',
     session_version: Number(customer.session_version || 1),
     issued_at: Date.now(),
     expires: Date.now() + 7 * 24 * 60 * 60 * 1000
@@ -3720,28 +3734,24 @@ function healthCheck_() {
     checks.sheets[name] = Boolean(ss.getSheetByName(name));
   });
 
-  ['prod_kjv_special', 'prod_drb', 'prod_kjv', 'prod_asv', 'prod_ylt', 'prod_web'].forEach(function(productId) {
-    const product = getProductById_(productId);
-    const asset = product ? findAssetForProduct_(productId) : null;
-    checks.account_products[productId] = {
-      exists: Boolean(product),
-      eligible: Boolean(product && isAccountEligibleProduct_(product)),
-      repository_path: asset ? asset.repository_path : '',
-      asset_linked: Boolean(asset && asset.repository_path)
-    };
-  });
-
-  const ethProduct = readObjects_(sheet_(LWB.SHEETS.PRODUCTS))
+  readObjects_(sheet_(LWB.SHEETS.PRODUCTS))
     .map(publicProduct_)
-    .find(isEthiopianProduct_);
-  const ethAsset = ethProduct ? findAssetForProduct_(ethProduct.product_id) : null;
-  checks.account_products.ethiopian_bible_pdf = {
-    exists: Boolean(ethProduct),
-    product_id: ethProduct ? ethProduct.product_id : '',
-    eligible: Boolean(ethProduct && isAccountEligibleProduct_(ethProduct)),
-    repository_path: ethAsset ? ethAsset.repository_path : '',
-    asset_linked: Boolean(ethAsset && ethAsset.repository_path)
-  };
+    .filter(function(product) {
+      return String(product.status || '').toLowerCase() === 'active' &&
+        isAccountEligibleProduct_(product);
+    })
+    .forEach(function(product) {
+      const productId = String(product.product_id || '');
+      if (!productId) return;
+      const asset = findAssetForProduct_(productId);
+      checks.account_products[productId] = {
+        exists: true,
+        eligible: true,
+        repository_path: asset ? asset.repository_path : '',
+        asset_linked: Boolean(asset && asset.repository_path),
+        format: asset ? readerAssetFormat_(asset, product) : ''
+      };
+    });
 
   const allSheets = Object.keys(checks.sheets).every(function(name) { return checks.sheets[name]; });
   const allCoreAssets = Object.keys(checks.account_products).every(function(key) {
@@ -3954,6 +3964,6 @@ function escapeHtml_(value) {
 
 /*
 ==========================================================================================
-END OF LWB BACKEND v2.0.6 | Copyright © 2026 Living Word Bibles. All Rights Reserved. Developed by Cook Technology Services. Last Updated on 07 September 2026 at 23:15:32Z UTC.
+END OF LWB BACKEND v2.0.7 | Copyright © 2026 Living Word Bibles. All Rights Reserved. Developed by Cook Technology Services. Last Updated on 10 September 2026 at 11:34:18Z UTC
 ==========================================================================================
 */

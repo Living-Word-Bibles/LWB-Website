@@ -185,6 +185,33 @@
           }
         }
 
+        /* Trump Bible artwork contains its own title/product composition.
+           Keep the banner unobstructed and make the full slide clickable. */
+        .homepage-hero-slide--trump::before{
+          background:linear-gradient(to top,rgba(0,0,0,.10),rgba(0,0,0,0) 38%);
+          pointer-events:none;
+        }
+
+        .homepage-hero-slide--trump .homepage-hero-link{
+          position:absolute;
+          inset:0;
+          z-index:2;
+          display:block;
+        }
+
+        .homepage-hero-slide--trump .homepage-hero-link:focus-visible{
+          outline:4px solid #fff;
+          outline-offset:-8px;
+        }
+
+        @media(max-width:720px){
+          .homepage-hero-slide--trump{
+            background-size:contain;
+            background-position:center center;
+            background-color:#0b1d3b;
+          }
+        }
+
         @media(prefers-reduced-motion:reduce){
           .homepage-hero-slide{
             transition:none;
@@ -295,6 +322,17 @@
           </div>
         </article>
 
+        <article
+          class="homepage-hero-slide homepage-hero-slide--trump"
+          data-homepage-hero-slide
+          aria-hidden="true"
+          style="--hero-bg:url('/assets/trump-banner.png')"
+        >
+          <a class="homepage-hero-link" href="/trump-bible/" aria-label="Explore The Donald J. Trump Make America Great Again Bible">
+            <span class="sr-only">The Donald J. Trump Make America Great Again Bible</span>
+          </a>
+        </article>
+
         <div class="homepage-hero-dots" aria-label="Choose featured slide">
           <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="0" aria-label="Show Living Word Bibles slide" aria-current="true"></button>
           <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="1" aria-label="Show Living Word Bibles App slide" aria-current="false"></button>
@@ -302,6 +340,7 @@
           <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="3" aria-label="Show Ethiopian Bible slide" aria-current="false"></button>
           <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="4" aria-label="Show eStore slide" aria-current="false"></button>
           <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="5" aria-label="Show Print Bibles slide" aria-current="false"></button>
+          <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="6" aria-label="Show Donald J. Trump Make America Great Again Bible slide" aria-current="false"></button>
         </div>
 
       </div>

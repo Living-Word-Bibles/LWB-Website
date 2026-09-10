@@ -1,3 +1,4 @@
+[README.md](https://github.com/user-attachments/files/32057178/README.md)
 [README.md](https://github.com/user-attachments/files/32029662/README.md)
 [README.md](https://github.com/user-attachments/files/32015792/README.md)
 [README.md](https://github.com/user-attachments/files/31957675/README.md)
@@ -19,7 +20,7 @@
 <p align="center">
   <a href="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml/badge.svg?branch=main"></a>
   <img alt="Frontend package v2.6.5" src="https://img.shields.io/badge/frontend-v2.6.5-555555">
-  <img alt="Google Apps Script v2.0.6.1" src="https://img.shields.io/badge/Google%20Apps%20Script-v2.0.6.1-555555">
+  <img alt="Google Apps Script v2.0.7" src="https://img.shields.io/badge/Google%20Apps%20Script-v2.0.7-555555">
   <img alt="Hosting GitHub Pages" src="https://img.shields.io/badge/hosting-GitHub%20Pages-555555">
 </p>
 
@@ -29,7 +30,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 09 September 2026 at 22:47:50Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 10 September 2026 at 11:51:39Z UTC</sub></p>
 
 ---
 
@@ -48,11 +49,11 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
 | Frontend package version | `2.6.5` |
-| Google Apps Script version | `2.0.6.1` |
-| Apps Script build stamp | `08 September 2026 at 12:22:55Z UTC` |
+| Google Apps Script version | `2.0.7` |
+| Apps Script build stamp | `10 September 2026 at 11:34:18Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `09 September 2026 at 22:47:50Z UTC` |
+| README revision | `10 September 2026 at 11:51:39Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
 
@@ -63,7 +64,7 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 
 ## What's New in v2.6.5 Alpha — NKJV, NIV & ESV eBibles, Promotional Pricing, Print Bibles & Christian Books
 
-Released **09 September 2026**. Last Updated: **09 September 2026 at 22:47:50Z UTC**
+Released **09 September 2026**. Last Updated: **10 September 2026 at 11:51:39Z UTC**
 
 ### New NKJV, NIV, and ESV digital eBible products
 
@@ -85,6 +86,22 @@ Released **09 September 2026**. Last Updated: **09 September 2026 at 22:47:50Z U
   - `/estore/p/the-holy-bible-english-standard-version/`
 - Each product page follows the existing Living Word Bibles eBible product architecture, including product metadata, responsive layout, PayPal Hosted Button checkout, and the existing EU/EEA digital-download withdrawal-consent gate.
 - Product descriptions identify the complete Old and New Testaments and include **over a dozen Maps of the Holy Land** as a featured edition benefit.
+
+### 10 September 2026 — Account and Valois Lumière stabilization
+
+- Updated the current backend to **Google Apps Script v2.0.7** with build stamp **10 September 2026 at 11:34:18Z UTC**.
+- Added explicit repository-backed reader mappings for the new eBible products:
+  - `prod_nkjv` → `/assets/products/nkjv.epub`
+  - `prod_niv` → `/assets/products/niv.epub`
+  - `prod_esv` → `/assets/products/esv.epub`
+  - `prod_ethiopian_apocrypha_epub` → `/assets/products/ethiopian.epub`
+- Kept the Ethiopian PDF product separately mapped to `/assets/products/EthiopianApocryphaPDF.pdf`, preventing the EPUB edition from being misclassified or routed as the PDF edition.
+- Expanded reader health/configuration checks so active reader-eligible products are validated rather than relying only on the older fixed product set.
+- Stabilized the shared account header so a validated signed-in account can display the customer's first name immediately from the stored session display name.
+- Changed transient header account-request failures so they no longer automatically erase an otherwise valid local account session.
+- Refreshed the Valois Lumière loader cache identifier so browsers request the current reader entry point after deployment.
+- Refined the one Living Word Bibles™ brand mark in the shared footer so the `™` is smaller and superscripted without changing other trademark symbols.
+- This stabilization uses the existing Products, Digital Assets, Customers, Entitlements, and account/session architecture. **No new Google Sheet, spreadsheet tab, or spreadsheet column is required.**
 
 ### eStore expansion and BEST VALUE pricing
 
@@ -154,9 +171,9 @@ Released **09 September 2026**. Last Updated: **09 September 2026 at 22:47:50Z U
 
 ### Backend and spreadsheet architecture
 
-- Google Apps Script remains **v2.0.6.1** with build stamp **08 September 2026 at 12:22:55Z UTC**.
-- v2.6.5 introduces **no new Google Sheet, spreadsheet tab, or spreadsheet column**.
-- No Apps Script backend version bump is required for the visitor-facing eStore, pricing, legal-product-card, or Print Bible changes documented in this frontend release.
+- The current Google Apps Script backend is **v2.0.7** with build stamp **10 September 2026 at 11:34:18Z UTC**.
+- v2.0.7 adds the reader-asset mappings and account/Lumière stabilization documented above while preserving the existing account, entitlement, purchase, newsletter, privacy, analytics, and administrative architecture.
+- v2.6.5 / v2.0.7 introduces **no new Google Sheet, spreadsheet tab, or spreadsheet column**.
 
 ### Surgical file set for v2.6.5
 
@@ -179,6 +196,10 @@ Released **09 September 2026**. Last Updated: **09 September 2026 at 22:47:50Z U
 /estore/print-bibles/nlt-aa.jpg
 /estore/print-bibles/index.html
 /estore/christian-books/index.html
+/apps-script/Code.gs
+/assets/includes/lwb-header.html
+/assets/includes/lwb-footer.html
+/lumiere/index.html
 /README.md
 /change-log.html
 ```
@@ -975,8 +996,8 @@ Current backend metadata:
 
 ```text
 Service: LWB Website API
-Version: 2.0.6.1
-Apps Script build stamp: 08 September 2026 at 12:22:55Z UTC
+Version: 2.0.7
+Apps Script build stamp: 10 September 2026 at 11:34:18Z UTC
 ```
 
 The backend is a **data/API service only**. It does not create, regenerate, or overwrite website HTML.
@@ -1099,7 +1120,7 @@ No shared header/footer replacement is required for v2.5.8.
 
 `assets/js/config.js` remains the single public runtime configuration file for the Apps Script Web App URL and public contact email. Individual pages should not hard-code alternate backend deployments.
 
-No `assets/js/config.js` replacement is required for this release unless the Apps Script deployment URL itself changes after publishing v2.0.6.
+No `assets/js/config.js` replacement is required for this release unless the Apps Script deployment URL itself changes after publishing v2.0.7.
 
 ---
 
@@ -1122,7 +1143,7 @@ Deployment remains handled by `.github/workflows/deploy-pages.yml`.
 
 A push to `main` validates the repository and publishes the **repository root (`.`)** directly to GitHub Pages. There is no generated production output directory.
 
-For Apps Script v2.0.6.1, replace the Apps Script source with `/apps-script/Code.gs`, save it in the existing Apps Script project, and deploy a new Web App version using the same production configuration. If the production Web App URL remains the same deployment URL, no frontend config change is necessary.
+For Apps Script v2.0.7, replace the Apps Script source with `/apps-script/Code.gs`, save it in the existing Apps Script project, and deploy a new Web App version using the same production configuration. If the production Web App URL remains the same deployment URL, no frontend config change is necessary.
 
 ---
 
@@ -1165,7 +1186,10 @@ Before merging or deploying this release:
 - Test `/opt-out/?email=example@example.com` and confirm the email field pre-fills and the existing unsubscribe logic updates `Newsletter Subscribers`.
 - Run a newsletter template test before starting a campaign.
 - Confirm newsletter processing never exceeds 99 recipients per batch and only sends on Monday, Wednesday, and Friday.
-- Confirm `/assets/products/kjvspecial.epub`, `/assets/products/drb.epub`, `/assets/products/kjv.epub`, `/assets/products/asv.epub`, `/assets/products/ylt.epub`, and `/assets/products/web.epub` resolve from production.
+- Confirm `/assets/products/kjvspecial.epub`, `/assets/products/drb.epub`, `/assets/products/kjv.epub`, `/assets/products/asv.epub`, `/assets/products/ylt.epub`, `/assets/products/web.epub`, `/assets/products/nkjv.epub`, `/assets/products/niv.epub`, `/assets/products/esv.epub`, and `/assets/products/ethiopian.epub` resolve from production.
+- Sign in to entitled accounts and confirm NKJV, NIV, ESV, and the Ethiopian EPUB each open through **Read Online** in Valois Lumière with the correct edition title.
+- Confirm the Ethiopian EPUB opens as EPUB content and the Ethiopian PDF continues to open as PDF content.
+- Confirm the shared header shows the signed-in customer's first name and that a temporary account-request failure does not erase a valid stored session.
 - Sign in to an entitled account and open **Read Online** for KJV Special in `/lumiere/`.
 - Confirm EPUB navigation, previous/next controls, font sizing, and reader themes work.
 - Confirm the Ethiopian Bible PDF opens through the same entitlement-gated Lumière route.
@@ -1196,11 +1220,11 @@ Before merging or deploying this release:
 ---
 
 **Repository architecture revision:** `2026-08-27T22:28:20Z`  
-**Apps Script build stamp:** `08 September 2026 at 12:22:55Z UTC`  
-**Google Apps Script version:** `2.0.6.1`  
+**Apps Script build stamp:** `10 September 2026 at 11:34:18Z UTC`  
+**Google Apps Script version:** `2.0.7`  
 **Frontend package version:** `2.6.5`  
-**README last updated:** **09 September 2026 at 22:47:50Z UTC**
+**README last updated:** **10 September 2026 at 11:51:39Z UTC**
 
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 09 September 2026 at 22:47:50Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 10 September 2026 at 11:51:39Z UTC</strong></p>

@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Donald J. Trump Make America Great Again Bible | Living Word Bibles</title>
+  <meta name="description" content="The Donald J. Trump Make America Great Again Bible — King James Version, published by Living Word Bibles." />
+  <style>
+    :root {
+      --navy: #0f2349;
+      --gold: #d9b15b;
+      --gold-dark: #9f7930;
+      --cream: #f7f2e7;
+      --text: #1f2430;
+      --muted: #5f6675;
+      --border: #e4d6b7;
+      --shadow: 0 12px 32px rgba(15, 35, 73, 0.16);
+      --max: 1200px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--text);
+      background: linear-gradient(180deg, #f7f2e7 0%, #ffffff 100%);
+      line-height: 1.65;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; }
+    .top-banner {
+      position: relative;
+      background: #0d2146 url('flag-banner.png') center/cover no-repeat;
+      color: #fff;
+      overflow: hidden;
+    }
+    .top-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(7,18,39,.52), rgba(7,18,39,.78));
+    }
+    .top-banner-inner {
+      position: relative;
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 42px 20px 50px;
+      text-align: center;
+    }
+    .eyebrow {
+      font-size: .95rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: #f2dfae;
+      margin-bottom: 10px;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3.6rem);
+      line-height: 1.1;
+      font-weight: 700;
+      text-shadow: 0 3px 16px rgba(0,0,0,.45);
+    }
+    .subhead {
+      margin: 14px auto 0;
+      max-width: 900px;
+      font-size: clamp(1rem, 1.8vw, 1.25rem);
+      color: #f4eedf;
+    }
+    .page {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 34px 20px 60px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 0.92fr 1.08fr;
+      gap: 32px;
+      align-items: start;
+    }
+    .card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .thumb-card { padding: 18px; }
+    .thumb-card img.main-photo {
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid #d8dce6;
+    }
+    .product-card { margin-top: 22px; padding: 22px; }
+    .product-card h2,
+    .foreword-card h2 {
+      margin: 0 0 12px;
+      font-size: 1.75rem;
+      color: var(--navy);
+      line-height: 1.2;
+    }
+    .product-flex {
+      display: grid;
+      grid-template-columns: 145px 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+    .cover-wrap img {
+      border-radius: 10px;
+      border: 1px solid #d8dce6;
+      box-shadow: 0 10px 24px rgba(0,0,0,.14);
+    }
+    .price-note {
+      display: inline-block;
+      margin: 10px 0 12px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: #fff6dd;
+      border: 1px solid #ead497;
+      color: #6e5318;
+      font-size: .95rem;
+      font-weight: 700;
+    }
+    .product-copy p,
+    .foreword-card p { margin: 0 0 1em; }
+    .paypal-wrap {
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid #ece2cb;
+    }
+    .small-note {
+      font-size: .92rem;
+      color: var(--muted);
+    }
+    .foreword-card { padding: 26px 26px 30px; }
+    .review-note {
+      margin: 0 0 18px;
+      color: #6c5a33;
+      background: #fff7e5;
+      border: 1px solid #ecd7a0;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: .96rem;
+    }
+    .signature-block {
+      margin-top: 20px;
+      text-align: center;
+      padding-top: 8px;
+      border-top: 1px solid #ece2cb;
+    }
+    .signature-block .name {
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+    .signature-block img {
+      max-width: 280px;
+      margin: 0 auto 8px;
+    }
+    .signature-block .title {
+      color: var(--muted);
+      font-style: italic;
+    }
+    .foot {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 20px 36px;
+      color: var(--muted);
+      font-size: .94rem;
+    }
+    @media (max-width: 920px) {
+      .grid { grid-template-columns: 1fr; }
+      .product-flex { grid-template-columns: 120px 1fr; }
+      .foreword-card { padding: 22px; }
+    }
+    @media (max-width: 560px) {
+      .top-banner-inner { padding: 30px 16px 36px; }
+      .page { padding: 24px 14px 44px; }
+      .thumb-card, .product-card, .foreword-card { border-radius: 16px; }
+      .product-flex { grid-template-columns: 1fr; }
+      .cover-wrap { max-width: 180px; }
+      .cover-wrap img { margin: 0 auto; }
+    }
+  </style>
+</head>
+<body>
+  <header class="top-banner">
+    <div class="top-banner-inner">
+      <div class="eyebrow">Living Word Bibles</div>
+      <h1>The Donald J. Trump Make America Great Again Bible</h1>
+      <p class="subhead">King James Version — featuring the approved cover design, presidential foreword, and foundational American texts.</p>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="grid">
+      <div class="left-column">
+        <article class="card thumb-card">
+          <img class="main-photo" src="trump-thumbsup.jpg" alt="Donald J. Trump giving a thumbs up" />
+        </article>
+
+        <article class="card product-card">
+          <h2>PayPal Product</h2>
+          <div class="product-flex">
+            <div class="cover-wrap">
+              <img src="TrumpMAGABibleCover.png" alt="Donald J. Trump Make America Great Again Bible cover" />
+            </div>
+            <div class="product-copy">
+              <p><strong>Donald J. Trump Make America Great Again Bible</strong><br />King James Version</p>
+              <p>A special Living Word Bibles edition featuring the complete King James Version, a foreword by Donald J. Trump, and a collection of foundational American texts.</p>
+              <div class="price-note">Marked down from $39.99</div>
+              <p class="small-note">Includes the Declaration of Independence, U.S. Constitution with Amendments I–XXVII, Federalist Papers Nos. 1–85, the full <em>Star-Spangled Banner</em>, the Pledge of Allegiance, a map of the United States, and Maps of the Holy Land.</p>
+              <div class="paypal-wrap">
+                <script src="https://www.paypal.com/sdk/js?client-id=BAADY3HmA8ip1D8X4DGaJ9V3YBlg1INapOOrbKRCDd1nTP9KQN6WxKo9Tn5ZWectpb3LYEoeDYH6a3i1dA&components=hosted-buttons&enable-funding=venmo&currency=USD"></script>
+                <div id="paypal-container-VSFW4TDM4U2XG"></div>
+                <script>
+                  paypal.HostedButtons({ hostedButtonId: "VSFW4TDM4U2XG" }).render("#paypal-container-VSFW4TDM4U2XG");
+                </script>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <article class="card foreword-card">
+        <h2>Foreword</h2>
+        <p class="review-note"><strong>Draft for President Donald J. Trump’s Review and Approval</strong></p>
+
+        <p>America is a nation with a remarkable history, an extraordinary inheritance, and a future that depends upon each generation understanding what came before it.</p>
+        <p>At the heart of that inheritance are two great traditions that have shaped the lives of millions of Americans: faith in God and devotion to liberty.</p>
+        <p>The Holy Bible has brought comfort to generations in times of hardship, wisdom in times of uncertainty, strength in times of trial, and hope when the path ahead seemed difficult. Its words have been read in churches, homes, schools, hospitals, battlefields, prisons, and countless places where men &amp; women have turned to Almighty God for guidance.</p>
+        <p>For centuries, the King James Version has held a special place in the English-speaking world. Its language has influenced our literature, our culture, our public life, and the way generations of believers have encountered the Word of God.</p>
+        <p>This edition preserves that great biblical tradition while bringing together several of the documents that tell the story of the American Republic.</p>
+        <p>The Declaration of Independence proclaimed to the world that human beings possess rights that do not come from kings or governments. Its famous words recognize that all men are created equal and endowed by their Creator with certain unalienable rights, including Life, Liberty, and the pursuit of Happiness.</p>
+        <p>Those principles gave birth to the United States of America.</p>
+        <p>The Constitution that followed created the framework of our government and established a system designed to separate the powers of government, preserve representative democracy, and protect the liberty of the American people. The amendments that became part of that Constitution—including the Bill of Rights—remain central to American civic life.</p>
+        <p>One of the greatest freedoms protected by our Constitution is the freedom to worship Almighty God.</p>
+        <p>Religious liberty is not a small part of the American story. It is at the very heart of who we are as a people. Americans must always have the right to pray, to worship, to read the Bible, to speak openly about their faith, and to live according to their deeply held religious beliefs without fear that the government will infringe upon their rights for doing so.</p>
+        <p>That freedom is precious.</p>
+        <p>It is also something we must protect.</p>
+        <p>America has always been a nation of faith. We are a nation of prayer. We are a nation under God. From the earliest days of our country, Americans have turned to God in moments of celebration, in moments of tragedy, in times of war, and in times of peace. Our people have prayed before great battles, before great decisions, around family tables, inside churches, and in the privacy of their own homes.</p>
+        <p>And throughout our history, the Bible has been there.</p>
+        <p>The Bible has helped shape countless generations of American families. It has given strength to our soldiers. It has comforted those who were suffering. It has inspired pastors, presidents, parents, teachers, workers, and millions of ordinary Americans who wanted to live good and faithful lives.</p>
+        <p>We live in a time when the world is moving very quickly. Technology is changing. Governments change. Leaders come and go. Nations rise and nations fall. But the Word of God has endured.</p>
+        <p>That is something very powerful.</p>
+        <p>The Bible teaches us about faith, courage, sacrifice, forgiveness, justice, mercy, family, leadership, and the difference between right and wrong. It tells us about great victories and terrible failures. It tells us about people who remained faithful when the world was against them and people who discovered that enormous success means very little if you lose your way.</p>
+        <p>Most importantly, the Bible directs our hearts and our minds toward Almighty God.</p>
+        <p>Our Founding Fathers created an extraordinary system of government, but they understood something fundamental: government does not give us our most basic rights. Our rights come from our Creator. Government has the responsibility to respect and protect those rights.</p>
+        <p>We can never forget the soldiers who defended our country on battlefields around the world. We can never forget the families who waited for them at home. We can never forget the Americans who built our cities, worked our farms, started businesses, raised families, founded churches, created charities, taught our children, and made this country stronger with every generation.</p>
+        <p>America became a great nation because generations of Americans believed that liberty was worth defending, family was worth protecting, faith was worth practicing, and the future was worth building.</p>
+        <p>Those values still endure today.</p>
+        <p>When America remembers who we are, when our families are strong, when our people are free, when our churches are open, when our citizens understand their rights, and when we are not ashamed to put our trust in Almighty God, there is no limit to what our country can accomplish.</p>
+        <p>That is the American spirit.</p>
+        <p>I hope you will always remember that the freedoms we enjoy are precious, that they must be defended, and that our greatest strength has always come from the faith, courage, and determination of the American people.</p>
+        <p>May this Bible bring strength to your family, deepen your faith, and remind you of the extraordinary country we have been blessed to call home. May we always remain One Nation Under God. May God bless you, may God bless your family, and may Almighty God continue to bless the United States of America.</p>
+
+        <div class="signature-block">
+          <div class="name">Donald J. Trump</div>
+          <img src="trump-signature.png" alt="Donald J. Trump signature" />
+          <div class="title">45th &amp; 47th President of the United States</div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <div class="foot">
+    This page is prepared for the <code>/trump-bible</code> product destination and includes the supplied product artwork, signature, thumbs-up image, and PayPal hosted button integration.
+  </div>
+</body>
+</html>

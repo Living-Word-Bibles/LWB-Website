@@ -13,6 +13,9 @@
   let dashboard = null;
   let currentCustomer = null;
   let currentCustomerEmail = '';
+  let paypalGroups = [];
+  let paypalPreview = [];
+  let lastOrders = [];
 
   const esc = value => String(value ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
   const date = value => {
@@ -71,6 +74,23 @@
     root.querySelector('[data-admin-name]').textContent = admin?.display_name || admin?.user || 'Administrator';
   }
 
+  async function loadPortalVersions() {
+    const el = root.querySelector('[data-portal-versions]');
+    if (!el) return;
+    try {
+      const response = await fetch('/README.md', { cache:'no-store' });
+      if (!response.ok) throw new Error('README unavailable');
+      const text = await response.text();
+      const front = text.match(/\|\s*Frontend package version\s*\|\s*`?v?([0-9]+(?:\.[0-9]+){2})`?\s*\|/i)?.[1]
+        || text.match(/Frontend package v([0-9]+(?:\.[0-9]+){2})/i)?.[1];
+      const back = text.match(/\|\s*(?:Google Apps Script|Backend) version\s*\|\s*`?v?([0-9]+(?:\.[0-9]+){2})`?\s*\|/i)?.[1]
+        || text.match(/(?:Google Apps Script|Backend) v([0-9]+(?:\.[0-9]+){2})/i)?.[1];
+      el.textContent = `Frontend ${front ? `v${front}` : '—'} | Backend ${back ? `v${back}` : '—'}`;
+    } catch (_) {
+      el.textContent = 'Frontend — | Backend —';
+    }
+  }
+
   function renderStats(counts = {}) {
     const items = [
       ['Active Subscribers', counts.subscribers_active || 0],
@@ -99,6 +119,7 @@
   function renderDashboard(payload) {
     dashboard = payload;
     showApp(payload.admin);
+    loadPortalVersions();
     renderStats(payload.counts);
     renderCampaign(payload.campaign);
     root.querySelector('[data-dashboard-logs]').innerHTML = (payload.recent_logs || []).map(row =>
@@ -149,6 +170,8 @@
       root.querySelectorAll('[data-tab]').forEach(item => item.setAttribute('aria-selected', String(item === button)));
       root.querySelectorAll('[data-panel]').forEach(panel => { panel.hidden = panel.dataset.panel !== name; });
       if (name === 'subscribers') loadSubscribers().catch(showError);
+      if (name === 'orders') loadOrders().catch(showError);
+      if (name === 'price-reconcile') loadPrintProducts().catch(showError);
       if (name === 'analytics') loadAnalytics().catch(showError);
       if (name === 'consent') loadConsent().catch(showError);
       if (name === 'logs') loadLogs().catch(showError);
@@ -364,6 +387,234 @@
       await loadCustomer();
       await loadDashboard();
     } catch (error) { showError(error); }
+  });
+
+
+  /* Orders, PayPal Activity Report reconciliation, and Print Products */
+  function csvRows(text) {
+    const rows = [];
+    let row = [], field = '', quoted = false;
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i];
+      if (quoted) {
+        if (ch === '"' && text[i + 1] === '"') { field += '"'; i++; }
+        else if (ch === '"') quoted = false;
+        else field += ch;
+      } else if (ch === '"') quoted = true;
+      else if (ch === ',') { row.push(field); field = ''; }
+      else if (ch === '\n') { row.push(field.replace(/\r$/, '')); rows.push(row); row = []; field = ''; }
+      else field += ch;
+    }
+    if (field.length || row.length) { row.push(field.replace(/\r$/, '')); rows.push(row); }
+    if (!rows.length) return [];
+    const headers = rows.shift().map(h => String(h || '').replace(/^\uFEFF/, '').trim());
+    return rows.filter(r => r.some(v => String(v || '').trim())).map(r => {
+      const out = {};
+      headers.forEach((h, i) => { if (h) out[h] = r[i] ?? ''; });
+      return out;
+    });
+  }
+
+  const paypalKeepColumns = [
+    'Date','Time','TimeZone','Name','Type','Status','Currency','Gross','Fee','Net',
+    'From Email Address','To Email Address','Transaction ID','Shipping Address','Address Status',
+    'Item Title','Item ID','Sales Tax','Reference Txn ID','Invoice Number','Quantity','Receipt ID',
+    'Address Line 1','Address Line 2/District/Neighborhood','Town/City',
+    'State/Province/Region/County/Territory/Prefecture/Republic','Zip/Postal Code','Country',
+    'Payment Source','Transaction Event Code','Transaction Buyer Country Code','Country Code',
+    'Balance Impact','Discount'
+  ];
+
+  function compactPayPalRow(row) {
+    const out = {};
+    paypalKeepColumns.forEach(key => { if (row[key] !== undefined && row[key] !== '') out[key] = row[key]; });
+    return out;
+  }
+
+  function groupPayPalActivity(rows) {
+    const map = new Map();
+    rows.forEach((row, index) => {
+      const tx = String(row['Transaction ID'] || '').trim();
+      const key = tx || `missing_tx_${index}`;
+      if (!map.has(key)) map.set(key, { transaction_id:tx, rows:[] });
+      map.get(key).rows.push(compactPayPalRow(row));
+    });
+    return [...map.values()];
+  }
+
+  function mergeCounts(target, source) {
+    Object.entries(source || {}).forEach(([key, value]) => { target[key] = Number(target[key] || 0) + Number(value || 0); });
+    return target;
+  }
+
+  async function previewPayPalGroups(groups) {
+    const all = [], counts = {};
+    for (let i = 0; i < groups.length; i += 200) {
+      const payload = await request('admin-paypal-preview', { groups:groups.slice(i, i + 200) });
+      all.push(...(payload.transactions || []));
+      mergeCounts(counts, payload.counts || {});
+    }
+    return { transactions:all, counts };
+  }
+
+  function resultLabel(value) {
+    return ({ matched:'Existing / Matched', new:'Missing / New', unmatched_product:'Unmatched Product', ignored:'Ignored Non-Sale', financial_adjustment:'Refund / Reversal', unsupported:'Unsupported', created:'Created', updated:'Updated' })[value] || value || '—';
+  }
+
+  function renderPayPalPreview(payload) {
+    paypalPreview = payload.transactions || [];
+    const counts = payload.counts || {};
+    root.querySelector('[data-paypal-summary]').innerHTML = `<div class="portal-grid" style="margin-top:14px">
+      <article class="portal-card portal-stat"><strong>${esc(paypalGroups.reduce((n,g) => n + g.rows.length, 0))}</strong><span>PayPal Rows</span></article>
+      <article class="portal-card portal-stat"><strong>${esc(paypalPreview.filter(r => ['matched','new','unmatched_product'].includes(r.result)).length)}</strong><span>Sales Identified</span></article>
+      <article class="portal-card portal-stat"><strong>${esc(counts.matched || 0)}</strong><span>Existing Orders</span></article>
+      <article class="portal-card portal-stat"><strong>${esc(counts.new || 0)}</strong><span>Missing Orders</span></article>
+      <article class="portal-card portal-stat"><strong>${esc(counts.unmatched_product || 0)}</strong><span>Unmatched Products</span></article>
+      <article class="portal-card portal-stat"><strong>${esc((counts.ignored || 0) + (counts.financial_adjustment || 0) + (counts.unsupported || 0))}</strong><span>Non-Sale / Review</span></article>
+    </div>`;
+    root.querySelector('[data-paypal-preview-rows]').innerHTML = paypalPreview.map(row => `<tr>
+      <td class="portal-code">${esc(row.transaction_id || '')}</td>
+      <td>${date(row.created_at)}</td>
+      <td>${esc(row.buyer_name || '')}<br><span class="portal-meta">${esc(row.email || '')}</span></td>
+      <td>${esc((row.products || []).map(p => p.title).join('; ') || (row.unmatched_products || []).join('; ') || '—')}</td>
+      <td>${row.gross === undefined ? '—' : money(row.gross, row.currency)}</td>
+      <td><span class="portal-badge">${esc(resultLabel(row.result))}</span>${row.reason ? `<br><span class="portal-meta">${esc(row.reason)}</span>` : ''}</td>
+    </tr>`).join('') || '<tr><td colspan="6">No PayPal transaction groups found.</td></tr>';
+    root.querySelector('[data-paypal-reconcile]').disabled = !paypalPreview.some(row => row.result === 'matched' || row.result === 'new');
+  }
+
+  async function readPayPalFile() {
+    const input = root.querySelector('[data-paypal-activity-file]');
+    const file = input?.files?.[0];
+    if (!file) throw new Error('Choose a PayPal Activity Report CSV first.');
+    if (file.size > 15 * 1024 * 1024) throw new Error('The PayPal Activity Report is larger than the 15 MB portal import limit.');
+    const text = await file.text();
+    const rows = csvRows(text);
+    if (!rows.length || !Object.prototype.hasOwnProperty.call(rows[0], 'Transaction ID')) throw new Error('This does not look like a PayPal Activity Report CSV.');
+    paypalGroups = groupPayPalActivity(rows);
+    return paypalGroups;
+  }
+
+  root.querySelector('[data-paypal-preview]')?.addEventListener('click', async () => {
+    const el = root.querySelector('[data-paypal-status]');
+    try {
+      setMessage(el, 'Reading and comparing PayPal Activity Report…', true);
+      const groups = await readPayPalFile();
+      const payload = await previewPayPalGroups(groups);
+      renderPayPalPreview(payload);
+      setMessage(el, `Preview complete: ${groups.length} PayPal transaction groups analyzed.`, true);
+    } catch (error) { setMessage(el, error.message || String(error)); }
+  });
+
+  root.querySelector('[data-paypal-reconcile]')?.addEventListener('click', async () => {
+    const el = root.querySelector('[data-paypal-status]');
+    if (!paypalGroups.length) return setMessage(el, 'Preview a PayPal Activity Report first.');
+    if (!confirm('Reconcile the previewed PayPal Activity Report into Orders and Order Items? Existing transactions will be updated rather than duplicated.')) return;
+    const total = { processed:0, matched:0, created:0, updated:0, ignored:0, financial_adjustment:0, unmatched_product:0, unsupported:0 };
+    try {
+      root.querySelector('[data-paypal-reconcile]').disabled = true;
+      for (let i = 0; i < paypalGroups.length; i += 100) {
+        setMessage(el, `Reconciling transaction group ${i + 1}–${Math.min(i + 100, paypalGroups.length)} of ${paypalGroups.length}…`, true);
+        const payload = await request('admin-paypal-reconcile', { groups:paypalGroups.slice(i, i + 100) });
+        Object.entries(payload.summary || {}).forEach(([key, value]) => { total[key] = Number(total[key] || 0) + Number(value || 0); });
+      }
+      setMessage(el, `Reconciliation complete: ${total.created} created, ${total.updated} existing orders updated, ${total.unmatched_product} unmatched products, ${total.ignored + total.financial_adjustment + total.unsupported} non-sale/review groups.`, true);
+      const payload = await previewPayPalGroups(paypalGroups);
+      renderPayPalPreview(payload);
+      await loadOrders();
+      await loadDashboard();
+    } catch (error) { setMessage(el, error.message || String(error)); }
+    finally { root.querySelector('[data-paypal-reconcile]').disabled = false; }
+  });
+
+  function renderOrders(payload) {
+    const summary = payload.summary || {};
+    const currency = (payload.orders || []).find(o => o.currency)?.currency || 'USD';
+    const stats = [
+      ['Completed Orders', summary.completed_orders || 0],
+      ['Gross Sales', money(summary.gross_sales || 0, currency)],
+      ['PayPal Fees', money(summary.paypal_fees || 0, currency)],
+      ['Net Sales*', money(summary.net_sales || 0, currency)],
+      ['Units Sold', summary.units_sold || 0],
+      ['Average Order', money(summary.average_order_value || 0, currency)]
+    ];
+    root.querySelector('[data-order-stats]').innerHTML = stats.map(([label,value]) => `<article class="portal-card portal-stat"><strong>${esc(value)}</strong><span>${esc(label)}</span></article>`).join('');
+    root.querySelector('[data-orders-products]').innerHTML = (payload.products || []).map(row => `<tr><td>${esc(row.title || row.product_id)}</td><td>${esc(row.orders || 0)}</td><td>${esc(row.units || 0)}</td><td>${money(row.gross || 0,currency)}</td><td>${money(row.net || 0,currency)}</td></tr>`).join('') || '<tr><td colspan="5">No product sales found for this range.</td></tr>';
+    const productSelect = root.querySelector('[data-orders-product]');
+    if (productSelect && productSelect.options.length <= 1) productSelect.insertAdjacentHTML('beforeend', (payload.product_options || []).map(p => `<option value="${esc(p.product_id)}">${esc(p.title || p.product_id)}</option>`).join(''));
+    lastOrders = payload.orders || [];
+    root.querySelector('[data-orders-rows]').innerHTML = lastOrders.map((row,index) => `<tr>
+      <td>${date(row.created_at)}</td><td>${esc(row.buyer_name || '—')}<br><span class="portal-meta">${esc(row.email || '')}</span></td>
+      <td class="portal-code">${esc(row.paypal_capture_id || '')}</td><td>${esc((row.products || []).map(p => p.title).join('; ') || '—')}</td>
+      <td><span class="portal-badge">${esc(row.status || '')}</span></td><td>${money(row.total,row.currency)}</td><td>${row.raw_event_id ? money(Math.abs(Number(row.fee || 0)),row.currency) : '—'}</td><td>${row.net === null ? '—' : money(row.net,row.currency)}</td>
+      <td>${esc([row.city,row.region,row.payer_country].filter(Boolean).join(', ') || '—')}</td><td><button class="btn secondary" type="button" data-order-detail-index="${index}">View</button></td>
+    </tr>`).join('') || '<tr><td colspan="10">No orders found.</td></tr>';
+  }
+
+  async function loadOrders() {
+    const payload = await request('admin-orders', {
+      query:root.querySelector('[data-orders-search]')?.value || '',
+      days:Number(root.querySelector('[data-orders-range]')?.value || 0),
+      status:root.querySelector('[data-orders-status]')?.value || '',
+      product_id:root.querySelector('[data-orders-product]')?.value || ''
+    });
+    renderOrders(payload);
+  }
+
+  root.querySelector('[data-refresh-orders]')?.addEventListener('click', () => loadOrders().catch(showError));
+  root.querySelector('[data-orders-apply]')?.addEventListener('click', () => loadOrders().catch(showError));
+  root.querySelector('[data-orders-search]')?.addEventListener('keydown', event => { if (event.key === 'Enter') { event.preventDefault(); loadOrders().catch(showError); } });
+  root.querySelector('[data-orders-rows]')?.addEventListener('click', event => {
+    const button = event.target.closest('[data-order-detail-index]');
+    if (!button) return;
+    const row = lastOrders[Number(button.dataset.orderDetailIndex)];
+    if (!row) return;
+    root.querySelector('[data-order-detail-body]').innerHTML = `<dl class="account-details">
+      <dt>Order</dt><dd class="portal-code">${esc(row.order_id)}</dd><dt>PayPal Transaction</dt><dd class="portal-code">${esc(row.paypal_capture_id || '—')}</dd><dt>Buyer</dt><dd>${esc(row.buyer_name || '—')}</dd><dt>Email</dt><dd>${esc(row.email || '—')}</dd><dt>Status</dt><dd>${esc(row.status || '—')}</dd><dt>Total</dt><dd>${money(row.total,row.currency)}</dd><dt>PayPal Fee</dt><dd>${row.raw_event_id ? money(Math.abs(Number(row.fee || 0)),row.currency) : '—'}</dd><dt>Net</dt><dd>${row.net === null ? '—' : money(row.net,row.currency)}</dd><dt>Products</dt><dd>${esc((row.products || []).map(p => `${p.title} × ${p.quantity}`).join('; ') || '—')}</dd><dt>Country</dt><dd>${esc(row.payer_country || '—')}</dd><dt>Address</dt><dd>${esc([row.address_1,row.address_2,row.city,row.region,row.postal_code,row.payer_country].filter(Boolean).join(', ') || '—')}</dd><dt>Raw Event</dt><dd class="portal-code">${esc(row.raw_event_id || '—')}</dd></dl>`;
+    root.querySelector('[data-order-detail]').hidden = false;
+    root.querySelector('[data-order-detail]').scrollIntoView({behavior:'smooth',block:'nearest'});
+  });
+  root.querySelector('[data-order-detail-close]')?.addEventListener('click', () => { root.querySelector('[data-order-detail]').hidden = true; });
+
+  function isoDate(value) {
+    if (!value) return '';
+    const m = String(value).match(/^(\d{4}-\d{2}-\d{2})/);
+    if (m) return m[1];
+    const d = new Date(value);
+    return Number.isNaN(d.getTime()) ? '' : d.toISOString().slice(0,10);
+  }
+
+  function renderPrintProducts(products) {
+    root.querySelector('[data-print-product-rows]').innerHTML = (products || []).map(row => `<tr data-print-product-id="${esc(row.print_product_id)}">
+      <td>${esc(row.product_name || '')}<br><span class="portal-meta">${esc(row.site_page || '')}</span></td><td>${esc(row.product_format || '')}</td><td>${esc(row.category || '')}</td><td class="portal-code">${esc(row.asin || '')}</td>
+      <td>${row.amazon_direct_url ? `<a class="btn secondary" href="${esc(row.amazon_direct_url)}" target="_blank" rel="noopener noreferrer">Open Direct</a>` : '—'}</td><td><span class="portal-code">${esc(row.amazon_associate_url || '—')}</span></td>
+      <td><input type="number" min="0" step="0.01" value="${esc(Number(row.current_price || 0).toFixed(2))}" data-print-price aria-label="Current price for ${esc(row.product_name || row.print_product_id)}"></td>
+      <td><input type="date" value="${esc(isoDate(row.price_observed_date))}" data-print-date aria-label="Observed date for ${esc(row.product_name || row.print_product_id)}"></td>
+      <td><button class="btn" type="button" data-save-print-product>Save</button></td>
+    </tr>`).join('') || '<tr><td colspan="9">No Print Products rows found.</td></tr>';
+  }
+
+  async function loadPrintProducts() {
+    const payload = await request('admin-print-products');
+    renderPrintProducts(payload.products || []);
+  }
+
+  root.querySelector('[data-refresh-print-products]')?.addEventListener('click', () => loadPrintProducts().catch(showError));
+  root.querySelector('[data-print-product-rows]')?.addEventListener('click', async event => {
+    const button = event.target.closest('[data-save-print-product]');
+    if (!button) return;
+    const tr = button.closest('[data-print-product-id]');
+    try {
+      button.disabled = true;
+      await request('admin-print-product-update', {
+        print_product_id:tr.dataset.printProductId,
+        current_price:tr.querySelector('[data-print-price]').value,
+        price_observed_date:tr.querySelector('[data-print-date]').value
+      });
+      showOk('Print product price and observed date updated.');
+      await loadPrintProducts();
+    } catch (error) { showError(error); }
+    finally { button.disabled = false; }
   });
 
 

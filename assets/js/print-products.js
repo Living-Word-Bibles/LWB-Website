@@ -21,10 +21,20 @@
   }
 
   function updateCard(product) {
+    const productId = String(product.print_product_id || '').trim();
     const asin = String(product.asin || '').trim();
-    if (!asin) return;
-    const anchor = document.querySelector(`[data-amazon-asin="${CSS.escape(asin)}"]`);
-    const card = anchor?.closest('article');
+
+    // Stable internal product ID is authoritative. ASIN is only a fallback
+    // because spreadsheet software may coerce numeric ASINs and strip leading zeros.
+    let card = productId
+      ? document.querySelector(`[data-print-product-id="${CSS.escape(productId)}"]`)
+      : null;
+
+    if (!card && asin) {
+      const anchor = document.querySelector(`[data-amazon-asin="${CSS.escape(asin)}"]`);
+      card = anchor?.closest('article') || null;
+    }
+
     if (!card) return;
     const priceEl = card.querySelector('.print-bible-price, .print-book-price');
     if (!priceEl) return;

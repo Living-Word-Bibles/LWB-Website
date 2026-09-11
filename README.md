@@ -1,3 +1,4 @@
+[README.md](https://github.com/user-attachments/files/32111621/README.md)
 [README.md](https://github.com/user-attachments/files/32106046/README.md)
 [README.md](https://github.com/user-attachments/files/32073316/README.md)
 [README.md](https://github.com/user-attachments/files/32057178/README.md)
@@ -21,8 +22,8 @@
 
 <p align="center">
   <a href="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml/badge.svg?branch=main"></a>
-  <img alt="Frontend package v2.6.5" src="https://img.shields.io/badge/frontend-v2.6.5-555555">
-  <img alt="Google Apps Script v2.0.8" src="https://img.shields.io/badge/Google%20Apps%20Script-v2.0.8-555555">
+  <img alt="Frontend package v2.6.6" src="https://img.shields.io/badge/frontend-v2.6.6-555555">
+  <img alt="Google Apps Script v2.0.9" src="https://img.shields.io/badge/Google%20Apps%20Script-v2.0.9-555555">
   <img alt="Hosting GitHub Pages" src="https://img.shields.io/badge/hosting-GitHub%20Pages-555555">
 </p>
 
@@ -32,7 +33,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 11 September 2026 at 13:13:57Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 11 September 2026 at 14:10:53Z UTC</sub></p>
 
 ---
 
@@ -50,12 +51,12 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 |---|---|
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
-| Frontend package version | `2.6.5` |
-| Google Apps Script version | `2.0.8` |
-| Apps Script build stamp | `10 September 2026 at 19:10:59Z UTC` |
+| Frontend package version | `2.6.6` |
+| Google Apps Script version | `2.0.9` |
+| Apps Script build stamp | `11 September 2026 at 14:10:53Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `11 September 2026 at 13:13:57Z UTC` |
+| README revision | `11 September 2026 at 14:10:53Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
 
@@ -63,6 +64,66 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 
 
 
+
+## What's New in v2.6.6 Alpha — God Bless America Bible
+
+Released **11 September 2026**. Last Updated: **11 September 2026 at 14:10:53Z UTC**
+
+### God Bless America Bible digital edition
+
+- Added **God Bless America Bible** as the twelfth Living Word Bibles digital eBible product.
+- Added the production EPUB asset at `/assets/products/godbless.epub` and cover artwork at `/assets/GodBlessBibleCover.png`.
+- Added the dedicated eStore product page at `/estore/p/god-bless-america-bible/` using the existing paid-digital checkout presentation and EU/EEA immediate-delivery / right-of-withdrawal consent gate.
+- Added PayPal Hosted Button `9GCRN7SY6BLNE`.
+- Promotional eStore pricing is **$9.99**, with the regular **$19.99** price shown struck through.
+- Added a red **BEST SELLER!** starburst to the God Bless America Bible eStore card.
+- Verified the EPUB contents include:
+  - the complete King James Version, Genesis through Revelation;
+  - *America the Beautiful*;
+  - the complete four-verse *Star-Spangled Banner*;
+  - the Pledge of Allegiance;
+  - the Declaration of Independence;
+  - the Constitution of the United States of America and Amendments I–XXVII;
+  - the complete Federalist Papers, Nos. 1–85;
+  - a map of the United States of America; and
+  - 15 Bible maps covering major biblical lands, cities, kingdoms, tribes, and journeys.
+
+### eStore organization and UK notice
+
+- Expanded `/estore/` to **twelve** digital Bible products.
+- Current product order is arranged so the first row is **KJV**, **Donald J. Trump Make America Great Again Bible**, and **God Bless America Bible**.
+- Moved **The Complete Apocrypha of the Ethiopian Bible** to the first position of the final row, followed by the two free products: **KJV Special Edition** and **Douay-Rheims Bible**.
+- Updated applicable KJV-based eStore notices so **VIEW OUR UK NOTICE HERE** now points to `/terms-of-service/#uk-kjv`.
+
+### Copyright Notice and Editorial Standards
+
+- Added the **God Bless America Bible** eStore product card immediately after the Trump Bible in `/copyright-notice/`.
+- Added the **God Bless America Bible** eStore product card immediately after the Trump Bible in `/editorial-standards/`.
+- Updated both public legal/editorial page revision dates to **11 September 2026**.
+
+### Backend v2.0.9 and Valois Lumière
+
+- Updated the backend to **Google Apps Script v2.0.9** with build stamp **11 September 2026 at 14:10:53Z UTC**.
+- Added `prod_god_bless_america_bible` → `/assets/products/godbless.epub` to the repository-backed digital asset map used by account downloads and Valois Lumière.
+- Added Hosted Button `9GCRN7SY6BLNE` to the existing paid-digital product handling.
+- The existing generic Valois Lumière reader remains unchanged; entitled customers can open the new EPUB through the same reader flow once the corresponding active Products/entitlement records are present.
+- No new Google Sheet, spreadsheet tab, or spreadsheet column is required by v2.0.9.
+
+### Surgical file set for v2.6.6 / v2.0.9
+
+```text
+/assets/products/godbless.epub
+/assets/GodBlessBibleCover.png
+/estore/index.html
+/estore/p/god-bless-america-bible/index.html
+/copyright-notice/index.html
+/editorial-standards/index.html
+/apps-script/Code.gs
+/README.md
+/change-log.html
+```
+
+---
 
 ## What's New in v2.6.5 Alpha — NKJV, NIV, ESV & Trump Bible eBooks, Promotional Pricing, Print Bibles & Christian Books
 
@@ -1231,8 +1292,9 @@ Before merging or deploying this release:
 - Test `/opt-out/?email=example@example.com` and confirm the email field pre-fills and the existing unsubscribe logic updates `Newsletter Subscribers`.
 - Run a newsletter template test before starting a campaign.
 - Confirm newsletter processing never exceeds 99 recipients per batch and only sends on Monday, Wednesday, and Friday.
-- Confirm `/assets/products/kjvspecial.epub`, `/assets/products/drb.epub`, `/assets/products/kjv.epub`, `/assets/products/asv.epub`, `/assets/products/ylt.epub`, `/assets/products/web.epub`, `/assets/products/nkjv.epub`, `/assets/products/niv.epub`, `/assets/products/esv.epub`, `/assets/products/ethiopian.epub`, and `/assets/products/trumpbible.epub` resolve from production.
+- Confirm `/assets/products/kjvspecial.epub`, `/assets/products/drb.epub`, `/assets/products/kjv.epub`, `/assets/products/asv.epub`, `/assets/products/ylt.epub`, `/assets/products/web.epub`, `/assets/products/nkjv.epub`, `/assets/products/niv.epub`, `/assets/products/esv.epub`, `/assets/products/ethiopian.epub`, `/assets/products/trumpbible.epub`, and `/assets/products/godbless.epub` resolve from production.
 - Confirm `prod_trump_bible` is active, account-eligible, linked to the Trump Bible EPUB, and has the expected entitled customer records.
+- Confirm `prod_god_bless_america_bible` is active, account-eligible, uses Hosted Button `9GCRN7SY6BLNE`, and resolves to `/assets/products/godbless.epub`.
 - Sign in to entitled accounts and confirm NKJV, NIV, ESV, the Ethiopian EPUB, and the Trump Bible each open through **Read Online** in Valois Lumière with the correct edition title.
 - Confirm the Ethiopian EPUB opens as EPUB content and the Ethiopian PDF continues to open as PDF content.
 - Confirm the shared header shows the signed-in customer's first name and that a temporary account-request failure does not erase a valid stored session.

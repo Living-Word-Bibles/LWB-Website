@@ -1,3 +1,4 @@
+[README.md](https://github.com/user-attachments/files/32125804/README.md)
 [README.md](https://github.com/user-attachments/files/32111621/README.md)
 [README.md](https://github.com/user-attachments/files/32106046/README.md)
 [README.md](https://github.com/user-attachments/files/32073316/README.md)
@@ -23,7 +24,7 @@
 <p align="center">
   <a href="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml/badge.svg?branch=main"></a>
   <img alt="Frontend package v2.6.6" src="https://img.shields.io/badge/frontend-v2.6.6-555555">
-  <img alt="Google Apps Script v2.0.9" src="https://img.shields.io/badge/Google%20Apps%20Script-v2.0.9-555555">
+  <img alt="Google Apps Script v2.1.0" src="https://img.shields.io/badge/Google%20Apps%20Script-v2.1.0-555555">
   <img alt="Hosting GitHub Pages" src="https://img.shields.io/badge/hosting-GitHub%20Pages-555555">
 </p>
 
@@ -33,7 +34,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 11 September 2026 at 14:10:53Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 11 September 2026 at 17:25:16Z UTC</sub></p>
 
 ---
 
@@ -52,11 +53,11 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
 | Frontend package version | `2.6.6` |
-| Google Apps Script version | `2.0.9` |
-| Apps Script build stamp | `11 September 2026 at 14:10:53Z UTC` |
+| Google Apps Script version | `2.1.0` |
+| Apps Script build stamp | `11 September 2026 at 17:25:16Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `11 September 2026 at 14:10:53Z UTC` |
+| README revision | `11 September 2026 at 17:25:16Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
 
@@ -67,7 +68,7 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 
 ## What's New in v2.6.6 Alpha — God Bless America Bible
 
-Released **11 September 2026**. Last Updated: **11 September 2026 at 14:10:53Z UTC**
+Released **11 September 2026**. Last Updated: **11 September 2026 at 17:25:16Z UTC**
 
 ### God Bless America Bible digital edition
 
@@ -119,6 +120,39 @@ Released **11 September 2026**. Last Updated: **11 September 2026 at 14:10:53Z U
 /copyright-notice/index.html
 /editorial-standards/index.html
 /apps-script/Code.gs
+/README.md
+/change-log.html
+```
+
+### Backend v2.1.0 — Orders reconciliation, sales reporting & Print Products
+
+Backend **v2.1.0** was completed on **11 September 2026 at 17:25:16Z UTC** while the frontend release remains **v2.6.6 Alpha**.
+
+- Added the new top-level **Orders** portal tab immediately after **Accounts & Purchases**.
+- Added PayPal Activity Report CSV preview/reconciliation using the existing `Orders`, `Order Items`, `Customers`, `Products`, and `System Log` architecture.
+- Activity Reports are parsed in the browser and sent directly to the backend; they are **not stored in Google Drive**.
+- PayPal rows are grouped by Transaction ID so `Express Checkout Payment` + `Shopping Cart Item` rows for the same transaction create one sale rather than duplicate Orders.
+- Completed customer sales reconcile idempotently; re-uploading the same report updates/matches the existing transaction rather than duplicating it.
+- PayPal withdrawals and unrelated balance movements are ignored as sales; refunds/reversals/unsupported transaction classes are surfaced for review instead of being imported as new Orders.
+- Product line items are matched against the existing Products catalog; unknown products are flagged rather than guessed.
+- PayPal buyer/contact/location, fee/net, and related source information is retained in `System Log.metadata_json`, with `Orders.raw_event_id` linking the Order back to its source event.
+- Added Orders KPIs for completed orders, gross sales, imported PayPal fees/net, units sold, average order value, and product-level performance.
+- Corrected Order Item reconciliation so historical reused `order_item_id` values cannot overwrite a different order; reconciliation updates by the order/product relationship.
+- Added the new **Price Reconcile** portal tab using the already-created `Print Products` sheet. Only `current_price` and `price_observed_date` are writable from the portal; all other print-product reference fields remain read-only.
+- Added a read-only public Print Products feed plus `/assets/js/print-products.js` so Print Bibles and Christian Books can refresh displayed Amazon price/date values without rewriting static page bodies. Static checked-in prices remain the fallback if the feed is unavailable.
+- The portal now displays **Frontend** and **Backend** version numbers by reading the current metadata from `/README.md`.
+- Google Drive access is not required for PayPal Activity Report reconciliation. The Apps Script manifest removes the unused `drive.readonly` scope.
+
+### Surgical file set for backend v2.1.0
+
+```text
+/apps-script/Code.gs
+/apps-script/appsscript.json
+/portal/index.html
+/assets/js/portal.js
+/assets/js/print-products.js
+/estore/print-bibles/index.html
+/estore/christian-books/index.html
 /README.md
 /change-log.html
 ```
@@ -1101,8 +1135,8 @@ Current backend metadata:
 
 ```text
 Service: LWB Website API
-Version: 2.0.8
-Apps Script build stamp: 10 September 2026 at 19:10:59Z UTC
+Version: 2.1.0
+Apps Script build stamp: 11 September 2026 at 17:25:16Z UTC
 ```
 
 The backend is a **data/API service only**. It does not create, regenerate, or overwrite website HTML.
@@ -1123,6 +1157,7 @@ The backend is a **data/API service only**. It does not create, regenerate, or o
 - `?action=health`
 - `?action=settings`
 - `?action=products`
+- `?action=print-products`
 - `?action=product&slug=...`
 - `?action=social`
 - `?action=free-download-link&product=...`
@@ -1149,6 +1184,11 @@ The backend is a **data/API service only**. It does not create, regenerate, or o
 - `eu-eea-digital-consent`
 - `admin-analytics`
 - `admin-consent`
+- `admin-orders`
+- `admin-paypal-preview`
+- `admin-paypal-reconcile`
+- `admin-print-products`
+- `admin-print-product-update`
 
 ### Backend data model
 
@@ -1162,6 +1202,7 @@ The Apps Script source references the existing operational sheets:
 - `Customers`
 - `Orders`
 - `Order Items`
+- `Print Products`
 - `Entitlements`
 - `Download Log`
 - `Newsletter Subscribers`
@@ -1172,7 +1213,7 @@ The Apps Script source references the existing operational sheets:
 - `Social Posts`
 - `System Log`
 
-No new spreadsheet tab is required by v2.0.0.
+v2.1.0 adds the `Print Products` sheet for Amazon-linked print-price reference data. The Orders reconciliation work continues to use the existing `Orders`, `Order Items`, and `System Log` sheets.
 
 Server-side secrets such as `DOWNLOAD_TOKEN_SECRET`, account-authentication secrets, and the PayPal PDT identity token belong in Apps Script Properties and must never be committed to this repository.
 
@@ -1226,7 +1267,7 @@ No shared header/footer replacement is required for v2.5.8.
 
 `assets/js/config.js` remains the single public runtime configuration file for the Apps Script Web App URL and public contact email. Individual pages should not hard-code alternate backend deployments.
 
-No `assets/js/config.js` replacement is required for this release unless the Apps Script deployment URL itself changes after publishing v2.0.8.
+No `assets/js/config.js` replacement is required for backend v2.1.0 unless the Apps Script deployment URL itself changes.
 
 ---
 
@@ -1249,7 +1290,7 @@ Deployment remains handled by `.github/workflows/deploy-pages.yml`.
 
 A push to `main` validates the repository and publishes the **repository root (`.`)** directly to GitHub Pages. There is no generated production output directory.
 
-For Apps Script v2.0.8, replace the Apps Script source with `/apps-script/Code.gs`, save it in the existing Apps Script project, and deploy a new Web App version using the same production configuration. If the production Web App URL remains the same deployment URL, no frontend config change is necessary.
+For Apps Script v2.1.0, replace `/apps-script/Code.gs` and `/apps-script/appsscript.json`, save them in the existing Apps Script project, and deploy a new Web App version using the same production configuration. The v2.1.0 manifest removes the unused Drive read-only scope. If the production Web App URL remains the same deployment URL, no frontend config change is necessary.
 
 ---
 
@@ -1328,11 +1369,11 @@ Before merging or deploying this release:
 ---
 
 **Repository architecture revision:** `2026-08-27T22:28:20Z`  
-**Apps Script build stamp:** `10 September 2026 at 19:10:59Z UTC`  
-**Google Apps Script version:** `2.0.8`  
-**Frontend package version:** `2.6.5`  
-**README last updated:** **11 September 2026 at 13:13:57Z UTC**
+**Apps Script build stamp:** `11 September 2026 at 17:25:16Z UTC`  
+**Google Apps Script version:** `2.1.0`  
+**Frontend package version:** `2.6.6`  
+**README last updated:** **11 September 2026 at 17:25:16Z UTC**
 
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 11 September 2026 at 13:13:57Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 11 September 2026 at 17:25:16Z UTC</strong></p>

@@ -1,3 +1,4 @@
+[README.md](https://github.com/user-attachments/files/32106046/README.md)
 [README.md](https://github.com/user-attachments/files/32073316/README.md)
 [README.md](https://github.com/user-attachments/files/32057178/README.md)
 [README.md](https://github.com/user-attachments/files/32029662/README.md)
@@ -31,7 +32,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 10 September 2026 at 11:51:39Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 11 September 2026 at 13:13:57Z UTC</sub></p>
 
 ---
 
@@ -54,7 +55,7 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 | Apps Script build stamp | `10 September 2026 at 19:10:59Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `10 September 2026 at 19:10:59Z UTC` |
+| README revision | `11 September 2026 at 13:13:57Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
 
@@ -65,7 +66,7 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 
 ## What's New in v2.6.5 Alpha — NKJV, NIV, ESV & Trump Bible eBooks, Promotional Pricing, Print Bibles & Christian Books
 
-Released **09 September 2026**. Last Updated: **10 September 2026 at 19:10:59Z UTC**
+Released **09 September 2026**. Last Updated: **11 September 2026 at 13:13:57Z UTC**
 
 ### New NKJV, NIV, and ESV digital eBible products
 
@@ -119,6 +120,24 @@ Released **09 September 2026**. Last Updated: **10 September 2026 at 19:10:59Z U
 - Added the reader mapping `prod_trump_bible` → `/assets/products/trumpbible.epub` so entitled users can open the Trump Bible through **Valois Lumière**.
 - Added the Trump Bible Hosted Button to the existing paid-digital product handling used for digital-purchase compliance and fulfillment logic.
 - No Lumière frontend code change is required: the existing reader already handles any authorized EPUB returned by `reader-manifest`.
+
+### 11 September 2026 — eStore checkout simplification, product-page cleanup & veteran-owned footer
+
+- Frontend release remains **v2.6.5 Alpha**; no frontend version bump was made for the 11 September refinements.
+- Reworked the paid `/estore/p/.../` checkout pages so the visible product area is intentionally limited to:
+  - the normal Living Word Bibles site shell/navigation;
+  - the existing EU/EEA immediate-digital-delivery / right-of-withdrawal consent gate; and
+  - the product's own PayPal Hosted Button presentation.
+- Removed duplicated page-level product images, titles, prices, long descriptions, feature lists, and other repeated merchandising copy from the paid checkout pages. The main `/estore/` remains the merchandising/detail surface.
+- Embedded the PayPal Hosted Button SDK/render code directly in each paid product page using the existing product-specific Hosted Button ID, so paid checkout pages no longer depend on `/assets/js/products.js` to discover an empty placeholder before rendering the hosted product.
+- Preserved all existing paid product Hosted Button IDs and the existing EU/EEA checkout-locking logic.
+- Cleaned paid-product breadcrumbs so the internal `/p/` directory is not exposed as a visible breadcrumb level. Product pages now present the visitor path as **Home → eStore → Product**.
+- Preserved **Back to eStore** navigation around the paid checkout experience.
+- Preserved the two free `/estore/p/` products — **KJV Special Edition** and **Douay-Rheims Bible** — with their normal free-product presentation and download/access behavior.
+- Refined the main eStore presentation, including a **BEST SELLER!** designation on the first three featured products: KJV, Donald J. Trump Make America Great Again Bible, and The Complete Apocrypha of the Ethiopian Bible.
+- Preserved the United Kingdom KJV restriction notice on applicable KJV-based storefront listings.
+- Updated the shared footer with a centered desktop **🇺🇸 VETERAN OWNED BUSINESS** link to `/eeo/`; on mobile the veteran-owned line appears as the final operations line beneath the developer attribution.
+- No backend version bump is part of this 11 September frontend/documentation refinement.
 
 ### eStore expansion and BEST VALUE pricing
 
@@ -1250,8 +1269,8 @@ Before merging or deploying this release:
 **Apps Script build stamp:** `10 September 2026 at 19:10:59Z UTC`  
 **Google Apps Script version:** `2.0.8`  
 **Frontend package version:** `2.6.5`  
-**README last updated:** **10 September 2026 at 19:10:59Z UTC**
+**README last updated:** **11 September 2026 at 13:13:57Z UTC**
 
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 10 September 2026 at 19:10:59Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 11 September 2026 at 13:13:57Z UTC</strong></p>

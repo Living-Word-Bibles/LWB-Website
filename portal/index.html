@@ -33,7 +33,7 @@
 
     <section data-portal-app hidden>
       <div class="portal-section-head">
-        <div><h1>Living Word Bibles Portal</h1><p class="portal-muted">Signed in as <strong data-admin-name>Administrator</strong></p></div>
+        <div><h1>Living Word Bibles Portal</h1><p class="portal-muted">Signed in as <strong data-admin-name>Administrator</strong></p><p class="portal-meta" data-portal-versions>Frontend version — | Backend version —</p></div>
         <button class="btn secondary" type="button" data-portal-signout>Sign Out</button>
       </div>
       <p class="portal-status" data-portal-status hidden></p>
@@ -44,6 +44,8 @@
         <button type="button" data-tab="subscribers" aria-selected="false">Subscribers</button>
         <button type="button" data-tab="newsletter" aria-selected="false">Newsletter</button>
         <button type="button" data-tab="accounts" aria-selected="false">Accounts & Purchases</button>
+        <button type="button" data-tab="orders" aria-selected="false">Orders</button>
+        <button type="button" data-tab="price-reconcile" aria-selected="false">Price Reconcile</button>
         <button type="button" data-tab="analytics" aria-selected="false">Analytics</button>
         <button type="button" data-tab="consent" aria-selected="false">Consent</button>
         <button type="button" data-tab="logs" aria-selected="false">System Log</button>
@@ -109,6 +111,47 @@
             <h3 style="margin-top:24px">Entitlements</h3><div class="portal-scroll"><table class="portal-table"><thead><tr><th>Product</th><th>Status</th><th>Source</th><th>Order</th><th>Granted</th><th>Action</th></tr></thead><tbody data-entitlement-rows></tbody></table></div>
             <h3 style="margin-top:24px">Orders</h3><div class="portal-scroll"><table class="portal-table"><thead><tr><th>Order</th><th>PayPal Tx</th><th>Status</th><th>Total</th><th>Date</th><th>Action</th></tr></thead><tbody data-order-rows></tbody></table></div>
           </div>
+        </article>
+      </section>
+
+
+      <section class="portal-panel" data-panel="orders" hidden>
+        <article class="portal-card">
+          <div class="portal-section-head">
+            <div><h2>Orders</h2><p class="portal-muted">Search sales, review product KPIs, and reconcile PayPal Activity Report CSV files against Orders and Order Items.</p></div>
+            <button class="btn secondary" type="button" data-refresh-orders>Refresh</button>
+          </div>
+
+          <div class="portal-grid" data-order-stats style="margin-top:18px"></div>
+
+          <div class="portal-row" style="margin-top:18px">
+            <div class="portal-field"><label>Search</label><input data-orders-search placeholder="Customer, email, PayPal transaction, order, product, country"></div>
+            <div class="portal-field compact"><label>Date range</label><select data-orders-range><option value="1">Last 24 Hours</option><option value="7">Last 7 Days</option><option value="30" selected>Last 30 Days</option><option value="0">All Time</option></select></div>
+            <div class="portal-field compact"><label>Status</label><select data-orders-status><option value="">All</option><option value="COMPLETED">Completed</option><option value="removed">Removed</option></select></div>
+            <div class="portal-field"><label>Product</label><select data-orders-product><option value="">All Products</option></select></div>
+            <div class="compact"><button class="btn secondary" type="button" data-orders-apply>Apply</button></div>
+          </div>
+
+          <div class="portal-two" style="margin-top:18px">
+            <div><h3>Sales by Product</h3><div class="portal-scroll"><table class="portal-table"><thead><tr><th>Product</th><th>Orders</th><th>Units</th><th>Gross</th><th>Net*</th></tr></thead><tbody data-orders-products></tbody></table></div><p class="portal-meta">*Net is shown where PayPal Activity Report fee/net data is available.</p></div>
+            <div><h3>PayPal Activity Report</h3><p class="portal-muted">CSV files are parsed in your browser and sent directly for reconciliation. Uploaded reports are not stored in Drive.</p><div class="portal-field"><label for="paypal-activity-file">Activity Report CSV</label><input id="paypal-activity-file" type="file" accept=".csv,text/csv" data-paypal-activity-file></div><div class="portal-actions"><button class="btn secondary" type="button" data-paypal-preview>Preview Reconciliation</button><button class="btn" type="button" data-paypal-reconcile disabled>Reconcile Report</button></div><p class="portal-status" data-paypal-status hidden></p><div data-paypal-summary></div></div>
+          </div>
+
+          <div class="portal-scroll" style="margin-top:18px"><table class="portal-table"><thead><tr><th>PayPal Tx</th><th>Date</th><th>Buyer</th><th>Product(s)</th><th>Gross</th><th>Result</th></tr></thead><tbody data-paypal-preview-rows><tr><td colspan="6">Select a PayPal Activity Report and preview it before reconciliation.</td></tr></tbody></table></div>
+
+          <h3 style="margin-top:24px">Sales</h3>
+          <div class="portal-scroll"><table class="portal-table"><thead><tr><th>Date</th><th>Buyer</th><th>PayPal Tx</th><th>Product(s)</th><th>Status</th><th>Gross</th><th>Fee</th><th>Net</th><th>Location</th><th>Detail</th></tr></thead><tbody data-orders-rows></tbody></table></div>
+          <div class="portal-card" style="margin-top:18px" data-order-detail hidden><div class="portal-section-head"><h3 style="margin:0">Order Detail</h3><button class="btn secondary" type="button" data-order-detail-close>Close</button></div><div data-order-detail-body></div></div>
+        </article>
+      </section>
+
+      <section class="portal-panel" data-panel="price-reconcile" hidden>
+        <article class="portal-card">
+          <div class="portal-section-head">
+            <div><h2>Price Reconcile</h2><p class="portal-muted">Print Products reference data is read-only here. Only the current price and observed date can be changed.</p></div>
+            <button class="btn secondary" type="button" data-refresh-print-products>Refresh</button>
+          </div>
+          <div class="portal-scroll" style="margin-top:18px"><table class="portal-table"><thead><tr><th>Product</th><th>Format</th><th>Category</th><th>ASIN</th><th>Amazon Direct</th><th>Affiliate Reference</th><th>Price</th><th>Observed Date</th><th>Action</th></tr></thead><tbody data-print-product-rows></tbody></table></div>
         </article>
       </section>
 

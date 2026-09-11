@@ -1,12 +1,17 @@
 /**
- * Living Word Bibles Backend v2.0.8
+ * Living Word Bibles Backend v2.0.9
  * Core Website API
  *
  * Account: gospellivingwordbibles@gmail.com
  * Spreadsheet: LWB Website
- * Legal display date: 10 September 2026
- * Build timestamp: 10 September 2026 at 19:10:59Z UTC
+ * Legal display date: 11 September 2026
+ * Build timestamp: 11 September 2026 at 14:10:53Z UTC
  *
+ * v2.0.9 highlights:
+ * - Adds Valois Lumière repository delivery for the God Bless America Bible.
+ * - Maps prod_god_bless_america_bible to /assets/products/godbless.epub for entitlement-gated online reading and downloads.
+ * - Adds the God Bless America Bible PayPal Hosted Button to paid-digital product handling.
+ * - Preserves the existing account, entitlement, purchase, compliance, and reader architecture.
  * v2.0.8 highlights:
  * - Adds Valois Lumière repository delivery for the Donald J. Trump Make America Great Again Bible.
  * - Maps prod_trump_bible to /assets/products/trumpbible.epub for entitlement-gated online reading and downloads.
@@ -64,8 +69,8 @@
  */
 
 const LWB = Object.freeze({
-  VERSION: '2.0.8',
-  BUILD_UTC: '10 September 2026 at 19:10:59Z UTC',
+  VERSION: '2.0.9',
+  BUILD_UTC: '11 September 2026 at 14:10:53Z UTC',
   SITE_URL: 'https://www.livingwordbibles.com',
   CONTACT_EMAIL: 'gospellivingwordbibles@gmail.com',
   SPREADSHEET_ID: '1xnzdo1UJsEOTqcO2066Nfb6ayqKn8Zg5RbNLdpbaTcc',
@@ -81,7 +86,7 @@ const LWB = Object.freeze({
   ]),
   PAID_DIGITAL_PAYPAL_BUTTONS: Object.freeze([
     'YXUZPMWTKME24','KBJTWT23LA6JN','5A5Z2VDH74DFG','K7C2SJYLCDKMU',
-    'BSYFSH79KT8VC','8Z63ZMZEALLG4','4HCP6WRVGQNV2','VSFW4TDM4U2XG'
+    'BSYFSH79KT8VC','8Z63ZMZEALLG4','4HCP6WRVGQNV2','VSFW4TDM4U2XG','9GCRN7SY6BLNE'
   ]),
   LOGO_URL: 'https://www.livingwordbibles.com/assets/LivingWordBibles01.png',
   NEWSLETTER_BATCH_MAX: 99,
@@ -113,7 +118,8 @@ const LWB = Object.freeze({
     prod_nkjv: '/assets/products/nkjv.epub',
     prod_niv: '/assets/products/niv.epub',
     prod_esv: '/assets/products/esv.epub',
-    prod_trump_bible: '/assets/products/trumpbible.epub'
+    prod_trump_bible: '/assets/products/trumpbible.epub',
+    prod_god_bless_america_bible: '/assets/products/godbless.epub'
   }),
   EMAIL_RE: /^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$/,
   CALLBACK_RE: /^[A-Za-z_$][0-9A-Za-z_$\.]{0,80}$/,
@@ -3970,6 +3976,6 @@ function escapeHtml_(value) {
 
 /*
 ==========================================================================================
-END OF LWB BACKEND v2.0.8 | Copyright © 2026 Living Word Bibles. All Rights Reserved. Developed by Cook Technology Services. Last Updated on 10 September 2026 at 19:10:59Z UTC
+END OF LWB BACKEND v2.0.9 | Copyright © 2026 Living Word Bibles. All Rights Reserved. Developed by Cook Technology Services. Last Updated on 11 September 2026 at 14:10:53Z UTC
 ==========================================================================================
 */

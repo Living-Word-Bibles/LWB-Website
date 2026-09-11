@@ -1,12 +1,19 @@
 /**
- * Living Word Bibles Backend v2.0.9
+ * Living Word Bibles Backend v2.1.0
  * Core Website API
  *
  * Account: gospellivingwordbibles@gmail.com
  * Spreadsheet: LWB Website
  * Legal display date: 11 September 2026
- * Build timestamp: 11 September 2026 at 14:10:53Z UTC
+ * Build timestamp: 11 September 2026 at 17:25:16Z UTC
  *
+ * v2.1.0 highlights:
+ * - Adds Orders sales reporting and PayPal Activity Report CSV reconciliation to the portal.
+ * - Groups PayPal report rows by Transaction ID and reconciles Orders + Order Items idempotently.
+ * - Stores compact PayPal source metadata in the existing System Log and links Orders through raw_event_id.
+ * - Adds the Print Products sheet integration and Price Reconcile portal tools.
+ * - Adds a minimal public Print Products price/date feed for Amazon-linked storefronts.
+ * - Adds no Google Drive dependency for PayPal report imports.
  * v2.0.9 highlights:
  * - Adds Valois Lumière repository delivery for the God Bless America Bible.
  * - Maps prod_god_bless_america_bible to /assets/products/godbless.epub for entitlement-gated online reading and downloads.
@@ -59,7 +66,7 @@
  * THIS SCRIPT DOES NOT:
  * - create or rebuild website pages
  * - create or replace spreadsheet tabs
- * - change product prices
+ * - change digital product prices or PayPal Hosted Button IDs
  * - change PayPal Hosted Button IDs
  * - change any PayPal receiver email
  * - use Google Contacts / People API
@@ -69,8 +76,8 @@
  */
 
 const LWB = Object.freeze({
-  VERSION: '2.0.9',
-  BUILD_UTC: '11 September 2026 at 14:10:53Z UTC',
+  VERSION: '2.1.0',
+  BUILD_UTC: '11 September 2026 at 17:25:16Z UTC',
   SITE_URL: 'https://www.livingwordbibles.com',
   CONTACT_EMAIL: 'gospellivingwordbibles@gmail.com',
   SPREADSHEET_ID: '1xnzdo1UJsEOTqcO2066Nfb6ayqKn8Zg5RbNLdpbaTcc',
@@ -132,6 +139,7 @@ const LWB = Object.freeze({
     CUSTOMERS: 'Customers',
     ORDERS: 'Orders',
     ORDER_ITEMS: 'Order Items',
+    PRINT_PRODUCTS: 'Print Products',
     ENTITLEMENTS: 'Entitlements',
     DOWNLOADS: 'Download Log',
     SUBSCRIBERS: 'Newsletter Subscribers',
@@ -232,6 +240,9 @@ function doGet(e) {
         break;
       case 'products':
         payload = { ok: true, products: listProducts_(p) };
+        break;
+      case 'print-products':
+        payload = { ok: true, products: listPrintProductsPublic_() };
         break;
       case 'product':
         payload = { ok: true, product: getProduct_(p.slug || p.id || p.product || '') };
@@ -387,6 +398,21 @@ function doPost(e) {
       case 'admin-manual-purchase-remove':
         payload = adminManualPurchaseRemove_(data);
         break;
+      case 'admin-orders':
+        payload = adminOrders_(data);
+        break;
+      case 'admin-paypal-preview':
+        payload = adminPayPalPreview_(data);
+        break;
+      case 'admin-paypal-reconcile':
+        payload = adminPayPalReconcile_(data);
+        break;
+      case 'admin-print-products':
+        payload = adminPrintProducts_(data);
+        break;
+      case 'admin-print-product-update':
+        payload = adminPrintProductUpdate_(data);
+        break;
       case 'admin-analytics':
         payload = adminAnalytics_(data);
         break;
@@ -428,6 +454,22 @@ function listProducts_(params) {
       return Number(a.sort_order || 0) - Number(b.sort_order || 0);
     })
     .map(publicProduct_);
+}
+
+function listPrintProductsPublic_() {
+  return readObjects_(sheet_(LWB.SHEETS.PRINT_PRODUCTS))
+    .filter(function(row) {
+      return Boolean(clean_(row.print_product_id || '', 200));
+    })
+    .map(function(row) {
+      return {
+        print_product_id: clean_(row.print_product_id || '', 200),
+        asin: clean_(row.asin || '', 40),
+        site_page: clean_(row.site_page || '', 300),
+        current_price: Number(row.current_price || 0),
+        price_observed_date: normalizeSheetDate_(row.price_observed_date)
+      };
+    });
 }
 
 function getProduct_(slugOrId) {
@@ -932,7 +974,7 @@ function recordOrder_(order) {
     subtotal: Number(order.subtotal !== undefined ? order.subtotal : ((existing && existing.subtotal) || order.total || 0)),
     total: Number(order.total !== undefined ? order.total : ((existing && existing.total) || 0)),
     payer_country: clean_(order.payer_country || (existing && existing.payer_country) || '', 20),
-    created_at: existing && existing.created_at ? existing.created_at : now,
+    created_at: existing && existing.created_at ? existing.created_at : (order.created_at || now),
     updated_at: now,
     raw_event_id: clean_(order.raw_event_id || (existing && existing.raw_event_id) || '', 200)
   });
@@ -943,12 +985,29 @@ function recordOrder_(order) {
 
 function recordOrderItem_(item) {
   const itemSheet = sheet_(LWB.SHEETS.ORDER_ITEMS);
-  const existing = readObjects_(itemSheet).find(function(row) {
-    return String(row.order_id || '') === String(item.order_id || '') &&
-      String(row.product_id || '') === String(item.product_id || '');
-  });
+  const headers = headers_(itemSheet);
+  const values = itemSheet.getDataRange().getValues();
+  const orderIndex = headers.indexOf('order_id');
+  const productIndex = headers.indexOf('product_id');
+  if (orderIndex < 0 || productIndex < 0) {
+    throw new Error('Order Items must contain order_id and product_id columns.');
+  }
 
-  const id = existing ? existing.order_item_id : (clean_(item.order_item_id || '', 200) || uuid_());
+  let rowNumber = -1;
+  let existing = null;
+  for (let i = 1; i < values.length; i++) {
+    if (String(values[i][orderIndex] || '') === String(item.order_id || '') &&
+        String(values[i][productIndex] || '') === String(item.product_id || '')) {
+      rowNumber = i + 1;
+      existing = {};
+      headers.forEach(function(header, index) { existing[header] = values[i][index]; });
+      break;
+    }
+  }
+
+  const id = existing && existing.order_item_id
+    ? existing.order_item_id
+    : (clean_(item.order_item_id || '', 200) || uuid_());
   const record = Object.assign({}, existing || {}, {
     order_item_id: id,
     order_id: clean_(item.order_id || '', 200),
@@ -956,10 +1015,14 @@ function recordOrderItem_(item) {
     quantity: Number(item.quantity || 1),
     unit_price: Number(item.unit_price || 0),
     line_total: Number(item.line_total !== undefined ? item.line_total : (item.unit_price || 0)),
-    created_at: existing && existing.created_at ? existing.created_at : new Date()
+    created_at: existing && existing.created_at ? existing.created_at : (item.created_at || new Date())
   });
 
-  upsertByKey_(itemSheet, 'order_item_id', id, record);
+  const row = headers.map(function(header, index) {
+    return record[header] === undefined ? (existing ? values[rowNumber - 1][index] : '') : record[header];
+  });
+  if (rowNumber < 0) itemSheet.appendRow(row);
+  else itemSheet.getRange(rowNumber, 1, 1, headers.length).setValues([row]);
   return record;
 }
 
@@ -3200,6 +3263,494 @@ function adminManualPurchaseRemove_(data) {
 }
 
 
+
+function adminPrintProducts_(data) {
+  verifyAdminSessionToken_(data.token);
+  const products = readObjects_(sheet_(LWB.SHEETS.PRINT_PRODUCTS))
+    .filter(function(row) { return Boolean(clean_(row.print_product_id || '', 200)); })
+    .map(function(row) {
+      return {
+        print_product_id: clean_(row.print_product_id || '', 200),
+        product_name: clean_(row.product_name || '', 1000),
+        product_format: clean_(row.product_format || '', 100),
+        category: clean_(row.category || '', 100),
+        site_page: clean_(row.site_page || '', 300),
+        asin: clean_(row.asin || '', 40),
+        amazon_associate_url: clean_(row.amazon_associate_url || '', 1000),
+        amazon_direct_url: clean_(row.amazon_direct_url || '', 1000),
+        current_price: Number(row.current_price || 0),
+        price_observed_date: normalizeSheetDate_(row.price_observed_date)
+      };
+    });
+  return { ok: true, products: products };
+}
+
+function adminPrintProductUpdate_(data) {
+  const admin = verifyAdminSessionToken_(data.token);
+  const id = clean_(data.print_product_id || '', 200);
+  const price = Number(data.current_price);
+  const observed = clean_(data.price_observed_date || '', 20);
+  if (!id) return { ok: false, error: 'Print product ID is required.' };
+  if (!isFinite(price) || price < 0) return { ok: false, error: 'Enter a valid non-negative price.' };
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(observed) || isNaN(new Date(observed + 'T12:00:00Z').getTime())) {
+    return { ok: false, error: 'Observed date must use YYYY-MM-DD.' };
+  }
+
+  const productSheet = sheet_(LWB.SHEETS.PRINT_PRODUCTS);
+  const row = findBy_(productSheet, 'print_product_id', id);
+  if (!row) return { ok: false, error: 'Print product not found.' };
+  const previousPrice = Number(row.current_price || 0);
+  const previousDate = normalizeSheetDate_(row.price_observed_date);
+  row.current_price = price;
+  row.price_observed_date = observed;
+  upsertByKey_(productSheet, 'print_product_id', id, row);
+
+  logSystem_('INFO', 'ADMIN_PRINT_PRICE_UPDATED', admin.email, id, 'portal', row.product_name || id, {
+    previous_price: previousPrice,
+    current_price: price,
+    previous_observed_date: previousDate,
+    price_observed_date: observed,
+    asin: row.asin || ''
+  });
+
+  return {
+    ok: true,
+    product: {
+      print_product_id: id,
+      current_price: price,
+      price_observed_date: observed
+    }
+  };
+}
+
+function normalizeSheetDate_(value) {
+  if (!value) return '';
+  if (Object.prototype.toString.call(value) === '[object Date]' && !isNaN(value.getTime())) {
+    return Utilities.formatDate(value, 'UTC', 'yyyy-MM-dd');
+  }
+  const text = String(value).trim();
+  const iso = text.match(/^(\d{4}-\d{2}-\d{2})/);
+  if (iso) return iso[1];
+  const d = new Date(value);
+  return isNaN(d.getTime()) ? text.slice(0, 10) : Utilities.formatDate(d, 'UTC', 'yyyy-MM-dd');
+}
+
+function buildPayPalReconcileContext_() {
+  const products = readObjects_(sheet_(LWB.SHEETS.PRODUCTS))
+    .filter(function(row) { return String(row.status || '').toLowerCase() === 'active'; })
+    .map(publicProduct_);
+  const orders = readObjects_(sheet_(LWB.SHEETS.ORDERS));
+  const items = readObjects_(sheet_(LWB.SHEETS.ORDER_ITEMS));
+  const customers = readObjects_(sheet_(LWB.SHEETS.CUSTOMERS));
+  const logs = readObjects_(sheet_(LWB.SHEETS.LOG));
+  const ordersByTx = {};
+  const ordersById = {};
+  orders.forEach(function(row) {
+    if (row.paypal_capture_id) ordersByTx[String(row.paypal_capture_id)] = row;
+    if (row.order_id) ordersById[String(row.order_id)] = row;
+  });
+  const itemsByOrder = {};
+  items.forEach(function(row) {
+    const key = String(row.order_id || '');
+    if (!itemsByOrder[key]) itemsByOrder[key] = [];
+    itemsByOrder[key].push(row);
+  });
+  const customersByEmail = {};
+  customers.forEach(function(row) {
+    const email = normalizeEmail_(row.email || '');
+    if (email) customersByEmail[email] = row;
+  });
+  const logsByRecord = {};
+  logs.forEach(function(row) {
+    if (row.record_id) logsByRecord[String(row.record_id)] = row;
+  });
+  return {
+    products: products,
+    orders: orders,
+    items: items,
+    customers: customers,
+    ordersByTx: ordersByTx,
+    ordersById: ordersById,
+    itemsByOrder: itemsByOrder,
+    customersByEmail: customersByEmail,
+    logsByRecord: logsByRecord
+  };
+}
+
+function paypalNumber_(value) {
+  const n = Number(String(value === undefined || value === null ? '' : value).replace(/[$,]/g, '').trim());
+  return isFinite(n) ? n : 0;
+}
+
+function paypalTimestamp_(row) {
+  const date = String(row.Date || '').trim();
+  const time = String(row.Time || '').trim() || '00:00:00';
+  const zone = String(row.TimeZone || '').trim().toUpperCase();
+  const m = date.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (!m) return new Date();
+  const offsets = { EDT:'-04:00', EST:'-05:00', CDT:'-05:00', CST:'-06:00', MDT:'-06:00', MST:'-07:00', PDT:'-07:00', PST:'-08:00', UTC:'+00:00', GMT:'+00:00' };
+  const iso = m[3] + '-' + ('0' + m[1]).slice(-2) + '-' + ('0' + m[2]).slice(-2) + 'T' + time + (offsets[zone] || '-04:00');
+  const d = new Date(iso);
+  return isNaN(d.getTime()) ? new Date() : d;
+}
+
+function paypalActivityRowMeta_(row) {
+  return {
+    date: clean_(row.Date || '', 20),
+    time: clean_(row.Time || '', 20),
+    timezone: clean_(row.TimeZone || '', 20),
+    name: clean_(row.Name || '', 300),
+    type: clean_(row.Type || '', 120),
+    status: clean_(row.Status || '', 80),
+    currency: clean_(row.Currency || '', 12),
+    gross: clean_(row.Gross || '', 40),
+    fee: clean_(row.Fee || '', 40),
+    net: clean_(row.Net || '', 40),
+    from_email: normalizeEmail_(row['From Email Address'] || ''),
+    transaction_id: clean_(row['Transaction ID'] || '', 200),
+    reference_txn_id: clean_(row['Reference Txn ID'] || '', 200),
+    invoice_number: clean_(row['Invoice Number'] || '', 200),
+    item_title: clean_(row['Item Title'] || '', 700),
+    item_id: clean_(row['Item ID'] || '', 200),
+    quantity: clean_(row.Quantity || '', 30),
+    receipt_id: clean_(row['Receipt ID'] || '', 200),
+    sales_tax: clean_(row['Sales Tax'] || '', 40),
+    discount: clean_(row.Discount || '', 40),
+    shipping_address: clean_(row['Shipping Address'] || '', 1000),
+    address_1: clean_(row['Address Line 1'] || '', 500),
+    address_2: clean_(row['Address Line 2/District/Neighborhood'] || '', 500),
+    city: clean_(row['Town/City'] || '', 300),
+    region: clean_(row['State/Province/Region/County/Territory/Prefecture/Republic'] || '', 300),
+    postal_code: clean_(row['Zip/Postal Code'] || '', 100),
+    country: clean_(row.Country || '', 200),
+    buyer_country_code: clean_(row['Transaction Buyer Country Code'] || row['Country Code'] || '', 20),
+    payment_source: clean_(row['Payment Source'] || '', 100),
+    event_code: clean_(row['Transaction Event Code'] || '', 100),
+    balance_impact: clean_(row['Balance Impact'] || '', 100)
+  };
+}
+
+function matchPayPalActivityProduct_(row, context) {
+  const candidates = [row['Item ID'], row['Item Title']].filter(Boolean).map(String);
+  for (let i = 0; i < candidates.length; i++) {
+    const found = context.products.find(function(product) {
+      return productIdentifierMatches_(product, candidates[i]);
+    });
+    if (found) return found;
+  }
+
+  const key = normalizeProductKey_(row['Item Title'] || '');
+  const aliases = {
+    'the complete apocrypha of the ethiopian bible': 'prod_ethiopian_apocrypha',
+    'the complete apocrypha of the ethiopian bible ebook': 'prod_ethiopian_apocrypha_epub',
+    'lwb ios app': 'prod_ios'
+  };
+  const aliasId = aliases[key];
+  return aliasId ? (context.products.find(function(product) { return String(product.product_id) === aliasId; }) || null) : null;
+}
+
+function analyzePayPalActivityGroup_(group, context) {
+  const rows = Array.isArray(group && group.rows) ? group.rows : [];
+  const tx = clean_((group && group.transaction_id) || (rows[0] && rows[0]['Transaction ID']) || '', 200);
+  if (!rows.length) return { transaction_id: tx, result: 'unsupported', reason: 'Empty transaction group.' };
+
+  const paymentRows = rows.filter(function(row) {
+    return /express checkout payment/i.test(String(row.Type || '')) &&
+      String(row.Status || '').toLowerCase() === 'completed' &&
+      paypalNumber_(row.Gross) > 0;
+  });
+  const itemRows = rows.filter(function(row) {
+    return /shopping cart item/i.test(String(row.Type || '')) &&
+      String(row.Status || '').toLowerCase() === 'completed';
+  });
+  const typeText = rows.map(function(row) { return String(row.Type || ''); }).join(' ');
+  const adjustment = /refund|reversal|chargeback|dispute/i.test(typeText);
+  const withdrawal = /withdrawal|balance transfer|bank transfer/i.test(typeText);
+
+  if (!paymentRows.length) {
+    return {
+      transaction_id: tx,
+      result: adjustment ? 'financial_adjustment' : (withdrawal ? 'ignored' : 'unsupported'),
+      reason: adjustment ? 'Refund/reversal/dispute activity is not imported as a new sale.' : (withdrawal ? 'Non-sale PayPal balance activity.' : 'Unsupported PayPal transaction type.'),
+      types: rows.map(function(row) { return clean_(row.Type || '', 120); })
+    };
+  }
+
+  const payment = paymentRows[0];
+  const sourceItems = itemRows.length ? itemRows : (payment['Item Title'] ? [payment] : []);
+  const existingOrder = context.ordersByTx[tx] || context.ordersById[tx] || null;
+  const existingItems = existingOrder ? (context.itemsByOrder[String(existingOrder.order_id || '')] || []) : [];
+  const matched = [];
+  const unmatched = [];
+
+  sourceItems.forEach(function(row, index) {
+    let product = matchPayPalActivityProduct_(row, context);
+    if (!product && existingItems[index]) {
+      product = context.products.find(function(p) { return String(p.product_id) === String(existingItems[index].product_id || ''); }) || null;
+    }
+    if (product) matched.push({ row: row, product: product });
+    else unmatched.push(clean_(row['Item Title'] || row['Item ID'] || 'Unknown item', 700));
+  });
+
+  const result = unmatched.length ? 'unmatched_product' : (existingOrder ? 'matched' : 'new');
+  return {
+    transaction_id: tx,
+    result: result,
+    reason: unmatched.length ? 'One or more PayPal line items could not be matched to Products.' : '',
+    existing_order_id: existingOrder ? String(existingOrder.order_id || '') : '',
+    buyer_name: clean_(payment.Name || '', 300),
+    email: normalizeEmail_(payment['From Email Address'] || ''),
+    status: clean_(payment.Status || '', 80),
+    currency: clean_(payment.Currency || 'USD', 12),
+    gross: paypalNumber_(payment.Gross),
+    fee: paypalNumber_(payment.Fee),
+    net: paypalNumber_(payment.Net),
+    payer_country: clean_(payment['Transaction Buyer Country Code'] || payment['Country Code'] || '', 20),
+    region: clean_(payment['State/Province/Region/County/Territory/Prefecture/Republic'] || '', 300),
+    created_at: paypalTimestamp_(payment).toISOString(),
+    products: matched.map(function(entry) {
+      return {
+        product_id: entry.product.product_id,
+        title: entry.product.title || entry.product.short_title || entry.product.product_id,
+        quantity: Math.max(1, Number(entry.row.Quantity || 1)),
+        line_total: paypalNumber_(entry.row.Gross),
+        item_id: clean_(entry.row['Item ID'] || '', 200)
+      };
+    }),
+    unmatched_products: unmatched
+  };
+}
+
+function adminPayPalPreview_(data) {
+  verifyAdminSessionToken_(data.token);
+  const groups = Array.isArray(data.groups) ? data.groups.slice(0, 250) : [];
+  const context = buildPayPalReconcileContext_();
+  const transactions = groups.map(function(group) { return analyzePayPalActivityGroup_(group, context); });
+  const counts = {};
+  transactions.forEach(function(row) { counts[row.result] = Number(counts[row.result] || 0) + 1; });
+  return { ok: true, transactions: transactions, counts: counts };
+}
+
+function upsertPayPalRawEvent_(tx, payment, itemRows, adminEmail) {
+  const recordId = 'paypal_activity:' + clean_(tx, 180);
+  const metadata = {
+    source: 'paypal_activity_report',
+    transaction_id: tx,
+    payment: paypalActivityRowMeta_(payment),
+    items: itemRows.map(paypalActivityRowMeta_),
+    imported_by: normalizeEmail_(adminEmail || '')
+  };
+  const logSheet = sheet_(LWB.SHEETS.LOG);
+  const existing = findBy_(logSheet, 'record_id', recordId);
+  const record = Object.assign({}, existing || {}, {
+    timestamp: new Date(),
+    level: 'INFO',
+    event: 'PAYPAL_ACTIVITY_IMPORTED',
+    email: normalizeEmail_(payment['From Email Address'] || ''),
+    record_id: recordId,
+    source: 'portal-paypal-import',
+    message: clean_(payment['Item Title'] || tx, 1000),
+    metadata_json: JSON.stringify(metadata).slice(0, 5000)
+  });
+  upsertByKey_(logSheet, 'record_id', recordId, record);
+  return recordId;
+}
+
+function adminPayPalReconcile_(data) {
+  const admin = verifyAdminSessionToken_(data.token);
+  const groups = Array.isArray(data.groups) ? data.groups.slice(0, 125) : [];
+  const context = buildPayPalReconcileContext_();
+  const summary = { processed:0, matched:0, created:0, updated:0, ignored:0, financial_adjustment:0, unmatched_product:0, unsupported:0 };
+  const results = [];
+
+  groups.forEach(function(group) {
+    const analysis = analyzePayPalActivityGroup_(group, context);
+    summary.processed++;
+    if (analysis.result === 'ignored' || analysis.result === 'financial_adjustment' || analysis.result === 'unsupported' || analysis.result === 'unmatched_product') {
+      summary[analysis.result] = Number(summary[analysis.result] || 0) + 1;
+      results.push(analysis);
+      return;
+    }
+
+    const rows = Array.isArray(group.rows) ? group.rows : [];
+    const payment = rows.find(function(row) {
+      return /express checkout payment/i.test(String(row.Type || '')) && String(row.Status || '').toLowerCase() === 'completed';
+    }) || rows[0];
+    const itemRows = rows.filter(function(row) {
+      return /shopping cart item/i.test(String(row.Type || '')) && String(row.Status || '').toLowerCase() === 'completed';
+    });
+    const tx = analysis.transaction_id;
+    const existing = context.ordersByTx[tx] || context.ordersById[tx] || null;
+    const email = analysis.email;
+    const customer = context.customersByEmail[email] || null;
+    const rawEventId = upsertPayPalRawEvent_(tx, payment, itemRows.length ? itemRows : [payment], admin.email);
+
+    const order = recordOrder_({
+      order_id: existing && existing.order_id ? existing.order_id : tx,
+      paypal_order_id: existing && existing.paypal_order_id ? existing.paypal_order_id : '',
+      paypal_capture_id: tx,
+      customer_id: existing && existing.customer_id ? existing.customer_id : (customer ? customer.customer_id : ''),
+      email: email,
+      status: 'COMPLETED',
+      currency: analysis.currency || 'USD',
+      subtotal: analysis.gross,
+      total: analysis.gross,
+      payer_country: analysis.payer_country || '',
+      created_at: new Date(analysis.created_at),
+      raw_event_id: rawEventId
+    });
+
+    const aggregated = {};
+    analysis.products.forEach(function(item, index) {
+      const key = String(item.product_id || '');
+      if (!aggregated[key]) aggregated[key] = { product_id:key, quantity:0, line_total:0, item_id:item.item_id || '', index:index };
+      aggregated[key].quantity += Math.max(1, Number(item.quantity || 1));
+      aggregated[key].line_total += Number(item.line_total || 0);
+    });
+    Object.keys(aggregated).forEach(function(productId) {
+      const item = aggregated[productId];
+      const qty = Math.max(1, Number(item.quantity || 1));
+      const lineTotal = Number(item.line_total || 0);
+      recordOrderItem_({
+        order_item_id: item.item_id || ('paypal_' + tx + '_' + productId),
+        order_id: order.order_id,
+        product_id: productId,
+        quantity: qty,
+        unit_price: qty ? lineTotal / qty : lineTotal,
+        line_total: lineTotal,
+        created_at: new Date(analysis.created_at)
+      });
+    });
+
+    if (existing) summary.updated++;
+    else summary.created++;
+    summary.matched++;
+    results.push(Object.assign({}, analysis, { result: existing ? 'updated' : 'created', order_id: order.order_id, raw_event_id: rawEventId }));
+
+    context.ordersByTx[tx] = order;
+    context.ordersById[String(order.order_id)] = order;
+  });
+
+  logSystem_('INFO', 'ADMIN_PAYPAL_REPORT_RECONCILED', admin.email, uuid_(), 'portal', 'PayPal Activity Report reconciliation', summary);
+  return { ok: true, summary: summary, results: results };
+}
+
+function adminOrders_(data) {
+  verifyAdminSessionToken_(data.token);
+  const context = buildPayPalReconcileContext_();
+  const query = String(data.query || '').trim().toLowerCase();
+  const statusFilter = String(data.status || '').trim().toLowerCase();
+  const productFilter = String(data.product_id || '').trim();
+  const days = [1,7,30].indexOf(Number(data.days || 0)) >= 0 ? Number(data.days) : 0;
+  let from = data.date_from ? new Date(String(data.date_from) + 'T00:00:00-04:00') : (days ? new Date(Date.now() - days * 86400000) : null);
+  let to = data.date_to ? new Date(String(data.date_to) + 'T23:59:59-04:00') : null;
+  if (from && isNaN(from.getTime())) from = null;
+  if (to && isNaN(to.getTime())) to = null;
+
+  const rows = context.orders.map(function(order) {
+    const orderItems = context.itemsByOrder[String(order.order_id || '')] || [];
+    const raw = order.raw_event_id ? context.logsByRecord[String(order.raw_event_id)] : null;
+    const meta = raw ? parseSystemLogMetadata_(raw) : {};
+    const payment = meta.payment || {};
+    const firstItemMeta = Array.isArray(meta.items) && meta.items.length ? meta.items[0] : {};
+    const detail = Object.assign({}, firstItemMeta || {}, payment || {});
+    const productRows = orderItems.map(function(item) {
+      const p = context.products.find(function(product) { return String(product.product_id) === String(item.product_id || ''); });
+      return {
+        product_id: item.product_id || '',
+        title: p ? (p.title || p.short_title || p.product_id) : (item.product_id || ''),
+        quantity: Number(item.quantity || 0),
+        line_total: Number(item.line_total || 0)
+      };
+    });
+    return {
+      order_id: order.order_id || '',
+      paypal_order_id: order.paypal_order_id || '',
+      paypal_capture_id: order.paypal_capture_id || '',
+      customer_id: order.customer_id || '',
+      email: order.email || detail.from_email || '',
+      buyer_name: detail.name || '',
+      status: order.status || '',
+      currency: order.currency || 'USD',
+      subtotal: Number(order.subtotal || 0),
+      total: Number(order.total || 0),
+      fee: paypalNumber_(detail.fee),
+      net: detail.net === undefined || detail.net === '' ? null : paypalNumber_(detail.net),
+      payer_country: order.payer_country || detail.buyer_country_code || detail.country || '',
+      region: detail.region || '',
+      city: detail.city || '',
+      postal_code: detail.postal_code || '',
+      address_1: detail.address_1 || '',
+      address_2: detail.address_2 || '',
+      created_at: order.created_at || '',
+      updated_at: order.updated_at || '',
+      raw_event_id: order.raw_event_id || '',
+      products: productRows
+    };
+  }).filter(function(row) {
+    const stamp = new Date(row.created_at || 0);
+    if (from && (!stamp || isNaN(stamp.getTime()) || stamp < from)) return false;
+    if (to && (!stamp || isNaN(stamp.getTime()) || stamp > to)) return false;
+    if (statusFilter && String(row.status || '').toLowerCase() !== statusFilter) return false;
+    if (productFilter && !row.products.some(function(p) { return String(p.product_id) === productFilter; })) return false;
+    if (query) {
+      const haystack = [row.order_id,row.paypal_order_id,row.paypal_capture_id,row.customer_id,row.email,row.buyer_name,row.status,row.payer_country,row.region,row.city]
+        .concat(row.products.map(function(p) { return p.product_id + ' ' + p.title; }))
+        .join(' ').toLowerCase();
+      if (haystack.indexOf(query) < 0) return false;
+    }
+    return true;
+  }).sort(function(a,b) { return new Date(b.created_at || 0) - new Date(a.created_at || 0); });
+
+  const sales = rows.filter(function(row) { return String(row.status || '').toLowerCase() === 'completed'; });
+  let gross = 0, fees = 0, net = 0, units = 0, importedNetOrders = 0;
+  const productMetrics = {};
+  sales.forEach(function(row) {
+    gross += Number(row.total || 0);
+    fees += Math.abs(Number(row.fee || 0));
+    if (row.net !== null) { net += Number(row.net || 0); importedNetOrders++; }
+    row.products.forEach(function(item) {
+      units += Number(item.quantity || 0);
+      const key = String(item.product_id || 'unknown');
+      if (!productMetrics[key]) productMetrics[key] = { product_id:key, title:item.title || key, orders:{}, units:0, gross:0, net:0 };
+      productMetrics[key].orders[row.order_id] = true;
+      productMetrics[key].units += Number(item.quantity || 0);
+      productMetrics[key].gross += Number(item.line_total || 0);
+      if (row.net !== null && Number(row.total || 0) > 0) {
+        productMetrics[key].net += Number(row.net || 0) * (Number(item.line_total || 0) / Number(row.total || 0));
+      }
+    });
+  });
+
+  const products = Object.keys(productMetrics).map(function(key) {
+    const m = productMetrics[key];
+    return {
+      product_id: m.product_id,
+      title: m.title,
+      orders: Object.keys(m.orders).length,
+      units: m.units,
+      gross: Number(m.gross.toFixed(2)),
+      net: Number(m.net.toFixed(2))
+    };
+  }).sort(function(a,b) { return b.gross - a.gross; });
+
+  return {
+    ok: true,
+    summary: {
+      completed_orders: sales.length,
+      gross_sales: Number(gross.toFixed(2)),
+      paypal_fees: Number(fees.toFixed(2)),
+      net_sales: Number(net.toFixed(2)),
+      net_sales_orders_with_activity_data: importedNetOrders,
+      units_sold: units,
+      average_order_value: sales.length ? Number((gross / sales.length).toFixed(2)) : 0
+    },
+    products: products,
+    orders: rows.slice(0, 500),
+    product_options: context.products.map(function(p) { return { product_id:p.product_id, title:p.title || p.short_title || p.product_id }; })
+  };
+}
+
 function parseSystemLogMetadata_(row) {
   try {
     const value = row && row.metadata_json;
@@ -3976,6 +4527,6 @@ function escapeHtml_(value) {
 
 /*
 ==========================================================================================
-END OF LWB BACKEND v2.0.9 | Copyright © 2026 Living Word Bibles. All Rights Reserved. Developed by Cook Technology Services. Last Updated on 11 September 2026 at 14:10:53Z UTC
+END OF LWB BACKEND v2.1.0 | Copyright © 2026 Living Word Bibles. All Rights Reserved. Developed by Cook Technology Services. Last Updated on 11 September 2026 at 17:25:16Z UTC
 ==========================================================================================
 */

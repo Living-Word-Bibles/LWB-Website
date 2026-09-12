@@ -333,10 +333,13 @@
           </a>
         </article>
 
+        <!-- Trump hero temporarily disabled. To reactivate, remove data-homepage-hero-disabled and hidden from this article and its matching dot below. -->
         <article
           class="homepage-hero-slide homepage-hero-slide--promo homepage-hero-slide--trump"
           data-homepage-hero-slide
+          data-homepage-hero-disabled
           data-mobile-hero
+          hidden
           aria-hidden="true"
           style="--hero-bg:url('/assets/trump-banner.png');--hero-bg-mobile:url('/assets/trump-mobile-banner.png')"
         >
@@ -353,7 +356,7 @@
           <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="4" aria-label="Show eStore slide" aria-current="false"></button>
           <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="5" aria-label="Show Print Bibles slide" aria-current="false"></button>
           <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="6" aria-label="Show God Bless America Bible slide" aria-current="false"></button>
-          <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="7" aria-label="Show Donald J. Trump Make America Great Again Bible slide" aria-current="false"></button>
+          <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="7" data-homepage-hero-disabled hidden aria-label="Show Donald J. Trump Make America Great Again Bible slide" aria-current="false"></button>
         </div>
 
       </div>
@@ -531,8 +534,9 @@
         const slider = document.querySelector("[data-homepage-hero-slider]");
         if (!slider) return;
 
-        const slides = Array.from(slider.querySelectorAll("[data-homepage-hero-slide]"));
-        const dots = Array.from(slider.querySelectorAll("[data-homepage-hero-dot]"));
+        // Disabled hero slides remain in the HTML for easy reactivation but are excluded from rotation.
+        const slides = Array.from(slider.querySelectorAll("[data-homepage-hero-slide]:not([data-homepage-hero-disabled])"));
+        const dots = Array.from(slider.querySelectorAll("[data-homepage-hero-dot]:not([data-homepage-hero-disabled])"));
         if (slides.length < 2) return;
 
         let current = 0;

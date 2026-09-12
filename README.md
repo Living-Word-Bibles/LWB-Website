@@ -1,3 +1,4 @@
+[README.md](https://github.com/user-attachments/files/32143905/README.md)
 [README.md](https://github.com/user-attachments/files/32125804/README.md)
 [README.md](https://github.com/user-attachments/files/32111621/README.md)
 [README.md](https://github.com/user-attachments/files/32106046/README.md)
@@ -23,7 +24,7 @@
 
 <p align="center">
   <a href="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml/badge.svg?branch=main"></a>
-  <img alt="Frontend package v2.6.6" src="https://img.shields.io/badge/frontend-v2.6.6-555555">
+  <img alt="Frontend package v2.6.7" src="https://img.shields.io/badge/frontend-v2.6.7-555555">
   <img alt="Google Apps Script v2.1.0" src="https://img.shields.io/badge/Google%20Apps%20Script-v2.1.0-555555">
   <img alt="Hosting GitHub Pages" src="https://img.shields.io/badge/hosting-GitHub%20Pages-555555">
 </p>
@@ -34,7 +35,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 11 September 2026 at 17:25:16Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 12 September 2026 at 13:30:06Z UTC</sub></p>
 
 ---
 
@@ -52,12 +53,12 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 |---|---|
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
-| Frontend package version | `2.6.6` |
+| Frontend package version | `2.6.7` |
 | Google Apps Script version | `2.1.0` |
 | Apps Script build stamp | `11 September 2026 at 17:25:16Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `11 September 2026 at 17:25:16Z UTC` |
+| README revision | `12 September 2026 at 13:30:06Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
 
@@ -65,6 +66,59 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 
 
 
+
+## What's New in v2.6.7 Alpha — eStore Merchandising, Homepage Heroes, Social Media & Amazon Price Refresh
+
+Released **12 September 2026**. Last Updated: **12 September 2026 at 13:30:06Z UTC**
+
+### eStore merchandising and product order
+
+- Reordered the twelve-product `/estore/` grid so the first row is:
+  1. **The Holy Bible: King James Version**
+  2. **God Bless America Bible**
+  3. **The Complete Apocrypha of the Ethiopian Bible**
+- Moved **The Donald J. Trump Make America Great Again Bible** to the first position of the final row, followed by the two free products:
+  1. **KJV Special Edition**
+  2. **Douay-Rheims Bible**
+- The Trump Bible remains in the eStore as **COMING SOON!** and its checkout remains intentionally disabled.
+- Added **ON SALE!** starbursts to the **American Standard Version (ASV)**, **Young's Literal Translation (YLT)**, and **World English Bible (WEB)** cards so every eStore product now carries a promotional/status starburst.
+- Preserved the existing **BEST SELLER!**, **BEST VALUE!**, **COMING SOON!**, and **FREE!** starbursts on the other products.
+
+### Homepage hero updates
+
+- Added a new **God Bless America Bible** homepage hero immediately before the Trump Bible position in the hero sequence.
+- Desktop hero artwork uses `/assets/GodBlessAmericaBanner.png`.
+- Mobile hero artwork uses `/assets/GodBlessAmericaMobileBanner.png`.
+- The full God Bless America hero links to `/estore/p/god-bless-america-bible/`.
+- Added dedicated Trump mobile artwork at `/assets/trump-mobile-banner.png`.
+- The Trump hero remains present in the homepage source but is **disabled from the active slideshow**, making it easy to reactivate later without rebuilding the slide.
+- The God Bless America hero remains active in the slideshow.
+
+### Trump Bible public presentation
+
+- Updated `/trump-bible/` and `/estore/p/donald-j-trump-make-america-great-again-bible/` with prominent public-facing **COMING SOON!** messaging.
+- Preserved the existing official **God Bless The USA Bible** print-product promotion and external purchase link on the Trump Bible pages.
+- Added a direct link from the Trump eStore product page to `/trump-bible/`.
+- Checkout remains disabled for the Trump digital edition.
+
+### Social Media
+
+- Added the new Living Word Bibles Instagram post as the newest item on `/social-media/`:
+  - `https://www.instagram.com/p/DdL13CeFd77/`
+- Preserved the existing Instagram embed gallery and all previously curated posts beneath it.
+
+### Amazon price refresh — 12 September 2026
+
+- Refreshed displayed Amazon prices for the Living Word Bibles **Print Bibles** and **Christian Books** storefronts on **12 September 2026**.
+- Updated the corresponding observed-price dates to **12 September 2026**.
+- Amazon pricing and availability remain subject to change at the retailer.
+
+### Frontend / backend release status
+
+- Frontend package advanced to **v2.6.7 Alpha**.
+- Backend remains **v2.1.0**; this release does not require a backend version bump.
+
+---
 
 ## What's New in v2.6.6 Alpha — God Bless America Bible
 
@@ -92,8 +146,7 @@ Released **11 September 2026**. Last Updated: **11 September 2026 at 17:25:16Z U
 ### eStore organization and UK notice
 
 - Expanded `/estore/` to **twelve** digital Bible products.
-- Current product order is arranged so the first row is **KJV**, **Donald J. Trump Make America Great Again Bible**, and **God Bless America Bible**.
-- Moved **The Complete Apocrypha of the Ethiopian Bible** to the first position of the final row, followed by the two free products: **KJV Special Edition** and **Douay-Rheims Bible**.
+- At release, the eStore was expanded to twelve digital Bible products. The current storefront order is documented in **v2.6.7 Alpha** above.
 - Updated applicable KJV-based eStore notices so **VIEW OUR UK NOTICE HERE** now points to `/terms-of-service/#uk-kjv`.
 
 ### Copyright Notice and Editorial Standards
@@ -202,7 +255,7 @@ Released **09 September 2026**. Last Updated: **11 September 2026 at 13:13:57Z U
 
 ### 10 September 2026 — Donald J. Trump Make America Great Again Bible
 
-- Added **The Donald J. Trump Make America Great Again Bible** as a Living Word Bibles digital eBook product while keeping the frontend release at **v2.6.5 Alpha**.
+- Added **The Donald J. Trump Make America Great Again Bible** as a Living Word Bibles digital eBook product while keeping the frontend release at **v2.6.5 Alpha**. **Current status: COMING SOON; checkout disabled.**
 - Added the dedicated public feature page at `/trump-bible/` and the matching eStore product page at `/estore/p/donald-j-trump-make-america-great-again-bible/`.
 - Added the production EPUB asset at `/assets/products/trumpbible.epub` and the Living Word Bibles cover artwork at `/assets/TrumpMAGABibleCover.png`.
 - Added a homepage promotional banner at `/assets/trump-banner.png` linking visitors to `/trump-bible/`.
@@ -1221,7 +1274,7 @@ Server-side secrets such as `DOWNLOAD_TOKEN_SECRET`, account-authentication secr
 
 ## eStore, Print Bibles, and PayPal
 
-The core eStore now presents **eleven digital Bible editions**, including NKJV, NIV, ESV, and the newly added Donald J. Trump Make America Great Again Bible. The Ethiopian Bible is also offered through its dedicated page at `/ethiopian-bible/` in separate **EPUB** and **PDF** editions. Print Bibles remain separate at:
+The core eStore now presents **twelve digital Bible editions**. The Donald J. Trump Make America Great Again Bible remains listed as **COMING SOON!** with checkout disabled. The Ethiopian Bible is also offered through its dedicated page at `/ethiopian-bible/` in separate **EPUB** and **PDF** editions. Print Bibles remain separate at:
 
 ```text
 /estore/print-bibles/
@@ -1371,9 +1424,9 @@ Before merging or deploying this release:
 **Repository architecture revision:** `2026-08-27T22:28:20Z`  
 **Apps Script build stamp:** `11 September 2026 at 17:25:16Z UTC`  
 **Google Apps Script version:** `2.1.0`  
-**Frontend package version:** `2.6.6`  
-**README last updated:** **11 September 2026 at 17:25:16Z UTC**
+**Frontend package version:** `2.6.7`  
+**README last updated:** **12 September 2026 at 13:30:06Z UTC**
 
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 11 September 2026 at 17:25:16Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 12 September 2026 at 13:30:06Z UTC</strong></p>

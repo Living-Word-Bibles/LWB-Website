@@ -185,30 +185,29 @@
           }
         }
 
-        /* Trump Bible artwork contains its own title/product composition.
-           Keep the banner unobstructed and make the full slide clickable. */
-        .homepage-hero-slide--trump::before{
+        /* Promotional Bible artwork contains its own title/product composition.
+           Keep each banner unobstructed and make the full slide clickable. */
+        .homepage-hero-slide--promo::before{
           background:linear-gradient(to top,rgba(0,0,0,.10),rgba(0,0,0,0) 38%);
           pointer-events:none;
         }
 
-        .homepage-hero-slide--trump .homepage-hero-link{
+        .homepage-hero-slide--promo .homepage-hero-link{
           position:absolute;
           inset:0;
           z-index:2;
           display:block;
         }
 
-        .homepage-hero-slide--trump .homepage-hero-link:focus-visible{
+        .homepage-hero-slide--promo .homepage-hero-link:focus-visible{
           outline:4px solid #fff;
           outline-offset:-8px;
         }
 
         @media(max-width:720px){
-          .homepage-hero-slide--trump{
-            background-size:contain;
+          .homepage-hero-slide--promo{
+            background-size:cover;
             background-position:center center;
-            background-color:#0b1d3b;
           }
         }
 
@@ -323,10 +322,23 @@
         </article>
 
         <article
-          class="homepage-hero-slide homepage-hero-slide--trump"
+          class="homepage-hero-slide homepage-hero-slide--promo homepage-hero-slide--god-bless-america"
           data-homepage-hero-slide
+          data-mobile-hero
           aria-hidden="true"
-          style="--hero-bg:url('/assets/trump-banner.png')"
+          style="--hero-bg:url('/assets/GodBlessAmericaBanner.png');--hero-bg-mobile:url('/assets/GodBlessAmericaMobileBanner.png')"
+        >
+          <a class="homepage-hero-link" href="/estore/p/god-bless-america-bible/" aria-label="Explore the God Bless America Bible">
+            <span class="sr-only">God Bless America Bible</span>
+          </a>
+        </article>
+
+        <article
+          class="homepage-hero-slide homepage-hero-slide--promo homepage-hero-slide--trump"
+          data-homepage-hero-slide
+          data-mobile-hero
+          aria-hidden="true"
+          style="--hero-bg:url('/assets/trump-banner.png');--hero-bg-mobile:url('/assets/trump-mobile-banner.png')"
         >
           <a class="homepage-hero-link" href="/trump-bible/" aria-label="Explore The Donald J. Trump Make America Great Again Bible">
             <span class="sr-only">The Donald J. Trump Make America Great Again Bible</span>
@@ -340,7 +352,8 @@
           <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="3" aria-label="Show Ethiopian Bible slide" aria-current="false"></button>
           <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="4" aria-label="Show eStore slide" aria-current="false"></button>
           <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="5" aria-label="Show Print Bibles slide" aria-current="false"></button>
-          <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="6" aria-label="Show Donald J. Trump Make America Great Again Bible slide" aria-current="false"></button>
+          <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="6" aria-label="Show God Bless America Bible slide" aria-current="false"></button>
+          <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="7" aria-label="Show Donald J. Trump Make America Great Again Bible slide" aria-current="false"></button>
         </div>
 
       </div>

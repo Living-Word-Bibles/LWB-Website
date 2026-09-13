@@ -32,7 +32,8 @@
           z-index:0;
           isolation:isolate;
           overflow:hidden;
-          min-height:clamp(430px,48vw,620px);
+          height:clamp(430px,48vw,620px);
+          min-height:0;
           border-radius:inherit;
         }
 
@@ -56,9 +57,6 @@
           transition:opacity .9s ease, visibility .9s ease;
         }
 
-        .homepage-hero-slide:first-child{
-          position:relative;
-        }
 
         .homepage-hero-slide.is-active{
           z-index:1;
@@ -161,7 +159,8 @@
 
         @media(max-width:720px){
           .homepage-hero-slider{
-            min-height:420px;
+            height:420px;
+            min-height:0;
           }
 
           .homepage-hero-slide{
@@ -204,12 +203,13 @@
           outline-offset:-8px;
         }
 
-        /* Presidential Edition desktop artwork must be shown in full.
-           Unlike the other hero artwork, do not crop it with `cover`. */
-        .homepage-hero-slide--presidential-edition{
-          background-size:contain;
-          background-position:center center;
-          background-color:#000;
+        /* Presidential Edition desktop banner: fill the entire carousel viewport.
+           100% 100% guarantees no cropping and no side/top/bottom bars. */
+        @media(min-width:721px){
+          .homepage-hero-slide--presidential-edition{
+            background-size:100% 100%;
+            background-position:center center;
+          }
         }
 
         @media(max-width:720px){

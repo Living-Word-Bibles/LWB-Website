@@ -1,11 +1,16 @@
 /**
- * Living Word Bibles Backend v2.1.0
+ * Living Word Bibles Backend v2.2.0
  * Core Website API
  *
  * Account: gospellivingwordbibles@gmail.com
  * Spreadsheet: LWB Website
  * Legal display date: 11 September 2026
  * Build timestamp: 11 September 2026 at 17:25:16Z UTC
+ *
+ * v2.2.0 highlights:
+ * - Adds repository-backed delivery mappings for the Presidential Edition base, Bill Clinton, George W. Bush, and Barack Obama eBibles.
+ * - Adds the four Presidential Edition Hosted Button IDs to the existing paid-digital compliance flow.
+ * - Uses the existing Products, Digital Assets, Orders, Entitlements, and reader architecture; no new spreadsheet columns are required.
  *
  * v2.1.0 highlights:
  * - Adds Orders sales reporting and PayPal Activity Report CSV reconciliation to the portal.
@@ -76,8 +81,8 @@
  */
 
 const LWB = Object.freeze({
-  VERSION: '2.1.0',
-  BUILD_UTC: '11 September 2026 at 17:25:16Z UTC',
+  VERSION: '2.2.0',
+  BUILD_UTC: '13 September 2026 at 14:10:37Z UTC',
   SITE_URL: 'https://www.livingwordbibles.com',
   CONTACT_EMAIL: 'gospellivingwordbibles@gmail.com',
   SPREADSHEET_ID: '1xnzdo1UJsEOTqcO2066Nfb6ayqKn8Zg5RbNLdpbaTcc',
@@ -93,7 +98,8 @@ const LWB = Object.freeze({
   ]),
   PAID_DIGITAL_PAYPAL_BUTTONS: Object.freeze([
     'YXUZPMWTKME24','KBJTWT23LA6JN','5A5Z2VDH74DFG','K7C2SJYLCDKMU',
-    'BSYFSH79KT8VC','8Z63ZMZEALLG4','4HCP6WRVGQNV2','VSFW4TDM4U2XG','9GCRN7SY6BLNE'
+    'BSYFSH79KT8VC','8Z63ZMZEALLG4','4HCP6WRVGQNV2','VSFW4TDM4U2XG','9GCRN7SY6BLNE',
+    'XMQPXZUBCJYLW','7VQKJ6R3CVWGL','M7GH5LDQJ5EKY','EPYKX9WA9M82S'
   ]),
   LOGO_URL: 'https://www.livingwordbibles.com/assets/LivingWordBibles01.png',
   NEWSLETTER_BATCH_MAX: 99,
@@ -126,7 +132,11 @@ const LWB = Object.freeze({
     prod_niv: '/assets/products/niv.epub',
     prod_esv: '/assets/products/esv.epub',
     prod_trump_bible: '/assets/products/trumpbible.epub',
-    prod_god_bless_america_bible: '/assets/products/godbless.epub'
+    prod_god_bless_america_bible: '/assets/products/godbless.epub',
+    prod_presidential_edition: '/assets/products/president.epub',
+    prod_presidential_bill_clinton: '/assets/products/clinton.epub',
+    prod_presidential_george_w_bush: '/assets/products/bush.epub',
+    prod_presidential_barack_obama: '/assets/products/obama.epub'
   }),
   EMAIL_RE: /^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$/,
   CALLBACK_RE: /^[A-Za-z_$][0-9A-Za-z_$\.]{0,80}$/,
@@ -4527,6 +4537,6 @@ function escapeHtml_(value) {
 
 /*
 ==========================================================================================
-END OF LWB BACKEND v2.1.0 | Copyright © 2026 Living Word Bibles. All Rights Reserved. Developed by Cook Technology Services. Last Updated on 11 September 2026 at 17:25:16Z UTC
+END OF LWB BACKEND v2.2.0 | Copyright © 2026 Living Word Bibles. All Rights Reserved. Developed by Cook Technology Services. Last Updated on 13 September 2026 at 14:10:37Z UTC
 ==========================================================================================
 */

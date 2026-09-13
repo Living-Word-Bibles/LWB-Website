@@ -8,8 +8,8 @@
  * Build timestamp: 11 September 2026 at 17:25:16Z UTC
  *
  * v2.2.0 highlights:
- * - Adds repository-backed delivery mappings for the Presidential Edition base, Bill Clinton, George W. Bush, and Barack Obama eBibles.
- * - Adds the four Presidential Edition Hosted Button IDs to the existing paid-digital compliance flow.
+ * - Adds repository-backed delivery mappings for the Presidential Edition base, Bill Clinton, George W. Bush, Barack Obama, and Joe Biden eBibles.
+ * - Adds the paid Presidential Edition Hosted Button IDs to the existing paid-digital compliance flow and provisions the Joe Biden edition as a free online-reading-only account title.
  * - Uses the existing Products, Digital Assets, Orders, Entitlements, and reader architecture; no new spreadsheet columns are required.
  *
  * v2.1.0 highlights:
@@ -81,8 +81,8 @@
  */
 
 const LWB = Object.freeze({
-  VERSION: '2.2.0',
-  BUILD_UTC: '13 September 2026 at 14:10:37Z UTC',
+  VERSION: '2.2.1',
+  BUILD_UTC: '13 September 2026 at 15:44:34Z UTC',
   SITE_URL: 'https://www.livingwordbibles.com',
   CONTACT_EMAIL: 'gospellivingwordbibles@gmail.com',
   SPREADSHEET_ID: '1xnzdo1UJsEOTqcO2066Nfb6ayqKn8Zg5RbNLdpbaTcc',
@@ -104,7 +104,8 @@ const LWB = Object.freeze({
   LOGO_URL: 'https://www.livingwordbibles.com/assets/LivingWordBibles01.png',
   NEWSLETTER_BATCH_MAX: 99,
   NEWSLETTER_WEEKDAYS: Object.freeze([1, 3, 5]), // Monday, Wednesday, Friday
-  FREE_ACCOUNT_PRODUCTS: Object.freeze(['prod_kjv_special', 'prod_drb']),
+  FREE_ACCOUNT_PRODUCTS: Object.freeze(['prod_kjv_special', 'prod_drb', 'prod_presidential_joe_biden']),
+  ONLINE_ONLY_PRODUCTS: Object.freeze(['prod_presidential_joe_biden']),
   ETHIOPIAN_PRODUCT_IDS: Object.freeze([
     'prod_ethiopian_apocrypha',
     'prod_ethiopian_apocrypha_epub',
@@ -136,7 +137,8 @@ const LWB = Object.freeze({
     prod_presidential_edition: '/assets/products/president.epub',
     prod_presidential_bill_clinton: '/assets/products/clinton.epub',
     prod_presidential_george_w_bush: '/assets/products/bush.epub',
-    prod_presidential_barack_obama: '/assets/products/obama.epub'
+    prod_presidential_barack_obama: '/assets/products/obama.epub',
+    prod_presidential_joe_biden: '/assets/products/biden.epub'
   }),
   EMAIL_RE: /^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$/,
   CALLBACK_RE: /^[A-Za-z_$][0-9A-Za-z_$\.]{0,80}$/,
@@ -960,6 +962,13 @@ function isAccountEligibleProduct_(product) {
   return type === 'ebook' || isEthiopianProduct_(product);
 }
 
+function isOnlineOnlyProduct_(productOrId) {
+  const id = typeof productOrId === 'string'
+    ? String(productOrId)
+    : String(productOrId && productOrId.product_id || '');
+  return LWB.ONLINE_ONLY_PRODUCTS.indexOf(id) >= 0;
+}
+
 /* ========================================================================== */
 /* ORDERS                                                                     */
 /* ========================================================================== */
@@ -1189,6 +1198,9 @@ function freeDownloadLink_(params) {
   if (Number(product.price) !== 0) {
     return { ok: false, error: 'Paid products require verified payment' };
   }
+  if (isOnlineOnlyProduct_(product)) {
+    return { ok: false, error: 'This title is available for online reading only.' };
+  }
 
   const asset = findAssetForProduct_(product.product_id);
   if (!asset || !asset.repository_path) {
@@ -1238,6 +1250,7 @@ function verifyDownloadToken_(token) {
 function downloadRedirect_(params) {
   try {
     const payload = verifyDownloadToken_(params.token);
+    if (isOnlineOnlyProduct_(payload.product_id)) throw new Error('This title is available for online reading only.');
     const asset = findAssetForProduct_(payload.product_id);
     if (!asset || !asset.repository_path) throw new Error('Repository download asset unavailable.');
 
@@ -1648,6 +1661,16 @@ function normalizeProductKey_(value) {
 }
 
 function fulfillmentResponse_(order, product, email) {
+  if (isOnlineOnlyProduct_(product)) {
+    return {
+      ok: true,
+      order_id: order.order_id,
+      email: email,
+      product: product,
+      reader_url: LWB.SITE_URL + '/lumiere/?product=' + encodeURIComponent(product.product_id),
+      download_url: ''
+    };
+  }
   const asset = findAssetForProduct_(product.product_id);
   if (!asset || !asset.repository_path) {
     return { ok: false, error: 'The repository digital asset is not configured.' };
@@ -2050,7 +2073,7 @@ function verifyEmail_(data) {
   logSystem_('INFO', 'EMAIL_VERIFIED', email, customer.customer_id, 'account', 'success + free library', {});
   return {
     ok: true,
-    message: 'Your email address has been verified. Your free KJV Special Edition and Douay-Rheims Bible are ready in your Library.'
+    message: 'Your email address has been verified. Your free KJV Special Edition, Douay-Rheims Bible, and Joe Biden Presidential Edition are ready in your Library.'
   };
 }
 
@@ -2115,7 +2138,7 @@ function accountData_(data) {
     if (!product || !isAccountEligibleProduct_(product)) return null;
 
     const asset = findAssetForProduct_(productId);
-    const downloadUrl = asset && asset.repository_path
+    const downloadUrl = !isOnlineOnlyProduct_(product) && asset && asset.repository_path
       ? readerRepositoryUrl_(asset.repository_path)
       : '';
 
@@ -2129,6 +2152,8 @@ function accountData_(data) {
       cover_path: product.cover_path,
       canonical_path: product.canonical_path,
       granted_at: entitlement.granted_at,
+      reader_only: isOnlineOnlyProduct_(product),
+      reader_url: LWB.SITE_URL + '/lumiere/?product=' + encodeURIComponent(product.product_id),
       download_url: downloadUrl
     };
   }).filter(Boolean).sort(function(a, b) {
@@ -3037,7 +3062,7 @@ function adminEntitlementRevoke_(data) {
   if (LWB.FREE_ACCOUNT_PRODUCTS.indexOf(String(entitlement.product_id || '')) >= 0) {
     return {
       ok: false,
-      error: 'The KJV Special Edition and Douay-Rheims Bible are required free account products and cannot be removed.'
+      error: 'Required free account products cannot be removed.'
     };
   }
 
@@ -4035,16 +4060,16 @@ function sendWelcomeVerificationEmail_(email, displayName, token) {
     '<h1 style="font-family:Georgia,serif;font-size:30px;line-height:1.2;margin:0 0 14px;color:#1d2a34">Welcome to Living Word Bibles</h1>' +
     '<p style="margin:0 0 18px">Thank you for creating your Living Word Bibles account. Verify your email address to activate your account and open your personal Bible library.</p>' +
     emailButton_('Verify My Email', link) +
-    '<p style="margin:22px 0 0"><strong>Your account includes two free digital Bibles:</strong> The Holy Bible: King James Version Special Edition and the Douay-Rheims Bible.</p>' +
+    '<p style="margin:22px 0 0"><strong>Your account includes three free Bible editions:</strong> The Holy Bible: King James Version Special Edition, the Douay-Rheims Bible, and The Holy Bible: Presidential Edition — Joe Biden (online reading only).</p>' +
     '<p style="margin:14px 0 0">This verification link expires in 24 hours.</p>';
 
   sendBrandedEmail_({
     to: email,
     subject: 'Welcome to Living Word Bibles — verify your account',
-    preheader: 'Verify your account and receive two free digital Bibles.',
+    preheader: 'Verify your account and receive three free Bible editions.',
     html: bodyHtml,
     text: 'Welcome to Living Word Bibles. Verify your account: ' + link +
-      '\n\nYour account includes the KJV Special Edition and Douay-Rheims Bible free.'
+      '\n\nYour account includes the KJV Special Edition, Douay-Rheims Bible, and Joe Biden Presidential Edition free; the Biden edition is available for online reading only.'
   });
 }
 
@@ -4196,8 +4221,8 @@ function newsletterTemplate_(key, context) {
       url: LWB.SITE_URL + '/the-catholic-bible/'
     },
     free_bibles: {
-      subject: 'Two free digital Bibles for your Living Word Bibles account',
-      preheader: 'Your KJV Special Edition and Douay-Rheims Bible are available free.',
+      subject: 'Three free Bible editions for your Living Word Bibles account',
+      preheader: 'Your KJV Special Edition, Douay-Rheims Bible, and Joe Biden Presidential Edition are available free.',
       title: 'Your Free Digital Bibles',
       copy: 'Every verified Living Word Bibles account includes The Holy Bible: King James Version Special Edition and the Douay-Rheims Bible at no charge.',
       cta: 'Open My Library',

@@ -1,3 +1,4 @@
+[README.md](https://github.com/user-attachments/files/32166030/README.md)
 [README.md](https://github.com/user-attachments/files/32164233/README.md)
 [README.md](https://github.com/user-attachments/files/32143905/README.md)
 [README.md](https://github.com/user-attachments/files/32125804/README.md)
@@ -36,7 +37,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 13 September 2026 at 15:44:34Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 13 September 2026 at 18:28:51Z UTC</sub></p>
 
 ---
 
@@ -59,7 +60,7 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 | Apps Script build stamp | `13 September 2026 at 15:44:34Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `13 September 2026 at 15:44:34Z UTC` |
+| README revision | `13 September 2026 at 18:28:51Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
 
@@ -70,9 +71,17 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 
 ## What's New in v2.6.7 Alpha — eStore Merchandising, Homepage Heroes, Social Media & Amazon Price Refresh
 
-Released **12 September 2026**. Last Updated: **13 September 2026 at 15:44:34Z UTC**
+Released **12 September 2026**. Last Updated: **13 September 2026 at 18:28:51Z UTC**
 
 
+
+### 13 September 2026 — Presidential presentation follow-up
+
+- Added a dedicated **Presidential Collection homepage hero** using `/assets/PresidentialEdition.png` on desktop and `/assets/PresidentialEditionMobile.png` on mobile.
+- Corrected the Presidential desktop hero so it occupies the full carousel area without the half-height blank-area failure, side bars, or unintended cropping.
+- Refreshed the Trump promotional artwork using the updated `/assets/trump-banner.png` and `/assets/trump-mobile-banner.png` assets.
+- Reordered the presidents featured on **The History of the American Presidency** into chronological order.
+- Refined Presidential Edition proceeds notices so the applicable edition identifies its intended recipient, including the Smithsonian's **The American Presidency** exhibit for the base edition, the **William J. Clinton Presidential Library & Museum**, the **National September 11 Memorial & Museum** for the George W. Bush edition, and the **Obama Presidential Center** for the Barack Obama edition.
 
 ### 13 September 2026 — Joe Biden Presidential Edition / backend v2.2.1
 
@@ -1489,8 +1498,8 @@ Before merging or deploying this release:
 **Apps Script build stamp:** `11 September 2026 at 17:25:16Z UTC`  
 **Google Apps Script version:** `2.1.0`  
 **Frontend package version:** `2.6.7`  
-**README last updated:** **12 September 2026 at 13:30:06Z UTC**
+**README last updated:** **13 September 2026 at 18:28:51Z UTC**
 
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 12 September 2026 at 13:30:06Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 13 September 2026 at 18:28:51Z UTC</strong></p>

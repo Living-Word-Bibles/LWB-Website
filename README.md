@@ -1,4 +1,4 @@
-[README.md](https://github.com/user-attachments/files/32162659/README.md)
+[README.md](https://github.com/user-attachments/files/32164233/README.md)
 [README.md](https://github.com/user-attachments/files/32143905/README.md)
 [README.md](https://github.com/user-attachments/files/32125804/README.md)
 [README.md](https://github.com/user-attachments/files/32111621/README.md)
@@ -26,7 +26,7 @@
 <p align="center">
   <a href="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml/badge.svg?branch=main"></a>
   <img alt="Frontend package v2.6.7" src="https://img.shields.io/badge/frontend-v2.6.7-555555">
-  <img alt="Google Apps Script v2.2.0" src="https://img.shields.io/badge/Google%20Apps%20Script-v2.2.0-555555">
+  <img alt="Google Apps Script v2.2.1" src="https://img.shields.io/badge/Google%20Apps%20Script-v2.2.1-555555">
   <img alt="Hosting GitHub Pages" src="https://img.shields.io/badge/hosting-GitHub%20Pages-555555">
 </p>
 
@@ -36,7 +36,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 13 September 2026 at 14:10:37Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 13 September 2026 at 15:44:34Z UTC</sub></p>
 
 ---
 
@@ -55,11 +55,11 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
 | Frontend package version | `2.6.7` |
-| Google Apps Script version | `2.2.0` |
-| Apps Script build stamp | `13 September 2026 at 14:10:37Z UTC` |
+| Google Apps Script version | `2.2.1` |
+| Apps Script build stamp | `13 September 2026 at 15:44:34Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `13 September 2026 at 14:10:37Z UTC` |
+| README revision | `13 September 2026 at 15:44:34Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
 
@@ -70,8 +70,22 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 
 ## What's New in v2.6.7 Alpha — eStore Merchandising, Homepage Heroes, Social Media & Amazon Price Refresh
 
-Released **12 September 2026**. Last Updated: **13 September 2026 at 14:10:37Z UTC**
+Released **12 September 2026**. Last Updated: **13 September 2026 at 15:44:34Z UTC**
 
+
+
+### 13 September 2026 — Joe Biden Presidential Edition / backend v2.2.1
+
+- Added `/assets/products/biden.epub` as `prod_presidential_joe_biden`.
+- The Biden edition uses the Douay-Rheims Bible and is presented as a free Presidential Edition.
+- Added `/presidential-edition/joe-biden/` using `/presidential-edition/BidenCover.png`, `/presidential-edition/joebiden.jpeg`, and `/presidential-edition/Joe_Biden_Signature.svg`.
+- The Biden product is **online-reading only** through `/lumiere/?product=prod_presidential_joe_biden`; storefront, account-library, free-download, token-download, and fulfillment responses do not expose a Biden download link.
+- Added `prod_presidential_joe_biden` to `FREE_ACCOUNT_PRODUCTS`, so verified/new accounts receive the entitlement through the existing default-free entitlement routine.
+- Added `prod_presidential_joe_biden` to `ONLINE_ONLY_PRODUCTS` and the repository asset map.
+- Updated the Presidential Collection, main eStore, Copyright Notice, Editorial Standards, and Presidential History page with the Biden edition.
+- Updated the Presidential History page to use YouTube video `vixeuFZpB-E` in place of the previous unavailable overview embed.
+- Added the standard Presidential Edition disclaimer to the Presidential Collection and all non-Biden Presidential product pages. The Biden page instead carries the requested free-public-access statement.
+- Products/Entitlements catalog follow-up: add the Biden product row and explicit manual entitlement rows for the two existing requested accounts. No new sheet or column is required.
 
 ### 13 September 2026 — Presidential Collection, Presidential Edition checkout & mobile storefront browsing
 
@@ -106,6 +120,7 @@ Released **12 September 2026**. Last Updated: **13 September 2026 at 14:10:37Z U
 /presidential-edition/bill-clinton/index.html
 /presidential-edition/george-w-bush/index.html
 /presidential-edition/barack-obama/index.html
+/presidential-edition/joe-biden/index.html
 /presidential-edition/donald-j-trump/index.html
 /presidential-edition/history/index.html
 /estore/index.html
@@ -115,6 +130,7 @@ Released **12 September 2026**. Last Updated: **13 September 2026 at 14:10:37Z U
 /editorial-standards/index.html
 /apps-script/Code.gs
 /assets/products/president.epub
+/assets/products/biden.epub
 /README.md
 /change-log.html
 ```

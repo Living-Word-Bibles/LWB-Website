@@ -204,6 +204,14 @@
           outline-offset:-8px;
         }
 
+        /* Presidential Edition desktop artwork must be shown in full.
+           Unlike the other hero artwork, do not crop it with `cover`. */
+        .homepage-hero-slide--presidential-edition{
+          background-size:contain;
+          background-position:center center;
+          background-color:#000;
+        }
+
         @media(max-width:720px){
           .homepage-hero-slide--promo{
             background-size:cover;

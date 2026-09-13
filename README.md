@@ -1,3 +1,4 @@
+[README.md](https://github.com/user-attachments/files/32162659/README.md)
 [README.md](https://github.com/user-attachments/files/32143905/README.md)
 [README.md](https://github.com/user-attachments/files/32125804/README.md)
 [README.md](https://github.com/user-attachments/files/32111621/README.md)
@@ -25,7 +26,7 @@
 <p align="center">
   <a href="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml/badge.svg?branch=main"></a>
   <img alt="Frontend package v2.6.7" src="https://img.shields.io/badge/frontend-v2.6.7-555555">
-  <img alt="Google Apps Script v2.1.0" src="https://img.shields.io/badge/Google%20Apps%20Script-v2.1.0-555555">
+  <img alt="Google Apps Script v2.2.0" src="https://img.shields.io/badge/Google%20Apps%20Script-v2.2.0-555555">
   <img alt="Hosting GitHub Pages" src="https://img.shields.io/badge/hosting-GitHub%20Pages-555555">
 </p>
 
@@ -35,7 +36,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 12 September 2026 at 13:30:06Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 13 September 2026 at 14:10:37Z UTC</sub></p>
 
 ---
 
@@ -54,11 +55,11 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
 | Frontend package version | `2.6.7` |
-| Google Apps Script version | `2.1.0` |
-| Apps Script build stamp | `11 September 2026 at 17:25:16Z UTC` |
+| Google Apps Script version | `2.2.0` |
+| Apps Script build stamp | `13 September 2026 at 14:10:37Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `12 September 2026 at 13:30:06Z UTC` |
+| README revision | `13 September 2026 at 14:10:37Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
 
@@ -69,7 +70,54 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 
 ## What's New in v2.6.7 Alpha — eStore Merchandising, Homepage Heroes, Social Media & Amazon Price Refresh
 
-Released **12 September 2026**. Last Updated: **12 September 2026 at 13:30:06Z UTC**
+Released **12 September 2026**. Last Updated: **13 September 2026 at 14:10:37Z UTC**
+
+
+### 13 September 2026 — Presidential Collection, Presidential Edition checkout & mobile storefront browsing
+
+- Added the dedicated Presidential Collection at `/presidential-edition/` with a shared American-flag presentation and collection navigation.
+- Added the base Presidential Edition product page at `/presidential-edition/bible/` using Hosted Button `XMQPXZUBCJYLW` and promotional pricing of **$19.99** with **$39.99** shown as the regular price.
+- Added president-specific product pages:
+  - `/presidential-edition/bill-clinton/` → `prod_presidential_bill_clinton` → `/assets/products/clinton.epub` → Hosted Button `7VQKJ6R3CVWGL`;
+  - `/presidential-edition/george-w-bush/` → `prod_presidential_george_w_bush` → `/assets/products/bush.epub` → Hosted Button `M7GH5LDQJ5EKY`;
+  - `/presidential-edition/barack-obama/` → `prod_presidential_barack_obama` → `/assets/products/obama.epub` → Hosted Button `EPYKX9WA9M82S`; and
+  - `/presidential-edition/donald-j-trump/` as a second public alias for the existing Donald J. Trump Presidential Edition presentation, still **COMING SOON!**.
+- Added the base repository mapping `prod_presidential_edition` → `/assets/products/president.epub`.
+- The Clinton, Bush, and Obama editions are presented at **$9.99**, with **$19.99** shown as the regular price.
+- The Git history includes commit `f10ed6d686d7715049cf45c445017a70ee98c1f6` (“Upload Presidential Bibles on 13 Sep 2026”), which added the Bush, Clinton, and Obama production EPUB files under `/assets/products/`.
+- Added `/presidential-edition/history/` with the Presidential Seal, presidential portraits/signatures, correspondence protocol guidance, and selected speech/document links.
+- Added **Presidential Collection** to the category navigation on `/estore/`, `/estore/print-bibles/`, and `/estore/christian-books/`.
+- Replaced the former Donald J. Trump card on the main `/estore/` grid with the base **The Holy Bible: Presidential Edition** card. The Trump edition remains available through the Presidential Collection and its existing public pages.
+- Added mobile-only swipe browsing with CSS scroll snap and fixed previous/next controls to the eStore, Presidential Collection, Print Bibles, and Christian Books product grids while preserving normal vertical reading inside the active product card.
+- Updated Copyright Notice and Editorial Standards eStore showcases with the base Presidential Edition followed by Clinton, Bush, Obama, and Trump.
+
+### Backend v2.2.0
+
+- Added repository-backed product mappings for the base Presidential Edition, Bill Clinton, George W. Bush, and Barack Obama editions.
+- Added Hosted Buttons `XMQPXZUBCJYLW`, `7VQKJ6R3CVWGL`, `M7GH5LDQJ5EKY`, and `EPYKX9WA9M82S` to the existing paid-digital compliance handling.
+- The release uses the existing Products, Digital Assets, Orders, Order Items, Customers, Entitlements, Downloads, and System Log architecture. No new sheet or column is required.
+- **Required deployment follow-up:** add the new Presidential Edition products to the existing Products catalog and create/confirm the appropriate entitlement records before account fulfillment/reader access is expected to work.
+
+### Surgical file set — 13 September 2026
+
+```text
+/presidential-edition/index.html
+/presidential-edition/bible/index.html
+/presidential-edition/bill-clinton/index.html
+/presidential-edition/george-w-bush/index.html
+/presidential-edition/barack-obama/index.html
+/presidential-edition/donald-j-trump/index.html
+/presidential-edition/history/index.html
+/estore/index.html
+/estore/print-bibles/index.html
+/estore/christian-books/index.html
+/copyright-notice/index.html
+/editorial-standards/index.html
+/apps-script/Code.gs
+/assets/products/president.epub
+/README.md
+/change-log.html
+```
 
 ### eStore merchandising and product order
 

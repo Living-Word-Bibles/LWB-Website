@@ -18,6 +18,63 @@
 <link href="/assets/css/site.css" rel="stylesheet"/>
 
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.livingwordbibles.com/#organization","name":"Living Word Bibles","url":"https://www.livingwordbibles.com/","logo":"https://www.livingwordbibles.com/assets/LivingWordBibles01.png"},{"@type":"WebSite","@id":"https://www.livingwordbibles.com/#website","url":"https://www.livingwordbibles.com/","name":"Living Word Bibles","publisher":{"@id":"https://www.livingwordbibles.com/#organization"}},{"@type":"WebPage","@id":"https://www.livingwordbibles.com/estore/christian-books/#webpage","url":"https://www.livingwordbibles.com/estore/christian-books/","name":"Christian Books | Living Word Bibles eStore","description":"Shop selected Christian print books for discipleship, Bible study, spiritual growth, biography, and Christian living through Amazon.","isPartOf":{"@id":"https://www.livingwordbibles.com/#website"},"about":{"@id":"https://www.livingwordbibles.com/#organization"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.livingwordbibles.com/"},{"@type":"ListItem","position":2,"name":"eStore","item":"https://www.livingwordbibles.com/estore/"},{"@type":"ListItem","position":3,"name":"Print Books","item":"https://www.livingwordbibles.com/estore/christian-books/"}]}]}</script>
+
+<style>
+.presidential-nav-btn{position:relative}.presidential-nav-badge{display:inline-grid;place-items:center;min-width:34px;height:20px;margin-left:.4rem;padding:0 .35rem;border-radius:999px;background:#c91522;color:#fff;font:900 .62rem/1 Arial,sans-serif;letter-spacing:.05em;vertical-align:middle;box-shadow:0 3px 8px rgba(0,0,0,.18)}
+@media(max-width:620px){.estore-category-nav{gap:.55rem!important}.estore-category-nav .btn{min-width:0!important;flex:1 1 calc(50% - .55rem)!important;padding-inline:.7rem}.presidential-nav-badge{min-width:30px;height:18px;font-size:.56rem}}
+</style>
+<style>
+/* Mobile-only product browsing: horizontal swipe + fixed edge arrows. */
+@media (max-width:720px){
+  [data-mobile-product-carousel]{
+    display:flex !important;
+    grid-template-columns:none !important;
+    gap:14px !important;
+    overflow-x:auto;
+    overflow-y:visible;
+    scroll-snap-type:x mandatory;
+    scroll-padding-inline:10px;
+    overscroll-behavior-x:contain;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+    padding:2px 10px 12px !important;
+    margin-inline:-10px;
+  }
+  [data-mobile-product-carousel]::-webkit-scrollbar{display:none}
+  [data-mobile-product-carousel] > article{
+    flex:0 0 calc(100% - 20px) !important;
+    width:calc(100% - 20px) !important;
+    min-width:0;
+    scroll-snap-align:center;
+    scroll-snap-stop:always;
+  }
+  .lwb-mobile-carousel-arrow{
+    position:fixed;
+    top:50%;
+    z-index:999;
+    width:44px;
+    height:54px;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    border:1px solid rgba(217,177,91,.9);
+    border-radius:999px;
+    background:rgba(15,35,73,.90);
+    color:#fff;
+    box-shadow:0 8px 24px rgba(0,0,0,.28);
+    font:900 1.8rem/1 Arial,sans-serif;
+    transform:translateY(-50%);
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .lwb-mobile-carousel-arrow.is-visible{display:flex}
+  .lwb-mobile-carousel-arrow.prev{left:6px}
+  .lwb-mobile-carousel-arrow.next{right:6px}
+  .lwb-mobile-carousel-arrow:focus-visible{outline:3px solid #fff;outline-offset:2px}
+  .lwb-mobile-carousel-live{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+}
+@media (min-width:721px){.lwb-mobile-carousel-arrow,.lwb-mobile-carousel-live{display:none!important}}
+</style>
 </head><body>
 <a class="skip-link" href="#main-content">Skip to Content</a><div data-lwb-header=""></div>
 <main id="main-content"><section class="section"><div class="container">
@@ -51,6 +108,7 @@
 </style>
 <div aria-label="eStore categories" class="estore-category-nav">
 <a class="btn secondary" href="/estore/">eBibles</a>
+<a class="btn secondary presidential-nav-btn" href="/presidential-edition/">Presidential Collection <span class="presidential-nav-badge">NEW</span></a>
 <a class="btn secondary" href="/estore/print-bibles/">Print Bibles</a>
 <a aria-current="page" class="btn gold" href="/estore/christian-books/">Print Books</a>
 </div>
@@ -63,7 +121,7 @@
 <p><strong>Amazon Associates Disclosure</strong></p>
 <p>As an Amazon Associate, LWB may earn commission on qualifying purchases.</p>
 </div>
-<div class="print-book-grid">
+<div class="print-book-grid" data-mobile-product-carousel="true">
 <article class="print-book-card" data-print-product-id="book_seeking_god">
 <div class="amazon-product-snippet" data-amazon-asin="1641584386"><a aria-label="View Seeking God: Finding Another Kind of Life with St. Ignatius and Dallas Willard on Amazon" href="https://amzn.to/4A5wiPh" rel="nofollow sponsored noopener noreferrer" target="_blank"><img alt="Seeking God: Finding Another Kind of Life with St. Ignatius and Dallas Willard Amazon product image" class="amazon-product-image" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://m.media-amazon.com/images/I/61Q9XlyUlQL._SL1500_.jpg"/></a></div>
 <div class="print-book-body">
@@ -140,4 +198,72 @@
 <p class="print-book-note">Prices shown are current starting paperback prices observed on the linked Amazon product listings as of 10 September 2026 and are subject to change at any time. Amazon determines product pricing, condition, availability, sellers, shipping, and fulfillment terms. Living Word Bibles does not process Amazon orders on this website.</p>
 </div></section></main><div data-lwb-footer=""></div>
 <script defer="" src="/assets/js/config.js"></script><script defer="" src="/assets/js/print-products.js"></script><script defer="" src="/assets/js/site.js"></script><script defer="" src="/assets/js/forms.js"></script>
+<script>
+(function(){
+  'use strict';
+  var mq=window.matchMedia('(max-width:720px)');
+  var grids=[].slice.call(document.querySelectorAll('[data-mobile-product-carousel]'));
+  if(!grids.length) return;
+
+  grids.forEach(function(grid,gridIndex){
+    var cards=[].slice.call(grid.children).filter(function(el){return el.tagName==='ARTICLE';});
+    if(cards.length<2) return;
+
+    var prev=document.createElement('button');
+    var next=document.createElement('button');
+    var live=document.createElement('span');
+    prev.type='button'; next.type='button';
+    prev.className='lwb-mobile-carousel-arrow prev';
+    next.className='lwb-mobile-carousel-arrow next';
+    prev.setAttribute('aria-label','Previous book');
+    next.setAttribute('aria-label','Next book');
+    prev.innerHTML='&#8249;'; next.innerHTML='&#8250;';
+    live.className='lwb-mobile-carousel-live';
+    live.setAttribute('aria-live','polite');
+    live.setAttribute('aria-atomic','true');
+    document.body.appendChild(prev); document.body.appendChild(next); grid.appendChild(live);
+
+    var active=false, index=0, raf=0;
+    function nearestIndex(){
+      var center=grid.scrollLeft + grid.clientWidth/2;
+      var best=0, dist=Infinity;
+      cards.forEach(function(card,i){
+        var c=card.offsetLeft + card.offsetWidth/2;
+        var d=Math.abs(c-center);
+        if(d<dist){dist=d;best=i;}
+      });
+      return best;
+    }
+    function announce(){
+      var title=cards[index].querySelector('h2,h3,h4,[data-product-title]');
+      var label=title ? title.textContent.trim() : ('Book '+(index+1));
+      live.textContent=label+' — '+(index+1)+' of '+cards.length;
+    }
+    function sync(){
+      if(!mq.matches || !active){prev.classList.remove('is-visible');next.classList.remove('is-visible');return;}
+      index=nearestIndex();
+      prev.classList.add('is-visible'); next.classList.add('is-visible');
+    }
+    function go(delta){
+      index=(nearestIndex()+delta+cards.length)%cards.length;
+      cards[index].scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+      announce();
+    }
+    prev.addEventListener('click',function(){go(-1)});
+    next.addEventListener('click',function(){go(1)});
+    grid.addEventListener('scroll',function(){cancelAnimationFrame(raf);raf=requestAnimationFrame(sync)},{passive:true});
+    mq.addEventListener ? mq.addEventListener('change',sync) : mq.addListener(sync);
+
+    if('IntersectionObserver' in window){
+      var io=new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          active=entry.isIntersecting && entry.intersectionRatio>.08;
+          sync();
+        });
+      },{threshold:[0,.08,.25]});
+      io.observe(grid);
+    }else{active=true;sync();}
+  });
+})();
+</script>
 </body></html>

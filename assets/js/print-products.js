@@ -1,10 +1,6 @@
 (() => {
   'use strict';
 
-  // Public storefront price renderer.
-  // READ ONLY: the Google Sheet / Print Products feed is the sole source of
-  // current_price and price_observed_date. This file never writes price data.
-
   const apiBase = window.LWB_SITE_CONFIG?.apiBase || '';
   if (!apiBase) return;
 
@@ -73,8 +69,6 @@
     const amount = formatPrice(product.current_price);
     const observedDate = formatDate(product.price_observed_date);
 
-    // No fallback values. If the Sheet does not provide both fields, render
-    // nothing rather than inventing or preserving stale storefront data.
     if (!amount || !observedDate) {
       priceEl.replaceChildren();
       return;
@@ -91,6 +85,26 @@
     }
 
     priceEl.appendChild(small);
+  }
+
+  function updatePageNote(products) {
+    const dates = products
+      .map(product => String(product.price_observed_date ?? '').trim())
+      .filter(Boolean)
+      .sort();
+
+    if (!dates.length) return;
+
+    const observedDate = formatDate(dates[dates.length - 1]);
+    if (!observedDate) return;
+
+    const note = document.querySelector(
+      '.print-bible-note[data-price-note-source="print-products-sheet"], ' +
+      '.print-book-note[data-price-note-source="print-products-sheet"]'
+    );
+    if (!note) return;
+
+    note.textContent = `Prices shown are current starting paperback prices observed on the linked Amazon product listings as of ${observedDate} and are subject to change at any time. Amazon determines product pricing, condition, availability, sellers, shipping, and fulfillment terms. Living Word Bibles does not process Amazon orders on this website.`;
   }
 
   function loadPrintProducts() {
@@ -110,13 +124,14 @@
 
       if (!payload?.ok || !Array.isArray(payload.products)) return;
 
-      payload.products
-        .filter(product => {
-          const target = String(product.site_page ?? '')
-            .replace(/\/+$/, '/') || '';
-          return !target || target === pagePath;
-        })
-        .forEach(renderProduct);
+      const products = payload.products.filter(product => {
+        const target = String(product.site_page ?? '')
+          .replace(/\/+$/, '/') || '';
+        return !target || target === pagePath;
+      });
+
+      products.forEach(renderProduct);
+      updatePageNote(products);
     };
 
     script.onerror = () => {
@@ -124,7 +139,6 @@
       cleanup();
     };
 
-    // JSONP GET only. No POST, PUT, PATCH, DELETE, fetch write, or Sheet mutation.
     script.src = `${apiBase}?action=print-products&callback=${encodeURIComponent(callback)}`;
     document.head.appendChild(script);
   }

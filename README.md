@@ -1,3 +1,4 @@
+[README.md](https://github.com/user-attachments/files/32208072/README.md)
 [README.md](https://github.com/user-attachments/files/32166030/README.md)
 [README.md](https://github.com/user-attachments/files/32164233/README.md)
 [README.md](https://github.com/user-attachments/files/32143905/README.md)
@@ -26,8 +27,8 @@
 
 <p align="center">
   <a href="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml/badge.svg?branch=main"></a>
-  <img alt="Frontend package v2.6.7" src="https://img.shields.io/badge/frontend-v2.6.7-555555">
-  <img alt="Google Apps Script v2.2.1" src="https://img.shields.io/badge/Google%20Apps%20Script-v2.2.1-555555">
+  <img alt="Frontend package v2.6.8" src="https://img.shields.io/badge/frontend-v2.6.8-555555">
+  <img alt="Google Apps Script v2.2.3" src="https://img.shields.io/badge/Google%20Apps%20Script-v2.2.3-555555">
   <img alt="Hosting GitHub Pages" src="https://img.shields.io/badge/hosting-GitHub%20Pages-555555">
 </p>
 
@@ -37,7 +38,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 13 September 2026 at 18:28:51Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 14 September 2026 at 19:24:11Z UTC</sub></p>
 
 ---
 
@@ -55,12 +56,12 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 |---|---|
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
-| Frontend package version | `2.6.7` |
-| Google Apps Script version | `2.2.1` |
-| Apps Script build stamp | `13 September 2026 at 15:44:34Z UTC` |
+| Frontend package version | `2.6.8` |
+| Google Apps Script version | `2.2.3` |
+| Apps Script build stamp | `14 September 2026 at 19:01:03Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `13 September 2026 at 18:28:51Z UTC` |
+| README revision | `14 September 2026 at 19:24:11Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
 
@@ -68,6 +69,42 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 
 
 
+
+## What's New in v2.6.8 Alpha — Print Storefront Pricing Reliability
+
+Released **14 September 2026**. Last Updated: **14 September 2026 at 19:24:11Z UTC**
+
+### Print Bibles and Christian Books pricing
+
+- Reworked `/estore/print-bibles/` and `/estore/christian-books/` so Amazon-linked product prices and observed dates are no longer maintained as hard-coded storefront values.
+- The existing `Print Products` data remains the sole editable source for Amazon-linked `current_price` and `price_observed_date` values.
+- Removed stale numeric/date fallbacks from participating Amazon product cards so checked-in page markup cannot silently display an old Amazon price after the underlying price record changes.
+- Preserved the separately managed **God Bless The USA Bible** retail presentation as the intentional non-Amazon-feed exception.
+- Updated `/assets/js/print-products.js` so the public storefront is read-only and consumes the published Print Products snapshot without posting price changes back to the backend.
+- Added a durable published Print Products snapshot for storefront reads so ordinary visitors do not require a fresh spreadsheet service read for every page view.
+- Price Reconcile updates rebuild the published snapshot immediately; direct `Print Products` edits refresh the snapshot through the edit handler when available, with a 60-second age check preventing a long-lived stale snapshot.
+- Blank or invalid spreadsheet price cells are no longer coerced into `$0.00`.
+- Preserved Amazon product imagery, associate links/disclosures, descriptions, mobile swipe browsing, and product IDs while changing only the price/date delivery path.
+- Updated the storefront price/date note so its observed date is derived from current Print Products data rather than a hard-coded page date.
+
+### Backend v2.2.3
+
+- Backend version advanced to **v2.2.3** with build stamp **14 September 2026 at 19:01:03Z UTC**.
+- Preserved the existing authenticated Portal Price Reconcile write workflow while keeping public storefront price delivery read-only.
+- Preserved all existing account, entitlement, reader, order, newsletter, privacy, analytics, consent, and Presidential Collection functionality outside the pricing changes above.
+
+### v2.6.8 surgical file set
+
+```text
+/apps-script/Code.gs
+/assets/js/print-products.js
+/estore/print-bibles/index.html
+/estore/christian-books/index.html
+/README.md
+/change-log.html
+```
+
+---
 
 ## What's New in v2.6.7 Alpha — eStore Merchandising, Homepage Heroes, Social Media & Amazon Price Refresh
 
@@ -1261,8 +1298,8 @@ Current backend metadata:
 
 ```text
 Service: LWB Website API
-Version: 2.1.0
-Apps Script build stamp: 11 September 2026 at 17:25:16Z UTC
+Version: 2.2.3
+Apps Script build stamp: 14 September 2026 at 19:01:03Z UTC
 ```
 
 The backend is a **data/API service only**. It does not create, regenerate, or overwrite website HTML.
@@ -1393,7 +1430,7 @@ No shared header/footer replacement is required for v2.5.8.
 
 `assets/js/config.js` remains the single public runtime configuration file for the Apps Script Web App URL and public contact email. Individual pages should not hard-code alternate backend deployments.
 
-No `assets/js/config.js` replacement is required for backend v2.1.0 unless the Apps Script deployment URL itself changes.
+No `assets/js/config.js` replacement is required for backend v2.2.3 unless the Apps Script deployment URL itself changes.
 
 ---
 
@@ -1416,7 +1453,7 @@ Deployment remains handled by `.github/workflows/deploy-pages.yml`.
 
 A push to `main` validates the repository and publishes the **repository root (`.`)** directly to GitHub Pages. There is no generated production output directory.
 
-For Apps Script v2.1.0, replace `/apps-script/Code.gs` and `/apps-script/appsscript.json`, save them in the existing Apps Script project, and deploy a new Web App version using the same production configuration. The v2.1.0 manifest removes the unused Drive read-only scope. If the production Web App URL remains the same deployment URL, no frontend config change is necessary.
+For Apps Script v2.2.3, replace `/apps-script/Code.gs`, save it in the existing Apps Script project, and deploy a new Web App version using the same production configuration. If the production Web App URL remains the same deployment URL, no frontend config change is necessary.
 
 ---
 
@@ -1495,11 +1532,11 @@ Before merging or deploying this release:
 ---
 
 **Repository architecture revision:** `2026-08-27T22:28:20Z`  
-**Apps Script build stamp:** `11 September 2026 at 17:25:16Z UTC`  
-**Google Apps Script version:** `2.1.0`  
-**Frontend package version:** `2.6.7`  
-**README last updated:** **13 September 2026 at 18:28:51Z UTC**
+**Apps Script build stamp:** `14 September 2026 at 19:01:03Z UTC`  
+**Google Apps Script version:** `2.2.3`  
+**Frontend package version:** `2.6.8`  
+**README last updated:** **14 September 2026 at 19:24:11Z UTC**
 
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 13 September 2026 at 18:28:51Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 14 September 2026 at 19:24:11Z UTC</strong></p>

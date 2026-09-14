@@ -1,11 +1,17 @@
 /**
- * Living Word Bibles Backend v2.2.0
+ * Living Word Bibles Backend v2.2.2
  * Core Website API
  *
  * Account: gospellivingwordbibles@gmail.com
  * Spreadsheet: LWB Website
  * Legal display date: 11 September 2026
- * Build timestamp: 11 September 2026 at 17:25:16Z UTC
+ * Build timestamp: 14 September 2026 at 18:21:28Z UTC
+ *
+ * v2.2.2 highlights:
+ * - Makes Print Products the sole source for public Amazon price and observed-date display.
+ * - Adds a short-lived read cache for the public Print Products feed and clears it immediately after portal price updates.
+ * - Prevents blank spreadsheet price cells from being emitted as $0.00.
+ * - Preserves the existing authenticated Price Reconcile write workflow.
  *
  * v2.2.0 highlights:
  * - Adds repository-backed delivery mappings for the Presidential Edition base, Bill Clinton, George W. Bush, Barack Obama, and Joe Biden eBibles.
@@ -81,8 +87,10 @@
  */
 
 const LWB = Object.freeze({
-  VERSION: '2.2.1',
-  BUILD_UTC: '13 September 2026 at 15:44:34Z UTC',
+  VERSION: '2.2.2',
+  BUILD_UTC: '14 September 2026 at 18:21:28Z UTC',
+  PRINT_PRODUCTS_CACHE_KEY: 'print-products-public-v2.2.2',
+  PRINT_PRODUCTS_CACHE_SECONDS: 60,
   SITE_URL: 'https://www.livingwordbibles.com',
   CONTACT_EMAIL: 'gospellivingwordbibles@gmail.com',
   SPREADSHEET_ID: '1xnzdo1UJsEOTqcO2066Nfb6ayqKn8Zg5RbNLdpbaTcc',
@@ -469,7 +477,16 @@ function listProducts_(params) {
 }
 
 function listPrintProductsPublic_() {
-  return readObjects_(sheet_(LWB.SHEETS.PRINT_PRODUCTS))
+  const cache = CacheService.getScriptCache();
+  try {
+    const cached = cache.get(LWB.PRINT_PRODUCTS_CACHE_KEY);
+    if (cached) {
+      const parsed = JSON.parse(cached);
+      if (Array.isArray(parsed)) return parsed;
+    }
+  } catch (_) {}
+
+  const products = readObjects_(sheet_(LWB.SHEETS.PRINT_PRODUCTS))
     .filter(function(row) {
       return Boolean(clean_(row.print_product_id || '', 200));
     })
@@ -478,10 +495,33 @@ function listPrintProductsPublic_() {
         print_product_id: clean_(row.print_product_id || '', 200),
         asin: clean_(row.asin || '', 40),
         site_page: clean_(row.site_page || '', 300),
-        current_price: Number(row.current_price || 0),
+        current_price: normalizePublicPrintPrice_(row.current_price),
         price_observed_date: normalizeSheetDate_(row.price_observed_date)
       };
     });
+
+  try {
+    cache.put(
+      LWB.PRINT_PRODUCTS_CACHE_KEY,
+      JSON.stringify(products),
+      LWB.PRINT_PRODUCTS_CACHE_SECONDS
+    );
+  } catch (_) {}
+
+  return products;
+}
+
+function normalizePublicPrintPrice_(value) {
+  if (value === '' || value === null || typeof value === 'undefined') return null;
+  const price = Number(value);
+  if (!isFinite(price) || price <= 0) return null;
+  return Math.round(price * 100) / 100;
+}
+
+function clearPrintProductsPublicCache_() {
+  try {
+    CacheService.getScriptCache().remove(LWB.PRINT_PRODUCTS_CACHE_KEY);
+  } catch (_) {}
 }
 
 function getProduct_(slugOrId) {
@@ -3339,6 +3379,7 @@ function adminPrintProductUpdate_(data) {
   row.current_price = price;
   row.price_observed_date = observed;
   upsertByKey_(productSheet, 'print_product_id', id, row);
+  clearPrintProductsPublicCache_();
 
   logSystem_('INFO', 'ADMIN_PRINT_PRICE_UPDATED', admin.email, id, 'portal', row.product_name || id, {
     previous_price: previousPrice,
@@ -3356,6 +3397,16 @@ function adminPrintProductUpdate_(data) {
       price_observed_date: observed
     }
   };
+}
+
+function onEdit(e) {
+  try {
+    if (!e || !e.range) return;
+    const editedSheet = e.range.getSheet();
+    if (editedSheet && editedSheet.getName() === LWB.SHEETS.PRINT_PRODUCTS) {
+      clearPrintProductsPublicCache_();
+    }
+  } catch (_) {}
 }
 
 function normalizeSheetDate_(value) {

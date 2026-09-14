@@ -159,8 +159,8 @@
 
         @media(max-width:720px){
           .homepage-hero-slider{
-            height:420px;
-            min-height:0;
+            height:auto;
+            min-height:420px;
           }
 
           .homepage-hero-slide{
@@ -490,8 +490,31 @@
         }
 
         @media(max-width:760px){
+          /* Mobile only: match the eStore-style horizontal product browsing.
+             Cards swipe left/right instead of stacking vertically. */
           .homepage-free-product-grid{
-            grid-template-columns:1fr;
+            display:flex;
+            gap:1rem;
+            overflow-x:auto;
+            overflow-y:hidden;
+            scroll-snap-type:x mandatory;
+            scroll-padding-inline:1rem;
+            overscroll-behavior-x:contain;
+            -webkit-overflow-scrolling:touch;
+            margin-inline:-1rem;
+            padding:0 1rem 1rem;
+            scrollbar-width:none;
+          }
+
+          .homepage-free-product-grid::-webkit-scrollbar{
+            display:none;
+          }
+
+          .homepage-free-product-grid > .product-card{
+            flex:0 0 calc(100% - 2.25rem);
+            min-width:0;
+            scroll-snap-align:start;
+            scroll-snap-stop:always;
           }
 
           .homepage-read-word .homepage-retailers .retailer-row{

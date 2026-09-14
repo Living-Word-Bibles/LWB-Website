@@ -1,11 +1,19 @@
 /**
- * Living Word Bibles Backend v2.2.2
+ * Living Word Bibles Backend v2.2.3
  * Core Website API
  *
  * Account: gospellivingwordbibles@gmail.com
  * Spreadsheet: LWB Website
  * Legal display date: 11 September 2026
- * Build timestamp: 14 September 2026 at 18:21:28Z UTC
+ * Build timestamp: 14 September 2026 at 19:01:03Z UTC
+ *
+ * v2.2.3 highlights:
+ * - Keeps Print Products as the sole source for public Amazon price and observed-date display.
+ * - Publishes a durable read-only Print Products snapshot in Script Properties so storefront GET requests do not need a live Sheet read on every visit.
+ * - Refreshes the published snapshot immediately after Portal Price Reconcile updates and on direct Print Products edits when the edit trigger runs.
+ * - Self-refreshes the snapshot from the Sheet when it is older than 60 seconds, preventing long-lived stale data if an edit trigger is unavailable.
+ * - Prevents blank spreadsheet price cells from being emitted as $0.00.
+ * - Preserves the existing authenticated Price Reconcile write workflow.
  *
  * v2.2.2 highlights:
  * - Makes Print Products the sole source for public Amazon price and observed-date display.
@@ -87,10 +95,10 @@
  */
 
 const LWB = Object.freeze({
-  VERSION: '2.2.2',
-  BUILD_UTC: '14 September 2026 at 18:21:28Z UTC',
-  PRINT_PRODUCTS_CACHE_KEY: 'print-products-public-v2.2.2',
-  PRINT_PRODUCTS_CACHE_SECONDS: 60,
+  VERSION: '2.2.3',
+  BUILD_UTC: '14 September 2026 at 19:01:03Z UTC',
+  PRINT_PRODUCTS_SNAPSHOT_KEY: 'print-products-public-snapshot-v2.2.3',
+  PRINT_PRODUCTS_SNAPSHOT_MAX_AGE_SECONDS: 60,
   SITE_URL: 'https://www.livingwordbibles.com',
   CONTACT_EMAIL: 'gospellivingwordbibles@gmail.com',
   SPREADSHEET_ID: '1xnzdo1UJsEOTqcO2066Nfb6ayqKn8Zg5RbNLdpbaTcc',
@@ -262,7 +270,7 @@ function doGet(e) {
         payload = { ok: true, products: listProducts_(p) };
         break;
       case 'print-products':
-        payload = { ok: true, products: listPrintProductsPublic_() };
+        payload = getPrintProductsPublicPayload_();
         break;
       case 'product':
         payload = { ok: true, product: getProduct_(p.slug || p.id || p.product || '') };
@@ -476,16 +484,7 @@ function listProducts_(params) {
     .map(publicProduct_);
 }
 
-function listPrintProductsPublic_() {
-  const cache = CacheService.getScriptCache();
-  try {
-    const cached = cache.get(LWB.PRINT_PRODUCTS_CACHE_KEY);
-    if (cached) {
-      const parsed = JSON.parse(cached);
-      if (Array.isArray(parsed)) return parsed;
-    }
-  } catch (_) {}
-
+function buildPrintProductsPublicSnapshot_() {
   const products = readObjects_(sheet_(LWB.SHEETS.PRINT_PRODUCTS))
     .filter(function(row) {
       return Boolean(clean_(row.print_product_id || '', 200));
@@ -493,22 +492,81 @@ function listPrintProductsPublic_() {
     .map(function(row) {
       return {
         print_product_id: clean_(row.print_product_id || '', 200),
-        asin: clean_(row.asin || '', 40),
         site_page: clean_(row.site_page || '', 300),
         current_price: normalizePublicPrintPrice_(row.current_price),
         price_observed_date: normalizeSheetDate_(row.price_observed_date)
       };
     });
 
-  try {
-    cache.put(
-      LWB.PRINT_PRODUCTS_CACHE_KEY,
-      JSON.stringify(products),
-      LWB.PRINT_PRODUCTS_CACHE_SECONDS
-    );
-  } catch (_) {}
+  return {
+    published_at: new Date().toISOString(),
+    products: products
+  };
+}
 
-  return products;
+function readPrintProductsPublicSnapshot_() {
+  try {
+    const raw = PropertiesService.getScriptProperties()
+      .getProperty(LWB.PRINT_PRODUCTS_SNAPSHOT_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (!parsed || !Array.isArray(parsed.products) || !parsed.published_at) return null;
+    return parsed;
+  } catch (_) {
+    return null;
+  }
+}
+
+function printProductsSnapshotFresh_(snapshot) {
+  if (!snapshot || !snapshot.published_at || !Array.isArray(snapshot.products)) return false;
+  const published = new Date(snapshot.published_at).getTime();
+  if (!isFinite(published)) return false;
+  return (Date.now() - published) <= (LWB.PRINT_PRODUCTS_SNAPSHOT_MAX_AGE_SECONDS * 1000);
+}
+
+function publishPrintProductsPublicSnapshot_() {
+  const snapshot = buildPrintProductsPublicSnapshot_();
+  PropertiesService.getScriptProperties().setProperty(
+    LWB.PRINT_PRODUCTS_SNAPSHOT_KEY,
+    JSON.stringify(snapshot)
+  );
+  return snapshot;
+}
+
+function getPrintProductsPublicSnapshot_() {
+  const existing = readPrintProductsPublicSnapshot_();
+  if (printProductsSnapshotFresh_(existing)) return existing;
+
+  const lock = LockService.getScriptLock();
+  let locked = false;
+  try {
+    locked = lock.tryLock(1500);
+    if (locked) {
+      const afterLock = readPrintProductsPublicSnapshot_();
+      if (printProductsSnapshotFresh_(afterLock)) return afterLock;
+      return publishPrintProductsPublicSnapshot_();
+    }
+  } catch (_) {
+    // Fall through to a direct refresh below.
+  } finally {
+    if (locked) {
+      try { lock.releaseLock(); } catch (_) {}
+    }
+  }
+
+  // If another execution held the lock too long, read the Sheet directly rather
+  // than intentionally serving an expired snapshot.
+  return buildPrintProductsPublicSnapshot_();
+}
+
+function getPrintProductsPublicPayload_() {
+  const snapshot = getPrintProductsPublicSnapshot_();
+  return {
+    ok: true,
+    version: LWB.VERSION,
+    published_at: snapshot.published_at,
+    products: snapshot.products
+  };
 }
 
 function normalizePublicPrintPrice_(value) {
@@ -518,10 +576,8 @@ function normalizePublicPrintPrice_(value) {
   return Math.round(price * 100) / 100;
 }
 
-function clearPrintProductsPublicCache_() {
-  try {
-    CacheService.getScriptCache().remove(LWB.PRINT_PRODUCTS_CACHE_KEY);
-  } catch (_) {}
+function refreshPrintProductsPublicSnapshot() {
+  return publishPrintProductsPublicSnapshot_();
 }
 
 function getProduct_(slugOrId) {
@@ -3379,7 +3435,7 @@ function adminPrintProductUpdate_(data) {
   row.current_price = price;
   row.price_observed_date = observed;
   upsertByKey_(productSheet, 'print_product_id', id, row);
-  clearPrintProductsPublicCache_();
+  publishPrintProductsPublicSnapshot_();
 
   logSystem_('INFO', 'ADMIN_PRINT_PRICE_UPDATED', admin.email, id, 'portal', row.product_name || id, {
     previous_price: previousPrice,
@@ -3404,7 +3460,7 @@ function onEdit(e) {
     if (!e || !e.range) return;
     const editedSheet = e.range.getSheet();
     if (editedSheet && editedSheet.getName() === LWB.SHEETS.PRINT_PRODUCTS) {
-      clearPrintProductsPublicCache_();
+      publishPrintProductsPublicSnapshot_();
     }
   } catch (_) {}
 }
@@ -4613,6 +4669,6 @@ function escapeHtml_(value) {
 
 /*
 ==========================================================================================
-END OF LWB BACKEND v2.2.0 | Copyright © 2026 Living Word Bibles. All Rights Reserved. Developed by Cook Technology Services. Last Updated on 13 September 2026 at 14:10:37Z UTC
+END OF LWB BACKEND v2.2.3 | Copyright © 2026 Living Word Bibles. All Rights Reserved. Developed by Cook Technology Services. Last Updated on 14 September 2026 at 19:01:03Z UTC
 ==========================================================================================
 */

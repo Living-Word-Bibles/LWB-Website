@@ -32,7 +32,8 @@
           z-index:0;
           isolation:isolate;
           overflow:hidden;
-          min-height:clamp(430px,48vw,620px);
+          height:clamp(430px,48vw,620px);
+          min-height:0;
           border-radius:inherit;
         }
 
@@ -56,10 +57,6 @@
           transition:opacity .9s ease, visibility .9s ease;
         }
 
-
-        .homepage-hero-slide:first-child{
-          position:relative;
-        }
 
         .homepage-hero-slide.is-active{
           z-index:1;
@@ -162,11 +159,17 @@
 
         @media(max-width:720px){
           .homepage-hero-slider{
+            height:auto;
             min-height:420px;
           }
 
+          /* Mobile rule: hero artwork must always be shown in full.
+             `contain` prevents top/bottom or side cropping on every slide. */
           .homepage-hero-slide{
             background-position:center center;
+            background-size:contain;
+            background-repeat:no-repeat;
+            background-color:#0b1d3b;
             padding-bottom:4.5rem;
           }
 
@@ -211,6 +214,15 @@
           .homepage-hero-slide--presidential-edition{
             background-size:100% 100%;
             background-position:center center;
+          }
+        }
+
+        @media(max-width:720px){
+          /* Promotional/mobile-specific banners also stay fully visible. */
+          .homepage-hero-slide--promo{
+            background-size:contain;
+            background-position:center center;
+            background-repeat:no-repeat;
           }
         }
 

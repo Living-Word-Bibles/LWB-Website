@@ -68,6 +68,76 @@
 .about-resource-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;align-items:stretch}
 .about-resource-card{display:flex;flex-direction:column;padding:clamp(1.4rem,3vw,2rem);border:1px solid var(--about-line);border-radius:20px;background:#fff;box-shadow:var(--about-shadow)}
 .about-resource-card h3{margin:.2rem 0 .7rem;font-size:clamp(1.45rem,2.7vw,2rem)}.about-resource-card p{margin:0 0 1.2rem;color:var(--about-muted);line-height:1.75}.about-resource-card .about-resource-actions{margin-top:auto;display:flex;flex-wrap:wrap;gap:.65rem}
+
+/* About Us — Presidential history exhibit */
+.about-presidential{position:relative;overflow:hidden;background:linear-gradient(180deg,#faf7f1 0%,#fff 48%,#f7f2e9 100%)}
+.about-presidential::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 10% 12%,rgba(23,53,91,.07),transparent 28%),radial-gradient(circle at 90% 82%,rgba(145,24,31,.055),transparent 30%)}
+.presidential-banner{position:relative;display:block;width:min(1180px,calc(100% - 40px));margin:0 auto 2.25rem;overflow:hidden;border:1px solid rgba(89,55,29,.18);border-radius:22px;background:#0d203e;box-shadow:var(--about-shadow)}
+.presidential-banner picture,.presidential-banner img{display:block;width:100%;height:auto}
+.presidential-banner img{object-fit:contain}
+.presidential-intro{position:relative;display:grid;grid-template-columns:minmax(220px,.55fr) minmax(0,1.45fr);gap:clamp(1.5rem,4vw,3.5rem);align-items:center;padding:clamp(1.5rem,4vw,3rem);border:1px solid var(--about-line);border-radius:24px;background:rgba(255,255,255,.94);box-shadow:var(--about-shadow)}
+.presidential-seal-wrap{display:flex;align-items:center;justify-content:center;min-height:250px;padding:1rem;border-radius:20px;background:radial-gradient(circle,rgba(165,126,62,.13),rgba(165,126,62,.035) 55%,transparent 72%)}
+.presidential-seal{display:block;width:min(245px,82%);height:auto;max-height:245px;object-fit:contain}
+.presidential-intro-copy h2{margin:.15rem 0 .85rem;font-size:clamp(2rem,4vw,3.25rem);line-height:1.04}
+.presidential-intro-copy p{margin:.75rem 0;color:var(--about-muted);line-height:1.8}
+.presidential-heritage{margin:1.15rem 0!important;padding:1rem 1.15rem;border-left:4px solid var(--about-gold);background:var(--about-gold-soft);color:inherit!important;font-size:1.06rem}
+.presidential-links{display:flex;flex-wrap:wrap;gap:.65rem;margin-top:1.25rem}
+.presidential-section-heading{position:relative;max-width:860px;margin:3.25rem auto 1.8rem;text-align:center}
+.presidential-section-heading h3{margin:.2rem 0 .7rem;font-size:clamp(1.75rem,3.4vw,2.7rem)}
+.presidential-section-heading p{margin:0;color:var(--about-muted);line-height:1.75}
+.presidential-timeline{position:relative;display:grid;gap:1.15rem;margin-top:1.5rem}
+.presidential-timeline::before{content:"";position:absolute;left:34px;top:1rem;bottom:1rem;width:2px;background:linear-gradient(180deg,rgba(23,53,91,.28),rgba(165,126,62,.6),rgba(145,24,31,.24))}
+.president-entry{position:relative;display:grid;grid-template-columns:190px minmax(0,1fr) 145px;gap:clamp(1rem,3vw,2rem);align-items:center;margin-left:64px;padding:1.25rem 1.35rem;border:1px solid var(--about-line);border-radius:22px;background:#fff;box-shadow:0 10px 28px rgba(42,25,12,.055)}
+.president-entry::before{content:"";position:absolute;left:-38px;top:50%;width:13px;height:13px;transform:translateY(-50%);border:3px solid #fff;border-radius:50%;background:var(--about-gold);box-shadow:0 0 0 2px rgba(165,126,62,.42)}
+.president-portrait{margin:0;overflow:hidden;border-radius:16px;background:#eee;aspect-ratio:4/5;box-shadow:0 8px 22px rgba(22,29,41,.12)}
+.president-portrait img{display:block;width:100%;height:100%;object-fit:cover;object-position:center top}
+.president-copy{min-width:0}
+.president-number{margin:0 0 .2rem;color:#7c6440;font-size:.78rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+.president-copy h4{margin:.15rem 0 .2rem;font-size:clamp(1.45rem,2.6vw,2rem)}
+.president-years{margin:0 0 .65rem;color:#526173;font-weight:700}
+.president-signature{display:block;width:auto;height:auto;max-width:210px;max-height:58px;margin:.3rem 0 .8rem;object-fit:contain;object-position:left center}
+.president-copy p{margin:0;color:var(--about-muted);line-height:1.72}
+.president-bible{margin:0;text-align:center}
+.president-bible a{color:inherit;text-decoration:none}
+.president-bible img{display:block;width:100%;height:auto;max-height:195px;margin:0 auto .6rem;object-fit:contain;filter:drop-shadow(0 7px 10px rgba(0,0,0,.16))}
+.president-bible a:last-child{display:inline-block;color:#6a4c20;font-size:.88rem;font-weight:800;text-decoration:underline;text-underline-offset:3px}
+.presidential-closing{position:relative;margin-top:2.25rem;padding:clamp(1.4rem,4vw,2.5rem);border:1px solid rgba(23,53,91,.16);border-radius:22px;background:linear-gradient(135deg,rgba(14,39,72,.97),rgba(21,53,91,.94));color:#fff;text-align:center;box-shadow:var(--about-shadow)}
+.presidential-closing .eyebrow,.presidential-closing h3,.presidential-closing p{color:#fff}
+.presidential-closing h3{margin:.2rem 0 .65rem;font-size:clamp(1.7rem,3.2vw,2.5rem)}
+.presidential-closing p{max-width:780px;margin:.6rem auto 1.2rem;line-height:1.75;color:rgba(255,255,255,.9)}
+.presidential-closing .presidential-links{justify-content:center}
+.presidential-disclaimer{max-width:960px;margin:1.25rem auto 0;color:#74685f;font-size:.78rem;line-height:1.6;text-align:center}
+.presidential-disclaimer strong{color:#514941}
+@media(max-width:900px){
+  .presidential-intro{grid-template-columns:1fr}
+  .presidential-seal-wrap{min-height:190px}
+  .presidential-seal{max-height:190px}
+  .president-entry{grid-template-columns:150px minmax(0,1fr) 115px}
+}
+@media(max-width:720px){
+  .presidential-banner{width:min(100% - 24px,1180px);margin-bottom:1.5rem;border-radius:16px}
+  .presidential-intro{padding:1.2rem;border-radius:18px}
+  .presidential-seal-wrap{min-height:165px}
+  .presidential-seal{max-height:165px}
+  .presidential-section-heading{margin-top:2.5rem}
+  .presidential-timeline{display:flex;gap:1rem;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-padding-inline:12px;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;margin-inline:-12px;padding:0 12px 1rem;scrollbar-width:none}
+  .presidential-timeline::-webkit-scrollbar{display:none}
+  .presidential-timeline::before{display:none}
+  .president-entry{flex:0 0 min(86vw,410px);display:grid;grid-template-columns:112px minmax(0,1fr);grid-template-areas:"portrait copy" "bible bible";align-items:start;gap:1rem;margin-left:0;padding:1rem;border-radius:18px;scroll-snap-align:start;scroll-snap-stop:always}
+  .president-entry::before{display:none}
+  .president-portrait{grid-area:portrait;aspect-ratio:4/5}
+  .president-copy{grid-area:copy}
+  .president-copy h4{font-size:1.35rem}
+  .president-years{font-size:.9rem}
+  .president-signature{max-width:150px;max-height:42px;margin-bottom:.55rem}
+  .president-copy p{font-size:.92rem;line-height:1.58}
+  .president-bible{grid-area:bible;display:grid;grid-template-columns:82px minmax(0,1fr);gap:.8rem;align-items:center;padding-top:.85rem;border-top:1px solid var(--about-line);text-align:left}
+  .president-bible img{width:82px;max-height:125px;margin:0}
+  .president-bible a:last-child{font-size:.92rem}
+  .presidential-links{gap:.5rem}
+  .presidential-links .btn{flex:1 1 100%;text-align:center}
+}
+
 .about-faq-wrap{width:min(1040px,100%);margin:0 auto}#frequently-asked-questions{scroll-margin-top:7rem}#frequently-asked-questions>h3{margin:2.4rem 0 .8rem;padding-top:.5rem;font-size:1.3rem}
 .faq-item{margin:.65rem 0!important;padding:0!important;overflow:hidden;border:1px solid var(--about-line);border-radius:14px;background:#fff;box-shadow:0 5px 16px rgba(42,25,12,.035)}
 .faq-item [data-accordion-button]{width:100%!important;padding:1rem 3rem 1rem 1.1rem!important;border:0!important;background:transparent!important;color:inherit;text-align:left!important;font:inherit;font-weight:800!important;cursor:pointer;position:relative}
@@ -100,11 +170,160 @@
 </section>
 </div>
 
-<div class="about-shell"><nav aria-label="About Us page sections" class="about-jump"><a class="btn secondary" href="#our-story">Our Story</a><a class="btn secondary" href="#our-team">Our Team</a><a class="btn secondary" href="#contact-us">Contact Us</a><a class="btn secondary" href="#newsletter">Newsletter</a><a class="btn secondary" href="#frequently-asked-questions">Frequently Asked Questions</a></nav></div>
+<div class="about-shell"><nav aria-label="About Us page sections" class="about-jump"><a class="btn secondary" href="#our-story">Our Story</a><a class="btn secondary" href="#presidential-collection">Presidential History</a><a class="btn secondary" href="#our-team">Our Team</a><a class="btn secondary" href="#contact-us">Contact Us</a><a class="btn secondary" href="#newsletter">Newsletter</a><a class="btn secondary" href="#frequently-asked-questions">Frequently Asked Questions</a></nav></div>
 
 <section class="about-section"><div class="about-shell"><div class="about-heading"><p class="eyebrow">Our Mission</p><h2>Designed to Make Scripture Clear, Accessible, and Enduring</h2><p>Every edition is prepared for readability, clear navigation, and faithful engagement with Scripture. Living Word Bibles is non-denominational at heart and seeks to encourage Christians from many traditions to walk closely with Christ.</p></div><div class="about-values"><div class="about-value"><strong>Accessible by Design</strong><p>Scripture should be easy to reach, read, navigate, and return to across modern devices.</p></div><div class="about-value"><strong>Reverent Presentation</strong><p>Design should serve the biblical text—never overwhelm it—and support thoughtful reading and devotion.</p></div><div class="about-value"><strong>Scripture First</strong><p>Our publishing, study, history, and devotional resources exist to bring readers back to the Word itself.</p></div></div></div></section>
 
 <section class="about-section alt"><div class="about-shell"><div class="about-heading"><p class="eyebrow">Our Work in Motion</p><h2>Living Word Bibles</h2><p>A featured video from the Living Word Bibles homepage, brought into the About page as part of our story.</p></div><div class="about-video-card"><div class="about-video"><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" loading="lazy" src="https://www.youtube.com/embed/ydGoRosM9tQ" title="Living Word Bibles featured video"></iframe></div><div class="about-video-copy"><p class="eyebrow">Watch</p><h3>Bringing God’s Word to Life</h3><p>Living Word Bibles combines Scripture, publishing, digital design, and accessible reading tools to help people engage with the Bible wherever they are.</p></div></div></div></section>
+
+
+<section class="about-section about-presidential" id="presidential-collection">
+  <a class="presidential-banner" href="/presidential-edition/" aria-label="Explore the Living Word Bibles Presidential Collection">
+    <picture>
+      <source media="(max-width:720px)" srcset="/assets/PresidentialEditionMobile.png"/>
+      <img src="/assets/PresidentialEdition.png" alt="Living Word Bibles Presidential Edition" loading="lazy"/>
+    </picture>
+  </a>
+
+  <div class="about-shell">
+    <div class="presidential-intro">
+      <div class="presidential-seal-wrap">
+        <img class="presidential-seal" src="/presidential-edition/PresidentialSeal.svg" alt="Seal of the President of the United States" loading="lazy"/>
+      </div>
+      <div class="presidential-intro-copy">
+        <p class="eyebrow">Presidential History</p>
+        <h2>Living Word Bibles &amp; the American Presidency</h2>
+        <p>Living Word Bibles preserves its Presidential eBible tradition as part of the publisher’s institutional history: a record of carrying Scripture into the digital age while successive presidential administrations have come and gone.</p>
+        <p class="presidential-heritage"><strong>“The Official eBible of the U.S. President Since 2000.”</strong><br/>Living Word Bibles records that it has prepared and sent a personalized eBible to every U.S. President in office since 2000, beginning with President Bill Clinton.</p>
+        <p>The tradition spans Democratic and Republican administrations. This presentation is historical and nonpartisan, focusing on the continuity of the office, the place of Scripture in Living Word Bibles’ story, and the editions associated with each administration.</p>
+        <div class="presidential-links">
+          <a class="btn gold" href="/presidential-edition/history/">Presidential History</a>
+          <a class="btn secondary" href="/presidential-edition/">Presidential Collection</a>
+          <a class="btn secondary" href="/bibles/">Bible Collection</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="presidential-section-heading">
+      <p class="eyebrow">2000–Present</p>
+      <h3>Five Presidents. One Continuing eBible Tradition.</h3>
+      <p>Presented chronologically from President Bill Clinton through President Donald J. Trump, each entry places the President first, with the associated Living Word Bibles edition shown as a secondary historical artifact.</p>
+    </div>
+
+    <div class="presidential-timeline" aria-label="Living Word Bibles Presidential eBible history">
+
+      <article class="president-entry">
+        <figure class="president-portrait">
+          <img src="/presidential-edition/Bill_Clinton.jpg" alt="Portrait of President Bill Clinton" loading="lazy"/>
+        </figure>
+        <div class="president-copy">
+          <p class="president-number">42nd President of the United States</p>
+          <h4>Bill Clinton</h4>
+          <p class="president-years">1993–2001</p>
+          <img class="president-signature" src="/presidential-edition/billclintonsignature.png" alt="Signature of Bill Clinton" loading="lazy"/>
+          <p>Living Word Bibles identifies President Clinton as the beginning of its continuous Presidential eBible tradition in 2000. His administration therefore marks the starting point of the publisher’s record of preparing a personalized digital Bible for the President in office.</p>
+        </div>
+        <figure class="president-bible">
+          <a href="/presidential-edition/bill-clinton/" aria-label="View President Bill Clinton's Bible">
+            <img src="/presidential-edition/ClintonCover.png" alt="The Holy Bible: Presidential Edition — Bill Clinton cover" loading="lazy"/>
+          </a>
+          <a href="/presidential-edition/bill-clinton/">View President Clinton’s Bible</a>
+        </figure>
+      </article>
+
+      <article class="president-entry">
+        <figure class="president-portrait">
+          <img src="/presidential-edition/GeorgeWBushPortrait.jpg" alt="Portrait of President George W. Bush" loading="lazy"/>
+        </figure>
+        <div class="president-copy">
+          <p class="president-number">43rd President of the United States</p>
+          <h4>George W. Bush</h4>
+          <p class="president-years">2001–2009</p>
+          <img class="president-signature" src="/presidential-edition/GeorgeWBush_Signature.png" alt="Signature of George W. Bush" loading="lazy"/>
+          <p>With the presidential transition of 2001, Living Word Bibles continued the eBible tradition with President George W. Bush, carrying the same institutional practice into a new administration and the opening years of the twenty-first century.</p>
+        </div>
+        <figure class="president-bible">
+          <a href="/presidential-edition/george-w-bush/" aria-label="View President George W. Bush's Bible">
+            <img src="/presidential-edition/BushCover.png" alt="The Holy Bible: Presidential Edition — George W. Bush cover" loading="lazy"/>
+          </a>
+          <a href="/presidential-edition/george-w-bush/">View President Bush’s Bible</a>
+        </figure>
+      </article>
+
+      <article class="president-entry">
+        <figure class="president-portrait">
+          <img src="/presidential-edition/ObamaPortrait.jpg" alt="Portrait of President Barack H. Obama" loading="lazy"/>
+        </figure>
+        <div class="president-copy">
+          <p class="president-number">44th President of the United States</p>
+          <h4>Barack H. Obama</h4>
+          <p class="president-years">2009–2017</p>
+          <img class="president-signature" src="/presidential-edition/ObamaSignature.jpg" alt="Signature of Barack H. Obama" loading="lazy"/>
+          <p>Living Word Bibles continued the Presidential eBible tradition during the Obama Administration, preserving the continuity of the project across another change in party and presidential leadership.</p>
+        </div>
+        <figure class="president-bible">
+          <a href="/presidential-edition/barack-obama/" aria-label="View President Barack Obama's Bible">
+            <img src="/presidential-edition/ObamaCover.png" alt="The Holy Bible: Presidential Edition — Barack H. Obama cover" loading="lazy"/>
+          </a>
+          <a href="/presidential-edition/barack-obama/">View President Obama’s Bible</a>
+        </figure>
+      </article>
+
+      <article class="president-entry">
+        <figure class="president-portrait">
+          <img src="/presidential-edition/joebiden.jpeg" alt="Portrait of President Joe Biden" loading="lazy"/>
+        </figure>
+        <div class="president-copy">
+          <p class="president-number">46th President of the United States</p>
+          <h4>Joe Biden</h4>
+          <p class="president-years">2021–2025</p>
+          <img class="president-signature" src="/presidential-edition/Joe_Biden_Signature.svg" alt="Signature of Joe Biden" loading="lazy"/>
+          <p>The tradition continued through the Biden Administration. Living Word Bibles’ Presidential history records a personalized eBible for President Biden as part of the same sequence that began in 2000.</p>
+        </div>
+        <figure class="president-bible">
+          <a href="/presidential-edition/joe-biden/" aria-label="View President Joe Biden's Bible">
+            <img src="/presidential-edition/BidenCover.png" alt="The Holy Bible: Presidential Edition — Joseph R. Biden cover" loading="lazy"/>
+          </a>
+          <a href="/presidential-edition/joe-biden/">View President Biden’s Bible</a>
+        </figure>
+      </article>
+
+      <article class="president-entry">
+        <figure class="president-portrait">
+          <img src="/presidential-edition/trumpportrait.jpg" alt="Portrait of President Donald J. Trump" loading="lazy"/>
+        </figure>
+        <div class="president-copy">
+          <p class="president-number">45th &amp; 47th President of the United States</p>
+          <h4>Donald J. Trump</h4>
+          <p class="president-years">2017–2021; 2025–present</p>
+          <img class="president-signature" src="/presidential-edition/trump-signature.png" alt="Signature of Donald J. Trump" loading="lazy"/>
+          <p>Living Word Bibles’ Presidential eBible history includes President Donald J. Trump and continues into his nonconsecutive second presidency, extending the publisher’s presidential tradition beyond its first quarter-century.</p>
+        </div>
+        <figure class="president-bible">
+          <a href="/presidential-edition/donald-j-trump/" aria-label="View President Donald J. Trump's Bible">
+            <img src="/assets/TrumpMAGABibleCover.png" alt="The Holy Bible: Presidential Edition — Donald J. Trump cover" loading="lazy"/>
+          </a>
+          <a href="/presidential-edition/donald-j-trump/">View President Trump’s Bible</a>
+        </figure>
+      </article>
+
+    </div>
+
+    <div class="presidential-closing">
+      <p class="eyebrow">A Presidential Tradition Since 2000</p>
+      <h3>More Than Two Decades of Presidential Scripture</h3>
+      <p>From the Clinton Administration through the presidencies that followed, Living Word Bibles has maintained its Presidential eBible tradition as one chapter in its broader mission of making Scripture accessible in the digital age.</p>
+      <div class="presidential-links">
+        <a class="btn gold" href="/presidential-edition/history/">Explore the Presidential History</a>
+        <a class="btn secondary" href="/presidential-edition/">View the Presidential Collection</a>
+        <a class="btn secondary" href="/bibles/">Explore All Bibles</a>
+      </div>
+    </div>
+
+    <p class="presidential-disclaimer"><strong>DISCLAIMER:</strong> Except where expressly stated on an individual edition page, this historical presentation shall not be construed as an official endorsement by The White House, any current or former President, or the U.S. Government. Living Word Bibles is an independent publisher.</p>
+  </div>
+</section>
+
 
 <section class="about-section" id="our-team"><div class="about-shell"><div class="about-heading"><p class="eyebrow">Leadership</p><h2>Our Team</h2><p>Publishing, partnerships, and digital access are guided by a commitment to Scripture, service, and responsible presentation.</p></div><div class="about-team-card"><figure><img alt="Sophie Keller, Executive Director" data-fallback="/assets/icons/lwb-mark.svg" loading="lazy" src="/assets/sophie01.webp"/></figure><div><p class="eyebrow">Executive Director</p><h3>Ms. Sophie Keller</h3><p>Born in Manila and raised in Carmel, Indiana, Sophie’s formation in church life and theology shaped a calling to serve the Church by putting the Gospel in people’s hands. At Living Word Bibles, she leads strategy, partnerships, publishing operations, newsletters, and digital access.</p></div></div></div></section>
 

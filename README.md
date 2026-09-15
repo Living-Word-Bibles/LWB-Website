@@ -1,3 +1,4 @@
+[README.md](https://github.com/user-attachments/files/32243153/README.md)
 [README.md](https://github.com/user-attachments/files/32208072/README.md)
 [README.md](https://github.com/user-attachments/files/32166030/README.md)
 [README.md](https://github.com/user-attachments/files/32164233/README.md)
@@ -38,7 +39,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 14 September 2026 at 19:24:11Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 15 September 2026 at 13:07:52Z UTC</sub></p>
 
 ---
 
@@ -61,7 +62,7 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 | Apps Script build stamp | `14 September 2026 at 19:01:03Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `14 September 2026 at 19:24:11Z UTC` |
+| README revision | `15 September 2026 at 13:07:52Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
 
@@ -70,9 +71,9 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 
 
 
-## What's New in v2.6.8 Alpha — Print Storefront Pricing Reliability
+## What's New in v2.6.8 Alpha — Print Storefront Pricing Reliability, Presidential Edition Access & Social Media
 
-Released **14 September 2026**. Last Updated: **14 September 2026 at 19:24:11Z UTC**
+Released **14 September 2026**. Last Updated: **15 September 2026 at 13:07:52Z UTC**
 
 ### Print Bibles and Christian Books pricing
 
@@ -87,6 +88,28 @@ Released **14 September 2026**. Last Updated: **14 September 2026 at 19:24:11Z U
 - Preserved Amazon product imagery, associate links/disclosures, descriptions, mobile swipe browsing, and product IDs while changing only the price/date delivery path.
 - Updated the storefront price/date note so its observed date is derived from current Print Products data rather than a hard-coded page date.
 
+
+### 15 September 2026 — Amazon price refresh
+
+- Refreshed the current Amazon-displayed prices and corresponding observed-price dates for both `/estore/print-bibles/` and `/estore/christian-books/` on **15 September 2026**.
+- This is an operational price-data refresh under the existing v2.6.8 pricing architecture; the frontend remains **v2.6.8 Alpha** and the backend remains **v2.2.3**.
+- Amazon pricing and availability remain subject to change at the retailer.
+
+### 15 September 2026 — Joe Biden Presidential Edition complimentary access
+
+- Expanded the **Joe Biden Presidential Edition** outreach so the EPUB at `/assets/products/biden.epub` is intentionally available through a direct complimentary download promotion in addition to the existing Valois Lumière online-reading experience.
+- Added a church-outreach promotion for **St. Mary Catholic Church, 311 N. New Jersey Street, Indianapolis, Indiana**, using a QR code that resolves directly to the Biden Presidential Edition EPUB.
+- The existing account/fulfillment classification for `prod_presidential_joe_biden` remains separate from this intentional public promotional link; the direct asset link is now an approved public-access path for this outreach.
+
+### 15 September 2026 — Social Media documentation reconciliation
+
+- Added `https://www.instagram.com/p/DdTv1wRFQRY/` as the newest curated Instagram post on `/social-media/`.
+- Reconciled the release documentation with the three recent Instagram posts that were already present at the top of the curated gallery but were not yet reflected in the v2.6.8 notes:
+  - `https://www.instagram.com/p/DdR-1QVmTOY/`
+  - `https://www.instagram.com/p/DdPHV4UFOOO/`
+  - `https://www.instagram.com/p/DdPCP-8lOgX/`
+- Preserved every previously curated Instagram post beneath the new additions and retained the existing Instagram embed/fallback behavior.
+
 ### Backend v2.2.3
 
 - Backend version advanced to **v2.2.3** with build stamp **14 September 2026 at 19:01:03Z UTC**.
@@ -100,6 +123,7 @@ Released **14 September 2026**. Last Updated: **14 September 2026 at 19:24:11Z U
 /assets/js/print-products.js
 /estore/print-bibles/index.html
 /estore/christian-books/index.html
+/social-media/index.html
 /README.md
 /change-log.html
 ```
@@ -125,9 +149,9 @@ Released **12 September 2026**. Last Updated: **13 September 2026 at 18:28:51Z U
 - Added `/assets/products/biden.epub` as `prod_presidential_joe_biden`.
 - The Biden edition uses the Douay-Rheims Bible and is presented as a free Presidential Edition.
 - Added `/presidential-edition/joe-biden/` using `/presidential-edition/BidenCover.png`, `/presidential-edition/joebiden.jpeg`, and `/presidential-edition/Joe_Biden_Signature.svg`.
-- The Biden product is **online-reading only** through `/lumiere/?product=prod_presidential_joe_biden`; storefront, account-library, free-download, token-download, and fulfillment responses do not expose a Biden download link.
+- The 13 September rollout prioritized online reading through `/lumiere/?product=prod_presidential_joe_biden`. As of 15 September 2026, Living Word Bibles also intentionally promotes a direct complimentary EPUB link at `/assets/products/biden.epub` for approved public outreach, while Valois Lumière access remains available.
 - Added `prod_presidential_joe_biden` to `FREE_ACCOUNT_PRODUCTS`, so verified/new accounts receive the entitlement through the existing default-free entitlement routine.
-- Added `prod_presidential_joe_biden` to `ONLINE_ONLY_PRODUCTS` and the repository asset map.
+- `prod_presidential_joe_biden` remains in `ONLINE_ONLY_PRODUCTS` for the normal account/fulfillment path and remains mapped to the repository asset; the 15 September St. Mary outreach is a separate intentional direct-download promotion of `/assets/products/biden.epub`.
 - Updated the Presidential Collection, main eStore, Copyright Notice, Editorial Standards, and Presidential History page with the Biden edition.
 - Updated the Presidential History page to use YouTube video `vixeuFZpB-E` in place of the previous unavailable overview embed.
 - Added the standard Presidential Edition disclaimer to the Presidential Collection and all non-Biden Presidential product pages. The Biden page instead carries the requested free-public-access statement.
@@ -1485,7 +1509,7 @@ Before merging or deploying this release:
 - Confirm `/assets/products/EthiopianApocryphaPDF.pdf` resolves in production.
 - Confirm `/assets/products/ethiopian.epub` resolves in production.
 - Confirm `/ethiopian-bible/` renders the EPUB product on the left and PDF product on the right with both PayPal Hosted Buttons and their hosted product images intact.
-- Confirm `/social-media/` shows `https://www.instagram.com/p/DczHZkHmRHW/` as the first Instagram post and preserves the existing Instagram gallery after it.
+- Confirm `/social-media/` shows `https://www.instagram.com/p/DdTv1wRFQRY/` as the first Instagram post and preserves the existing Instagram gallery after it.
 - For the current v2.6.3 social-media update, confirm the gallery now begins, in order, with `Dc595vMFf0b`, `Dc59FqUFfqB`, `Dc5834wlfYW`, `Dc58fQWlf_g`, and `Dc57XbJFQha`, with all previously curated posts preserved beneath them.
 - Confirm `prod_kjv_special` and `prod_drb` remain active Products rows.
 - Test a brand-new account: verify email, sign in, and confirm both free Bibles appear in Library.
@@ -1535,8 +1559,8 @@ Before merging or deploying this release:
 **Apps Script build stamp:** `14 September 2026 at 19:01:03Z UTC`  
 **Google Apps Script version:** `2.2.3`  
 **Frontend package version:** `2.6.8`  
-**README last updated:** **14 September 2026 at 19:24:11Z UTC**
+**README last updated:** **15 September 2026 at 13:07:52Z UTC**
 
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 14 September 2026 at 19:24:11Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 15 September 2026 at 13:07:52Z UTC</strong></p>

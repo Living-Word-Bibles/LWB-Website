@@ -9,13 +9,13 @@
 
   <meta property="og:type" content="website">
   <meta property="og:title" content="Heads of State Collection | Living Word Bibles">
-  <meta property="og:description" content="The Official eBible of Heads of State — special presentation editions from Living Word Bibles.">
+  <meta property="og:description" content="The Official eBible of Heads of State — Special Editions from Living Word Bibles.">
   <meta property="og:url" content="https://www.livingwordbibles.com/heads-of-state/">
-  <meta property="og:image" content="https://www.livingwordbibles.com/assets/lwbbanner.webp">
+  <meta property="og:image" content="https://www.livingwordbibles.com/heads-of-state/heads-of-state-banner.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Heads of State Collection | Living Word Bibles">
-  <meta name="twitter:description" content="The Official eBible of Heads of State — special presentation editions from Living Word Bibles.">
-  <meta name="twitter:image" content="https://www.livingwordbibles.com/assets/lwbbanner.webp">
+  <meta name="twitter:description" content="The Official eBible of Heads of State — Special Editions from Living Word Bibles.">
+  <meta name="twitter:image" content="https://www.livingwordbibles.com/heads-of-state/heads-of-state-banner.png">
 
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/svg+xml" href="/assets/icons/lwb-mark.svg">
@@ -86,6 +86,7 @@
     .hos-hero::before{
       content:"";
       position:absolute;inset:0;
+      z-index:1;
       pointer-events:none;
       background-image:
         linear-gradient(90deg,transparent 49.6%,rgba(223,190,110,.08) 50%,transparent 50.4%),
@@ -93,7 +94,16 @@
       background-size:72px 72px;
       mask-image:linear-gradient(to bottom,rgba(0,0,0,.55),transparent 85%);
     }
-    .hos-hero-inner{position:relative;z-index:1;padding:clamp(3rem,7vw,6.3rem);max-width:940px}
+    .hos-hero::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      z-index:0;
+      pointer-events:none;
+      background:url("/heads-of-state/heads-of-state-banner.png") center center / cover no-repeat;
+      opacity:.40;
+    }
+    .hos-hero-inner{position:relative;z-index:2;padding:clamp(3rem,7vw,6.3rem);max-width:940px}
     .hos-eyebrow{margin:0 0 .9rem;text-transform:uppercase;letter-spacing:.18em;font-size:.78rem;font-weight:900;color:var(--hos-gold-soft)}
     .hos-hero h1{margin:0;font-size:clamp(3rem,7vw,6.8rem);line-height:.94;letter-spacing:-.05em;color:#fff}
     .hos-slogan{margin:1.25rem 0 0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(1.35rem,2.8vw,2.15rem);font-style:italic;color:#f6e7be}
@@ -148,10 +158,40 @@
     .hos-card:nth-child(even) .hos-cover{transform:perspective(900px) rotateY(1.5deg)}
     .hos-cover-caption{margin:.9rem auto 0;max-width:260px;color:#777168;font-size:.82rem;line-height:1.45}
 
-    .hos-statement{position:relative;margin:1.2rem auto 0;padding:clamp(2.5rem,6vw,5rem);border-radius:30px;background:linear-gradient(145deg,#0a1424,#17243b);color:#fff;box-shadow:0 28px 72px rgba(8,15,26,.22);text-align:center;overflow:hidden}
-    .hos-statement::before{content:"✦";display:block;color:var(--hos-gold);font-size:1.35rem;margin-bottom:.8rem}
-    .hos-statement h2{margin:0;font-size:clamp(2rem,4.5vw,3.6rem);letter-spacing:-.035em}
-    .hos-statement p{max-width:880px;margin:1rem auto 0;color:rgba(255,255,255,.78);font-size:1.05rem;line-height:1.82}
+    .hos-statement{
+      position:relative;
+      margin:1.2rem auto 0;
+      min-height:360px;
+      display:grid;
+      align-content:center;
+      padding:clamp(2.5rem,6vw,5rem);
+      border-radius:30px;
+      background:linear-gradient(145deg,#0a1424,#17243b);
+      color:#fff;
+      box-shadow:0 28px 72px rgba(8,15,26,.22);
+      text-align:center;
+      overflow:hidden;
+    }
+    .hos-statement::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      z-index:0;
+      pointer-events:none;
+      background:url("/heads-of-state/heads-of-state-footer-banner.png") center center / cover no-repeat;
+      opacity:.34;
+    }
+    .hos-statement::before{
+      content:"✦";
+      position:relative;
+      z-index:2;
+      display:block;
+      color:var(--hos-gold);
+      font-size:1.35rem;
+      margin-bottom:.8rem;
+    }
+    .hos-statement h2{position:relative;z-index:2;margin:0;font-size:clamp(2rem,4.5vw,3.6rem);letter-spacing:-.035em}
+    .hos-statement p{position:relative;z-index:2;max-width:880px;margin:1rem auto 0;color:rgba(255,255,255,.84);font-size:1.05rem;line-height:1.82}
 
     .hos-disclaimer{margin:2rem auto 0;padding:1.35rem 1.5rem;border:1px solid rgba(106,80,36,.18);border-radius:18px;background:#fffdf7;color:#5d574d;line-height:1.7;font-size:.94rem}
     .hos-disclaimer strong{color:#241f17}
@@ -177,7 +217,9 @@
       .hos-status{margin-top:.85rem}
       .hos-cover{width:min(72%,260px);transform:none!important}
       .hos-seal{width:80px;height:80px;right:-4px;bottom:-7px}
-      .hos-statement{border-radius:22px;padding:2.2rem 1.3rem}
+      .hos-statement{min-height:320px;border-radius:22px;padding:2.2rem 1.3rem}
+      .hos-hero::after{background-position:center center;opacity:.34}
+      .hos-statement::after{background-position:center center;opacity:.28}
     }
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.hos-cover{transform:none!important}}
   </style>
@@ -203,7 +245,7 @@
   </div>
 
   <section class="hos-intro hos-shell" aria-labelledby="collection-heading">
-    <p class="hos-eyebrow" style="color:#8b6a2b">Presentation Collection</p>
+    <p class="hos-eyebrow" style="color:#8b6a2b">Heads of State Collection</p>
     <h2 id="collection-heading">Scripture, History &amp; Public Service</h2>
     <p>From the Presidency of the United States and the British Crown to the governments of the United Kingdom, Canada, Australia, and the State of Indiana, each edition pairs the complete King James Bible with carefully selected historical and ceremonial material specific to the office.</p>
   </section>
@@ -215,18 +257,18 @@
         <figure class="hos-portrait-frame">
           <img src="https://upload.wikimedia.org/wikipedia/commons/1/16/Official_Presidential_Portrait_of_President_Donald_J._Trump_%282025%29.jpg" alt="Official portrait of President Donald J. Trump" width="1638" height="2048" loading="eager" decoding="async">
         </figure>
-        <img class="hos-seal" src="presidential_seal.png" alt="Seal of the President of the United States" width="512" height="512" loading="lazy">
+        <img class="hos-seal" src="/heads-of-state/presidential_seal.png" alt="Seal of the President of the United States" width="512" height="512" loading="lazy">
       </div>
       <div class="hos-copy">
         <p class="hos-jurisdiction">United States of America</p>
         <h3>Donald J. Trump</h3>
         <p class="hos-title">President of the United States</p>
-        <span class="hos-status">Special Presentation Edition</span>
+        <span class="hos-status">Heads of State Collection</span>
         <p class="hos-edition">The Holy Bible: King James Version — Presidential Edition</p>
         <p class="hos-desc">The base Presidential Edition of the King James Bible, presented within the American civic and historical tradition.</p>
       </div>
       <div class="hos-cover-wrap">
-        <img class="hos-cover" src="PresidentialCover.png" alt="Cover of the Living Word Bibles Presidential Edition of the King James Version" width="1024" height="1536" loading="lazy" decoding="async">
+        <img class="hos-cover" src="/presidential-edition/PresidentialCover.png" alt="Cover of the Living Word Bibles Presidential Edition of the King James Version" width="1024" height="1536" loading="lazy" decoding="async">
         <p class="hos-cover-caption">Presidential Edition • Special Presentation Copy</p>
       </div>
     </article>
@@ -234,20 +276,20 @@
     <article class="hos-card">
       <div class="hos-portrait-wrap">
         <figure class="hos-portrait-frame">
-          <img src="King_Charles_III_(July_2023).jpg" alt="King Charles III" width="1094" height="2272" loading="lazy" decoding="async">
+          <img src="/heads-of-state/King_Charles_III_(July_2023).jpg" alt="King Charles III" width="1094" height="2272" loading="lazy" decoding="async">
         </figure>
-        <img class="hos-seal square" src="BritishCoatofArms.webp" alt="Royal Coat of Arms of the United Kingdom" width="1365" height="1155" loading="lazy">
+        <img class="hos-seal square" src="/heads-of-state/BritishCoatofArms.webp" alt="Royal Coat of Arms of the United Kingdom" width="1365" height="1155" loading="lazy">
       </div>
       <div class="hos-copy">
         <p class="hos-jurisdiction">The Crown</p>
         <h3>His Majesty The King</h3>
         <p class="hos-title">King Charles III<br>King of the United Kingdom and the other Commonwealth Realms</p>
-        <span class="hos-status">Special Presentation Edition</span>
+        <span class="hos-status">Heads of State Collection</span>
         <p class="hos-edition">The Holy Bible: King James Version — Royal Edition</p>
         <p class="hos-desc">A Royal Edition celebrating the historic relationship between the Crown and the Authorised King James Version.</p>
       </div>
       <div class="hos-cover-wrap">
-        <img class="hos-cover" src="Royal_Edition_KJV_Cover.png" alt="Cover of the Living Word Bibles Royal Edition of the King James Version" width="1024" height="1536" loading="lazy" decoding="async">
+        <img class="hos-cover" src="/heads-of-state/Royal_Edition_KJV_Cover.png" alt="Cover of the Living Word Bibles Royal Edition of the King James Version" width="1024" height="1536" loading="lazy" decoding="async">
         <p class="hos-cover-caption">Royal Edition • Special Presentation Copy</p>
       </div>
     </article>
@@ -257,18 +299,18 @@
         <figure class="hos-portrait-frame">
           <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Andrew_Burnham_in_2025_(cropped).jpg" alt="Andy Burnham" width="368" height="492" loading="lazy" decoding="async">
         </figure>
-        <img class="hos-seal square" src="BritishCoatofArms.webp" alt="Royal Coat of Arms of the United Kingdom" width="1365" height="1155" loading="lazy">
+        <img class="hos-seal square" src="/heads-of-state/BritishCoatofArms.webp" alt="Royal Coat of Arms of the United Kingdom" width="1365" height="1155" loading="lazy">
       </div>
       <div class="hos-copy">
         <p class="hos-jurisdiction">Government of the United Kingdom</p>
         <h3>The Rt Hon Andy Burnham MP</h3>
         <p class="hos-title">Prime Minister of the United Kingdom</p>
-        <span class="hos-status">Special Presentation Edition</span>
+        <span class="hos-status">Heads of State Collection</span>
         <p class="hos-edition">The Holy Bible: King James Version — HM Government Edition</p>
         <p class="hos-desc">Prepared for the office of the Prime Minister and reflecting the historic civic and religious heritage of the United Kingdom.</p>
       </div>
       <div class="hos-cover-wrap">
-        <img class="hos-cover" src="HMGovCover.png" alt="Cover of the Living Word Bibles HM Government Edition of the King James Version" width="1024" height="1536" loading="lazy" decoding="async">
+        <img class="hos-cover" src="/heads-of-state/HMGovCover.png" alt="Cover of the Living Word Bibles HM Government Edition of the King James Version" width="1024" height="1536" loading="lazy" decoding="async">
         <p class="hos-cover-caption">HM Government Edition • Special Presentation Copy</p>
       </div>
     </article>
@@ -278,18 +320,18 @@
         <figure class="hos-portrait-frame">
           <img src="https://upload.wikimedia.org/wikipedia/commons/2/29/Mark_Carney_portrait_May_2025_%284%29.jpg" alt="Mark Carney" width="676" height="883" loading="lazy" decoding="async">
         </figure>
-        <img class="hos-seal square" src="Royal_Crown_of_Canada.svg.webp" alt="Canadian Royal Crown" width="1200" height="1200" loading="lazy">
+        <img class="hos-seal square" src="/heads-of-state/Royal_Crown_of_Canada.svg.webp" alt="Canadian Royal Crown" width="1200" height="1200" loading="lazy">
       </div>
       <div class="hos-copy">
         <p class="hos-jurisdiction">Government of Canada · Gouvernement du Canada</p>
         <h3>The Right Honourable Mark Carney</h3>
         <p class="hos-title">Prime Minister of Canada<span class="fr">Premier ministre du Canada</span></p>
-        <span class="hos-status">Special Presentation Edition</span>
+        <span class="hos-status">Heads of State Collection</span>
         <p class="hos-edition">The Holy Bible: King James Version — Canada Edition</p>
         <p class="hos-desc">A Canadian presentation edition incorporating the Canadian Royal Crown, historic King James material, and Canadian national traditions.</p>
       </div>
       <div class="hos-cover-wrap">
-        <img class="hos-cover" src="CanadaCover.png" alt="Cover of the Living Word Bibles Canada Edition of the King James Version" width="1024" height="1536" loading="lazy" decoding="async">
+        <img class="hos-cover" src="/heads-of-state/CanadaCover.png" alt="Cover of the Living Word Bibles Canada Edition of the King James Version" width="1024" height="1536" loading="lazy" decoding="async">
         <p class="hos-cover-caption">Canada Edition • Special Presentation Copy</p>
       </div>
     </article>
@@ -299,18 +341,18 @@
         <figure class="hos-portrait-frame">
           <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Anthony_Albanese_Oct_2023.jpg" alt="Anthony Albanese" width="754" height="1059" loading="lazy" decoding="async">
         </figure>
-        <img class="hos-seal square" src="AussieCoatofArms.webp" alt="Commonwealth Coat of Arms of Australia" width="1400" height="1100" loading="lazy">
+        <img class="hos-seal square" src="/heads-of-state/AussieCoatofArms.webp" alt="Commonwealth Coat of Arms of Australia" width="1400" height="1100" loading="lazy">
       </div>
       <div class="hos-copy">
         <p class="hos-jurisdiction">Commonwealth of Australia</p>
         <h3>The Hon Anthony Albanese MP</h3>
         <p class="hos-title">Prime Minister of Australia</p>
-        <span class="hos-status">Special Presentation Edition</span>
+        <span class="hos-status">Heads of State Collection</span>
         <p class="hos-edition">The Holy Bible: King James Version — Commonwealth of Australia Edition</p>
         <p class="hos-desc">A presentation edition incorporating the Commonwealth Coat of Arms, the historic King James tradition, and Australia’s national heritage.</p>
       </div>
       <div class="hos-cover-wrap">
-        <img class="hos-cover" src="AussieCover.png" alt="Cover of the Living Word Bibles Commonwealth of Australia Edition of the King James Version" width="1024" height="1536" loading="lazy" decoding="async">
+        <img class="hos-cover" src="/heads-of-state/AussieCover.png" alt="Cover of the Living Word Bibles Commonwealth of Australia Edition of the King James Version" width="1024" height="1536" loading="lazy" decoding="async">
         <p class="hos-cover-caption">Commonwealth of Australia Edition • Special Presentation Copy</p>
       </div>
     </article>
@@ -320,18 +362,18 @@
         <figure class="hos-portrait-frame">
           <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Mike_Braun%2C_Official_Portrait%2C_116th_Congress_%28cropped%29.jpg" alt="Mike Braun" width="3694" height="4610" loading="lazy" decoding="async">
         </figure>
-        <img class="hos-seal" src="Seal_of_the_State_of_Indiana.svg.webp" alt="Seal of the State of Indiana" width="1200" height="1200" loading="lazy">
+        <img class="hos-seal" src="/heads-of-state/Seal_of_the_State_of_Indiana.svg.webp" alt="Seal of the State of Indiana" width="1200" height="1200" loading="lazy">
       </div>
       <div class="hos-copy">
         <p class="hos-jurisdiction">State of Indiana</p>
         <h3>The Honorable Michael K. Braun</h3>
         <p class="hos-title">Governor of the State of Indiana</p>
-        <span class="hos-status">Special Presentation Edition</span>
+        <span class="hos-status">Heads of State Collection</span>
         <p class="hos-edition">The Holy Bible: King James Version — State of Indiana Edition</p>
         <p class="hos-desc">A special Hoosier presentation edition combining the King James Bible with Indiana’s civic heritage and historical traditions.</p>
       </div>
       <div class="hos-cover-wrap">
-        <img class="hos-cover" src="HoosierCover.png" alt="Cover of the Living Word Bibles State of Indiana Edition of the King James Version" width="1024" height="1536" loading="lazy" decoding="async">
+        <img class="hos-cover" src="/heads-of-state/HoosierCover.png" alt="Cover of the Living Word Bibles State of Indiana Edition of the King James Version" width="1024" height="1536" loading="lazy" decoding="async">
         <p class="hos-cover-caption">State of Indiana Edition • Special Presentation Copy</p>
       </div>
     </article>

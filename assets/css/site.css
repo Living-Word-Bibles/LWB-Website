@@ -362,3 +362,28 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   .account-legal-document span{white-space:normal}
 }
 
+/* MichaelSoft footer release — mobile layout only */
+@media (max-width:900px){
+  .site-footer .footer-release .footer-release-link{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    width:100%;
+  }
+  .site-footer .footer-release [data-lwb-release-link]{
+    display:contents;
+  }
+  .site-footer .footer-release [data-lwb-release-version]{
+    white-space:nowrap;
+  }
+  .site-footer .footer-release .footer-release-separator{
+    display:none;
+  }
+  .site-footer .footer-release [data-lwb-release-updated]{
+    display:block;
+    flex:0 0 100%;
+    margin-top:.12rem;
+    white-space:normal;
+  }
+}
+

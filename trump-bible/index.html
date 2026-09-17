@@ -232,6 +232,12 @@
       border-radius: 12px;
       font-size: .96rem;
     }
+    .foreword-blur {
+      filter: blur(6px);
+      opacity: .72;
+      user-select: none;
+      pointer-events: none;
+    }
     .signature-block {
       margin-top: 20px;
       text-align: center;
@@ -258,7 +264,9 @@
       padding: 0 20px 36px;
       color: var(--muted);
       font-size: .94rem;
+      text-align: center;
     }
+    .foot p { margin: .35rem 0; }
     @media (max-width: 920px) {
       .grid { grid-template-columns: 1fr; }
       .product-flex { grid-template-columns: 120px 1fr; }
@@ -350,8 +358,9 @@
 
       <article class="card foreword-card">
         <h2>Foreword</h2>
-        <p class="review-note"><strong>One of only 2 Bibles Officially Endorsed by President Donald J. Trump</strong></p>
+        <p class="review-note"><strong>President Trump is Currently Reviewing This Foreword</strong></p>
 
+        <div class="foreword-blur" aria-hidden="true">
         <p>America is a nation with a remarkable history, an extraordinary inheritance, and a future that depends upon each generation understanding what came before it.</p>
         <p>At the heart of that inheritance are two great traditions that have shaped the lives of millions of Americans: faith in God and devotion to liberty.</p>
         <p>The Holy Bible has brought comfort to generations in times of hardship, wisdom in times of uncertainty, strength in times of trial, and hope when the path ahead seemed difficult. Its words have been read in churches, homes, schools, hospitals, battlefields, prisons, and countless places where men &amp; women have turned to Almighty God for guidance.</p>
@@ -385,12 +394,14 @@
           <img src="trump-signature.png" alt="Donald J. Trump signature" />
           <div class="title">45th &amp; 47th President of the United States</div>
         </div>
+        </div>
       </article>
     </section>
   </div>
 
   <div class="foot">
-Officially endorsed by President Donald J. Trump. Fifty-one percent (51%) of all royalties from the sale of this Bible are remitted to <a href="https://tmtgcorp.com/" target="_blank" rel="noopener noreferrer">Trump Media &amp; Technology Group Corporation</a> (NYSE: <a href="https://finance.yahoo.com/quote/DJT/?guccounter=1&amp;guce_referrer=aHR0cHM6Ly93d3cuZ29vZ2xlLmNvbS8&amp;guce_referrer_sig=AQAAANs6IJLHTP7nvraKrLlX-byw7OJ-FnfdaJBN6LoNJTrXGesZTr2XfvliuXiBG40D0YdvYaueeWjnKancPR7oXTNYHd2KshE7PtrzZmq2Z4blVi0FfMFVz-8QGImlrhpoL4nYA4gF7cgZQJ09XkCWNJ6kcR11bWAeD4_rmOWc0cfh" target="_blank" rel="noopener noreferrer">DJT</a>), a publicly traded company. God Bless the United States of America.
+<p><strong>Fifty-one percent (51%)</strong> of all royalties from the sale of this Bible are remitted to CIC Ventures LLC, a Florida Limited Liability Company.</p>
+<p><strong><em>God Bless the United States of America</em></strong></p>
   </div>
   </main>
 

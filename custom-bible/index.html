@@ -1,0 +1,1096 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Custom Bibles | Living Word Bibles</title>
+  <meta name="description" content="Create a personalized Living Word Bibles eBible with your choice of Bible translation, dedication, cover, Scripture pages, prayers, and more. Custom eBibles start at $19.99.">
+  <link rel="canonical" href="https://www.livingwordbibles.com/custom-bibles/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Custom Bibles | Living Word Bibles">
+  <meta property="og:description" content="Order a Custom eBible Made Especially for Someone You Love. Custom Bibles start at $19.99.">
+  <meta property="og:url" content="https://www.livingwordbibles.com/custom-bibles/">
+  <meta property="og:image" content="https://www.livingwordbibles.com/custom-bibles/custom-ebible-banner.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Custom Bibles | Living Word Bibles">
+  <meta name="twitter:description" content="Order a Custom eBible Made Especially for Someone You Love.">
+  <meta name="twitter:image" content="https://www.livingwordbibles.com/custom-bibles/custom-ebible-banner.png">
+
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/lwb-mark.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
+  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/assets/css/site.css">
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Service",
+    "name":"Living Word Bibles Custom Bibles",
+    "url":"https://www.livingwordbibles.com/custom-bibles/",
+    "description":"Personalized custom eBibles from Living Word Bibles, starting at $19.99.",
+    "provider":{
+      "@type":"Organization",
+      "name":"Living Word Bibles",
+      "url":"https://www.livingwordbibles.com/"
+    },
+    "offers":{
+      "@type":"Offer",
+      "price":"19.99",
+      "priceCurrency":"USD",
+      "description":"Base Custom eBible"
+    }
+  }
+  </script>
+
+  <style>
+    :root{
+      --cb-ink:#151515;
+      --cb-navy:#0b1728;
+      --cb-navy-2:#14233a;
+      --cb-gold:#bd9137;
+      --cb-gold-2:#e5c876;
+      --cb-cream:#fbf7ee;
+      --cb-paper:#fffdf9;
+      --cb-muted:#68645d;
+      --cb-line:#ded5c4;
+      --cb-green:#1d613f;
+      --cb-red:#8c2b2b;
+      --cb-shadow:0 18px 50px rgba(24,22,17,.12);
+      --cb-radius:22px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{background:#f6f2e9;color:var(--cb-ink)}
+    button,input,select,textarea{font:inherit}
+
+    .cb-page{padding-bottom:4rem}
+    .cb-shell{width:min(1180px,calc(100% - 36px));margin:0 auto}
+    .cb-breadcrumbs{padding:1rem 0;font-size:.92rem;color:#716b60}
+    .cb-breadcrumbs a{color:inherit;text-decoration:none}
+
+    .cb-hero{
+      position:relative;
+      overflow:hidden;
+      border-radius:28px;
+      box-shadow:0 28px 75px rgba(10,17,29,.2);
+      background:#0b1220;
+    }
+    .cb-hero a{display:block}
+    .cb-hero img{display:block;width:100%;height:auto}
+    .cb-hero-accessible{
+      position:absolute;
+      width:1px;height:1px;padding:0;margin:-1px;
+      overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0
+    }
+    .cb-hero-action{
+      display:flex;
+      justify-content:center;
+      margin:1.1rem 0 0;
+    }
+
+    .cb-btn{
+      appearance:none;border:0;border-radius:999px;
+      display:inline-flex;align-items:center;justify-content:center;gap:.55rem;
+      min-height:48px;padding:.78rem 1.25rem;
+      background:#17243a;color:#fff;text-decoration:none;font-weight:900;
+      cursor:pointer;box-shadow:0 8px 22px rgba(11,23,40,.14);
+    }
+    .cb-btn:hover{filter:brightness(1.06)}
+    .cb-btn.gold{background:linear-gradient(135deg,#a87928,#d1aa55);color:#16110a}
+    .cb-btn.secondary{background:#fff;color:#202020;border:1px solid #d8d0c1;box-shadow:none}
+    .cb-btn.danger{background:#7b2525}
+    .cb-btn[disabled]{opacity:.5;cursor:not-allowed}
+
+    .cb-intro{
+      text-align:center;padding:3.3rem 0 1.6rem
+    }
+    .cb-eyebrow{
+      margin:0 0 .55rem;text-transform:uppercase;letter-spacing:.17em;
+      color:#87651e;font-size:.75rem;font-weight:900
+    }
+    .cb-intro h1,.cb-section-title{
+      margin:0;color:#131820;letter-spacing:-.035em
+    }
+    .cb-intro h1{font-size:clamp(2.1rem,5vw,3.7rem)}
+    .cb-intro p{max-width:850px;margin:1rem auto 0;color:var(--cb-muted);line-height:1.75;font-size:1.05rem}
+
+    .cb-price-strip{
+      display:grid;grid-template-columns:repeat(3,1fr);
+      gap:1rem;margin:1.4rem 0 2.4rem
+    }
+    .cb-price-tile{
+      padding:1.2rem;border:1px solid #e3dbc9;border-radius:18px;background:#fffdf8;text-align:center
+    }
+    .cb-price-tile strong{display:block;font-size:1.25rem;color:#1a2230}
+    .cb-price-tile span{display:block;margin-top:.35rem;color:#756d60;font-size:.9rem}
+
+    .cb-customizer{
+      display:grid;grid-template-columns:minmax(0,1fr) 330px;
+      gap:1.5rem;align-items:start
+    }
+    .cb-form-card,.cb-summary{
+      background:var(--cb-paper);border:1px solid rgba(95,75,39,.16);
+      border-radius:var(--cb-radius);box-shadow:var(--cb-shadow)
+    }
+    .cb-form-card{padding:clamp(1.1rem,3vw,2rem);margin-bottom:1.25rem}
+    .cb-summary{padding:1.2rem;position:sticky;top:1rem}
+    .cb-summary h2{margin:.15rem 0 .25rem;font-size:1.45rem}
+    .cb-summary .order-number{font-size:.82rem;color:#70695e;word-break:break-word}
+    .cb-total{
+      margin:1rem 0;padding:1rem;border-radius:16px;
+      background:linear-gradient(135deg,#0d1829,#1b2b44);color:#fff
+    }
+    .cb-total span{display:block;font-size:.8rem;text-transform:uppercase;letter-spacing:.12em;color:#e8d7a7}
+    .cb-total strong{display:block;margin-top:.25rem;font-size:2rem}
+    .cb-summary-lines{margin:.7rem 0 0;padding:0;list-style:none}
+    .cb-summary-lines li{display:flex;justify-content:space-between;gap:1rem;padding:.5rem 0;border-bottom:1px solid #eee6d8;font-size:.9rem}
+    .cb-summary-lines li span:last-child{font-weight:900;white-space:nowrap}
+
+    .cb-step-head{display:flex;align-items:flex-start;gap:.9rem;margin-bottom:1.25rem}
+    .cb-step-number{
+      flex:0 0 38px;width:38px;height:38px;border-radius:50%;
+      display:grid;place-items:center;background:#16243a;color:#f3d997;font-weight:900
+    }
+    .cb-step-head h2{margin:0;font-size:clamp(1.5rem,3vw,2.15rem)}
+    .cb-step-head p{margin:.35rem 0 0;color:var(--cb-muted);line-height:1.6}
+
+    .cb-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.85rem}
+    .cb-option{
+      position:relative;border:1px solid #ddd4c3;border-radius:16px;
+      background:#fff;padding:1rem;cursor:pointer;transition:.16s ease
+    }
+    .cb-option:hover{border-color:#b89650;transform:translateY(-1px)}
+    .cb-option:has(input:checked){border-color:#a77b29;box-shadow:0 0 0 2px rgba(189,145,55,.13);background:#fffaf0}
+    .cb-option input{position:absolute;top:1rem;right:1rem;accent-color:#9c7428}
+    .cb-option strong{display:block;padding-right:2rem;color:#1c2430;line-height:1.35}
+    .cb-option small{display:block;margin-top:.4rem;color:#726b5f;line-height:1.45}
+    .cb-price{display:inline-block;margin-top:.65rem;font-weight:900;color:#815f1d}
+
+    .cb-field-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+    .cb-field{display:flex;flex-direction:column;gap:.38rem}
+    .cb-field.full{grid-column:1/-1}
+    .cb-field label,.cb-field legend{font-weight:850;color:#262b33}
+    .cb-field input,.cb-field select,.cb-field textarea{
+      width:100%;border:1px solid #d8cfbd;border-radius:12px;
+      background:#fff;padding:.78rem .85rem;color:#151515
+    }
+    .cb-field textarea{min-height:115px;resize:vertical}
+    .cb-field input:focus,.cb-field select:focus,.cb-field textarea:focus{
+      outline:3px solid rgba(189,145,55,.16);border-color:#ad8233
+    }
+
+    .cb-subpanel{
+      margin-top:1rem;padding:1rem;border:1px dashed #cdbb94;border-radius:14px;background:#fcf8ef
+    }
+    .cb-subpanel[hidden]{display:none!important}
+    .cb-subpanel h3{margin:0 0 .8rem;font-size:1.05rem}
+
+    .cb-note{
+      margin:1rem 0 0;padding:1rem 1.1rem;border-left:4px solid var(--cb-gold);
+      border-radius:0 12px 12px 0;background:#fbf4df;color:#5d4d2b;line-height:1.65
+    }
+    .cb-note strong{color:#3d2d0f}
+
+    .cb-artwork{
+      margin-top:1.1rem;padding:1.1rem;border-radius:16px;background:#0f1c2f;color:#fff
+    }
+    .cb-artwork h3{margin:0 0 .45rem;color:#f2db9e}
+    .cb-artwork p{margin:.35rem 0;line-height:1.6;color:rgba(255,255,255,.86)}
+    .cb-artwork a{color:#f7df9f}
+
+    .cb-qty{display:flex;align-items:center;gap:.65rem}
+    .cb-qty input{max-width:100px}
+
+    .cb-review{
+      white-space:pre-wrap;background:#101926;color:#eef2f6;border-radius:14px;
+      padding:1rem;max-height:420px;overflow:auto;font:13px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace
+    }
+
+    .cb-confirm-box{
+      margin-top:1rem;padding:1rem;border-radius:14px;background:#f4f8f4;border:1px solid #bfd4c4;color:#294a34
+    }
+    .cb-warning{
+      margin-top:1rem;padding:1rem;border-radius:14px;background:#fff6e9;border:1px solid #ead0a5;color:#6b4b1c
+    }
+
+    .cb-actions{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1rem}
+
+    .cb-heads-state{
+      margin-top:2rem;padding:clamp(1.4rem,4vw,2.3rem);
+      border-radius:22px;background:linear-gradient(145deg,#0b1728,#172840);color:#fff;text-align:center
+    }
+    .cb-heads-state h2{margin:0;color:#fff}
+    .cb-heads-state p{max-width:820px;margin:.8rem auto 1rem;color:rgba(255,255,255,.8);line-height:1.7}
+
+    .cb-terms{
+      margin-top:1.2rem;color:#716b61;font-size:.86rem;line-height:1.6
+    }
+
+    .cb-mobile-total{
+      display:none;position:fixed;left:12px;right:12px;bottom:12px;z-index:40;
+      border-radius:16px;background:#0d1829;color:#fff;padding:.75rem 1rem;
+      box-shadow:0 15px 40px rgba(0,0,0,.3)
+    }
+    .cb-mobile-total div{display:flex;justify-content:space-between;align-items:center;gap:1rem}
+    .cb-mobile-total span{font-size:.78rem;color:#e6cf94;text-transform:uppercase;letter-spacing:.1em}
+    .cb-mobile-total strong{font-size:1.25rem}
+
+    @media(max-width:900px){
+      .cb-customizer{grid-template-columns:1fr}
+      .cb-summary{position:static}
+      .cb-mobile-total{display:block}
+      .cb-page{padding-bottom:6.5rem}
+    }
+    @media(max-width:680px){
+      .cb-shell{width:min(100% - 22px,1180px)}
+      .cb-hero{border-radius:18px}
+      .cb-price-strip{grid-template-columns:1fr}
+      .cb-options,.cb-field-grid{grid-template-columns:1fr}
+      .cb-field.full{grid-column:auto}
+      .cb-form-card{border-radius:18px;padding:1rem}
+      .cb-option{padding:.9rem}
+    }
+  </style>
+</head>
+
+<body>
+<a class="skip-link" href="#main-content">Skip to Content</a>
+<div data-lwb-header></div>
+
+<main id="main-content" class="cb-page">
+  <div class="cb-shell">
+    <nav class="cb-breadcrumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a> <span aria-hidden="true">›</span> Custom Bibles
+    </nav>
+
+    <section class="cb-hero" aria-labelledby="custom-bible-title">
+      <a href="#customizer" aria-label="Create your Custom Bible">
+        <img src="/custom-bibles/custom-ebible-banner.png" alt="Order a Custom eBible Made Especially for Someone You Love — Custom Bibles Starting at $19.99">
+      </a>
+      <h1 id="custom-bible-title" class="cb-hero-accessible">Order a Custom eBible Made Especially for Someone You Love</h1>
+    </section>
+
+    <div class="cb-hero-action">
+      <a class="cb-btn gold" href="#customizer">Create Your Custom Bible</a>
+    </div>
+
+    <section class="cb-intro">
+      <p class="cb-eyebrow">Living Word Bibles Custom Editions</p>
+      <h1>Create a Bible That Is Truly Personal</h1>
+      <p>Choose the Bible translation, personalize the dedication, add a custom cover, Scripture, prayer, family page, memorial page, or other meaningful material. Every order is reviewed individually by Living Word Bibles before payment is requested.</p>
+    </section>
+
+    <div class="cb-price-strip" aria-label="Custom Bible highlights">
+      <div class="cb-price-tile"><strong>Starting at $19.99</strong><span>Complete personalized custom eBible</span></div>
+      <div class="cb-price-tile"><strong>No Payment Up Front</strong><span>Submit your request first; PayPal payment link follows after review</span></div>
+      <div class="cb-price-tile"><strong>Made for Someone Special</strong><span>Weddings, families, memorials, baptisms, confirmations &amp; more</span></div>
+    </div>
+
+    <section id="customizer" class="cb-customizer" aria-label="Custom Bible order request">
+      <form id="custom-bible-form" novalidate>
+        <section class="cb-form-card">
+          <div class="cb-step-head">
+            <div class="cb-step-number">1</div>
+            <div>
+              <h2>Choose Your Bible</h2>
+              <p>Your $19.99 Custom Bible includes one Bible base. Premium translations add $9.99.</p>
+            </div>
+          </div>
+
+          <div class="cb-options">
+            <label class="cb-option">
+              <input type="radio" name="bibleBase" value="The Holy Bible: King James Version — Special Edition" data-price="0" checked>
+              <strong>The Holy Bible: King James Version — Special Edition</strong>
+              <small>Includes the historic King James material and more than a dozen supplemental biblical maps.</small>
+              <span class="cb-price">INCLUDED</span>
+            </label>
+
+            <label class="cb-option">
+              <input type="radio" name="bibleBase" value="Douay-Rheims Bible" data-price="0">
+              <strong>Douay-Rheims Bible</strong>
+              <small>Catholic Bible base. No additional customization surcharge.</small>
+              <span class="cb-price">INCLUDED</span>
+            </label>
+
+            <label class="cb-option">
+              <input type="radio" name="bibleBase" value="American Standard Version (ASV)" data-price="0">
+              <strong>American Standard Version (ASV)</strong>
+              <small>Available as a standard Custom Bible base.</small>
+              <span class="cb-price">INCLUDED</span>
+            </label>
+
+            <label class="cb-option">
+              <input type="radio" name="bibleBase" value="Young's Literal Translation (YLT)" data-price="0">
+              <strong>Young's Literal Translation (YLT)</strong>
+              <small>Available as a standard Custom Bible base.</small>
+              <span class="cb-price">INCLUDED</span>
+            </label>
+
+            <label class="cb-option">
+              <input type="radio" name="bibleBase" value="World English Bible (WEB)" data-price="0">
+              <strong>World English Bible (WEB)</strong>
+              <small>Available as a standard Custom Bible base.</small>
+              <span class="cb-price">INCLUDED</span>
+            </label>
+
+            <label class="cb-option">
+              <input type="radio" name="bibleBase" value="New King James Version (NKJV)" data-price="9.99">
+              <strong>New King James Version (NKJV)</strong>
+              <small>Premium translation.</small>
+              <span class="cb-price">+$9.99</span>
+            </label>
+
+            <label class="cb-option">
+              <input type="radio" name="bibleBase" value="New International Version (NIV)" data-price="9.99">
+              <strong>New International Version (NIV)</strong>
+              <small>Premium translation.</small>
+              <span class="cb-price">+$9.99</span>
+            </label>
+
+            <label class="cb-option">
+              <input type="radio" name="bibleBase" value="English Standard Version (ESV)" data-price="9.99">
+              <strong>English Standard Version (ESV)</strong>
+              <small>Premium translation.</small>
+              <span class="cb-price">+$9.99</span>
+            </label>
+          </div>
+
+          <div class="cb-note">
+            <strong>Ethiopian Apocrypha is an add-on, not a Bible base.</strong> You can add it to your selected Bible in Step 3.
+          </div>
+        </section>
+
+        <section class="cb-form-card">
+          <div class="cb-step-head">
+            <div class="cb-step-number">2</div>
+            <div>
+              <h2>Personalize Your Bible</h2>
+              <p>A standard personalized dedication page with the recipient's name and a standard John 3:16 Scripture page are included in the base price.</p>
+            </div>
+          </div>
+
+          <div class="cb-field-grid">
+            <div class="cb-field">
+              <label for="recipientName">Recipient's Full Name *</label>
+              <input id="recipientName" name="recipientName" autocomplete="name" required>
+            </div>
+            <div class="cb-field">
+              <label for="displayName">Name Exactly as It Should Appear *</label>
+              <input id="displayName" name="displayName" required>
+            </div>
+            <div class="cb-field">
+              <label for="presentedBy">Presented By / Given By</label>
+              <input id="presentedBy" name="presentedBy">
+            </div>
+            <div class="cb-field">
+              <label for="occasion">Occasion</label>
+              <select id="occasion" name="occasion">
+                <option value="">Select an occasion</option>
+                <option>Birthday</option>
+                <option>Wedding</option>
+                <option>Anniversary</option>
+                <option>Baptism</option>
+                <option>Confirmation</option>
+                <option>First Communion</option>
+                <option>Graduation</option>
+                <option>Christmas</option>
+                <option>Easter</option>
+                <option>Retirement</option>
+                <option>Ordination</option>
+                <option>New Baby</option>
+                <option>Memorial / In Loving Memory</option>
+                <option>Military Service</option>
+                <option>Just Because</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="cb-field">
+              <label for="presentationDate">Presentation Date</label>
+              <input id="presentationDate" name="presentationDate" type="date">
+            </div>
+            <div class="cb-field">
+              <label for="requestedDate">Requested Completion Date</label>
+              <input id="requestedDate" name="requestedDate" type="date">
+            </div>
+          </div>
+
+          <div class="cb-options" style="margin-top:1rem">
+            <label class="cb-option">
+              <input type="checkbox" id="customDedication" data-label="Fully Custom Title / Dedication Page" data-price="4.99">
+              <strong>Fully Custom Title / Dedication Page</strong>
+              <small>Replace the standard dedication with your own title, wording, message, date, or presentation language.</small>
+              <span class="cb-price">+$4.99</span>
+            </label>
+          </div>
+
+          <div class="cb-subpanel" id="customDedicationPanel" hidden>
+            <h3>Custom Dedication Details</h3>
+            <div class="cb-field-grid">
+              <div class="cb-field">
+                <label for="dedicationTitle">Custom Page Title</label>
+                <input id="dedicationTitle">
+              </div>
+              <div class="cb-field">
+                <label for="dedicationRecipient">Recipient Name on Page</label>
+                <input id="dedicationRecipient">
+              </div>
+              <div class="cb-field full">
+                <label for="dedicationText">Custom Dedication Wording</label>
+                <textarea id="dedicationText" placeholder="Enter the exact wording you would like us to use."></textarea>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="cb-form-card">
+          <div class="cb-step-head">
+            <div class="cb-step-number">3</div>
+            <div>
+              <h2>Choose Your Extras</h2>
+              <p>Add only the features you want. Your estimated total updates automatically.</p>
+            </div>
+          </div>
+
+          <div class="cb-options">
+            <label class="cb-option">
+              <input type="checkbox" id="ethiopianApocrypha" data-label="Ethiopian Apocrypha" data-price="9.99">
+              <strong>Add the Ethiopian Apocrypha</strong>
+              <small>Supplemental scriptural add-on to your selected Bible translation.</small>
+              <span class="cb-price">+$9.99</span>
+            </label>
+
+            <label class="cb-option">
+              <input type="checkbox" id="customCover" data-label="Custom Cover" data-price="4.99">
+              <strong>Custom Cover</strong>
+              <small>Choose a cover style, wording, colors, symbols, and personalization.</small>
+              <span class="cb-price">+$4.99</span>
+            </label>
+
+            <label class="cb-option">
+              <input type="checkbox" id="customPrayer" data-label="Custom Prayer / Scripture Page" data-price="4.99">
+              <strong>Custom Prayer / Scripture Page</strong>
+              <small>Add a favorite verse, prayer, blessing, or other Scripture presentation page.</small>
+              <span class="cb-price">+$4.99</span>
+            </label>
+
+            <label class="cb-option">
+              <input type="checkbox" id="personalLetter" data-label="Personal Letter / Message Page" data-price="4.99">
+              <strong>Personal Letter / Message Page</strong>
+              <small>Add a personal letter from you to the recipient.</small>
+              <span class="cb-price">+$4.99</span>
+            </label>
+
+            <label class="cb-option">
+              <input type="checkbox" id="specialOccasionPage" data-label="Special Occasion Page" data-price="4.99">
+              <strong>Special Occasion Page</strong>
+              <small>A designed page for a wedding, baptism, confirmation, graduation, birthday, anniversary, memorial, or other occasion.</small>
+              <span class="cb-price">+$4.99</span>
+            </label>
+
+            <label class="cb-option">
+              <input type="checkbox" id="familyPage" data-label="Family Bible Page" data-price="4.99">
+              <strong>Family Bible Page</strong>
+              <small>Add family names, important dates, marriage information, children, or a short family history.</small>
+              <span class="cb-price">+$4.99</span>
+            </label>
+
+            <label class="cb-option">
+              <input type="checkbox" id="memorialPage" data-label="Memorial Page" data-price="4.99">
+              <strong>Memorial Page</strong>
+              <small>Add a name, dates, memorial Scripture, and remembrance message.</small>
+              <span class="cb-price">+$4.99</span>
+            </label>
+
+            <label class="cb-option">
+              <input type="checkbox" id="churchPage" data-label="Church / Ministry Presentation Page" data-price="4.99">
+              <strong>Church / Ministry Presentation Page</strong>
+              <small>Add church or ministry name, pastor, recipient, presentation wording, date, and Scripture.</small>
+              <span class="cb-price">+$4.99</span>
+            </label>
+          </div>
+
+          <div class="cb-subpanel" id="customCoverPanel" hidden>
+            <h3>Custom Cover Details</h3>
+            <div class="cb-field-grid">
+              <div class="cb-field">
+                <label for="coverStyle">Cover Style</label>
+                <select id="coverStyle">
+                  <option value="">Choose a style</option>
+                  <option>Traditional Black & Gold</option>
+                  <option>Burgundy & Gold</option>
+                  <option>Navy & Gold</option>
+                  <option>White / Wedding</option>
+                  <option>Catholic</option>
+                  <option>Family Bible</option>
+                  <option>Memorial</option>
+                  <option>Baptism</option>
+                  <option>Confirmation</option>
+                  <option>First Communion</option>
+                  <option>Graduation</option>
+                  <option>Christmas</option>
+                  <option>Easter</option>
+                  <option>Church / Ministry</option>
+                  <option>Custom Concept</option>
+                </select>
+              </div>
+              <div class="cb-field">
+                <label for="coverTitle">Cover Title</label>
+                <input id="coverTitle" placeholder="e.g., The Holy Bible">
+              </div>
+              <div class="cb-field">
+                <label for="coverSubtitle">Cover Subtitle</label>
+                <input id="coverSubtitle">
+              </div>
+              <div class="cb-field">
+                <label for="coverName">Recipient / Family Name on Cover</label>
+                <input id="coverName">
+              </div>
+              <div class="cb-field">
+                <label for="coverColors">Preferred Colors</label>
+                <input id="coverColors" placeholder="e.g., Navy, ivory & gold">
+              </div>
+              <div class="cb-field">
+                <label for="coverSymbols">Preferred Symbols</label>
+                <input id="coverSymbols" placeholder="e.g., Cross, dove, floral, crown">
+              </div>
+              <div class="cb-field full">
+                <label for="coverInstructions">Cover Instructions</label>
+                <textarea id="coverInstructions" placeholder="Describe the look you want."></textarea>
+              </div>
+            </div>
+
+            <div class="cb-artwork">
+              <h3>Have a photo or custom artwork to include?</h3>
+              <p>After submitting your request, email your image to <a href="mailto:gospellivingwordbibles@gmail.com">gospellivingwordbibles@gmail.com</a> and include your <strong>name and Custom Bible order number</strong> in the subject line.</p>
+              <label style="display:flex;gap:.6rem;align-items:flex-start;margin-top:.8rem">
+                <input type="checkbox" id="artworkExpected" style="margin-top:.25rem">
+                <span>I plan to email a photo or custom artwork after submitting this request.</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="cb-subpanel" id="customPrayerPanel" hidden>
+            <h3>Custom Prayer / Scripture Details</h3>
+            <div class="cb-field-grid">
+              <div class="cb-field">
+                <label for="prayerType">Page Type</label>
+                <select id="prayerType">
+                  <option value="">Choose one</option>
+                  <option>Favorite Bible Verse</option>
+                  <option>Custom Prayer</option>
+                  <option>Blessing</option>
+                  <option>Wedding Prayer</option>
+                  <option>Prayer for a Child</option>
+                  <option>Prayer for Parents</option>
+                  <option>Prayer for a Spouse</option>
+                  <option>Memorial Prayer</option>
+                  <option>Baptism Prayer</option>
+                  <option>Confirmation Prayer</option>
+                  <option>Graduation Prayer</option>
+                  <option>Family Prayer</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div class="cb-field">
+                <label for="scriptureReference">Scripture Reference</label>
+                <input id="scriptureReference" placeholder="e.g., Psalm 23">
+              </div>
+              <div class="cb-field full">
+                <label for="prayerText">Prayer / Scripture Instructions</label>
+                <textarea id="prayerText" placeholder="Enter the wording or tell us what you would like included."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="cb-subpanel" id="personalLetterPanel" hidden>
+            <h3>Personal Letter / Message</h3>
+            <div class="cb-field">
+              <label for="personalLetterText">Letter or Message</label>
+              <textarea id="personalLetterText" placeholder="Enter your personal message."></textarea>
+            </div>
+          </div>
+
+          <div class="cb-subpanel" id="specialOccasionPanel" hidden>
+            <h3>Special Occasion Page</h3>
+            <div class="cb-field">
+              <label for="specialOccasionText">Page Instructions</label>
+              <textarea id="specialOccasionText" placeholder="Tell us what you would like on the occasion page."></textarea>
+            </div>
+          </div>
+
+          <div class="cb-subpanel" id="familyPagePanel" hidden>
+            <h3>Family Bible Page</h3>
+            <div class="cb-field">
+              <label for="familyPageText">Family Information</label>
+              <textarea id="familyPageText" placeholder="Family surname, parents, children, dates, family history, etc."></textarea>
+            </div>
+          </div>
+
+          <div class="cb-subpanel" id="memorialPagePanel" hidden>
+            <h3>Memorial Page</h3>
+            <div class="cb-field">
+              <label for="memorialPageText">Memorial Information</label>
+              <textarea id="memorialPageText" placeholder="Name, birth/death dates, Scripture, memorial message, etc."></textarea>
+            </div>
+          </div>
+
+          <div class="cb-subpanel" id="churchPagePanel" hidden>
+            <h3>Church / Ministry Presentation Page</h3>
+            <div class="cb-field">
+              <label for="churchPageText">Church / Ministry Information</label>
+              <textarea id="churchPageText" placeholder="Church/ministry name, pastor, recipient, wording, date, Scripture, etc."></textarea>
+            </div>
+          </div>
+
+          <div class="cb-subpanel">
+            <h3>Additional Simple Custom Pages</h3>
+            <div class="cb-field-grid">
+              <div class="cb-field">
+                <label for="additionalPages">Number of Additional Pages</label>
+                <div class="cb-qty">
+                  <input id="additionalPages" type="number" min="0" max="20" value="0">
+                  <span><strong>+$2.99 each</strong></span>
+                </div>
+              </div>
+              <div class="cb-field full">
+                <label for="additionalPageInstructions">Additional Page Instructions</label>
+                <textarea id="additionalPageInstructions" placeholder="Describe the additional text, Scripture, acknowledgements, or pages you want included."></textarea>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="cb-form-card">
+          <div class="cb-step-head">
+            <div class="cb-step-number">4</div>
+            <div>
+              <h2>Your Information</h2>
+              <p>We use this information to review your request and send the secure PayPal Payment Link after approval.</p>
+            </div>
+          </div>
+
+          <div class="cb-field-grid">
+            <div class="cb-field">
+              <label for="firstName">First Name *</label>
+              <input id="firstName" autocomplete="given-name" required>
+            </div>
+            <div class="cb-field">
+              <label for="lastName">Last Name *</label>
+              <input id="lastName" autocomplete="family-name" required>
+            </div>
+            <div class="cb-field">
+              <label for="email">Email Address *</label>
+              <input id="email" type="email" autocomplete="email" required>
+            </div>
+            <div class="cb-field">
+              <label for="emailConfirm">Confirm Email Address *</label>
+              <input id="emailConfirm" type="email" autocomplete="email" required>
+            </div>
+            <div class="cb-field">
+              <label for="phone">Phone — Optional</label>
+              <input id="phone" type="tel" autocomplete="tel">
+            </div>
+            <div class="cb-field full">
+              <label for="specialInstructions">General Special Instructions</label>
+              <textarea id="specialInstructions" placeholder="Anything else we should know about your Custom Bible request?"></textarea>
+            </div>
+          </div>
+
+          <div class="cb-note">
+            <strong>No payment is collected on this page.</strong> Living Word Bibles will review your request and send a secure PayPal Payment Link for the approved order total.
+          </div>
+        </section>
+
+        <section class="cb-form-card">
+          <div class="cb-step-head">
+            <div class="cb-step-number">5</div>
+            <div>
+              <h2>Review &amp; Submit Request</h2>
+              <p>Your complete selections are compiled into one email. No Google Apps Script changes or file uploads are required.</p>
+            </div>
+          </div>
+
+          <div class="cb-review" id="reviewText" aria-live="polite"></div>
+
+          <div class="cb-confirm-box">
+            <strong>No Payment Is Due Yet.</strong><br>
+            Submitting this request prepares an email to Living Word Bibles. After review, Living Word Bibles will contact you and send a secure PayPal Payment Link for the approved total.
+          </div>
+
+          <label style="display:flex;gap:.65rem;align-items:flex-start;margin-top:1rem">
+            <input type="checkbox" id="rightsConfirm" required style="margin-top:.25rem">
+            <span>I confirm that I have permission to provide any photographs, artwork, logos, written material, or other content I ask Living Word Bibles to include.</span>
+          </label>
+
+          <div class="cb-actions">
+            <button class="cb-btn gold" type="submit">Email My Custom Bible Request</button>
+            <button class="cb-btn secondary" type="button" id="copyRequest">Copy Order Request</button>
+          </div>
+
+          <p class="cb-terms">Custom Bible requests are reviewed individually. Living Word Bibles may decline material that cannot reasonably or lawfully be produced. Customer-provided wording may be lightly corrected for obvious typographical errors, but substantive wording should not be changed without customer approval.</p>
+        </section>
+      </form>
+
+      <aside class="cb-summary" aria-label="Order summary">
+        <p class="cb-eyebrow">Your Custom Bible</p>
+        <h2>Order Summary</h2>
+        <div class="order-number">Request: <strong id="orderNumberDisplay"></strong></div>
+        <ul class="cb-summary-lines" id="summaryLines"></ul>
+        <div class="cb-total">
+          <span>Estimated Total</span>
+          <strong id="estimatedTotal">$19.99</strong>
+        </div>
+        <p style="margin:.7rem 0 0;color:#716a60;font-size:.88rem;line-height:1.55">Final pricing is confirmed after Living Word Bibles reviews your customization request.</p>
+      </aside>
+    </section>
+
+    <section class="cb-heads-state">
+      <p class="cb-eyebrow" style="color:#e5c876">Separate Commissioned Editions</p>
+      <h2>Heads of State Collection Special Editions</h2>
+      <p>The Custom Bible service is intended for the general public. Heads of State Collection Special Editions, governmental presentation editions, and institutional editions are separately commissioned through Living Word Bibles. Governmental offices, public institutions, and official representatives seeking a Special Edition should contact Living Word Bibles directly.</p>
+      <a class="cb-btn gold" href="/heads-of-state/">Explore the Heads of State Collection</a>
+    </section>
+  </div>
+
+  <div class="cb-mobile-total" aria-hidden="true">
+    <div><span>Estimated Total</span><strong id="mobileEstimatedTotal">$19.99</strong></div>
+  </div>
+</main>
+
+<div data-lwb-footer></div>
+
+<script>
+(function(){
+  "use strict";
+
+  const BASE_PRICE = 19.99;
+  const EMAIL_TO = "gospellivingwordbibles@gmail.com";
+  const form = document.getElementById("custom-bible-form");
+
+  const money = n => "$" + Number(n).toFixed(2);
+  const val = id => (document.getElementById(id)?.value || "").trim();
+  const checked = id => !!document.getElementById(id)?.checked;
+
+  function makeOrderNumber(){
+    const existing = sessionStorage.getItem("lwbCustomBibleOrder");
+    if(existing) return existing;
+    const d = new Date();
+    const ymd = d.getFullYear() +
+      String(d.getMonth()+1).padStart(2,"0") +
+      String(d.getDate()).padStart(2,"0");
+    const random = String(Math.floor(1000 + Math.random()*9000));
+    const number = "LWB-CUSTOM-" + ymd + "-" + random;
+    sessionStorage.setItem("lwbCustomBibleOrder", number);
+    return number;
+  }
+
+  const orderNumber = makeOrderNumber();
+  document.getElementById("orderNumberDisplay").textContent = orderNumber;
+
+  const toggles = [
+    ["customDedication","customDedicationPanel"],
+    ["customCover","customCoverPanel"],
+    ["customPrayer","customPrayerPanel"],
+    ["personalLetter","personalLetterPanel"],
+    ["specialOccasionPage","specialOccasionPanel"],
+    ["familyPage","familyPagePanel"],
+    ["memorialPage","memorialPagePanel"],
+    ["churchPage","churchPagePanel"]
+  ];
+
+  toggles.forEach(([boxId,panelId])=>{
+    const box = document.getElementById(boxId);
+    const panel = document.getElementById(panelId);
+    const sync = ()=> panel.hidden = !box.checked;
+    box.addEventListener("change", sync);
+    sync();
+  });
+
+  function selectedBible(){
+    return document.querySelector('input[name="bibleBase"]:checked');
+  }
+
+  function lineItems(){
+    const items = [{label:"Base Custom Bible", price:BASE_PRICE}];
+    const bible = selectedBible();
+    if(bible && Number(bible.dataset.price) > 0){
+      items.push({label:bible.value, price:Number(bible.dataset.price)});
+    }
+
+    document.querySelectorAll('input[type="checkbox"][data-price]').forEach(box=>{
+      if(box.checked){
+        items.push({label:box.dataset.label, price:Number(box.dataset.price)});
+      }
+    });
+
+    const qty = Math.max(0, Math.min(20, Number(document.getElementById("additionalPages").value || 0)));
+    if(qty > 0){
+      items.push({label:`Additional Simple Custom Pages × ${qty}`, price:qty * 2.99});
+    }
+    return items;
+  }
+
+  function total(){
+    return lineItems().reduce((sum,item)=>sum+item.price,0);
+  }
+
+  function yesNo(id){ return checked(id) ? "YES" : "NO"; }
+
+  function clean(text){
+    return text ? text.replace(/\r?\n/g,"\n").trim() : "";
+  }
+
+  function buildSummary(){
+    const bible = selectedBible();
+    const lines = [];
+    lines.push("LIVING WORD BIBLES");
+    lines.push("CUSTOM BIBLE ORDER REQUEST");
+    lines.push("");
+    lines.push("ORDER NUMBER:");
+    lines.push(orderNumber);
+    lines.push("");
+    lines.push("CUSTOMER:");
+    lines.push((val("firstName") + " " + val("lastName")).trim() || "[Not yet entered]");
+    lines.push("");
+    lines.push("EMAIL:");
+    lines.push(val("email") || "[Not yet entered]");
+    lines.push("");
+    lines.push("PHONE:");
+    lines.push(val("phone") || "Not provided");
+    lines.push("");
+    lines.push("RECIPIENT:");
+    lines.push(val("recipientName") || "[Not yet entered]");
+    lines.push("");
+    lines.push("NAME AS IT SHOULD APPEAR:");
+    lines.push(val("displayName") || "[Not yet entered]");
+    lines.push("");
+    lines.push("PRESENTED BY / GIVEN BY:");
+    lines.push(val("presentedBy") || "Not provided");
+    lines.push("");
+    lines.push("OCCASION:");
+    lines.push(val("occasion") || "Not specified");
+    lines.push("");
+    lines.push("PRESENTATION DATE:");
+    lines.push(val("presentationDate") || "Not specified");
+    lines.push("");
+    lines.push("REQUESTED COMPLETION DATE:");
+    lines.push(val("requestedDate") || "Not specified");
+    lines.push("");
+    lines.push("BIBLE BASE:");
+    lines.push(bible ? bible.value : "Not selected");
+    lines.push("");
+    lines.push("BASE PRICE:");
+    lines.push(money(BASE_PRICE));
+
+    if(bible && Number(bible.dataset.price) > 0){
+      lines.push("");
+      lines.push("PREMIUM TRANSLATION:");
+      lines.push(bible.value + " — +" + money(Number(bible.dataset.price)));
+    } else {
+      lines.push("");
+      lines.push("PREMIUM TRANSLATION:");
+      lines.push("None");
+    }
+
+    lines.push("");
+    lines.push("ETHIOPIAN APOCRYPHA:");
+    lines.push(checked("ethiopianApocrypha") ? "YES — +$9.99" : "NO");
+
+    lines.push("");
+    lines.push("STANDARD PERSONALIZED DEDICATION:");
+    lines.push(checked("customDedication") ? "REPLACED BY FULLY CUSTOM DEDICATION" : "YES — INCLUDED");
+
+    lines.push("");
+    lines.push("STANDARD JOHN 3:16 PAGE:");
+    lines.push("YES — INCLUDED");
+
+    lines.push("");
+    lines.push("FULLY CUSTOM TITLE / DEDICATION PAGE:");
+    lines.push(checked("customDedication") ? "YES — +$4.99" : "NO");
+    if(checked("customDedication")){
+      lines.push("CUSTOM PAGE TITLE: " + (val("dedicationTitle") || "Not specified"));
+      lines.push("CUSTOM RECIPIENT NAME: " + (val("dedicationRecipient") || "Not specified"));
+      lines.push("CUSTOM DEDICATION WORDING:");
+      lines.push(clean(val("dedicationText")) || "Not specified");
+    }
+
+    lines.push("");
+    lines.push("CUSTOM COVER:");
+    lines.push(checked("customCover") ? "YES — +$4.99" : "NO");
+    if(checked("customCover")){
+      lines.push("COVER STYLE: " + (val("coverStyle") || "Not specified"));
+      lines.push("COVER TITLE: " + (val("coverTitle") || "Not specified"));
+      lines.push("COVER SUBTITLE: " + (val("coverSubtitle") || "Not specified"));
+      lines.push("NAME ON COVER: " + (val("coverName") || "Not specified"));
+      lines.push("PREFERRED COLORS: " + (val("coverColors") || "Not specified"));
+      lines.push("PREFERRED SYMBOLS: " + (val("coverSymbols") || "Not specified"));
+      lines.push("COVER INSTRUCTIONS:");
+      lines.push(clean(val("coverInstructions")) || "Not specified");
+      lines.push("CUSTOM ARTWORK EXPECTED: " + yesNo("artworkExpected"));
+    }
+
+    lines.push("");
+    lines.push("CUSTOM PRAYER / SCRIPTURE PAGE:");
+    lines.push(checked("customPrayer") ? "YES — +$4.99" : "NO");
+    if(checked("customPrayer")){
+      lines.push("PAGE TYPE: " + (val("prayerType") || "Not specified"));
+      lines.push("SCRIPTURE REFERENCE: " + (val("scriptureReference") || "Not specified"));
+      lines.push("PRAYER / SCRIPTURE INSTRUCTIONS:");
+      lines.push(clean(val("prayerText")) || "Not specified");
+    }
+
+    lines.push("");
+    lines.push("PERSONAL LETTER / MESSAGE PAGE:");
+    lines.push(checked("personalLetter") ? "YES — +$4.99" : "NO");
+    if(checked("personalLetter")){
+      lines.push(clean(val("personalLetterText")) || "No wording supplied");
+    }
+
+    lines.push("");
+    lines.push("SPECIAL OCCASION PAGE:");
+    lines.push(checked("specialOccasionPage") ? "YES — +$4.99" : "NO");
+    if(checked("specialOccasionPage")){
+      lines.push(clean(val("specialOccasionText")) || "No instructions supplied");
+    }
+
+    lines.push("");
+    lines.push("FAMILY BIBLE PAGE:");
+    lines.push(checked("familyPage") ? "YES — +$4.99" : "NO");
+    if(checked("familyPage")){
+      lines.push(clean(val("familyPageText")) || "No information supplied");
+    }
+
+    lines.push("");
+    lines.push("MEMORIAL PAGE:");
+    lines.push(checked("memorialPage") ? "YES — +$4.99" : "NO");
+    if(checked("memorialPage")){
+      lines.push(clean(val("memorialPageText")) || "No information supplied");
+    }
+
+    lines.push("");
+    lines.push("CHURCH / MINISTRY PRESENTATION PAGE:");
+    lines.push(checked("churchPage") ? "YES — +$4.99" : "NO");
+    if(checked("churchPage")){
+      lines.push(clean(val("churchPageText")) || "No information supplied");
+    }
+
+    const additional = Math.max(0, Math.min(20, Number(document.getElementById("additionalPages").value || 0)));
+    lines.push("");
+    lines.push("ADDITIONAL SIMPLE CUSTOM PAGES:");
+    lines.push(additional ? `${additional} — ${money(additional * 2.99)}` : "NONE");
+    if(additional){
+      lines.push("ADDITIONAL PAGE INSTRUCTIONS:");
+      lines.push(clean(val("additionalPageInstructions")) || "No instructions supplied");
+    }
+
+    lines.push("");
+    lines.push("GENERAL SPECIAL INSTRUCTIONS:");
+    lines.push(clean(val("specialInstructions")) || "None");
+
+    lines.push("");
+    lines.push("ESTIMATED TOTAL:");
+    lines.push(money(total()));
+
+    lines.push("");
+    lines.push("ARTWORK INSTRUCTIONS:");
+    if(checked("artworkExpected")){
+      lines.push("Customer will email artwork separately to gospellivingwordbibles@gmail.com using Order Number " + orderNumber + ".");
+    } else {
+      lines.push("No custom artwork indicated.");
+    }
+
+    lines.push("");
+    lines.push("PAYMENT STATUS:");
+    lines.push("NO PAYMENT COLLECTED.");
+    lines.push("Living Word Bibles will review this request and send a secure PayPal Payment Link after approval.");
+
+    lines.push("");
+    lines.push("CUSTOMER CONTENT RIGHTS CONFIRMATION:");
+    lines.push(checked("rightsConfirm") ? "CONFIRMED" : "NOT YET CONFIRMED");
+
+    lines.push("");
+    lines.push("SUBMITTED FROM:");
+    lines.push("https://www.livingwordbibles.com/custom-bibles/");
+
+    lines.push("");
+    lines.push("REQUEST GENERATED:");
+    lines.push(new Date().toLocaleString());
+
+    return lines.join("\n");
+  }
+
+  function render(){
+    const items = lineItems();
+    const list = document.getElementById("summaryLines");
+    list.innerHTML = "";
+    items.forEach(item=>{
+      const li = document.createElement("li");
+      const a = document.createElement("span");
+      const b = document.createElement("span");
+      a.textContent = item.label;
+      b.textContent = item.price === 0 ? "Included" : money(item.price);
+      li.append(a,b);
+      list.appendChild(li);
+    });
+
+    const t = money(total());
+    document.getElementById("estimatedTotal").textContent = t;
+    document.getElementById("mobileEstimatedTotal").textContent = t;
+    document.getElementById("reviewText").textContent = buildSummary();
+  }
+
+  form.addEventListener("input", render);
+  form.addEventListener("change", render);
+
+  document.getElementById("copyRequest").addEventListener("click", async ()=>{
+    const text = buildSummary();
+    try{
+      await navigator.clipboard.writeText(text);
+      const btn = document.getElementById("copyRequest");
+      const old = btn.textContent;
+      btn.textContent = "Copied!";
+      setTimeout(()=>btn.textContent=old,1800);
+    }catch(err){
+      window.prompt("Copy your Custom Bible request:", text);
+    }
+  });
+
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+
+    if(!form.reportValidity()) return;
+
+    if(val("email").toLowerCase() !== val("emailConfirm").toLowerCase()){
+      alert("The two email addresses do not match.");
+      document.getElementById("emailConfirm").focus();
+      return;
+    }
+
+    if(!checked("rightsConfirm")){
+      alert("Please confirm the customer-content permission statement before submitting.");
+      return;
+    }
+
+    const customer = (val("firstName") + " " + val("lastName")).trim();
+    const recipient = val("recipientName");
+    const subject = `New Custom Bible Order Request — ${customer} — ${recipient} — ${orderNumber}`;
+    const body = buildSummary();
+
+    const mailto = `mailto:${EMAIL_TO}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    // Zero-backend submission: opens the customer's email client with the full request.
+    window.location.href = mailto;
+  });
+
+  render();
+})();
+</script>
+
+<script src="/assets/js/config.js" defer></script>
+<script src="/assets/js/site.js" defer></script>
+</body>
+</html>

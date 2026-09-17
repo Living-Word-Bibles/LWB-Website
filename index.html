@@ -208,10 +208,11 @@
           outline-offset:-8px;
         }
 
-        /* Presidential Edition desktop banner: fill the entire carousel viewport.
-           100% 100% guarantees no cropping and no side/top/bottom bars. */
+        /* Full-art promotional banners: fill the desktop carousel viewport without cropping.
+           Preserve the existing Presidential Edition behavior and apply it to Custom Bibles. */
         @media(min-width:721px){
-          .homepage-hero-slide--presidential-edition{
+          .homepage-hero-slide--presidential-edition,
+          .homepage-hero-slide--custom-bible{
             background-size:100% 100%;
             background-position:center center;
           }
@@ -234,22 +235,9 @@
       <div class="hero-panel homepage-hero-slider" data-homepage-hero-slider aria-label="Living Word Bibles featured content">
 
         <article
-          class="homepage-hero-slide homepage-hero-slide--promo homepage-hero-slide--presidential-edition is-active"
+          class="homepage-hero-slide homepage-hero-slide--layout-anchor is-active"
           data-homepage-hero-slide
-          data-mobile-hero
           aria-hidden="false"
-          style="--hero-bg:url('/assets/PresidentialEdition.png');--hero-bg-mobile:url('/assets/PresidentialEditionMobile.png')"
-        >
-          <a class="homepage-hero-link" href="/presidential-edition/" aria-label="Explore the Living Word Bibles Presidential Edition">
-            <span class="sr-only">Living Word Bibles Presidential Edition</span>
-          </a>
-        </article>
-
-
-        <article
-          class="homepage-hero-slide homepage-hero-slide--layout-anchor"
-          data-homepage-hero-slide
-          aria-hidden="true"
           style="--hero-bg:url('/assets/homepage-hero.png')"
         >
           <div class="homepage-hero-content">
@@ -331,6 +319,18 @@
         </article>
 
         <article
+          class="homepage-hero-slide homepage-hero-slide--promo homepage-hero-slide--custom-bible"
+          data-homepage-hero-slide
+          data-mobile-hero
+          aria-hidden="true"
+          style="--hero-bg:url('/assets/custom-bible-banner.png');--hero-bg-mobile:url('/assets/custom-bible-mobile.png')"
+        >
+          <a class="homepage-hero-link" href="/custom-bible/" aria-label="Create a Custom Bible">
+            <span class="sr-only">Living Word Bibles Custom Bibles</span>
+          </a>
+        </article>
+
+        <article
           class="homepage-hero-slide"
           data-homepage-hero-slide
           aria-hidden="true"
@@ -360,6 +360,18 @@
         </article>
 
         <article
+          class="homepage-hero-slide homepage-hero-slide--promo homepage-hero-slide--presidential-edition"
+          data-homepage-hero-slide
+          data-mobile-hero
+          aria-hidden="true"
+          style="--hero-bg:url('/assets/PresidentialEdition.png');--hero-bg-mobile:url('/assets/PresidentialEditionMobile.png')"
+        >
+          <a class="homepage-hero-link" href="/presidential-edition/" aria-label="Explore the Living Word Bibles Presidential Edition">
+            <span class="sr-only">Living Word Bibles Presidential Edition</span>
+          </a>
+        </article>
+
+        <article
           class="homepage-hero-slide homepage-hero-slide--promo homepage-hero-slide--trump"
           data-homepage-hero-slide
           data-mobile-hero
@@ -372,15 +384,16 @@
         </article>
 
         <div class="homepage-hero-dots" aria-label="Choose featured slide">
-          <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="0" aria-label="Show Presidential Edition slide" aria-current="true"></button>
-          <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="1" aria-label="Show Living Word Bibles slide" aria-current="false"></button>
-          <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="2" aria-label="Show Living Word Bibles App slide" aria-current="false"></button>
-          <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="3" aria-label="Show KJV Audio Bible slide" aria-current="false"></button>
-          <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="4" aria-label="Show Ethiopian Bible slide" aria-current="false"></button>
-          <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="5" aria-label="Show eStore slide" aria-current="false"></button>
+          <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="0" aria-label="Show Living Word Bibles slide" aria-current="true"></button>
+          <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="1" aria-label="Show Living Word Bibles App slide" aria-current="false"></button>
+          <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="2" aria-label="Show KJV Audio Bible slide" aria-current="false"></button>
+          <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="3" aria-label="Show Ethiopian Bible slide" aria-current="false"></button>
+          <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="4" aria-label="Show eStore slide" aria-current="false"></button>
+          <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="5" aria-label="Show Custom Bibles slide" aria-current="false"></button>
           <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="6" aria-label="Show Print Bibles slide" aria-current="false"></button>
           <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="7" aria-label="Show God Bless America Bible slide" aria-current="false"></button>
-          <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="8" aria-label="Show Donald J. Trump Make America Great Again Bible slide" aria-current="false"></button>
+          <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="8" aria-label="Show Presidential Edition slide" aria-current="false"></button>
+          <button class="homepage-hero-dot" type="button" data-homepage-hero-dot="9" aria-label="Show Donald J. Trump Make America Great Again Bible slide" aria-current="false"></button>
         </div>
 
       </div>

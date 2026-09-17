@@ -28,7 +28,7 @@
 
 <p align="center">
   <a href="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml/badge.svg?branch=main"></a>
-  <img alt="Frontend package v2.6.8" src="https://img.shields.io/badge/frontend-v2.6.8-555555">
+  <img alt="Frontend package v2.6.9" src="https://img.shields.io/badge/frontend-v2.6.9-555555">
   <img alt="Google Apps Script v2.2.3" src="https://img.shields.io/badge/Google%20Apps%20Script-v2.2.3-555555">
   <img alt="Hosting GitHub Pages" src="https://img.shields.io/badge/hosting-GitHub%20Pages-555555">
 </p>
@@ -39,7 +39,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 15 September 2026 at 13:07:52Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 17 September 2026 at 14:31:18Z UTC</sub></p>
 
 ---
 
@@ -57,12 +57,12 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 |---|---|
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
-| Frontend package version | `2.6.8` |
+| Frontend package version | `2.6.9` |
 | Google Apps Script version | `2.2.3` |
 | Apps Script build stamp | `14 September 2026 at 19:01:03Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `15 September 2026 at 13:07:52Z UTC` |
+| README revision | `17 September 2026 at 14:31:18Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
 
@@ -70,6 +70,93 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 
 
 
+
+## What's New in v2.6.9 Alpha — Heads of State Collection, Custom Bibles, Homepage & Social Media
+
+Released **17 September 2026**. Last Updated: **17 September 2026 at 14:31:18Z UTC**
+
+### Heads of State Collection
+
+- Added `/heads-of-state/` as the central public landing page for the **Living Word Bibles Heads of State Collection**.
+- Expanded the collection across national, vice-regal, state, and provincial presentation editions, including recent Canadian and Ontario editions.
+- Added dedicated Ontario presentations for the **Lieutenant Governor of Ontario** and the **Premier of Ontario**, with bilingual English/French office styling where appropriate.
+- Refined the collection presentation with portraits, seals/coats of arms, edition covers, jurisdiction labels, and public-facing descriptive copy.
+- **Public-link rule:** public documentation should link visitors to `/heads-of-state/` and must not publish direct download URLs for Heads of State Collection eBible files.
+
+### Custom Bibles
+
+- Added the new public Custom Bible service at `/custom-bible/` for general-public personalized eBible orders.
+- Base Custom eBible price is **$19.99** and includes a personalized dedication page with the recipient's name plus the standard John 3:16 Scripture page.
+- Included Bible-base choices:
+  - **The Holy Bible: King James Version — Special Edition**
+  - **Douay-Rheims Bible**
+  - **American Standard Version (ASV)**
+  - **Young's Literal Translation (YLT)**
+  - **World English Bible (WEB)**
+- Premium Bible-base choices:
+  - **New King James Version (NKJV)** — +$9.99
+  - **New International Version (NIV)** — +$9.99
+  - **English Standard Version (ESV)** — +$9.99
+- **Ethiopian Apocrypha** is a +$9.99 supplemental add-on and is not a Bible base.
+- Added optional custom cover, fully custom title/dedication, prayer/Scripture, personal letter, special-occasion, family, memorial, church/ministry, and additional-page customization.
+- Customer artwork is not uploaded through the website. Customers are instructed to email artwork separately to `gospellivingwordbibles@gmail.com` with their name and Custom Bible order number.
+- The Custom Bible configurator calculates the estimated total in the browser and prepares the complete order request for email. **No backend change is required for this feature.**
+- Added **Custom Bibles** to the shared header immediately to the right of **eStore**.
+
+### Homepage hero updates
+
+- Restored the original Living Word Bibles hero as the first and only initially active carousel slide, preserving the existing layout-anchor behavior that prevents the earlier half-height/cropping failure.
+- Preserved the original first-slide actions:
+  - **Read the Bible Online**
+  - **View All Translations**
+- Added the Custom Bibles homepage feature immediately after the eStore feature.
+- Custom Bible hero assets:
+  - desktop: `/assets/custom-bible.png`
+  - mobile: `/assets/custom-bible-mobile.png`
+- The Custom Bible hero links to `/custom-bible/`.
+- Moved the Presidential Edition homepage feature from the first position to immediately before the Donald J. Trump Bible feature.
+- Updated the Presidential Edition desktop/mobile promotional artwork to include the requested endorsement/proceeds disclaimer while preserving the established homepage hero dimensions and responsive behavior.
+
+### Social Media
+
+- Added `https://www.instagram.com/p/DdZD61gFr-O/` as the newest curated Custom Bibles post on `/social-media/`.
+- Preserved all previously curated Instagram posts and the existing Instagram embed/direct-link fallback behavior.
+
+### 17 September 2026 — Amazon price refresh
+
+- Refreshed the current Amazon-displayed prices and corresponding observed-price dates for `/estore/print-bibles/` and `/estore/christian-books/` on **17 September 2026**.
+- Amazon pricing and availability remain subject to change at the retailer.
+
+### Sitemap status
+
+- Added the new canonical public routes to `sitemap.xml`:
+  - `/heads-of-state/`
+  - `/custom-bible/`
+- The human-readable `/site-map/` update is intentionally being held for explicit approval of which newly added public routes should appear there.
+
+### Release status
+
+- Frontend package advanced to **v2.6.9 Alpha**.
+- Backend remains **v2.2.3**; the v2.6.9 Custom Bibles and public presentation work does not require a backend version change.
+
+### v2.6.9 surgical file set
+
+```text
+/heads-of-state/index.html
+/custom-bible/index.html
+/assets/includes/lwb-header.html
+/index.html
+/social-media/index.html
+/assets/custom-bible.png
+/assets/custom-bible-mobile.png
+/assets/PresidentialEdition.png
+/assets/PresidentialEditionMobile.png
+/sitemap.xml
+/README.md
+/change-log.html
+```
+
+---
 
 ## What's New in v2.6.8 Alpha — Print Storefront Pricing Reliability, Presidential Edition Access & Social Media
 

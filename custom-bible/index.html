@@ -5,17 +5,17 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Custom Bibles | Living Word Bibles</title>
   <meta name="description" content="Create a personalized Living Word Bibles eBible with your choice of Bible translation, dedication, cover, Scripture pages, prayers, and more. Custom eBibles start at $19.99.">
-  <link rel="canonical" href="https://www.livingwordbibles.com/custom-bibles/">
+  <link rel="canonical" href="https://www.livingwordbibles.com/custom-bible/">
 
   <meta property="og:type" content="website">
   <meta property="og:title" content="Custom Bibles | Living Word Bibles">
   <meta property="og:description" content="Order a Custom eBible Made Especially for Someone You Love. Custom Bibles start at $19.99.">
-  <meta property="og:url" content="https://www.livingwordbibles.com/custom-bibles/">
-  <meta property="og:image" content="https://www.livingwordbibles.com/custom-bibles/custom-ebible-banner.png">
+  <meta property="og:url" content="https://www.livingwordbibles.com/custom-bible/">
+  <meta property="og:image" content="https://www.livingwordbibles.com/custom-bible/custom-ebible-banner.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Custom Bibles | Living Word Bibles">
   <meta name="twitter:description" content="Order a Custom eBible Made Especially for Someone You Love.">
-  <meta name="twitter:image" content="https://www.livingwordbibles.com/custom-bibles/custom-ebible-banner.png">
+  <meta name="twitter:image" content="https://www.livingwordbibles.com/custom-bible/custom-ebible-banner.png">
 
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/svg+xml" href="/assets/icons/lwb-mark.svg">
@@ -29,7 +29,7 @@
     "@context":"https://schema.org",
     "@type":"Service",
     "name":"Living Word Bibles Custom Bibles",
-    "url":"https://www.livingwordbibles.com/custom-bibles/",
+    "url":"https://www.livingwordbibles.com/custom-bible/",
     "description":"Personalized custom eBibles from Living Word Bibles, starting at $19.99.",
     "provider":{
       "@type":"Organization",
@@ -206,9 +206,44 @@
     .cb-qty input{max-width:100px}
 
     .cb-review{
-      white-space:pre-wrap;background:#101926;color:#eef2f6;border-radius:14px;
-      padding:1rem;max-height:420px;overflow:auto;font:13px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace
+      background:linear-gradient(180deg,#fffdf8,#fbf6eb);
+      border:1px solid #dfd4bf;
+      border-radius:18px;
+      padding:1.15rem;
+      color:#20242b;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.8)
     }
+    .cb-review-head{
+      display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;
+      padding-bottom:.9rem;margin-bottom:.9rem;border-bottom:1px solid #e8dfcf
+    }
+    .cb-review-head h3{margin:0;font-size:1.2rem;color:#162238}
+    .cb-review-head p{margin:.28rem 0 0;color:#746d62;font-size:.88rem;line-height:1.45}
+    .cb-review-order{
+      flex:0 0 auto;padding:.45rem .7rem;border-radius:999px;background:#f0e4c6;
+      color:#654a16;font-size:.78rem;font-weight:900;white-space:nowrap
+    }
+    .cb-review-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem}
+    .cb-review-item{
+      padding:.85rem .9rem;border:1px solid #ebe2d2;border-radius:13px;background:#fff
+    }
+    .cb-review-item.full{grid-column:1/-1}
+    .cb-review-item span{
+      display:block;margin-bottom:.22rem;color:#8a6a2b;font-size:.72rem;font-weight:900;
+      letter-spacing:.08em;text-transform:uppercase
+    }
+    .cb-review-item strong{display:block;color:#20242b;line-height:1.45}
+    .cb-review-extras{
+      margin:.9rem 0 0;padding:.9rem 1rem;border-radius:13px;background:#111d30;color:#fff
+    }
+    .cb-review-extras h4{margin:0 0 .55rem;color:#efd99b}
+    .cb-review-extras ul{margin:0;padding-left:1.15rem;line-height:1.65;color:rgba(255,255,255,.88)}
+    .cb-review-total{
+      display:flex;align-items:center;justify-content:space-between;gap:1rem;
+      margin-top:.9rem;padding:1rem;border-radius:13px;background:#f1e5c9;color:#34250d
+    }
+    .cb-review-total span{font-weight:800}
+    .cb-review-total strong{font-size:1.45rem}
 
     .cb-confirm-box{
       margin-top:1rem;padding:1rem;border-radius:14px;background:#f4f8f4;border:1px solid #bfd4c4;color:#294a34
@@ -225,6 +260,11 @@
     }
     .cb-heads-state h2{margin:0;color:#fff}
     .cb-heads-state p{max-width:820px;margin:.8rem auto 1rem;color:rgba(255,255,255,.8);line-height:1.7}
+    .cb-heads-state-banner{
+      display:block;overflow:hidden;margin:0 auto 1.35rem;border-radius:18px;
+      border:1px solid rgba(229,200,118,.35);box-shadow:0 18px 42px rgba(0,0,0,.28)
+    }
+    .cb-heads-state-banner img{display:block;width:100%;height:auto}
 
     .cb-terms{
       margin-top:1.2rem;color:#716b61;font-size:.86rem;line-height:1.6
@@ -249,8 +289,8 @@
       .cb-shell{width:min(100% - 22px,1180px)}
       .cb-hero{border-radius:18px}
       .cb-price-strip{grid-template-columns:1fr}
-      .cb-options,.cb-field-grid{grid-template-columns:1fr}
-      .cb-field.full{grid-column:auto}
+      .cb-options,.cb-field-grid,.cb-review-grid{grid-template-columns:1fr}
+      .cb-field.full,.cb-review-item.full{grid-column:auto}
       .cb-form-card{border-radius:18px;padding:1rem}
       .cb-option{padding:.9rem}
     }
@@ -709,16 +749,27 @@
           <div class="cb-step-head">
             <div class="cb-step-number">5</div>
             <div>
-              <h2>Review &amp; Submit Request</h2>
-              <p>Your complete selections are compiled into one email. No Google Apps Script changes or file uploads are required.</p>
+              <h2>Review Your Custom Bible</h2>
+              <p>Please review your selections below. When everything looks right, submit your request. No payment is due today.</p>
             </div>
           </div>
 
-          <div class="cb-review" id="reviewText" aria-live="polite"></div>
+          <div class="cb-review" id="reviewText" aria-live="polite">
+            <div class="cb-review-head">
+              <div>
+                <h3>Your Custom Bible Request</h3>
+                <p>A clear summary of the Bible and personalization options you selected.</p>
+              </div>
+              <div class="cb-review-order" id="reviewOrderNumber"></div>
+            </div>
+            <div class="cb-review-grid" id="reviewGrid"></div>
+            <div class="cb-review-extras" id="reviewExtras"></div>
+            <div class="cb-review-total"><span>Estimated Total</span><strong id="reviewTotal">$19.99</strong></div>
+          </div>
 
           <div class="cb-confirm-box">
-            <strong>No Payment Is Due Yet.</strong><br>
-            Submitting this request prepares an email to Living Word Bibles. After review, Living Word Bibles will contact you and send a secure PayPal Payment Link for the approved total.
+            <strong>No Payment Is Due Today.</strong><br>
+            When you submit your request, your email app will open with your Custom Bible order details ready to send to Living Word Bibles. After we review your request, we will contact you and send a secure PayPal Payment Link for the approved total.
           </div>
 
           <label style="display:flex;gap:.65rem;align-items:flex-start;margin-top:1rem">
@@ -728,7 +779,7 @@
 
           <div class="cb-actions">
             <button class="cb-btn gold" type="submit">Email My Custom Bible Request</button>
-            <button class="cb-btn secondary" type="button" id="copyRequest">Copy Order Request</button>
+            <button class="cb-btn secondary" type="button" id="copyRequest">Copy My Order Details</button>
           </div>
 
           <p class="cb-terms">Custom Bible requests are reviewed individually. Living Word Bibles may decline material that cannot reasonably or lawfully be produced. Customer-provided wording may be lightly corrected for obvious typographical errors, but substantive wording should not be changed without customer approval.</p>
@@ -749,6 +800,9 @@
     </section>
 
     <section class="cb-heads-state">
+      <a class="cb-heads-state-banner" href="/heads-of-state/" aria-label="Explore the Heads of State Collection">
+        <img src="/heads-of-state/heads-of-state-banner.png" alt="Living Word Bibles Heads of State Collection">
+      </a>
       <p class="cb-eyebrow" style="color:#e5c876">Separate Commissioned Editions</p>
       <h2>Heads of State Collection Special Editions</h2>
       <p>The Custom Bible service is intended for the general public. Heads of State Collection Special Editions, governmental presentation editions, and institutional editions are separately commissioned through Living Word Bibles. Governmental offices, public institutions, and official representatives seeking a Special Edition should contact Living Word Bibles directly.</p>
@@ -1014,13 +1068,71 @@
 
     lines.push("");
     lines.push("SUBMITTED FROM:");
-    lines.push("https://www.livingwordbibles.com/custom-bibles/");
+    lines.push("https://www.livingwordbibles.com/custom-bible/");
 
     lines.push("");
     lines.push("REQUEST GENERATED:");
     lines.push(new Date().toLocaleString());
 
     return lines.join("\n");
+  }
+
+  function renderCustomerReview(){
+    const bible = selectedBible();
+    const grid = document.getElementById("reviewGrid");
+    const extrasBox = document.getElementById("reviewExtras");
+    const orderBadge = document.getElementById("reviewOrderNumber");
+    const reviewTotal = document.getElementById("reviewTotal");
+
+    orderBadge.textContent = orderNumber;
+    reviewTotal.textContent = money(total());
+
+    const reviewItems = [
+      ["Recipient", val("displayName") || val("recipientName") || "Add recipient name"],
+      ["Bible", bible ? bible.value : "Choose a Bible"],
+      ["Presented By", val("presentedBy") || "Not specified"],
+      ["Occasion", val("occasion") || "Not specified"]
+    ];
+
+    grid.innerHTML = "";
+    reviewItems.forEach(([label,value])=>{
+      const item = document.createElement("div");
+      item.className = "cb-review-item";
+      const key = document.createElement("span");
+      key.textContent = label;
+      const result = document.createElement("strong");
+      result.textContent = value;
+      item.append(key,result);
+      grid.appendChild(item);
+    });
+
+    const extras = [];
+    if(checked("customDedication")) extras.push("Fully Custom Title / Dedication Page");
+    else extras.push("Standard Personalized Dedication + John 3:16 Page");
+    if(checked("ethiopianApocrypha")) extras.push("Ethiopian Apocrypha");
+    if(checked("customCover")) extras.push("Custom Cover");
+    if(checked("customPrayer")) extras.push("Custom Prayer / Scripture Page");
+    if(checked("personalLetter")) extras.push("Personal Letter / Message Page");
+    if(checked("specialOccasionPage")) extras.push("Special Occasion Page");
+    if(checked("familyPage")) extras.push("Family Bible Page");
+    if(checked("memorialPage")) extras.push("Memorial Page");
+    if(checked("churchPage")) extras.push("Church / Ministry Presentation Page");
+
+    const additional = Math.max(0, Math.min(20, Number(document.getElementById("additionalPages").value || 0)));
+    if(additional > 0) extras.push(`${additional} Additional Custom Page${additional === 1 ? "" : "s"}`);
+
+    extrasBox.innerHTML = "";
+    const heading = document.createElement("h4");
+    heading.textContent = "Included & Selected Personalization";
+    extrasBox.appendChild(heading);
+
+    const ul = document.createElement("ul");
+    extras.forEach(extra=>{
+      const li = document.createElement("li");
+      li.textContent = extra;
+      ul.appendChild(li);
+    });
+    extrasBox.appendChild(ul);
   }
 
   function render(){
@@ -1040,7 +1152,7 @@
     const t = money(total());
     document.getElementById("estimatedTotal").textContent = t;
     document.getElementById("mobileEstimatedTotal").textContent = t;
-    document.getElementById("reviewText").textContent = buildSummary();
+    renderCustomerReview();
   }
 
   form.addEventListener("input", render);
@@ -1082,7 +1194,6 @@
 
     const mailto = `mailto:${EMAIL_TO}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
-    // Zero-backend submission: opens the customer's email client with the full request.
     window.location.href = mailto;
   });
 

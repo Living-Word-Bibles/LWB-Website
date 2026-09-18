@@ -113,7 +113,7 @@
     .mission-box img{display:block;width:100%;height:auto;aspect-ratio:3/1;object-fit:cover;object-position:center}
     .special-edition-subsection{scroll-margin-top:8rem;margin-top:1.45rem}
     .special-edition-banner{overflow:hidden;margin:.8rem 0 1rem;border:1px solid rgba(59,23,17,.15);border-radius:16px;background:#1d0e09;box-shadow:0 10px 28px rgba(36,22,17,.07)}
-    .special-edition-banner picture,.special-edition-banner img{display:block;width:100%}
+    .special-edition-banner>a,.special-edition-banner picture,.special-edition-banner img{display:block;width:100%}
     .special-edition-banner img{height:auto}
     .standards-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem;margin:1rem 0}
     .standards-card{padding:1rem;border:1px solid rgba(59,23,17,.14);border-radius:14px;background:#fffdf9}
@@ -240,7 +240,7 @@
 <div class="standards-card"><h3>Website Content</h3><p>Translation histories, Bible history, book introductions, canon resources, articles, FAQs, product descriptions, church resources, and educational pages.</p></div>
 <div class="standards-card"><h3>Reference and Visual Material</h3><p>Maps, timelines, charts, tables, photographs, manuscript images, illustrations, bibliographies, footnotes, cross-references, and metadata.</p></div>
 <div class="standards-card"><h3>Audio Bible</h3><p>Narrated Scripture, chapter audio, source recordings, playback interfaces, visual accompaniment, attribution, and audio metadata.</p></div>
-<div class="standards-card"><h3>Accounts &amp; Digital Libraries</h3><p>Customer libraries, digital-product entitlements, purchase reconciliation, free-product grants, download access, and administrative corrections to account records.</p></div>
+<div class="standards-card"><h3>Accounts &amp; Digital Libraries</h3><p>Customer libraries, digital purchases and downloads, free Bible access, purchase matching, and account corrections.</p></div>
 </div>
 <div aria-label="Living Word Bibles products and Bible editions" class="product-showcase">
 <h3>Living Word Bibles Products &amp; Bible Editions</h3>
@@ -600,16 +600,18 @@
 <section class="standards-section" id="translations">
 <h2>5. Translation and Edition Identification</h2>
 <p>Every Bible product should identify the translation or version clearly enough that a reader can understand what text is being read. Where appropriate, an edition should also identify language, revision, publication history, source edition, copyright or public-domain status, and publisher or rights-holder attribution.</p>
-<p>Living Word Bibles does not treat all translations as interchangeable. A King James Version edition, a literal translation, a Catholic Bible, an Orthodox Bible, an Ethiopian canon resource, and a modern copyrighted translation may differ in textual base, book order, included books, spelling, notes, versification, or licensing requirements. Those differences should be preserved and explained rather than flattened into a single generic product.</p>
-<p>When multiple versions are compared on the website, headings and labels must prevent the reader from mistaking one translation for another. Search results, deep links, app state, and share links should retain translation context whenever practical.</p>
+<p>Each Bible edition is prepared according to its own text, canon, tradition, and publishing requirements. We preserve those characteristics so readers receive the Bible they selected, clearly identified and faithfully presented.</p>
+<p>When more than one translation appears on the website, each one should be clearly labeled. Wherever readers enter the site—from search results, shared links, or the Bible reader—the translation should remain easy to identify.</p>
 
 <div class="special-edition-subsection" id="presidential-ebible-standards">
 <h3>Editorial Standards for Presidential eBibles</h3>
 <div class="special-edition-banner">
+<a aria-label="Explore the Living Word Bibles Presidential Edition" href="/presidential-edition/">
 <picture>
 <source media="(max-width: 660px)" srcset="/assets/PresidentialEditionMobile.png"/>
 <img alt="Living Word Bibles Presidential Edition" src="/assets/PresidentialEdition.png"/>
 </picture>
+</a>
 </div>
 <p>Living Word Bibles Presidential eBibles are custom presentation editions that combine faithful Scripture with carefully selected presidential, historical, commemorative, and presentation material.</p>
 <ul>
@@ -630,10 +632,12 @@
 <div class="special-edition-subsection" id="heads-of-state-ebible-standards">
 <h3>Editorial Standards for Heads of State eBibles</h3>
 <div class="special-edition-banner">
+<a aria-label="Explore the Living Word Bibles Heads of State Collection" href="/heads-of-state/">
 <picture>
 <source media="(max-width: 660px)" srcset="/assets/HeadsofStateMobileHero.png"/>
 <img alt="Living Word Bibles Heads of State Collection" src="/assets/HeadsofStateHomepageHero.png"/>
 </picture>
+</a>
 </div>
 <p>Living Word Bibles Heads of State eBibles are individually prepared presentation editions created for heads of state, heads of government, governors-general, governors, prime ministers, monarchs, and other distinguished public offices and recipients.</p>
 <ul>
@@ -654,7 +658,7 @@
 </section>
 <section class="standards-section" id="canon">
 <h2>6. Canon, Book Order, and Deuterocanonical Material</h2>
-<p>Christian traditions do not all use an identical table of contents. Living Word Bibles therefore treats canon and book-order information as edition-specific editorial data, not as something that may be changed silently.</p>
+<p>Christian traditions do not all use the same table of contents. We preserve the canon and book order of each edition and identify those differences clearly for readers.</p>
 <ul>
 <li>The books included in an edition should match the edition’s stated canon or source tradition.</li>
 <li>When an edition includes deuterocanonical, apocryphal, Orthodox, or Ethiopian books, their presence should be clear in the table of contents and product description.</li>
@@ -702,40 +706,40 @@
 </section>
 <section class="standards-section" id="digital">
 <h2>10. eBibles, PDFs, EPUB-Style Files, and Digital Downloads</h2>
-<p>Digital editions should preserve the same textual fidelity as print while also providing functional navigation. A technically valid file is not sufficient if verses are missing, the table of contents is broken, footnotes point to the wrong location, or the reading order is inaccessible.</p>
+<p>Digital editions must preserve the same Scripture fidelity as print and be easy to use. A file is not ready for publication if verses are missing, the table of contents is broken, footnotes lead to the wrong place, or the reading order does not work properly.</p>
 <ul>
-<li>Digital files should be tested for opening, chapter navigation, internal links, reading order, search behavior, responsive display, and common-device compatibility appropriate to the format.</li>
-<li>Book and chapter navigation should be generated from verified metadata rather than inferred from visual styling alone.</li>
-<li>Footnotes and cross-references should return readers to the correct passage and should not obscure the biblical text.</li>
-<li>Download names, version numbers, file descriptions, and product pages should identify the correct translation and format.</li>
-<li>When a file is replaced because of a material correction, the revision should receive an updated version or date so support can distinguish old and corrected copies.</li>
+<li>We test digital files to make sure they open properly, chapters and links work, the reading order is correct, search behaves as expected, and the edition displays well on common devices.</li>
+<li>Book and chapter navigation should be built from verified Bible data so every link leads to the correct passage.</li>
+<li>Footnotes and cross-references should lead readers to the correct passage and remain clearly separate from the biblical text.</li>
+<li>Download names, edition information, file descriptions, and product pages should clearly identify the correct translation and format.</li>
+<li>When we replace a file because of a meaningful correction, we update its version or date so readers and support staff can distinguish the corrected edition from an earlier copy.</li>
 </ul>
-<h3>Digital account libraries and entitlements</h3>
-<p>Where a Living Word Bibles account includes a digital library, the product title, product identifier, translation, format, download asset, and entitlement record should correspond to the product the reader is entitled to receive. Account access records are administrative and fulfillment records; they do not change the underlying copyright or license status of Scripture.</p>
+<h3>Digital Account Libraries</h3>
+<p>When a Bible or other digital product is added to a reader's library, the title, translation, format, and download should match the product purchased or provided. Library access does not change the copyright or licensing status of the Scripture or other material in that edition.</p>
 <ul>
-<li>The Holy Bible: King James Version Special Edition and the Douay-Rheims Bible may be provisioned as free digital products to eligible Living Word Bibles accounts.</li>
-<li>Verified paid eBible products and qualifying digital PDFs, including the Living Word Bibles Ethiopian Apocrypha PDF where applicable, may be attached to the purchaser’s account.</li>
-<li>A physical or print purchase should not be represented as creating a digital entitlement unless the product expressly includes one.</li>
-<li>Purchase reconciliation should match a verified transaction to the correct product and account rather than grant an unrelated product merely because a transaction identifier was supplied.</li>
-<li>Manual administrative additions, removals, restorations, refunds, reversals, or corrections to entitlements should be limited to legitimate support and recordkeeping purposes and should be logged when the system supports such logging.</li>
+<li>The Holy Bible: King James Version Special Edition and the Douay-Rheims Bible may be provided free to eligible Living Word Bibles accounts.</li>
+<li>Verified eBible purchases and qualifying digital PDFs, including the Living Word Bibles Ethiopian Apocrypha PDF where applicable, may be added to the purchaser’s library.</li>
+<li>A print purchase does not include a digital copy unless the product description expressly says that it does.</li>
+<li>When we match a past purchase to an account, we verify the transaction and add the correct product to the correct reader’s library.</li>
+<li>Library access may be added, restored, removed, or corrected when needed for customer support, refunds, payment reversals, or accurate recordkeeping.</li>
 </ul>
 </section>
 <section class="standards-section" id="reader">
 <h2>11. Website and Online Bible Reader Standards</h2>
-<p>The online Bible reader is a publishing surface, not merely a software component. The verse displayed to a reader must correspond to the selected translation, book, chapter, and verse.</p>
+<p>Our online Bible reader is part of our publishing work, so the same standards of accuracy and Scripture fidelity apply online as they do to our downloadable and print editions. The passage shown must always match the translation, book, chapter, and verse selected by the reader.</p>
 <ul>
-<li>Translation switching must not combine text from different versions.</li>
-<li>Deep links should resolve to the intended passage and preserve translation context where the product supports it.</li>
-<li>Chapter selectors, book lists, verse anchors, search results, next/previous controls, and canonical URLs should be tested for consistency.</li>
-<li>Reader features such as highlights, notes, bookmarks, copy controls, and share links should remain visually distinct from Scripture text.</li>
-<li>Temporary loading errors, API failures, or cached data should not silently substitute the wrong translation or stale editorial content.</li>
+<li>Switching translations must never mix text from different Bible versions.</li>
+<li>Links to a specific passage should open the intended Scripture and keep the correct translation selected whenever possible.</li>
+<li>Book lists, chapter selectors, verse links, search results, and next/previous controls should all lead readers where they expect to go.</li>
+<li>Highlights, notes, bookmarks, copy tools, and sharing features should remain visually distinct from Scripture.</li>
+<li>If part of the reader is temporarily unavailable, we should not silently show the wrong translation or outdated editorial material in its place.</li>
 </ul>
 </section>
 <section class="standards-section" id="apps">
 <h2>12. Apps, Software, and Interactive Bible Products</h2>
-<p>Living Word Bibles applications should apply the same standards to Scripture data that govern the website and downloadable editions. App convenience features must not change the underlying text without clear disclosure.</p>
-<p>Release testing should include the core reading path, translation selection, book and chapter navigation, search, offline behavior where offered, font scaling, orientation changes, accessibility labels, links to legal notices, and restoration of reader state.</p>
-<p>If an app uses third-party Scripture APIs or datasets, the displayed translation name, license status, attribution, and version should match the source actually returned. A vendor outage or API change must not be masked by presenting another text under the same label.</p>
+<p>Our apps follow the same Scripture standards as our website and downloadable editions. Features designed for convenience must never quietly change the underlying biblical text.</p>
+<p>Before release, we test the main reading experience, translation selection, book and chapter navigation, search, offline reading where offered, text sizing, screen orientation, accessibility labels, legal links, and the reader’s saved place.</p>
+<p>If an app uses a third-party Scripture source, the translation name, attribution, license information, and edition shown to readers must match the text actually being delivered. If that source becomes unavailable, we will not substitute another translation under the same name.</p>
 </section>
 <section class="standards-section" id="accessibility">
 <h2>13. Accessibility and Device Compatibility</h2>
@@ -752,7 +756,7 @@
 </section>
 <section class="standards-section" id="editorial-material">
 <h2>14. Headings, Notes, Footnotes, Cross-References, and Added Editorial Material</h2>
-<p>Material added by Living Word Bibles must be visually and semantically distinguishable from Scripture. This includes section headings that are not part of the source translation, introductions, study notes, explanatory notes, maps, captions, timelines, reading prompts, devotionals, cross-reference systems, and product-specific editorial features.</p>
+<p>Material added by Living Word Bibles must be clearly distinguishable from Scripture in both design and presentation. This includes headings that are not part of the source translation, introductions, study notes, explanatory notes, maps, captions, timelines, reading prompts, devotionals, cross-references, and other editorial features.</p>
 <p>Where a heading or note could be mistaken for inspired biblical text, the design should make the distinction clear. Editorial notes should not be inserted into a verse as though they were part of the translation.</p>
 <p>Cross-references are aids, not declarations that two passages have an identical meaning. They should be checked for valid destinations and presented as references rather than additions to the verse.</p>
 </section>
@@ -805,48 +809,48 @@
 </section>
 <section class="standards-section" id="technology">
 <h2>20. Technology-Assisted and AI-Assisted Publishing Workflows</h2>
-<p>Living Word Bibles may use software, automation, machine learning, generative tools, scripting, or other technology to assist with formatting, conversion, metadata preparation, proofreading, image creation, research organization, accessibility review, link checking, code generation, search, or draft preparation.</p>
-<div class="principle-box"><p>Technology may assist the workflow; it does not receive authority to alter Scripture.</p></div>
+<p>Living Word Bibles may use software, automation, AI, and other digital tools to help with formatting, file conversion, proofreading, artwork, research, accessibility, link checking, search, and draft preparation.</p>
+<div class="principle-box"><p>Technology can assist our work, but people remain responsible for the Scripture and editorial material we publish.</p></div>
 <ul>
-<li>AI or automated tools must not rewrite a Bible translation and publish the result under the original translation name.</li>
-<li>Generated historical claims, quotations, citations, manuscript descriptions, copyright claims, or bibliographic details must be checked before publication.</li>
-<li>Automated conversion between formats must be reviewed for missing verses, damaged characters, broken footnotes, altered italics, lost poetry structure, or incorrect book order.</li>
-<li>Technology-generated images must not be used to fabricate documentary evidence.</li>
-<li>Human editorial responsibility remains with Living Word Bibles for material we publish.</li>
+<li>AI and automated tools must not rewrite a Bible translation and present the result as the original translation.</li>
+<li>Historical claims, quotations, citations, manuscript descriptions, copyright information, and bibliographic details produced with technological assistance must be checked before publication.</li>
+<li>When we convert an edition from one format to another, we check for missing verses, damaged characters, broken footnotes, lost formatting, poetry errors, and incorrect book order.</li>
+<li>Generated images must never be presented as documentary evidence of a real manuscript, object, person, or historical event.</li>
+<li>Living Word Bibles remains responsible for the material we publish.</li>
 </ul>
 </section>
 <section class="standards-section" id="metadata">
 <h2>21. Metadata, Search, Structured Data, and SEO</h2>
-<p>Metadata should describe the content readers will actually receive. Search optimization must not mislabel a translation, canon, product type, language, historical claim, price, availability, or edition in order to attract clicks.</p>
-<p>Book, chapter, verse, translation, language, title, canonical URL, social-preview image, schema metadata, ISBN or product identifiers, file version, and publication dates should be accurate and internally consistent.</p>
-<p>Where structured Scripture data is exchanged between systems, Living Word Bibles may use established encoding conventions, including OSIS-style identifiers or equivalent schemas, when they improve interoperability and textual integrity. The <a href="https://ebible.org/osis/" rel="noopener noreferrer" target="_blank">Open Scriptural Information Standard (OSIS)</a> is one established reference point for encoding biblical literature.</p>
+<p>Titles, descriptions, search information, and other metadata should accurately describe what readers will actually receive. We do not mislabel a translation, canon, product type, language, price, availability, or edition simply to attract attention.</p>
+<p>Book, chapter, verse, translation, language, title, web address, social-preview image, ISBN or product identifier, file version, and publication date should agree with the edition being presented.</p>
+<p>When Scripture data moves between publishing systems, we may use established standards such as the <a href="https://ebible.org/osis/" rel="noopener noreferrer" target="_blank">Open Scriptural Information Standard (OSIS)</a> to help preserve book, chapter, verse, and other structural information accurately.</p>
 </section>
 <section class="standards-section" id="corrections">
 <h2>22. Corrections, Clarifications, and Version Control</h2>
-<p>Living Word Bibles corrects material errors when they are identified and verified. The correction process depends on whether the error is in Scripture text, editorial material, software behavior, metadata, or a physical product.</p>
+<p>When we confirm a meaningful error, we correct it. The way we make that correction depends on whether the issue affects Scripture, editorial material, a digital feature, publication information, or a physical product.</p>
 <h3>Scripture corrections</h3><p>A suspected Scripture-text error should be checked against the documented source edition or rights-holder source before correction. We should not “correct” an unfamiliar reading merely because another translation uses different wording.</p>
 <h3>Editorial corrections</h3><p>Errors in history pages, biographies, maps, bibliographies, captions, dates, product descriptions, or explanatory material should be corrected promptly once confirmed. Material corrections may include an update or correction note when useful to readers.</p>
-<h3>Multi-format review</h3><p>If one source feeds multiple products, a material correction should trigger review of the website, downloadable file, app dataset, print master, search index, social metadata, and product listing as applicable.</p>
-<h3>Account and entitlement corrections</h3><p>Administrative correction of an account, order association, purchase reconciliation, or digital entitlement is a records and fulfillment function. Such a correction may add, remove, restore, or re-associate access when supported by verified account, order, payment, refund, reversal, or support information, but it must not alter Scripture text, rewrite a product’s contents, or create a false record of a purchase.</p>
+<h3>Corrections Across Formats</h3><p>When the same material appears in more than one place, a meaningful correction should be carried through to the website, downloadable edition, app, print master, search information, social previews, and product listing where applicable.</p>
+<h3>Account and Library Corrections</h3><p>We may correct a reader’s account or digital library when purchase, refund, payment, or support records show that access should be added, restored, removed, or moved to the correct account. These account corrections never change the Scripture or editorial content of the product itself.</p>
 <p>Minor typography, spacing, broken-link, or layout fixes that do not change meaning may be corrected without a formal correction notice.</p>
 </section>
 <section class="standards-section" id="quality">
 <h2>23. Quality Assurance and Release Review</h2>
-<p>Before a major Bible edition or significant digital release is published, Living Word Bibles should perform a review proportionate to the scope and risk of the product.</p>
+<p>Before a major Bible edition or digital release is published, we review it according to its size, format, and complexity.</p>
 <ul>
-<li>Verify translation identity, source provenance, rights notices, and front matter.</li>
-<li>Check book, chapter, and verse completeness using automated comparison where practical and human spot review.</li>
-<li>Review known high-risk structures such as poetry, footnotes, red-letter passages, tables, special characters, deuterocanonical sections, long genealogies, and book boundaries.</li>
-<li>Validate navigation, internal links, download paths, image references, accessibility labels, and responsive layouts.</li>
-<li>Test representative desktop, tablet, and mobile environments for web products.</li>
-<li>Record release date or version information when a product is likely to receive future corrections or updates.</li>
+<li>Confirm the translation, source, rights notices, and front matter.</li>
+<li>Check that books, chapters, and verses are complete, using automated comparison where useful and human review throughout the process.</li>
+<li>Pay special attention to poetry, footnotes, red-letter passages, tables, special characters, deuterocanonical sections, long genealogies, and transitions between books.</li>
+<li>Check navigation, internal links, downloads, images, accessibility labels, and responsive layouts.</li>
+<li>Test web products on representative desktop, tablet, and mobile devices.</li>
+<li>Record the release date or edition version when future corrections or updates are likely.</li>
 </ul>
 </section>
 <section class="standards-section" id="commerce">
 <h2>24. Commerce, Donations, Affiliates, and Editorial Independence</h2>
-<p>Living Word Bibles may sell products, receive donations, use third-party marketplaces, participate in affiliate programs, or promote related products and services. Commercial relationships must not justify an inaccurate description of Scripture, a false historical claim, a hidden textual alteration, or the suppression of a correction.</p>
-<p>Product descriptions should identify the actual format, translation, included content, known compatibility, and material restrictions. Promotional language may describe design and features, but it should not create a false claim of scholarly endorsement, denominational approval, rights-holder sponsorship, or historical authority.</p>
-<p>Donors, advertisers, marketplaces, payment processors, and technology vendors do not receive editorial authority over the wording of Scripture or the factual content of Living Word Bibles reference material merely because they provide funding, distribution, or infrastructure.</p>
+<p>Sales, donations, advertising, and business relationships do not change our editorial standards. Scripture, historical material, and product information must remain accurate regardless of how a product is funded, promoted, or distributed.</p>
+<p>Product descriptions should tell readers what they are receiving, including the format, translation, included material, compatibility, and any important restrictions. Promotional language may describe an edition’s design and features, but it must remain accurate.</p>
+<p>Donors, advertisers, marketplaces, payment processors, and technology providers do not determine the wording of Scripture or the factual content of Living Word Bibles editorial material.</p>
 </section>
 <section class="standards-section" id="submissions">
 <h2>25. Reader Feedback, Error Reports, and Submissions</h2>
@@ -855,9 +859,9 @@
 </section>
 <section class="standards-section" id="third-parties">
 <h2>26. Third-Party Publishers, Platforms, Retailers, and Services</h2>
-<p>Living Word Bibles may rely on publishers, rights holders, public-domain repositories, libraries, archives, ecommerce platforms, app stores, cloud services, payment processors, print-on-demand vendors, software libraries, or other third-party services.</p>
-<p>References to a third-party organization or service are for identification, attribution, interoperability, licensing, sourcing, or reader usefulness and do not imply endorsement, sponsorship, partnership, or editorial approval unless expressly stated.</p>
-<p>When a third-party platform controls fulfillment, app review, payment, or technical availability, Living Word Bibles should not describe a platform-controlled delay or restriction as though it were an editorial judgment about the Scripture itself.</p>
+<p>Living Word Bibles works with outside publishers, rights holders, libraries, archives, retailers, app stores, payment services, print providers, and other platforms that help us publish and distribute our work.</p>
+<p>We identify and credit outside publishers, services, and sources when they contribute to our products or help readers understand where material comes from. Mentioning or linking to an outside organization does not by itself mean that organization endorses Living Word Bibles or that Living Word Bibles endorses it.</p>
+<p>When an outside platform controls payment, delivery, app review, or technical availability, we distinguish those platform decisions from our editorial decisions about Scripture and published content.</p>
 <h3>Public-domain audio and LibriVox</h3>
 <p>When LibriVox material is used, Living Word Bibles should preserve accurate source information and, where practical, identify the LibriVox project or reader associated with the recording. LibriVox states that its texts and recordings are public domain in the United States, while also cautioning that copyright status can differ outside the United States. Living Word Bibles should therefore avoid implying that a U.S. public-domain determination automatically resolves copyright status in every jurisdiction.</p>
 </section>

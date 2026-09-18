@@ -446,6 +446,70 @@
       background:#fff9f7;
     }
 
+    .support-thirdparty-alert{
+      margin:0 0 26px;
+      padding:20px;
+      border:3px solid #8f241d;
+      border-radius:18px;
+      background:#fff1ee;
+      box-shadow:0 12px 30px rgba(143,36,29,.14);
+      color:#32110d;
+    }
+
+    .support-thirdparty-alert h2{
+      margin:0 0 10px;
+      color:#7d1f19;
+      font-size:clamp(1.45rem,3vw,2rem);
+      line-height:1.15;
+      letter-spacing:-.02em;
+    }
+
+    .support-thirdparty-alert p{
+      margin:.65rem 0 0;
+      color:#3f1b16;
+      line-height:1.6;
+      font-size:15px;
+    }
+
+    .support-thirdparty-alert .support-thirdparty-stop{
+      margin-top:12px;
+      padding:12px 14px;
+      border-radius:12px;
+      background:#7d1f19;
+      color:#fff;
+      font-weight:900;
+      line-height:1.5;
+    }
+
+    .support-thirdparty-alert .support-thirdparty-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:14px;
+    }
+
+    .support-thirdparty-alert .support-thirdparty-actions a{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:44px;
+      padding:11px 15px;
+      border-radius:999px;
+      font-weight:800;
+      text-decoration:none;
+    }
+
+    .support-thirdparty-alert .support-thirdparty-email{
+      background:#7d1f19;
+      color:#fff;
+    }
+
+    .support-thirdparty-alert .support-thirdparty-lwb{
+      background:#fff;
+      color:var(--support-brown);
+      border:1px solid rgba(59,23,17,.22);
+    }
+
     .support-final{
       border:1px solid rgba(184,135,52,.34);
       background:linear-gradient(135deg,#fff,#fbf7ef);
@@ -560,6 +624,18 @@
   <div data-lwb-header></div>
 
   <main id="main-content" class="support-shell">
+
+    <section class="support-thirdparty-alert" aria-label="Important notice about third-party purchases">
+      <h2>IMPORTANT — PURCHASES FROM thelivingword.shop</h2>
+      <p><strong>thelivingword.shop is NOT Living Word Bibles.</strong> Living Word Bibles is not affiliated with, operated by, sponsored by, or associated with thelivingword.shop.</p>
+      <p>If you purchased an Ethiopian Bible or any other product from thelivingword.shop, Living Word Bibles cannot view, locate, modify, cancel, refund, fulfill, resend, or provide order status for that purchase.</p>
+      <p class="support-thirdparty-stop">DO NOT email Living Word Bibles or Cook Services Company about Ethiopian Bible purchases made from that website. We cannot help with those orders and will NOT respond to emails concerning purchases made through thelivingword.shop.</p>
+      <p>If your receipt, order confirmation, or charge relates to thelivingword.shop, you must contact that seller directly.</p>
+      <div class="support-thirdparty-actions">
+        <a class="support-thirdparty-email" href="mailto:support@thelivingword.shop">support@thelivingword.shop</a>
+        <a class="support-thirdparty-lwb" href="https://www.livingwordbibles.com/ethiopian-bible/">Official Living Word Bibles Ethiopian Bible</a>
+      </div>
+    </section>
 
     <nav class="breadcrumbs support-breadcrumbs" aria-label="Breadcrumb">
       <a href="/">Home</a>
@@ -1017,6 +1093,19 @@
           <a class="support-btn support-btn-light" href="/about-us/#frequently-asked-questions">About Us FAQs</a>
         </div>
       </article>
+    </section>
+
+
+    <section class="support-thirdparty-alert" aria-label="Important reminder about third-party purchases">
+      <h2>IMPORTANT REMINDER — PURCHASES FROM thelivingword.shop</h2>
+      <p><strong>thelivingword.shop is NOT Living Word Bibles.</strong> Living Word Bibles is not affiliated with, operated by, sponsored by, or associated with thelivingword.shop.</p>
+      <p>If you purchased an Ethiopian Bible or any other product from thelivingword.shop, Living Word Bibles cannot view, locate, modify, cancel, refund, fulfill, resend, or provide order status for that purchase.</p>
+      <p class="support-thirdparty-stop">DO NOT email Living Word Bibles or Cook Services Company about Ethiopian Bible purchases made from that website. We cannot help with those orders and will NOT respond to emails concerning purchases made through thelivingword.shop.</p>
+      <p>If your receipt, order confirmation, or charge relates to thelivingword.shop, you must contact that seller directly.</p>
+      <div class="support-thirdparty-actions">
+        <a class="support-thirdparty-email" href="mailto:support@thelivingword.shop">support@thelivingword.shop</a>
+        <a class="support-thirdparty-lwb" href="https://www.livingwordbibles.com/ethiopian-bible/">Official Living Word Bibles Ethiopian Bible</a>
+      </div>
     </section>
 
     <p class="support-fine-print">Living Word Bibles cannot control third-party outages, PayPal delays, browser restrictions, email-provider filtering, internet-provider problems, external retailer systems, or temporary interruptions outside Living Word Bibles systems. For purchases made through third-party retailers or unrelated websites, contact the seller or service that processed the transaction.</p>

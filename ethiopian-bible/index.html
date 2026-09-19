@@ -176,6 +176,36 @@
       }
     }
 
+
+    /* Mobile-only swipeable Ethiopian Bible product cards.
+       Keep the $9.99 EPUB first; swipe right to reach the $0.99 PDF. */
+    @media(max-width:760px){
+      .ethiopian-purchase-grid{
+        display:flex;
+        gap:1rem;
+        overflow-x:auto;
+        overflow-y:hidden;
+        scroll-snap-type:x mandatory;
+        scroll-padding-inline:1rem;
+        overscroll-behavior-x:contain;
+        -webkit-overflow-scrolling:touch;
+        margin:1.5rem -1rem 0;
+        padding:1rem 1rem 1.25rem;
+        scrollbar-width:none;
+      }
+
+      .ethiopian-purchase-grid::-webkit-scrollbar{
+        display:none;
+      }
+
+      .ethiopian-purchase-grid > .ethiopian-purchase-card{
+        flex:0 0 calc(100% - 2.25rem);
+        min-width:0;
+        scroll-snap-align:start;
+        scroll-snap-stop:always;
+      }
+    }
+
     @media(max-width:560px){
       .ethiopian-purchase-grid{
         margin-top:1.5rem;

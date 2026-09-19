@@ -11,11 +11,12 @@
 <style id="lwb-streamlined-paid-checkout">
 .product-back{margin:1rem 0 1.5rem}
 .product-back-bottom{margin:1.5rem 0 0}
-.paypal-checkout{max-width:520px;margin:1.25rem auto}
 .eu-eea-withdrawal-notice{max-width:760px;margin:1.25rem auto;padding:1rem 1.1rem;border:1px solid rgba(120,91,62,.28);border-radius:12px;background:rgba(120,91,62,.06)}
 .eu-eea-withdrawal-notice label{display:flex;align-items:flex-start;gap:.7rem;cursor:pointer;line-height:1.5}
 .eu-eea-withdrawal-notice input[type="checkbox"]{margin-top:.25rem;flex:0 0 auto}
+.eu-eea-checkout-locked{pointer-events:none;opacity:.5;filter:grayscale(.15)}
 </style>
+    <script src="https://www.paypal.com/sdk/js?client-id=BAADY3HmA8ip1D8X4DGaJ9V3YBlg1INapOOrbKRCDd1nTP9KQN6WxKo9Tn5ZWectpb3LYEoeDYH6a3i1dA&components=hosted-buttons&enable-funding=venmo&currency=USD"></script>
 </head>
 <body class="">
   <a class="skip-link" href="#main-content">Skip to Content</a>
@@ -40,17 +41,11 @@
         </label>
       </div>
 
-      <div class="paypal-checkout" aria-label="Purchase The Holy Bible: Douay-Rheims Bible">
-        <script 
-  src="https://www.paypal.com/sdk/js?client-id=BAADY3HmA8ip1D8X4DGaJ9V3YBlg1INapOOrbKRCDd1nTP9KQN6WxKo9Tn5ZWectpb3LYEoeDYH6a3i1dA&components=hosted-buttons&enable-funding=venmo&currency=USD">
+      <div id="paypal-container-6SZWJVE8PQWAJ" class="paypal-hosted"></div><script>
+  paypal.HostedButtons({
+    hostedButtonId: "6SZWJVE8PQWAJ",
+  }).render("#paypal-container-6SZWJVE8PQWAJ")
 </script>
-        <div id="paypal-container-6SZWJVE8PQWAJ"></div>
-        <script>
-          paypal.HostedButtons({
-            hostedButtonId: "6SZWJVE8PQWAJ",
-          }).render("#paypal-container-6SZWJVE8PQWAJ");
-        </script>
-      </div>
 
       <p class="product-back product-back-bottom"><a class="btn" href="/estore/">← Back to eStore</a></p>
     </article>
@@ -72,7 +67,9 @@
 
       const notice = document.getElementById("eu-eea-withdrawal-notice");
       const consent = document.getElementById("eu-eea-withdrawal-consent");
-      const checkout = document.getElementById("paypal-container-6SZWJVE8PQWAJ");
+      const checkout = document.querySelector(".paypal-hosted");
+
+      if (!notice || !consent || !checkout) return;
 
       function setCheckoutLocked(locked){
         if (!checkout) return;

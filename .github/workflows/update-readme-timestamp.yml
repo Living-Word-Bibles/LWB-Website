@@ -1,0 +1,49 @@
+name: Update README timestamp
+
+on:
+  schedule:
+    - cron: '0 9 * * *'
+      timezone: 'America/New_York'
+
+  workflow_dispatch:
+    inputs:
+      manual_time:
+        description: 'Optional manual time. Examples: 09:44:00, 2:30 PM, or 2026-09-19T14:30:00-04:00. Blank = current time.'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: readme-timestamp-update
+  cancel-in-progress: false
+
+jobs:
+  update-readme-timestamp:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Update only the README last-updated line
+        env:
+          MANUAL_TIME: ${{ inputs.manual_time || '' }}
+          EVENT_NAME: ${{ github.event_name }}
+        run: python scripts/update_readme_timestamp.py
+
+      - name: Commit and push
+        run: |
+          git config user.name "Living Word Bibles Automation"
+          git config user.email "actions@users.noreply.github.com"
+          git add README.md
+          git commit --allow-empty -m "Update README timestamp"
+          git push origin HEAD:main

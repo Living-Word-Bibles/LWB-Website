@@ -1698,7 +1698,7 @@ Before merging or deploying this release:
 **Apps Script build stamp:** `14 September 2026 at 19:01:03Z UTC`  
 **Google Apps Script version:** `2.2.3`  
 **Frontend package version:** `2.7.0`  
-**README last updated:** **21 September 2026 at 13:00:00Z UTC**
+**README last updated:** **22 September 2026 at 13:00:00Z UTC**
 ---
 
 <p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 18 September 2026 at 21:48:47Z UTC</strong></p>

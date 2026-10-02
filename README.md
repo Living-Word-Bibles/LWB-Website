@@ -1,25 +1,4 @@
 [README.md](https://github.com/user-attachments/files/32243153/README.md)
-
-
-## Email / Backend Architecture — 02 October 2026
-
-- **Website Backend v2.2.4** remains under `gospellivingwordbibles@gmail.com` and continues to own the website API, accounts, authentication, PayPal verification, orders, entitlements, reader access, analytics, consent logging, subscriber records, price reconciliation, and Portal authentication/actions.
-- **Living Word Bibles Email Service v1.0.0** runs under `gospel@livingwordbibles.com` and exclusively sends account-verification, password-reset, EU/EEA transaction confirmations, newsletter tests, and newsletter campaign email.
-- The Portal continues to call the existing website backend. Newsletter Portal actions are securely proxied by Backend v2.2.4 to the dedicated email-service web app.
-- Email-service Web App: `https://script.google.com/macros/s/AKfycby4zWPYCSDiRyxgXHCH7wbOqKV1J32avpko_905ODuM_QToQhFWhd-FJvd0ZTsaJI6Xug/exec`
-- The shared email-service authentication secret is stored only in Apps Script **Script Properties** and is intentionally not committed to this repository.
-
-### Public email routing
-
-| Purpose | Address |
-|---|---|
-| General / footer | `gospel@livingwordbibles.com` |
-| Editorial Standards | `editor@livingwordbibles.com` |
-| Terms, Privacy, EEO | `legal@livingwordbibles.com` |
-| Technical / order support | `support@livingwordbibles.com` |
-| General contact / Sophie | `sophie@livingwordbibles.com` |
-| Copyright | `copyright@livingwordbibles.com` |
-| Publisher & App Licensing | `licensing@livingwordbibles.com` |
 [README.md](https://github.com/user-attachments/files/32208072/README.md)
 [README.md](https://github.com/user-attachments/files/32166030/README.md)
 [README.md](https://github.com/user-attachments/files/32164233/README.md)
@@ -49,8 +28,8 @@
 
 <p align="center">
   <a href="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml/badge.svg?branch=main"></a>
-  <img alt="Frontend package v2.7.0" src="https://img.shields.io/badge/frontend-v2.7.0-555555">
-  <img alt="Google Apps Script v2.2.4" src="https://img.shields.io/badge/Google%20Apps%20Script-v2.2.4-555555">
+  <img alt="Frontend package v2.8.0" src="https://img.shields.io/badge/frontend-v2.8.0-555555">
+  <img alt="Website Backend v2.2.4" src="https://img.shields.io/badge/backend-v2.2.4-555555">
   <img alt="Hosting GitHub Pages" src="https://img.shields.io/badge/hosting-GitHub%20Pages-555555">
 </p>
 
@@ -60,7 +39,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 18 September 2026 at 21:48:47Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 02 October 2026 at 17:43:19Z UTC</sub></p>
 
 ---
 
@@ -78,13 +57,13 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 |---|---|
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
-| Frontend package version | `2.7.0` |
+| Frontend package version | `2.8.0` |
 | Google Apps Script version | `2.2.4` |
 | Email Service version | `1.0.0` |
 | Apps Script build stamp | `02 October 2026 at 16:27:00Z UTC` |
-| Runtime configuration architecture stamp | `2026-10-02T17:01:02Z` |
+| Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `02 October 2026 at 21:01:02Z UTC` |
+| README revision | `02 October 2026 at 17:43:19Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
 
@@ -92,6 +71,49 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 
 
 
+
+## What's New in v2.8.0 Alpha — Public Email Routing & Dedicated Email Delivery
+
+Released **02 October 2026**. Last Updated: **02 October 2026 at 17:43:19Z UTC**
+
+### Public email routing
+
+- Updated Living Word Bibles public-facing email links to use the new role-based `@livingwordbibles.com` addresses.
+- The universal footer now routes general inquiries to `gospel@livingwordbibles.com`.
+- Editorial Standards inquiries now route to `editor@livingwordbibles.com`.
+- Terms of Service, Privacy Policy, and EEO / workplace-policy inquiries now route to `legal@livingwordbibles.com`.
+- Technical and order support now route to `support@livingwordbibles.com`.
+- General contact / Sophie inquiries now route to `sophie@livingwordbibles.com`.
+- Copyright inquiries now route to `copyright@livingwordbibles.com`.
+- Publisher and App Licensing inquiries now route to `licensing@livingwordbibles.com`.
+- Updated public `mailto:` links with page-specific subjects so incoming messages are easier to identify and route.
+
+### Website backend and email delivery separation
+
+- Website Backend advanced to **v2.2.4**.
+- Added the dedicated Living Word Bibles Email Service **v1.0.0** for outbound transactional and newsletter email.
+- The Website Backend continues to own website API, accounts, authentication, purchases, entitlements, reader access, analytics, consent, subscriber records, administrative tools, and reconciliation workflows.
+- Outbound account-verification, password-reset, qualifying digital-purchase confirmation, newsletter-test, and newsletter-campaign email is handled by the dedicated Email Service.
+- The Portal continues to use the existing Website Backend for all administration; newsletter actions are relayed securely to the dedicated Email Service.
+- No shared secrets, authentication tokens, private deployment URLs, or private credentials are committed to the repository.
+
+### Portal and shared footer
+
+- Updated the Portal newsletter integration for the dedicated Email Service while preserving all other Portal functions.
+- Updated the canonical shared footer and public page email links without changing unrelated site content or layout.
+- Preserved the existing static-site architecture and page-level HTML source-of-truth rule.
+
+### Release status
+
+- Frontend package advanced to **v2.8.0 Alpha**.
+- Website Backend: **v2.2.4**.
+- Email Service: **v1.0.0**.
+
+### v2.8.0 surgical file set
+
+This release changes only the public email-routing surfaces, shared footer/configuration, Portal newsletter integration, backend/email-service source, and release documentation required for the email architecture update.
+
+---
 
 ## What's New in v2.7.0 Alpha — eBible Storefront, Heads of State, Presidential History & Responsive Presentation
 
@@ -1334,7 +1356,7 @@ No account page, payment-complete page, opt-out page, `auth.js`, `forms.js`, `co
 6. Replace `/assets/includes/lwb-footer.html` so the global activity logger is loaded through the canonical footer.
 7. Replace `README.md`.
 8. Do **not** add `/portal/` to `sitemap.xml`.
-9. Keep the newsletter daily trigger installed in **Living Word Bibles Email Service v1.0.0** (running as `gospel@livingwordbibles.com`) with `installNewsletterCampaignTrigger()` so the campaign processor can evaluate the Monday/Wednesday/Friday rules. The website backend does not own this trigger.
+9. Keep the existing newsletter daily trigger installed with `installNewsletterCampaignTrigger()` so the campaign processor can evaluate the Monday/Wednesday/Friday rules.
 
 ---
 
@@ -1485,17 +1507,16 @@ Current backend metadata:
 Service: LWB Website API
 Version: 2.2.4
 Apps Script build stamp: 02 October 2026 at 16:27:00Z UTC
-Account: gospellivingwordbibles@gmail.com
 ```
 
-Dedicated outbound-email source:
+Dedicated outbound-email component:
 
 ```text
-/apps-script/email-service/Code.gs
 Service: Living Word Bibles Email Service
 Version: 1.0.0
-Account: gospel@livingwordbibles.com
 ```
+
+The Website Backend retains all non-email website functions. The Email Service is responsible only for outbound transactional and newsletter delivery.
 
 The backend is a **data/API service only**. It does not create, regenerate, or overwrite website HTML.
 
@@ -1625,7 +1646,7 @@ No shared header/footer replacement is required for v2.5.8.
 
 `assets/js/config.js` remains the single public runtime configuration file for the Apps Script Web App URL and public contact email. Individual pages should not hard-code alternate backend deployments.
 
-`assets/js/config.js` now exposes `gospel@livingwordbibles.com` as the public contact address while preserving the existing website-backend `apiBase` deployment URL.
+`assets/js/config.js` now exposes `gospel@livingwordbibles.com` as the public contact address while preserving the existing Website Backend endpoint.
 
 ---
 
@@ -1648,7 +1669,7 @@ Deployment remains handled by `.github/workflows/deploy-pages.yml`.
 
 A push to `main` validates the repository and publishes the **repository root (`.`)** directly to GitHub Pages. There is no generated production output directory.
 
-For Website Backend v2.2.4, replace `/apps-script/Code.gs` in the existing `gospellivingwordbibles@gmail.com` Apps Script project and deploy a new Web App version using the same production deployment URL. Deploy `/apps-script/email-service/Code.gs` separately under `gospel@livingwordbibles.com` as Email Service v1.0.0. The Portal continues to call the existing website-backend URL; the backend proxies only outbound-email/newsletter actions to the email service.
+For Website Backend v2.2.4, replace `/apps-script/Code.gs` in the existing production backend project and deploy a new version without changing the established public backend endpoint. Deploy the dedicated Email Service v1.0.0 separately from `/apps-script/email-service/Code.gs`. The Portal continues to call the Website Backend, which relays outbound email/newsletter actions to the Email Service.
 
 ---
 
@@ -1720,18 +1741,18 @@ Before merging or deploying this release:
 **Living Word Bibles** develops and publishes Bible reading resources, translation histories, Catholic Bible resources, digital Bible editions, audio Bible resources, account-based online reading through Valois Lumière, and related study material for the web and supported devices.
 
 - **Production:** https://www.livingwordbibles.com/
-- **Public email:** gospel@livingwordbibles.com
+- **Public email:** gospellivingwordbibles@gmail.com
 - **Repository:** https://github.com/Living-Word-Bibles/LWB-Website
 - **Developer:** https://cts.cook-international.com
 
 ---
 
 **Repository architecture revision:** `2026-08-27T22:28:20Z`  
-**Apps Script build stamp:** `02 October 2026 at 16:27:00Z UTC`  
+**Apps Script build stamp:** `14 September 2026 at 19:01:03Z UTC`  
 **Google Apps Script version:** `2.2.4`  
 **Email Service version:** `1.0.0`  
-**Frontend package version:** `2.7.0`  
-**README last updated:** **02 October 2026 at 21:01:02Z UTC**
+**Frontend package version:** `2.8.0`  
+**README last updated:** **02 October 2026 at 17:43:19Z UTC**
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 18 September 2026 at 21:48:47Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 02 October 2026 at 17:43:19Z UTC</strong></p>

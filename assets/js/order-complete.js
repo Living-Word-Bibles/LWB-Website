@@ -43,6 +43,6 @@
     const download = payload.download_url ? `<a class="btn" href="${escapeHtml(payload.download_url)}">Download ${title}</a>` : '';
     render(`<div class="order-download"><h2>Purchase Verified</h2><p><strong>${title}</strong> is ready. A purchase record has been saved for ${email}.</p>${download}<p class="muted">This secure download link expires. Return to this confirmation page or contact support if another copy is needed.</p></div>`, 'notice success');
   }).catch(error => {
-    render(`<h2>We could not finish verification automatically</h2><p>${escapeHtml(error.message)}</p><p>Your payment may still be complete. Keep your PayPal receipt and contact <a href="mailto:gospellivingwordbibles@gmail.com">gospellivingwordbibles@gmail.com</a> so the order can be matched and fulfilled.</p>`, 'notice warning');
+    render(`<h2>We could not finish verification automatically</h2><p>${escapeHtml(error.message)}</p><p>Your payment may still be complete. Keep your PayPal receipt and contact <a href="mailto:support@livingwordbibles.com?subject=Order%20Support">support@livingwordbibles.com</a> so the order can be matched and fulfilled.</p>`, 'notice warning');
   });
 })();

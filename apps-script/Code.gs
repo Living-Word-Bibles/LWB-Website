@@ -1,11 +1,17 @@
 /**
- * Living Word Bibles Backend v2.2.3
+ * Living Word Bibles Backend v2.2.4
  * Core Website API
  *
  * Account: gospellivingwordbibles@gmail.com
  * Spreadsheet: LWB Website
  * Legal display date: 11 September 2026
- * Build timestamp: 14 September 2026 at 19:01:03Z UTC
+ * Build timestamp: 02 October 2026 at 16:27:00Z UTC
+ *
+ * v2.2.4 highlights:
+ * - Removes all direct MailApp / outbound email execution from the website backend.
+ * - Routes account verification, password-reset, EU/EEA confirmation, and newsletter execution to the dedicated Living Word Bibles Email Service v1.0.0.
+ * - Keeps the existing website web-app deployment, spreadsheet, account, PayPal, entitlement, analytics, portal-auth, subscriber, and reconciliation functions intact.
+ * - Keeps Print Products as the sole source for public Amazon price and observed-date display.
  *
  * v2.2.3 highlights:
  * - Keeps Print Products as the sole source for public Amazon price and observed-date display.
@@ -95,12 +101,13 @@
  */
 
 const LWB = Object.freeze({
-  VERSION: '2.2.3',
-  BUILD_UTC: '14 September 2026 at 19:01:03Z UTC',
-  PRINT_PRODUCTS_SNAPSHOT_KEY: 'print-products-public-snapshot-v2.2.3',
+  VERSION: '2.2.4',
+  BUILD_UTC: '02 October 2026 at 16:27:00Z UTC',
+  PRINT_PRODUCTS_SNAPSHOT_KEY: 'print-products-public-snapshot-v2.2.4',
   PRINT_PRODUCTS_SNAPSHOT_MAX_AGE_SECONDS: 60,
   SITE_URL: 'https://www.livingwordbibles.com',
-  CONTACT_EMAIL: 'gospellivingwordbibles@gmail.com',
+  CONTACT_EMAIL: 'gospel@livingwordbibles.com',
+  EMAIL_SERVICE_URL: 'https://script.google.com/macros/s/AKfycby4zWPYCSDiRyxgXHCH7wbOqKV1J32avpko_905ODuM_QToQhFWhd-FJvd0ZTsaJI6Xug/exec',
   SPREADSHEET_ID: '1xnzdo1UJsEOTqcO2066Nfb6ayqKn8Zg5RbNLdpbaTcc',
   CONSENT_VERSION: '2026-08-27',
   TERMS_VERSION: '2026-09-08',
@@ -212,30 +219,6 @@ function step4HealthCheck() {
   const result = healthCheck_();
   Logger.log(JSON.stringify(result, null, 2));
   return result;
-}
-
-/**
- * Optional one-time installer for newsletter processing.
- * Creates a single daily trigger. The processor itself enforces Monday /
- * Wednesday / Friday sending and a 99-recipient maximum per run.
- */
-function installNewsletterCampaignTrigger() {
-  ScriptApp.getProjectTriggers().forEach(function(trigger) {
-    if (trigger.getHandlerFunction() === 'processNewsletterCampaign') {
-      ScriptApp.deleteTrigger(trigger);
-    }
-  });
-
-  ScriptApp.newTrigger('processNewsletterCampaign')
-    .timeBased()
-    .everyDays(1)
-    .atHour(10)
-    .create();
-
-  return {
-    ok: true,
-    message: 'Daily newsletter processor installed. Sending is restricted to Monday, Wednesday, and Friday.'
-  };
 }
 
 /* ========================================================================== */
@@ -729,202 +712,76 @@ function unsubscribe_(data) {
 }
 
 /* ========================================================================== */
-/* NEWSLETTER CAMPAIGNS                                                       */
+/* EMAIL SERVICE CLIENT                                                         */
 /* ========================================================================== */
 
-/**
- * Starts or restarts a newsletter feature campaign.
- * Example: startNewsletterCampaign('audio_bible')
- *
- * The daily trigger may run every day, but processNewsletterCampaign() sends
- * only Monday, Wednesday, and Friday. Every run is capped at 99 recipients.
- */
-function startNewsletterCampaign(templateKey) {
-  const template = newsletterTemplate_(templateKey, { name: '' });
-  if (!template) throw new Error('Unknown newsletter template: ' + templateKey);
-
-  const recipients = newsletterRecipients_();
-  const campaignId = 'campaign_' + Utilities.getUuid();
-  const props = PropertiesService.getScriptProperties();
-  const state = {
-    campaign_id: campaignId,
-    template_key: String(templateKey),
-    cursor: 0,
-    total: recipients.length,
-    status: 'active',
-    started_at: new Date().toISOString(),
-    last_batch_date: ''
-  };
-
-  props.setProperty('LWB_NEWSLETTER_CAMPAIGN_STATE', JSON.stringify(state));
-  writeCampaignStatus_(state, 'queued');
-
-  return {
-    ok: true,
-    campaign_id: campaignId,
-    template_key: templateKey,
-    recipients: recipients.length,
-    batch_max: LWB.NEWSLETTER_BATCH_MAX,
-    weekdays: ['Monday', 'Wednesday', 'Friday']
-  };
+function configureEmailServiceClient(secret) {
+  const value = String(secret || '').trim();
+  if (value.length < 24) throw new Error('Use a strong shared secret of at least 24 characters.');
+  PropertiesService.getScriptProperties().setProperty('LWB_EMAIL_SERVICE_SECRET', value);
+  return { ok: true, service_url: LWB.EMAIL_SERVICE_URL };
 }
 
-function stopNewsletterCampaign() {
-  const props = PropertiesService.getScriptProperties();
-  const state = getNewsletterCampaignState_();
-  if (state) {
-    state.status = 'stopped';
-    state.stopped_at = new Date().toISOString();
-    props.setProperty('LWB_NEWSLETTER_CAMPAIGN_STATE', JSON.stringify(state));
-    writeCampaignStatus_(state, 'stopped');
-  }
-  return { ok: true, stopped: Boolean(state) };
-}
+function emailServiceRequest_(action, payload) {
+  const secret = PropertiesService.getScriptProperties().getProperty('LWB_EMAIL_SERVICE_SECRET');
 
-function processNewsletterCampaign() {
-  const state = getNewsletterCampaignState_();
-  if (!state || state.status !== 'active') {
-    return { ok: true, sent: 0, message: 'No active newsletter campaign.' };
-  }
-
-  const now = new Date();
-  const sendTimeZone = Session.getScriptTimeZone() || 'America/Indiana/Indianapolis';
-  const weekday = Number(Utilities.formatDate(now, sendTimeZone, 'u'));
-  if (LWB.NEWSLETTER_WEEKDAYS.indexOf(weekday) === -1) {
-    return { ok: true, sent: 0, message: 'Newsletter batches send only Monday, Wednesday, and Friday.' };
-  }
-
-  const today = Utilities.formatDate(now, sendTimeZone, 'yyyy-MM-dd');
-  const props = PropertiesService.getScriptProperties();
-  const globalLastBatchDate = props.getProperty('LWB_NEWSLETTER_LAST_BATCH_DATE') || '';
-  if (state.last_batch_date === today || globalLastBatchDate === today) {
-    return { ok: true, sent: 0, message: 'A newsletter batch has already been sent today.' };
-  }
-
-  const recipients = newsletterRecipients_();
-  const cursor = Math.max(0, Number(state.cursor || 0));
-  const quota = Math.max(0, Number(MailApp.getRemainingDailyQuota() || 0));
-  const batchSize = Math.min(LWB.NEWSLETTER_BATCH_MAX, quota, Math.max(0, recipients.length - cursor));
-
-  if (batchSize <= 0) {
-    if (cursor >= recipients.length) {
-      state.status = 'complete';
-      state.completed_at = now.toISOString();
-      saveNewsletterCampaignState_(state);
-      writeCampaignStatus_(state, 'complete');
-      return { ok: true, sent: 0, complete: true };
-    }
-    return { ok: false, sent: 0, error: 'No MailApp quota is available for today.' };
-  }
-
-  const slice = recipients.slice(cursor, cursor + batchSize);
-  let sent = 0;
-  let failed = 0;
-
-  slice.forEach(function(recipient) {
-    try {
-      if (String(state.mode || '') === 'custom') {
-        sendCustomNewsletterEmail_(recipient.email, recipient.name || '', state);
-      } else {
-        sendNewsletterTemplateEmail_(recipient.email, recipient.name || '', state.template_key);
-      }
-      sent++;
-    } catch (err) {
-      failed++;
-      logSystem_('ERROR', 'NEWSLETTER_SEND_FAILED', recipient.email, state.campaign_id,
-        'newsletter', safeError_(err), { template_key: state.template_key || '', subject: state.subject || '' });
-    }
+  const body = Object.assign({}, payload || {}, {
+    action: String(action || ''),
+    service_secret: secret
   });
 
-  state.cursor = cursor + slice.length;
-  state.total = recipients.length;
-  state.last_batch_date = today;
-  state.last_batch_at = now.toISOString();
-  props.setProperty('LWB_NEWSLETTER_LAST_BATCH_DATE', today);
-  state.last_batch_sent = sent;
-  state.last_batch_failed = failed;
-
-  if (state.cursor >= recipients.length) {
-    state.status = 'complete';
-    state.completed_at = now.toISOString();
-  }
-
-  saveNewsletterCampaignState_(state);
-  writeCampaignStatus_(state, state.status === 'complete' ? 'complete' : 'batch-sent');
-
-  logSystem_('INFO', 'NEWSLETTER_BATCH', '', state.campaign_id, 'newsletter',
-    'sent=' + sent + ', failed=' + failed,
-    { template_key: state.template_key, cursor: state.cursor, total: state.total });
-
-  return {
-    ok: true,
-    campaign_id: state.campaign_id,
-    template_key: state.template_key,
-    sent: sent,
-    failed: failed,
-    cursor: state.cursor,
-    total: state.total,
-    complete: state.status === 'complete',
-    batch_max: LWB.NEWSLETTER_BATCH_MAX
-  };
-}
-
-function getNewsletterCampaignState_() {
-  const raw = PropertiesService.getScriptProperties().getProperty('LWB_NEWSLETTER_CAMPAIGN_STATE');
-  if (!raw) return null;
-  try { return JSON.parse(raw); } catch (_) { return null; }
-}
-
-function saveNewsletterCampaignState_(state) {
-  PropertiesService.getScriptProperties().setProperty(
-    'LWB_NEWSLETTER_CAMPAIGN_STATE',
-    JSON.stringify(state)
-  );
-}
-
-function newsletterRecipients_() {
-  const dne = {};
-  readObjects_(sheet_(LWB.SHEETS.DNE)).forEach(function(row) {
-    const email = normalizeEmail_(row.email);
-    if (email) dne[email] = true;
+  const response = UrlFetchApp.fetch(LWB.EMAIL_SERVICE_URL, {
+    method: 'post',
+    contentType: 'application/json',
+    payload: JSON.stringify(body),
+    muteHttpExceptions: true,
+    followRedirects: true
   });
 
-  const seen = {};
-  return readObjects_(sheet_(LWB.SHEETS.SUBSCRIBERS))
-    .filter(function(row) {
-      const email = normalizeEmail_(row.email);
-      return validEmail_(email) &&
-        String(row.status || '').toLowerCase() === 'subscribed' &&
-        !dne[email] && !seen[email] && (seen[email] = true);
-    })
-    .map(function(row) {
-      return {
-        subscriber_id: row.subscriber_id || '',
-        email: normalizeEmail_(row.email),
-        name: clean_(row.name || '', 160)
-      };
-    });
-}
-
-function writeCampaignStatus_(state, status) {
+  const code = response.getResponseCode();
+  const text = response.getContentText();
+  let parsed;
   try {
-    appendObject_(sheet_(LWB.SHEETS.CAMPAIGNS), {
-      campaign_id: state.campaign_id,
-      template_key: state.template_key || '',
-      subject: state.subject || '',
-      preheader: state.preheader || '',
-      campaign_type: state.mode || 'template',
-      status: status,
-      recipient_count: Number(state.total || 0),
-      sent_count: Number(state.cursor || 0),
-      batch_size: Number(state.last_batch_sent || 0),
-      created_at: state.started_at || new Date(),
-      updated_at: new Date(),
-      last_batch_at: state.last_batch_at || '',
-      notes: (state.mode === 'custom' ? 'Portal custom HTML newsletter. ' : '') +
-        'Max 99 recipients per batch; Monday/Wednesday/Friday stagger.'
-    });
-  } catch (_) {}
+    parsed = JSON.parse(text);
+  } catch (_) {
+    throw new Error('Email service returned a non-JSON response (HTTP ' + code + ').');
+  }
+
+  if (code < 200 || code >= 300 || !parsed || parsed.ok === false) {
+    throw new Error((parsed && parsed.error) || ('Email service request failed (HTTP ' + code + ').'));
+  }
+  return parsed;
+}
+
+function requestWelcomeVerificationEmail_(email, displayName, token) {
+  return emailServiceRequest_('send-welcome-verification', {
+    email: normalizeEmail_(email),
+    display_name: clean_(displayName || '', 160),
+    token: String(token || '')
+  });
+}
+
+function requestPasswordResetEmail_(email, displayName, token) {
+  return emailServiceRequest_('send-password-reset', {
+    email: normalizeEmail_(email),
+    display_name: clean_(displayName || '', 160),
+    token: String(token || '')
+  });
+}
+
+function requestEuEeaConsentEmail_(order, product) {
+  return emailServiceRequest_('send-eu-eea-consent', {
+    order: order || {},
+    product: product || {}
+  });
+}
+
+function newsletterServiceStatus_() {
+  try {
+    return emailServiceRequest_('newsletter-status', {});
+  } catch (err) {
+    return { ok: false, error: safeError_(err), campaign: null };
+  }
 }
 
 /* ========================================================================== */
@@ -1425,7 +1282,7 @@ function systemLogHasEventRecord_(eventName, recordId) {
   });
 }
 
-function sendEuEeaDigitalConsentConfirmation_(order, product, options) {
+function requestEuEeaDigitalConsentConfirmation_(order, product, options) {
   options = options || {};
   if (!order || !product) return { ok: true, sent: false, reason: 'missing-data' };
 
@@ -1433,134 +1290,21 @@ function sendEuEeaDigitalConsentConfirmation_(order, product, options) {
   const tx = clean_(order.paypal_capture_id || '', 200);
   const email = normalizeEmail_(order.email || '');
 
-  if (!isEuEeaCountryCode_(country)) {
-    return { ok: true, sent: false, reason: 'not-eu-eea' };
-  }
-  if (!requiresEuEeaDigitalConsent_(product)) {
-    return { ok: true, sent: false, reason: 'not-covered-product' };
-  }
-  if (!tx || !validEmail_(email)) {
-    return { ok: true, sent: false, reason: 'missing-transaction-or-email' };
-  }
-
-  if (systemLogHasEventRecord_('EU_EEA_CONSENT_EMAIL_SENT', tx)) {
-    return { ok: true, sent: false, reason: 'already-sent' };
-  }
-
-  if (options.retryOnly === true &&
-      !systemLogHasEventRecord_('EU_EEA_CONSENT_EMAIL_FAILED', tx)) {
+  if (!isEuEeaCountryCode_(country)) return { ok: true, sent: false, reason: 'not-eu-eea' };
+  if (!requiresEuEeaDigitalConsent_(product)) return { ok: true, sent: false, reason: 'not-covered-product' };
+  if (!tx || !validEmail_(email)) return { ok: true, sent: false, reason: 'missing-transaction-or-email' };
+  if (systemLogHasEventRecord_('EU_EEA_CONSENT_EMAIL_SENT', tx)) return { ok: true, sent: false, reason: 'already-sent' };
+  if (options.retryOnly === true && !systemLogHasEventRecord_('EU_EEA_CONSENT_EMAIL_FAILED', tx)) {
     return { ok: true, sent: false, reason: 'no-retry-needed' };
   }
 
-  const purchaseDate = order.created_at || new Date();
-  let purchaseIso = '';
   try {
-    purchaseIso = new Date(purchaseDate).toISOString();
-  } catch (_) {
-    purchaseIso = new Date().toISOString();
-  }
-
-  const productTitle = clean_(product.title || product.short_title || product.product_id || 'Digital Product', 500);
-  const productUrl = product.canonical_path
-    ? LWB.SITE_URL + String(product.canonical_path)
-    : LWB.SITE_URL + '/estore/';
-  const orderRef = clean_(order.order_id || '', 200);
-  const paypalOrder = clean_(order.paypal_order_id || '', 200);
-
-  const consentHtml = escapeHtml_(LWB.EU_EEA_CONSENT_TEXT)
-    .replace('begins.  If', 'begins.&nbsp; If');
-
-  const html =
-    '<h1 style="font-family:Georgia,serif;font-size:28px;line-height:1.2;margin:0 0 16px;color:#1d2a34">Digital Purchase &amp; EU/EEA Consent Confirmation</h1>' +
-    '<p>This transactional email confirms your completed Living Word Bibles digital purchase and the EU/EEA digital-delivery consent presented before checkout.</p>' +
-    '<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:20px 0;border-collapse:collapse">' +
-      '<tr><td style="padding:8px;border-bottom:1px solid #eee6d8"><strong>Product</strong></td><td style="padding:8px;border-bottom:1px solid #eee6d8"><a href="' + escapeHtml_(productUrl) + '">' + escapeHtml_(productTitle) + '</a></td></tr>' +
-      '<tr><td style="padding:8px;border-bottom:1px solid #eee6d8"><strong>PayPal transaction</strong></td><td style="padding:8px;border-bottom:1px solid #eee6d8">' + escapeHtml_(tx) + '</td></tr>' +
-      '<tr><td style="padding:8px;border-bottom:1px solid #eee6d8"><strong>Order reference</strong></td><td style="padding:8px;border-bottom:1px solid #eee6d8">' + escapeHtml_(orderRef || '—') + '</td></tr>' +
-      (paypalOrder ? '<tr><td style="padding:8px;border-bottom:1px solid #eee6d8"><strong>PayPal order</strong></td><td style="padding:8px;border-bottom:1px solid #eee6d8">' + escapeHtml_(paypalOrder) + '</td></tr>' : '') +
-      '<tr><td style="padding:8px;border-bottom:1px solid #eee6d8"><strong>Purchaser email</strong></td><td style="padding:8px;border-bottom:1px solid #eee6d8">' + escapeHtml_(email) + '</td></tr>' +
-      '<tr><td style="padding:8px;border-bottom:1px solid #eee6d8"><strong>Country</strong></td><td style="padding:8px;border-bottom:1px solid #eee6d8">' + escapeHtml_(country) + '</td></tr>' +
-      '<tr><td style="padding:8px;border-bottom:1px solid #eee6d8"><strong>Purchase timestamp</strong></td><td style="padding:8px;border-bottom:1px solid #eee6d8">' + escapeHtml_(purchaseIso) + '</td></tr>' +
-      '<tr><td style="padding:8px"><strong>Consent version</strong></td><td style="padding:8px">' + escapeHtml_(LWB.EU_EEA_CONSENT_VERSION) + '</td></tr>' +
-    '</table>' +
-    '<div style="padding:16px;border:1px solid #ded6c6;border-radius:10px;background:#faf7f0">' +
-      '<p style="margin:0"><strong>EU/EEA Right of Withdrawal:</strong> ' +
-      consentHtml.replace(/^EU\/EEA Right of Withdrawal:\s*/i, '') +
-      '</p>' +
-    '</div>' +
-    '<p style="margin-top:20px">This confirmation is provided as a durable record of the digital-delivery acknowledgment associated with your purchase.  Living Word Bibles is operated by Cook Services Company, LLC.</p>' +
-    '<p><a href="' + LWB.SITE_URL + '/support/">Support</a> &nbsp;•&nbsp; ' +
-      '<a href="' + LWB.SITE_URL + '/terms-of-service/">Terms of Service</a> &nbsp;•&nbsp; ' +
-      '<a href="' + LWB.SITE_URL + '/privacy-policy/">Privacy Policy</a></p>';
-
-  const text =
-    'Living Word Bibles — Digital Purchase & EU/EEA Consent Confirmation\n\n' +
-    'This transactional email confirms your completed Living Word Bibles digital purchase and the EU/EEA digital-delivery consent presented before checkout.\n\n' +
-    'Product: ' + productTitle + '\n' +
-    'Product URL: ' + productUrl + '\n' +
-    'PayPal transaction: ' + tx + '\n' +
-    'Order reference: ' + (orderRef || '—') + '\n' +
-    (paypalOrder ? 'PayPal order: ' + paypalOrder + '\n' : '') +
-    'Purchaser email: ' + email + '\n' +
-    'Country: ' + country + '\n' +
-    'Purchase timestamp: ' + purchaseIso + '\n' +
-    'Consent version: ' + LWB.EU_EEA_CONSENT_VERSION + '\n\n' +
-    LWB.EU_EEA_CONSENT_TEXT + '\n\n' +
-    'This confirmation is provided as a durable record of the digital-delivery acknowledgment associated with your purchase.  Living Word Bibles is operated by Cook Services Company, LLC.\n\n' +
-    'Website: ' + LWB.SITE_URL + '\n' +
-    'Terms: ' + LWB.SITE_URL + '/terms-of-service/\n' +
-    'Privacy: ' + LWB.SITE_URL + '/privacy-policy/\n' +
-    'Support: ' + LWB.SITE_URL + '/support/';
-
-  try {
-    sendBrandedEmail_({
-      to: email,
-      subject: 'Living Word Bibles — Digital Purchase & EU/EEA Consent Confirmation',
-      preheader: 'Your digital purchase and EU/EEA consent confirmation.',
-      html: html,
-      text: text,
-      newsletter: false
-    });
-
-    logSystem_(
-      'INFO',
-      'EU_EEA_CONSENT_EMAIL_SENT',
-      email,
-      tx,
-      'paypal',
-      productTitle,
-      {
-        transaction_id: tx,
-        order_id: orderRef,
-        paypal_order_id: paypalOrder,
-        payer_country: country,
-        product_id: product.product_id || '',
-        product_title: productTitle,
-        consent_version: LWB.EU_EEA_CONSENT_VERSION,
-        sent_utc: new Date().toISOString()
-      }
-    );
-
-    return { ok: true, sent: true };
+    return requestEuEeaConsentEmail_(order, product);
   } catch (error) {
-    logSystem_(
-      'ERROR',
-      'EU_EEA_CONSENT_EMAIL_FAILED',
-      email,
-      tx,
-      'paypal',
-      safeError_(error),
-      {
-        transaction_id: tx,
-        order_id: orderRef,
-        payer_country: country,
-        product_id: product.product_id || '',
-        product_title: productTitle,
-        consent_version: LWB.EU_EEA_CONSENT_VERSION,
-        failed_utc: new Date().toISOString()
-      }
-    );
-
+    logSystem_('ERROR', 'EU_EEA_CONSENT_EMAIL_FAILED', email, tx, 'email-service', safeError_(error), {
+      product_id: product.product_id || '',
+      payer_country: country
+    });
     return { ok: false, sent: false, error: safeError_(error) };
   }
 }
@@ -1587,7 +1331,7 @@ function verifyPayPalPdtUnlocked_(params) {
     if (!product) {
       return { ok: false, error: 'The transaction is recorded, but its product could not be matched.' };
     }
-    sendEuEeaDigitalConsentConfirmation_(existing, product, { retryOnly: true });
+    requestEuEeaDigitalConsentConfirmation_(existing, product, { retryOnly: true });
     return fulfillmentResponse_(existing, product, existing.email);
   }
 
@@ -1679,7 +1423,7 @@ function verifyPayPalPdtUnlocked_(params) {
     { txn_id: tx, payer_country: order.payer_country || '' });
 
   // Transactional compliance email; failures are logged but never block fulfillment.
-  sendEuEeaDigitalConsentConfirmation_(order, product, { retryOnly: false });
+  requestEuEeaDigitalConsentConfirmation_(order, product, { retryOnly: false });
 
   return fulfillmentResponse_(order, product, email);
 }
@@ -1959,7 +1703,7 @@ function registerAccount_(data) {
     if (!truthy_(existing.email_verified)) {
       const verification = issueVerificationToken_(existing);
       upsertByKey_(customerSheet, 'customer_id', existing.customer_id, existing);
-      sendWelcomeVerificationEmail_(email, existing.display_name || displayName, verification.token);
+      requestWelcomeVerificationEmail_(email, existing.display_name || displayName, verification.token);
       return {
         ok: true,
         message: 'Your account already exists but is not verified. A new welcome and verification email has been sent.'
@@ -2014,7 +1758,7 @@ function registerAccount_(data) {
   );
 
   try {
-    sendWelcomeVerificationEmail_(email, displayName, verification.token);
+    requestWelcomeVerificationEmail_(email, displayName, verification.token);
   } catch (err) {
     logSystem_('ERROR', 'REGISTER_EMAIL_FAILED', email, customerId, 'account', safeError_(err), {});
     return {
@@ -2085,7 +1829,7 @@ function forgotPassword_(data) {
   upsertByKey_(customerSheet, 'customer_id', customer.customer_id, customer);
 
   try {
-    sendResetEmail_(email, customer.display_name || '', token);
+    requestPasswordResetEmail_(email, customer.display_name || '', token);
     logSystem_('INFO', 'PASSWORD_RESET_REQUESTED', email, customer.customer_id, 'account', 'email sent', {});
   } catch (err) {
     logSystem_('ERROR', 'PASSWORD_RESET_EMAIL_FAILED', email, customer.customer_id, 'account', safeError_(err), {});
@@ -2786,7 +2530,7 @@ function adminDashboard_(data) {
   const customers = readObjects_(sheet_(LWB.SHEETS.CUSTOMERS));
   const orders = readObjects_(sheet_(LWB.SHEETS.ORDERS));
   const entitlements = readObjects_(sheet_(LWB.SHEETS.ENTITLEMENTS));
-  const state = getNewsletterCampaignState_();
+  const newsletterStatus = newsletterServiceStatus_();
 
   return {
     ok: true,
@@ -2809,7 +2553,13 @@ function adminDashboard_(data) {
         return String(row.status || '').toLowerCase() === 'active';
       }).length
     },
-    campaign: publicNewsletterCampaignState_(state),
+    campaign: newsletterStatus && newsletterStatus.campaign ? newsletterStatus.campaign : null,
+    newsletter_service: {
+      ok: Boolean(newsletterStatus && newsletterStatus.ok),
+      sender: 'gospel@livingwordbibles.com',
+      service_url: LWB.EMAIL_SERVICE_URL,
+      error: newsletterStatus && newsletterStatus.ok === false ? (newsletterStatus.error || '') : ''
+    },
     eligible_products: accountEligibleProducts_(),
     recent_logs: recentSystemLogs_(25),
     newsletter_rules: {
@@ -2927,120 +2677,37 @@ function removeDneByEmail_(email) {
 
 function adminNewsletterTest_(data) {
   const admin = verifyAdminSessionToken_(data.token);
-  const target = normalizeEmail_(data.test_email || admin.email);
-  if (!validEmail_(target)) return { ok: false, error: 'Enter a valid test email address.' };
-
-  const state = buildCustomNewsletterState_(data, 'test_' + uuid_());
-  sendCustomNewsletterEmail_(target, admin.display_name || '', state);
-
-  logSystem_('INFO', 'ADMIN_NEWSLETTER_TEST', admin.email, '', 'portal', state.subject, {
-    test_email: target
-  });
-
-  return { ok: true, message: 'Test newsletter sent.', email: target };
+  const payload = {
+    test_email: normalizeEmail_(data.test_email || admin.email),
+    display_name: admin.display_name || '',
+    subject: clean_(data.subject || '', 200),
+    preheader: clean_(data.preheader || '', 240),
+    html: String(data.html || data.body_html || ''),
+    signature_html: String(data.signature_html || ''),
+    requested_by: admin.email
+  };
+  return emailServiceRequest_('newsletter-test', payload);
 }
 
 function adminNewsletterQueue_(data) {
   const admin = verifyAdminSessionToken_(data.token);
-  const existing = getNewsletterCampaignState_();
-  if (existing && existing.status === 'active') {
-    return {
-      ok: false,
-      error: 'A newsletter campaign is already active. Stop or finish it before queueing another.'
-    };
-  }
-
-  const recipients = newsletterRecipients_();
-  const campaignId = 'campaign_' + uuid_();
-  const state = buildCustomNewsletterState_(data, campaignId);
-  state.cursor = 0;
-  state.total = recipients.length;
-  state.status = 'active';
-  state.started_at = new Date().toISOString();
-  state.last_batch_date = '';
-
-  const serialized = JSON.stringify(state);
-  if (Utilities.newBlob(serialized).getBytes().length > 8500) {
-    return {
-      ok: false,
-      error: 'This newsletter is too large for the campaign queue. Shorten the body or signature.'
-    };
-  }
-
-  saveNewsletterCampaignState_(state);
-  writeCampaignStatus_(state, 'queued');
-
-  logSystem_('INFO', 'ADMIN_NEWSLETTER_QUEUED', admin.email, campaignId, 'portal', state.subject, {
-    recipients: recipients.length,
-    batch_max: LWB.NEWSLETTER_BATCH_MAX,
-    weekdays: ['Monday', 'Wednesday', 'Friday']
+  return emailServiceRequest_('newsletter-queue', {
+    subject: clean_(data.subject || '', 200),
+    preheader: clean_(data.preheader || '', 240),
+    html: String(data.html || data.body_html || ''),
+    signature_html: String(data.signature_html || ''),
+    requested_by: admin.email
   });
-
-  return {
-    ok: true,
-    campaign: publicNewsletterCampaignState_(state),
-    message: 'Newsletter queued. Subscriber batches send only Monday, Wednesday, and Friday.'
-  };
-}
-
-function buildCustomNewsletterState_(data, campaignId) {
-  const subject = clean_(data.subject || '', 200);
-  const preheader = clean_(data.preheader || '', 240);
-  const rawHtml = String(data.html || data.body_html || '');
-  const rawSignature = String(data.signature_html || '');
-
-  if (!subject) throw new Error('Newsletter subject is required.');
-  if (!rawHtml.trim()) throw new Error('Newsletter body is required.');
-  if (rawHtml.length > 6000) throw new Error('Newsletter body must be 6,000 characters or fewer.');
-  if (rawSignature.length > 1200) throw new Error('Newsletter signature must be 1,200 characters or fewer.');
-
-  return {
-    campaign_id: campaignId,
-    mode: 'custom',
-    template_key: '',
-    subject: subject,
-    preheader: preheader,
-    html: sanitizeNewsletterHtml_(rawHtml),
-    signature_html: sanitizeNewsletterHtml_(rawSignature)
-  };
 }
 
 function adminNewsletterProcess_(data) {
   const admin = verifyAdminSessionToken_(data.token);
-  const result = processNewsletterCampaign();
-  logSystem_('INFO', 'ADMIN_NEWSLETTER_PROCESS', admin.email,
-    result.campaign_id || '', 'portal', result.message || ('sent=' + Number(result.sent || 0)), {
-      sent: Number(result.sent || 0),
-      failed: Number(result.failed || 0),
-      complete: Boolean(result.complete)
-    });
-  return result;
+  return emailServiceRequest_('newsletter-process', { requested_by: admin.email });
 }
 
 function adminNewsletterStop_(data) {
   const admin = verifyAdminSessionToken_(data.token);
-  const result = stopNewsletterCampaign();
-  logSystem_('INFO', 'ADMIN_NEWSLETTER_STOP', admin.email, '', 'portal', 'campaign stopped', {});
-  return result;
-}
-
-function publicNewsletterCampaignState_(state) {
-  if (!state) return null;
-  return {
-    campaign_id: state.campaign_id || '',
-    mode: state.mode || 'template',
-    template_key: state.template_key || '',
-    subject: state.subject || '',
-    status: state.status || '',
-    cursor: Number(state.cursor || 0),
-    total: Number(state.total || 0),
-    started_at: state.started_at || '',
-    last_batch_at: state.last_batch_at || '',
-    last_batch_date: state.last_batch_date || '',
-    last_batch_sent: Number(state.last_batch_sent || 0),
-    last_batch_failed: Number(state.last_batch_failed || 0),
-    completed_at: state.completed_at || ''
-  };
+  return emailServiceRequest_('newsletter-stop', { requested_by: admin.email });
 }
 
 function adminCustomer_(data) {
@@ -4086,342 +3753,7 @@ function recentSystemLogs_(limit) {
 }
 
 /* ========================================================================== */
-/* CUSTOM PORTAL NEWSLETTER EMAIL                                             */
-/* ========================================================================== */
-
-function sendCustomNewsletterEmail_(email, displayName, state) {
-  const context = {
-    first_name: firstName_(displayName),
-    email: normalizeEmail_(email)
-  };
-
-  const subject = newsletterTokenReplace_(state.subject || 'Living Word Bibles', context);
-  const preheader = newsletterTokenReplace_(state.preheader || '', context);
-  const body = newsletterTokenReplace_(state.html || '', context);
-  const signature = newsletterTokenReplace_(state.signature_html || '', context);
-
-  const html = body +
-    (signature ? '<div style="margin-top:28px;padding-top:18px;border-top:1px solid #eee6d8">' +
-      signature + '</div>' : '');
-
-  sendBrandedEmail_({
-    to: email,
-    subject: subject,
-    preheader: preheader,
-    html: html,
-    text: stripHtmlForEmail_(html),
-    newsletter: true,
-    optOutEmail: email
-  });
-}
-
-function newsletterTokenReplace_(value, context) {
-  return String(value || '')
-    .replace(/\{\{\s*first_name\s*\}\}/gi, escapeHtml_(context.first_name || ''))
-    .replace(/\{\{\s*email\s*\}\}/gi, escapeHtml_(context.email || ''));
-}
-
-function stripHtmlForEmail_(value) {
-  return String(value || '')
-    .replace(/<br\s*\/?>/gi, '\n')
-    .replace(/<\/p>/gi, '\n\n')
-    .replace(/<\/h[1-6]>/gi, '\n\n')
-    .replace(/<li[^>]*>/gi, '• ')
-    .replace(/<\/li>/gi, '\n')
-    .replace(/<[^>]+>/g, '')
-    .replace(/&nbsp;/gi, ' ')
-    .replace(/&amp;/gi, '&')
-    .replace(/&lt;/gi, '<')
-    .replace(/&gt;/gi, '>')
-    .replace(/&quot;/gi, '"')
-    .replace(/&#39;/gi, "'")
-    .replace(/\n{3,}/g, '\n\n')
-    .trim();
-}
-
-function sanitizeNewsletterHtml_(value) {
-  let html = String(value || '');
-
-  html = html
-    .replace(/<!--[\s\S]*?-->/g, '')
-    .replace(/<(script|style|iframe|object|embed|form|input|textarea|select|option|meta|link)\b[\s\S]*?<\/\1>/gi, '')
-    .replace(/<(script|style|iframe|object|embed|form|input|textarea|select|option|meta|link)\b[^>]*\/?>/gi, '')
-    .replace(/\son[a-z]+\s*=\s*"[^"]*"/gi, '')
-    .replace(/\son[a-z]+\s*=\s*'[^']*'/gi, '')
-    .replace(/\son[a-z]+\s*=\s*[^\s>]+/gi, '')
-    .replace(/javascript\s*:/gi, '');
-
-  return html;
-}
-
-/* ========================================================================== */
-/* BRANDED EMAIL SYSTEM                                                       */
-/* ========================================================================== */
-
-function sendWelcomeVerificationEmail_(email, displayName, token) {
-  const link = LWB.SITE_URL + '/verify-email/?email=' + encodeURIComponent(email) +
-    '&token=' + encodeURIComponent(token);
-  const firstName = firstName_(displayName);
-  const bodyHtml =
-    '<p style="margin:0 0 18px">' + escapeHtml_(firstName ? 'Hello ' + firstName + ',' : 'Hello,') + '</p>' +
-    '<h1 style="font-family:Georgia,serif;font-size:30px;line-height:1.2;margin:0 0 14px;color:#1d2a34">Welcome to Living Word Bibles</h1>' +
-    '<p style="margin:0 0 18px">Thank you for creating your Living Word Bibles account. Verify your email address to activate your account and open your personal Bible library.</p>' +
-    emailButton_('Verify My Email', link) +
-    '<p style="margin:22px 0 0"><strong>Your account includes three free Bible editions:</strong> The Holy Bible: King James Version Special Edition, the Douay-Rheims Bible, and The Holy Bible: Presidential Edition — Joe Biden (online reading only).</p>' +
-    '<p style="margin:14px 0 0">This verification link expires in 24 hours.</p>';
-
-  sendBrandedEmail_({
-    to: email,
-    subject: 'Welcome to Living Word Bibles — verify your account',
-    preheader: 'Verify your account and receive three free Bible editions.',
-    html: bodyHtml,
-    text: 'Welcome to Living Word Bibles. Verify your account: ' + link +
-      '\n\nYour account includes the KJV Special Edition, Douay-Rheims Bible, and Joe Biden Presidential Edition free; the Biden edition is available for online reading only.'
-  });
-}
-
-function sendResetEmail_(email, displayName, token) {
-  const link = LWB.SITE_URL + '/reset-password/?email=' + encodeURIComponent(email) +
-    '&token=' + encodeURIComponent(token);
-  const firstName = firstName_(displayName);
-
-  sendBrandedEmail_({
-    to: email,
-    subject: 'Reset your Living Word Bibles password',
-    preheader: 'Use this secure link to reset your Living Word Bibles password.',
-    html:
-      '<p>' + escapeHtml_(firstName ? 'Hello ' + firstName + ',' : 'Hello,') + '</p>' +
-      '<h1 style="font-family:Georgia,serif;font-size:28px;color:#1d2a34">Reset your password</h1>' +
-      '<p>Use the button below to choose a new Living Word Bibles password.</p>' +
-      emailButton_('Reset Password', link) +
-      '<p style="margin-top:20px">This link expires in 60 minutes. If you did not request this, you can ignore this email.</p>',
-    text: 'Reset your Living Word Bibles password: ' + link +
-      '\n\nThis link expires in 60 minutes. If you did not request this, ignore this email.'
-  });
-}
-
-function sendNewsletterTemplateEmail_(email, displayName, templateKey) {
-  const template = newsletterTemplate_(templateKey, { name: displayName, email: email });
-  if (!template) throw new Error('Unknown newsletter template: ' + templateKey);
-
-  sendBrandedEmail_({
-    to: email,
-    subject: template.subject,
-    preheader: template.preheader,
-    html: template.html,
-    text: template.text,
-    newsletter: true,
-    optOutEmail: email
-  });
-}
-
-/**
- * Convenience tester. Sends one chosen feature email to one address.
- * Example: sendNewsletterTemplateTest('you@example.com', 'history_of_the_bible')
- */
-function sendNewsletterTemplateTest(email, templateKey) {
-  const normalized = normalizeEmail_(email);
-  if (!validEmail_(normalized)) throw new Error('Valid test email required.');
-  sendNewsletterTemplateEmail_(normalized, '', templateKey);
-  return { ok: true, email: normalized, template_key: templateKey };
-}
-
-function newsletterTemplate_(key, context) {
-  const name = firstName_((context && context.name) || '');
-  const greeting = name ? 'Hello ' + escapeHtml_(name) + ',' : 'Hello,';
-
-  const templates = {
-    read_bible_online: {
-      subject: 'Read the Bible Online with Living Word Bibles',
-      preheader: 'Open Scripture in your browser and begin reading today.',
-      title: 'Read the Bible Online',
-      copy: 'Open Scripture on any device with Living Word Bibles. Choose a translation, move easily between books and chapters, and continue reading wherever you are.',
-      cta: 'Read the Bible Online',
-      url: LWB.SITE_URL + '/read-the-bible-online/'
-    },
-    audio_bible: {
-      subject: 'Listen to the King James Bible',
-      preheader: 'Hear the KJV with the Living Word Bibles Audio Bible.',
-      title: 'Listen to the Bible',
-      copy: 'Our KJV Audio Bible lets you listen through Genesis to Revelation with simple book and chapter navigation and a visual Bible-art experience.',
-      cta: 'Listen Now',
-      url: LWB.SITE_URL + '/audio-bible/'
-    },
-    history_of_the_bible: {
-      subject: 'Explore the History of the Bible',
-      preheader: 'Trace Scripture from manuscripts and codices to print and digital editions.',
-      title: 'The History of the Bible',
-      copy: 'Explore how Scripture was copied, preserved, translated, printed, and carried across generations—from ancient manuscripts to the Bible on today’s devices.',
-      cta: 'Explore Bible History',
-      url: LWB.SITE_URL + '/history-of-the-bible/'
-    },
-    estore: {
-      subject: 'Visit the Living Word Bibles eStore',
-      preheader: 'Discover free and low-cost digital Bible editions.',
-      title: 'Living Word Bibles eStore',
-      copy: 'Browse beautifully formatted eBibles for study, devotion, and everyday reading, including free editions and low-cost digital releases.',
-      cta: 'Visit the eStore',
-      url: LWB.SITE_URL + '/estore/'
-    },
-    ethiopian_bible: {
-      subject: 'Discover the Ethiopian Bible',
-      preheader: 'Explore the Ethiopian Bible, its history, and the Living Word Bibles digital edition.',
-      title: 'The Ethiopian Bible',
-      copy: 'Learn about the ancient Ethiopian Christian biblical tradition and explore the Living Word Bibles digital PDF edition of the Complete Apocrypha.',
-      cta: 'Explore the Ethiopian Bible',
-      url: LWB.SITE_URL + '/ethiopian-bible/'
-    },
-    bible_study: {
-      subject: 'Go deeper with Living Word Bibles Bible Study',
-      preheader: 'Verse studies, prayer resources, and contextual media in one place.',
-      title: 'Bible Study Resources',
-      copy: 'Explore verse studies, prayer resources, book studies, and media designed to help you read Scripture in context and continue learning.',
-      cta: 'Open Bible Study',
-      url: LWB.SITE_URL + '/bible-study/'
-    },
-    prayers: {
-      subject: 'Prayer resources from Living Word Bibles',
-      preheader: 'Read classic Christian prayers with context and Scripture.',
-      title: 'Common Prayers',
-      copy: 'Find thoughtfully presented Christian prayers with historical context, biblical connections, and references for personal devotion.',
-      cta: 'Explore Prayers',
-      url: LWB.SITE_URL + '/prayers/'
-    },
-    maps: {
-      subject: 'Explore Maps of the Holy Land',
-      preheader: 'Add geography and historical context to your Bible reading.',
-      title: 'Maps of the Holy Land',
-      copy: 'See the places behind the biblical story and connect Scripture with the geography of the ancient Holy Land.',
-      cta: 'Explore the Maps',
-      url: LWB.SITE_URL + '/maps-of-the-holy-land/'
-    },
-    print_bibles: {
-      subject: 'Shop curated Print Bibles',
-      preheader: 'Browse Living Word Bibles’ curated selection of print editions.',
-      title: 'Print Bibles',
-      copy: 'Prefer a Bible you can hold? Browse our curated print-Bible storefront with trusted editions available through Amazon.',
-      cta: 'Shop Print Bibles',
-      url: LWB.SITE_URL + '/estore/print-bibles/'
-    },
-    bible_app: {
-      subject: 'Take Living Word Bibles with you',
-      preheader: 'Explore the Living Word Bibles App for supported devices.',
-      title: 'Living Word Bibles App',
-      copy: 'Keep Scripture close with the Living Word Bibles App, designed for simple navigation and comfortable reading on supported mobile and desktop devices.',
-      cta: 'Explore the App',
-      url: LWB.SITE_URL + '/ios/'
-    },
-    translations: {
-      subject: 'Explore Bible translations',
-      preheader: 'Compare translation histories and reading options across Living Word Bibles.',
-      title: 'Bible Translations',
-      copy: 'Explore the history, character, and reading experience of trusted Bible translations and discover which edition fits your study or devotional reading.',
-      cta: 'View Bible Translations',
-      url: LWB.SITE_URL + '/the-holy-bible/'
-    },
-    catholic_bible: {
-      subject: 'Explore the Catholic Bible',
-      preheader: 'Learn about the 73-book Catholic canon and its biblical tradition.',
-      title: 'The Catholic Bible',
-      copy: 'Learn about the Catholic biblical canon, the deuterocanonical books, and the Douay-Rheims tradition through Living Word Bibles resources.',
-      cta: 'Explore the Catholic Bible',
-      url: LWB.SITE_URL + '/the-catholic-bible/'
-    },
-    free_bibles: {
-      subject: 'Three free Bible editions for your Living Word Bibles account',
-      preheader: 'Your KJV Special Edition, Douay-Rheims Bible, and Joe Biden Presidential Edition are available free.',
-      title: 'Your Free Digital Bibles',
-      copy: 'Every verified Living Word Bibles account includes The Holy Bible: King James Version Special Edition and the Douay-Rheims Bible at no charge.',
-      cta: 'Open My Library',
-      url: LWB.SITE_URL + '/account/library/'
-    }
-  };
-
-  const item = templates[String(key || '')];
-  if (!item) return null;
-
-  const html =
-    '<p style="margin:0 0 18px">' + greeting + '</p>' +
-    '<h1 style="font-family:Georgia,serif;font-size:30px;line-height:1.2;margin:0 0 14px;color:#1d2a34">' + escapeHtml_(item.title) + '</h1>' +
-    '<p style="margin:0 0 22px">' + escapeHtml_(item.copy) + '</p>' +
-    emailButton_(item.cta, item.url);
-
-  const text = (name ? 'Hello ' + name + ',' : 'Hello,') + '\n\n' +
-    item.title + '\n\n' + item.copy + '\n\n' + item.cta + ': ' + item.url;
-
-  return {
-    subject: item.subject,
-    preheader: item.preheader,
-    html: html,
-    text: text
-  };
-}
-
-function sendBrandedEmail_(options) {
-  const email = normalizeEmail_(options.to);
-  if (!validEmail_(email)) throw new Error('Invalid email address.');
-
-  const newsletter = Boolean(options.newsletter);
-  const optOutEmail = normalizeEmail_(options.optOutEmail || email);
-  const optOutUrl = LWB.SITE_URL + '/opt-out/?email=' + encodeURIComponent(optOutEmail);
-
-  const footerLinks =
-    '<a href="' + LWB.SITE_URL + '/read-the-bible-online/" style="color:#6e5420;text-decoration:none">Read the Bible Online</a>' +
-    ' &nbsp;•&nbsp; <a href="' + LWB.SITE_URL + '/history-of-the-bible/" style="color:#6e5420;text-decoration:none">History of the Bible</a>' +
-    ' &nbsp;•&nbsp; <a href="' + LWB.SITE_URL + '/estore/" style="color:#6e5420;text-decoration:none">eStore</a><br>' +
-    '<a href="' + LWB.SITE_URL + '/terms-of-service/" style="color:#6e5420;text-decoration:none">Terms of Service</a>' +
-    ' &nbsp;•&nbsp; <a href="' + LWB.SITE_URL + '/privacy-policy/" style="color:#6e5420;text-decoration:none">Privacy Policy</a>' +
-    (newsletter ? ' &nbsp;•&nbsp; <a href="' + optOutUrl + '" style="color:#6e5420;text-decoration:none">Unsubscribe</a>' : '');
-
-  const htmlBody =
-    '<!doctype html><html><body style="margin:0;padding:0;background:#f4f1e8;font-family:Arial,Helvetica,sans-serif;color:#2b2b2b">' +
-    '<div style="display:none;max-height:0;overflow:hidden;opacity:0">' + escapeHtml_(options.preheader || '') + '</div>' +
-    '<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#f4f1e8;padding:28px 12px"><tr><td align="center">' +
-    '<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:680px;background:#ffffff;border:1px solid #ded6c6;border-radius:14px;overflow:hidden">' +
-    '<tr><td align="center" style="padding:28px 28px 18px;background:#fffdf8;border-bottom:1px solid #eee6d8">' +
-    '<a href="' + LWB.SITE_URL + '/" style="text-decoration:none"><img src="' + LWB.LOGO_URL + '" width="260" alt="Living Word Bibles" style="display:block;max-width:100%;height:auto;border:0"></a>' +
-    '<div style="font-family:Georgia,serif;font-style:italic;color:#6c6457;margin-top:10px">Beautifully Formatted to Bring God’s Word to Life on Any Device</div>' +
-    '</td></tr>' +
-    '<tr><td style="padding:32px 34px;font-size:16px;line-height:1.65">' + (options.html || '') + '</td></tr>' +
-    '<tr><td align="center" style="padding:22px 26px 26px;background:#faf7f0;border-top:1px solid #eee6d8;font-size:12px;line-height:1.7;color:#6c6457">' +
-    footerLinks +
-    '<div style="margin-top:12px">© 2026 Living Word Bibles. All Rights Reserved.</div>' +
-    '<div>Developed by Cook Technology Services.</div>' +
-    '</td></tr></table>' +
-    '</td></tr></table></body></html>';
-
-  let textBody = String(options.text || '');
-  textBody += '\n\nRead the Bible Online: ' + LWB.SITE_URL + '/read-the-bible-online/' +
-    '\nHistory of the Bible: ' + LWB.SITE_URL + '/history-of-the-bible/' +
-    '\neStore: ' + LWB.SITE_URL + '/estore/' +
-    '\nTerms: ' + LWB.SITE_URL + '/terms-of-service/' +
-    '\nPrivacy: ' + LWB.SITE_URL + '/privacy-policy/';
-  if (newsletter) textBody += '\nUnsubscribe: ' + optOutUrl;
-  textBody += '\n\n© 2026 Living Word Bibles. All Rights Reserved.';
-
-  MailApp.sendEmail({
-    to: email,
-    subject: clean_(options.subject || 'Living Word Bibles', 250),
-    name: 'Living Word Bibles',
-    replyTo: LWB.CONTACT_EMAIL,
-    body: textBody,
-    htmlBody: htmlBody
-  });
-}
-
-function emailButton_(label, url) {
-  return '<table role="presentation" cellspacing="0" cellpadding="0" border="0"><tr><td style="background:#8b6a25;border-radius:6px">' +
-    '<a href="' + escapeHtml_(url) + '" style="display:inline-block;padding:12px 20px;color:#ffffff;text-decoration:none;font-weight:bold">' +
-    escapeHtml_(label) + '</a></td></tr></table>';
-}
-
-function firstName_(displayName) {
-  const clean = String(displayName || '').trim();
-  return clean ? clean.split(/\s+/)[0] : '';
-}
-
-/* ========================================================================== */
-/* HEALTH                                                                     */
+/* HEALTH                                                                                                                                          */
 /* ========================================================================== */
 
 function healthCheck_() {
@@ -4469,8 +3801,8 @@ function healthCheck_() {
     version: LWB.VERSION,
     build_utc: LWB.BUILD_UTC,
     contact_email: LWB.CONTACT_EMAIL,
-    newsletter_batch_max: LWB.NEWSLETTER_BATCH_MAX,
-    newsletter_weekdays: ['Monday', 'Wednesday', 'Friday'],
+    email_service_url: LWB.EMAIL_SERVICE_URL,
+    outbound_email_owner: 'gospel@livingwordbibles.com',
     checks: checks,
     time: new Date().toISOString()
   };
@@ -4669,6 +4001,6 @@ function escapeHtml_(value) {
 
 /*
 ==========================================================================================
-END OF LWB BACKEND v2.2.3 | Copyright © 2026 Living Word Bibles. All Rights Reserved. Developed by Cook Technology Services. Last Updated on 14 September 2026 at 19:01:03Z UTC
+END OF LWB BACKEND v2.2.4 | Copyright © 2026 Living Word Bibles. All Rights Reserved. Developed by Cook Technology Services. Last Updated on 02 October 2026 at 16:27:00Z UTC
 ==========================================================================================
 */

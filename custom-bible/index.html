@@ -605,7 +605,7 @@
 
             <div class="cb-artwork">
               <h3>Have a photo or custom artwork to include?</h3>
-              <p>After submitting your request, email your image to <a href="mailto:gospellivingwordbibles@gmail.com">gospellivingwordbibles@gmail.com</a> and include your <strong>name and Custom Bible order number</strong> in the subject line.</p>
+              <p>After submitting your request, email your image to <a href="mailto:gospel@livingwordbibles.com?subject=Custom%20Bibles">gospel@livingwordbibles.com</a> and include your <strong>name and Custom Bible order number</strong> in the subject line.</p>
               <label style="display:flex;gap:.6rem;align-items:flex-start;margin-top:.8rem">
                 <input type="checkbox" id="artworkExpected" style="margin-top:.25rem">
                 <span>I plan to email a photo or custom artwork after submitting this request.</span>
@@ -822,7 +822,7 @@
   "use strict";
 
   const BASE_PRICE = 19.99;
-  const EMAIL_TO = "gospellivingwordbibles@gmail.com";
+  const EMAIL_TO = "gospel@livingwordbibles.com";
   const form = document.getElementById("custom-bible-form");
 
   const money = n => "$" + Number(n).toFixed(2);
@@ -1052,7 +1052,7 @@
     lines.push("");
     lines.push("ARTWORK INSTRUCTIONS:");
     if(checked("artworkExpected")){
-      lines.push("Customer will email artwork separately to gospellivingwordbibles@gmail.com using Order Number " + orderNumber + ".");
+      lines.push("Customer will email artwork separately to gospel@livingwordbibles.com using Order Number " + orderNumber + ".");
     } else {
       lines.push("No custom artwork indicated.");
     }

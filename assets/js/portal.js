@@ -122,6 +122,14 @@
     loadPortalVersions();
     renderStats(payload.counts);
     renderCampaign(payload.campaign);
+    const mailStatus = root.querySelector('[data-news-service-status]');
+    if (mailStatus) {
+      const svc = payload.newsletter_service || {};
+      mailStatus.textContent = svc.ok
+        ? `Email service connected — outbound sender: ${svc.sender || 'gospel@livingwordbibles.com'}`
+        : `Email service unavailable${svc.error ? ` — ${svc.error}` : ''}`;
+      mailStatus.dataset.state = svc.ok ? 'ok' : 'error';
+    }
     root.querySelector('[data-dashboard-logs]').innerHTML = (payload.recent_logs || []).map(row =>
       `<tr><td>${date(row.timestamp)}</td><td>${esc(row.event)}</td><td>${esc(row.source)}</td><td>${esc(row.email || '')}</td><td>${esc(row.message || '')}</td></tr>`
     ).join('') || '<tr><td colspan="5">No recent activity.</td></tr>';

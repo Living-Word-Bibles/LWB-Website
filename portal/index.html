@@ -109,7 +109,7 @@
               <div><h3>Account Rules</h3><p class="portal-muted">Only eBibles and the Ethiopian Bible PDF can be attached. The free KJV Special and Douay-Rheims products cannot be revoked.</p></div>
             </div>
             <h3 style="margin-top:24px">Entitlements</h3><div class="portal-scroll"><table class="portal-table"><thead><tr><th>Product</th><th>Status</th><th>Source</th><th>Order</th><th>Granted</th><th>Action</th></tr></thead><tbody data-entitlement-rows></tbody></table></div>
-            <h3 style="margin-top:24px">Orders</h3><div class="portal-scroll"><table class="portal-table"><thead><tr><th>Order</th><th>PayPal Tx</th><th>Status</th><th>Total</th><th>Date</th><th>Action</th></tr></thead><tbody data-order-rows></tbody></table></div>
+            <h3 style="margin-top:24px">Orders</h3><div class="portal-scroll"><table class="portal-table"><thead><tr><th>Order</th><th>PayPal Tx</th><th>Status</th><th>Gross</th><th>PayPal Fee</th><th>Net</th><th>Date</th><th>Action</th></tr></thead><tbody data-order-rows></tbody></table></div>
           </div>
         </article>
       </section>
@@ -133,7 +133,7 @@
           </div>
 
           <div class="portal-two" style="margin-top:18px">
-            <div><h3>Sales by Product</h3><div class="portal-scroll"><table class="portal-table"><thead><tr><th>Product</th><th>Orders</th><th>Units</th><th>Gross</th><th>Net*</th></tr></thead><tbody data-orders-products></tbody></table></div><p class="portal-meta">*Net is shown where PayPal Activity Report fee/net data is available.</p></div>
+            <div><h3>Sales by Product</h3><div class="portal-scroll"><table class="portal-table"><thead><tr><th>Product</th><th>Orders</th><th>Units</th><th>Gross</th><th>Net*</th></tr></thead><tbody data-orders-products></tbody></table></div><p class="portal-meta">*PayPal Fee and Net are read from the Orders sheet when available; legacy Activity Report metadata remains a fallback.</p></div>
             <div><h3>PayPal Activity Report</h3><p class="portal-muted">CSV files are parsed in your browser and sent directly for reconciliation. Uploaded reports are not stored in Drive.</p><div class="portal-field"><label for="paypal-activity-file">Activity Report CSV</label><input id="paypal-activity-file" type="file" accept=".csv,text/csv" data-paypal-activity-file></div><div class="portal-actions"><button class="btn secondary" type="button" data-paypal-preview>Preview Reconciliation</button><button class="btn" type="button" data-paypal-reconcile disabled>Reconcile Report</button></div><p class="portal-status" data-paypal-status hidden></p><div data-paypal-summary></div></div>
           </div>
 

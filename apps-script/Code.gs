@@ -1,11 +1,17 @@
 /**
- * Living Word Bibles Backend v2.2.4
+ * Living Word Bibles Backend v2.2.5
  * Core Website API
  *
  * Account: gospellivingwordbibles@gmail.com
  * Spreadsheet: LWB Website
  * Legal display date: 11 September 2026
- * Build timestamp: 02 October 2026 at 16:27:00Z UTC
+ * Build timestamp: 4 October 2026 at 19:02:32Z UTC
+ *
+ * v2.2.5 highlights:
+ * - Adds first-class Orders.paypal_fee and Orders.net_amount persistence for PayPal Activity Report reconciliation.
+ * - Portal Orders reporting reads fee/net from Orders first, with legacy System Log metadata retained as a fallback.
+ * - Accounts & Purchases order history now receives PayPal fee and net values from the backend.
+ * - Preserves the existing Orders, Order Items, Products, Customers, System Log, PayPal, entitlement, and email-service architecture.
  *
  * v2.2.4 highlights:
  * - Removes all direct MailApp / outbound email execution from the website backend.
@@ -101,13 +107,14 @@
  */
 
 const LWB = Object.freeze({
-  VERSION: '2.2.4',
-  BUILD_UTC: '02 October 2026 at 16:27:00Z UTC',
-  PRINT_PRODUCTS_SNAPSHOT_KEY: 'print-products-public-snapshot-v2.2.4',
+  VERSION: '2.2.5',
+  BUILD_UTC: '4 October 2026 at 19:02:32Z UTC',
+  PRINT_PRODUCTS_SNAPSHOT_KEY: 'print-products-public-snapshot-v2.2.5',
   PRINT_PRODUCTS_SNAPSHOT_MAX_AGE_SECONDS: 60,
   SITE_URL: 'https://www.livingwordbibles.com',
   CONTACT_EMAIL: 'gospel@livingwordbibles.com',
   EMAIL_SERVICE_URL: 'https://script.google.com/macros/s/AKfycby4zWPYCSDiRyxgXHCH7wbOqKV1J32avpko_905ODuM_QToQhFWhd-FJvd0ZTsaJI6Xug/exec',
+  EMAIL_SERVICE_SECRET: 'adf9c13b5b6f92b9f3f471e8c1ae9f31d97e774bc31ee1f619743fb6b5de40c3',
   SPREADSHEET_ID: '1xnzdo1UJsEOTqcO2066Nfb6ayqKn8Zg5RbNLdpbaTcc',
   CONSENT_VERSION: '2026-08-27',
   TERMS_VERSION: '2026-09-08',
@@ -715,15 +722,13 @@ function unsubscribe_(data) {
 /* EMAIL SERVICE CLIENT                                                         */
 /* ========================================================================== */
 
-function configureEmailServiceClient(secret) {
-  const value = String(secret || '').trim();
-  if (value.length < 24) throw new Error('Use a strong shared secret of at least 24 characters.');
-  PropertiesService.getScriptProperties().setProperty('LWB_EMAIL_SERVICE_SECRET', value);
+function configureEmailServiceClient() {
+  PropertiesService.getScriptProperties().setProperty('LWB_EMAIL_SERVICE_SECRET', LWB.EMAIL_SERVICE_SECRET);
   return { ok: true, service_url: LWB.EMAIL_SERVICE_URL };
 }
 
 function emailServiceRequest_(action, payload) {
-  const secret = PropertiesService.getScriptProperties().getProperty('LWB_EMAIL_SERVICE_SECRET');
+  const secret = PropertiesService.getScriptProperties().getProperty('LWB_EMAIL_SERVICE_SECRET') || LWB.EMAIL_SERVICE_SECRET;
 
   const body = Object.assign({}, payload || {}, {
     action: String(action || ''),
@@ -945,6 +950,12 @@ function recordOrder_(order) {
     currency: clean_(order.currency || (existing && existing.currency) || 'USD', 10),
     subtotal: Number(order.subtotal !== undefined ? order.subtotal : ((existing && existing.subtotal) || order.total || 0)),
     total: Number(order.total !== undefined ? order.total : ((existing && existing.total) || 0)),
+    paypal_fee: order.paypal_fee !== undefined && order.paypal_fee !== null && order.paypal_fee !== ''
+      ? Number(order.paypal_fee)
+      : ((existing && existing.paypal_fee !== undefined && existing.paypal_fee !== null && existing.paypal_fee !== '') ? Number(existing.paypal_fee) : ''),
+    net_amount: order.net_amount !== undefined && order.net_amount !== null && order.net_amount !== ''
+      ? Number(order.net_amount)
+      : ((existing && existing.net_amount !== undefined && existing.net_amount !== null && existing.net_amount !== '') ? Number(existing.net_amount) : ''),
     payer_country: clean_(order.payer_country || (existing && existing.payer_country) || '', 20),
     created_at: existing && existing.created_at ? existing.created_at : (order.created_at || now),
     updated_at: now,
@@ -1290,21 +1301,134 @@ function requestEuEeaDigitalConsentConfirmation_(order, product, options) {
   const tx = clean_(order.paypal_capture_id || '', 200);
   const email = normalizeEmail_(order.email || '');
 
-  if (!isEuEeaCountryCode_(country)) return { ok: true, sent: false, reason: 'not-eu-eea' };
-  if (!requiresEuEeaDigitalConsent_(product)) return { ok: true, sent: false, reason: 'not-covered-product' };
-  if (!tx || !validEmail_(email)) return { ok: true, sent: false, reason: 'missing-transaction-or-email' };
-  if (systemLogHasEventRecord_('EU_EEA_CONSENT_EMAIL_SENT', tx)) return { ok: true, sent: false, reason: 'already-sent' };
-  if (options.retryOnly === true && !systemLogHasEventRecord_('EU_EEA_CONSENT_EMAIL_FAILED', tx)) {
+  if (!isEuEeaCountryCode_(country)) {
+    return { ok: true, sent: false, reason: 'not-eu-eea' };
+  }
+  if (!requiresEuEeaDigitalConsent_(product)) {
+    return { ok: true, sent: false, reason: 'not-covered-product' };
+  }
+  if (!tx || !validEmail_(email)) {
+    return { ok: true, sent: false, reason: 'missing-transaction-or-email' };
+  }
+
+  if (systemLogHasEventRecord_('EU_EEA_CONSENT_EMAIL_SENT', tx)) {
+    return { ok: true, sent: false, reason: 'already-sent' };
+  }
+
+  if (options.retryOnly === true &&
+      !systemLogHasEventRecord_('EU_EEA_CONSENT_EMAIL_FAILED', tx)) {
     return { ok: true, sent: false, reason: 'no-retry-needed' };
   }
 
+  const purchaseDate = order.created_at || new Date();
+  let purchaseIso = '';
   try {
-    return requestEuEeaConsentEmail_(order, product);
-  } catch (error) {
-    logSystem_('ERROR', 'EU_EEA_CONSENT_EMAIL_FAILED', email, tx, 'email-service', safeError_(error), {
-      product_id: product.product_id || '',
-      payer_country: country
+    purchaseIso = new Date(purchaseDate).toISOString();
+  } catch (_) {
+    purchaseIso = new Date().toISOString();
+  }
+
+  const productTitle = clean_(product.title || product.short_title || product.product_id || 'Digital Product', 500);
+  const productUrl = product.canonical_path
+    ? LWB.SITE_URL + String(product.canonical_path)
+    : LWB.SITE_URL + '/estore/';
+  const orderRef = clean_(order.order_id || '', 200);
+  const paypalOrder = clean_(order.paypal_order_id || '', 200);
+
+  const consentHtml = escapeHtml_(LWB.EU_EEA_CONSENT_TEXT)
+    .replace('begins.  If', 'begins.&nbsp; If');
+
+  const html =
+    '<h1 style="font-family:Georgia,serif;font-size:28px;line-height:1.2;margin:0 0 16px;color:#1d2a34">Digital Purchase &amp; EU/EEA Consent Confirmation</h1>' +
+    '<p>This transactional email confirms your completed Living Word Bibles digital purchase and the EU/EEA digital-delivery consent presented before checkout.</p>' +
+    '<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:20px 0;border-collapse:collapse">' +
+      '<tr><td style="padding:8px;border-bottom:1px solid #eee6d8"><strong>Product</strong></td><td style="padding:8px;border-bottom:1px solid #eee6d8"><a href="' + escapeHtml_(productUrl) + '">' + escapeHtml_(productTitle) + '</a></td></tr>' +
+      '<tr><td style="padding:8px;border-bottom:1px solid #eee6d8"><strong>PayPal transaction</strong></td><td style="padding:8px;border-bottom:1px solid #eee6d8">' + escapeHtml_(tx) + '</td></tr>' +
+      '<tr><td style="padding:8px;border-bottom:1px solid #eee6d8"><strong>Order reference</strong></td><td style="padding:8px;border-bottom:1px solid #eee6d8">' + escapeHtml_(orderRef || '—') + '</td></tr>' +
+      (paypalOrder ? '<tr><td style="padding:8px;border-bottom:1px solid #eee6d8"><strong>PayPal order</strong></td><td style="padding:8px;border-bottom:1px solid #eee6d8">' + escapeHtml_(paypalOrder) + '</td></tr>' : '') +
+      '<tr><td style="padding:8px;border-bottom:1px solid #eee6d8"><strong>Purchaser email</strong></td><td style="padding:8px;border-bottom:1px solid #eee6d8">' + escapeHtml_(email) + '</td></tr>' +
+      '<tr><td style="padding:8px;border-bottom:1px solid #eee6d8"><strong>Country</strong></td><td style="padding:8px;border-bottom:1px solid #eee6d8">' + escapeHtml_(country) + '</td></tr>' +
+      '<tr><td style="padding:8px;border-bottom:1px solid #eee6d8"><strong>Purchase timestamp</strong></td><td style="padding:8px;border-bottom:1px solid #eee6d8">' + escapeHtml_(purchaseIso) + '</td></tr>' +
+      '<tr><td style="padding:8px"><strong>Consent version</strong></td><td style="padding:8px">' + escapeHtml_(LWB.EU_EEA_CONSENT_VERSION) + '</td></tr>' +
+    '</table>' +
+    '<div style="padding:16px;border:1px solid #ded6c6;border-radius:10px;background:#faf7f0">' +
+      '<p style="margin:0"><strong>EU/EEA Right of Withdrawal:</strong> ' +
+      consentHtml.replace(/^EU\/EEA Right of Withdrawal:\s*/i, '') +
+      '</p>' +
+    '</div>' +
+    '<p style="margin-top:20px">This confirmation is provided as a durable record of the digital-delivery acknowledgment associated with your purchase.  Living Word Bibles is operated by Cook Services Company, LLC.</p>' +
+    '<p><a href="' + LWB.SITE_URL + '/support/">Support</a> &nbsp;•&nbsp; ' +
+      '<a href="' + LWB.SITE_URL + '/terms-of-service/">Terms of Service</a> &nbsp;•&nbsp; ' +
+      '<a href="' + LWB.SITE_URL + '/privacy-policy/">Privacy Policy</a></p>';
+
+  const text =
+    'Living Word Bibles — Digital Purchase & EU/EEA Consent Confirmation\n\n' +
+    'This transactional email confirms your completed Living Word Bibles digital purchase and the EU/EEA digital-delivery consent presented before checkout.\n\n' +
+    'Product: ' + productTitle + '\n' +
+    'Product URL: ' + productUrl + '\n' +
+    'PayPal transaction: ' + tx + '\n' +
+    'Order reference: ' + (orderRef || '—') + '\n' +
+    (paypalOrder ? 'PayPal order: ' + paypalOrder + '\n' : '') +
+    'Purchaser email: ' + email + '\n' +
+    'Country: ' + country + '\n' +
+    'Purchase timestamp: ' + purchaseIso + '\n' +
+    'Consent version: ' + LWB.EU_EEA_CONSENT_VERSION + '\n\n' +
+    LWB.EU_EEA_CONSENT_TEXT + '\n\n' +
+    'This confirmation is provided as a durable record of the digital-delivery acknowledgment associated with your purchase.  Living Word Bibles is operated by Cook Services Company, LLC.\n\n' +
+    'Website: ' + LWB.SITE_URL + '\n' +
+    'Terms: ' + LWB.SITE_URL + '/terms-of-service/\n' +
+    'Privacy: ' + LWB.SITE_URL + '/privacy-policy/\n' +
+    'Support: ' + LWB.SITE_URL + '/support/';
+
+  try {
+    sendBrandedEmail_({
+      to: email,
+      subject: 'Living Word Bibles — Digital Purchase & EU/EEA Consent Confirmation',
+      preheader: 'Your digital purchase and EU/EEA consent confirmation.',
+      html: html,
+      text: text,
+      newsletter: false
     });
+
+    logSystem_(
+      'INFO',
+      'EU_EEA_CONSENT_EMAIL_SENT',
+      email,
+      tx,
+      'paypal',
+      productTitle,
+      {
+        transaction_id: tx,
+        order_id: orderRef,
+        paypal_order_id: paypalOrder,
+        payer_country: country,
+        product_id: product.product_id || '',
+        product_title: productTitle,
+        consent_version: LWB.EU_EEA_CONSENT_VERSION,
+        sent_utc: new Date().toISOString()
+      }
+    );
+
+    return { ok: true, sent: true };
+  } catch (error) {
+    logSystem_(
+      'ERROR',
+      'EU_EEA_CONSENT_EMAIL_FAILED',
+      email,
+      tx,
+      'paypal',
+      safeError_(error),
+      {
+        transaction_id: tx,
+        order_id: orderRef,
+        payer_country: country,
+        product_id: product.product_id || '',
+        product_title: productTitle,
+        consent_version: LWB.EU_EEA_CONSENT_VERSION,
+        failed_utc: new Date().toISOString()
+      }
+    );
+
     return { ok: false, sent: false, error: safeError_(error) };
   }
 }
@@ -2554,12 +2678,6 @@ function adminDashboard_(data) {
       }).length
     },
     campaign: newsletterStatus && newsletterStatus.campaign ? newsletterStatus.campaign : null,
-    newsletter_service: {
-      ok: Boolean(newsletterStatus && newsletterStatus.ok),
-      sender: 'gospel@livingwordbibles.com',
-      service_url: LWB.EMAIL_SERVICE_URL,
-      error: newsletterStatus && newsletterStatus.ok === false ? (newsletterStatus.error || '') : ''
-    },
     eligible_products: accountEligibleProducts_(),
     recent_logs: recentSystemLogs_(25),
     newsletter_rules: {
@@ -2735,6 +2853,12 @@ function adminCustomerResponse_(customer) {
   const customerId = String(customer.customer_id || '');
   const email = normalizeEmail_(customer.email);
 
+  const logsByRecord = {};
+  readObjects_(sheet_(LWB.SHEETS.LOG)).forEach(function(row) {
+    const recordId = String(row.record_id || '');
+    if (recordId) logsByRecord[recordId] = row;
+  });
+
   const orders = readObjects_(sheet_(LWB.SHEETS.ORDERS))
     .filter(function(order) {
       return (customerId && String(order.customer_id || '') === customerId) ||
@@ -2745,10 +2869,22 @@ function adminCustomerResponse_(customer) {
     })
     .slice(0, 100)
     .map(function(order) {
-      return pick_(order, [
+      const raw = order.raw_event_id ? logsByRecord[String(order.raw_event_id)] : null;
+      const meta = raw ? parseSystemLogMetadata_(raw) : {};
+      const payment = meta.payment || {};
+      const feeValue = order.paypal_fee !== undefined && order.paypal_fee !== null && order.paypal_fee !== ''
+        ? Number(order.paypal_fee)
+        : (payment.fee !== undefined && payment.fee !== '' ? paypalNumber_(payment.fee) : null);
+      const netValue = order.net_amount !== undefined && order.net_amount !== null && order.net_amount !== ''
+        ? Number(order.net_amount)
+        : (payment.net !== undefined && payment.net !== '' ? paypalNumber_(payment.net) : null);
+      const picked = pick_(order, [
         'order_id', 'paypal_order_id', 'paypal_capture_id', 'customer_id',
-        'email', 'status', 'currency', 'subtotal', 'total', 'created_at', 'updated_at'
+        'email', 'status', 'currency', 'subtotal', 'total', 'created_at', 'updated_at', 'raw_event_id'
       ]);
+      picked.paypal_fee = feeValue;
+      picked.net_amount = netValue;
+      return picked;
     });
 
   const entitlements = readObjects_(sheet_(LWB.SHEETS.ENTITLEMENTS))
@@ -3404,6 +3540,8 @@ function adminPayPalReconcile_(data) {
       currency: analysis.currency || 'USD',
       subtotal: analysis.gross,
       total: analysis.gross,
+      paypal_fee: analysis.fee,
+      net_amount: analysis.net,
       payer_country: analysis.payer_country || '',
       created_at: new Date(analysis.created_at),
       raw_event_id: rawEventId
@@ -3483,8 +3621,14 @@ function adminOrders_(data) {
       currency: order.currency || 'USD',
       subtotal: Number(order.subtotal || 0),
       total: Number(order.total || 0),
-      fee: paypalNumber_(detail.fee),
-      net: detail.net === undefined || detail.net === '' ? null : paypalNumber_(detail.net),
+      fee: order.paypal_fee !== undefined && order.paypal_fee !== null && order.paypal_fee !== ''
+        ? Number(order.paypal_fee)
+        : (detail.fee === undefined || detail.fee === '' ? null : paypalNumber_(detail.fee)),
+      net: order.net_amount !== undefined && order.net_amount !== null && order.net_amount !== ''
+        ? Number(order.net_amount)
+        : (detail.net === undefined || detail.net === '' ? null : paypalNumber_(detail.net)),
+      fee_source: order.paypal_fee !== undefined && order.paypal_fee !== null && order.paypal_fee !== '' ? 'orders' : (detail.fee === undefined || detail.fee === '' ? '' : 'legacy-system-log'),
+      net_source: order.net_amount !== undefined && order.net_amount !== null && order.net_amount !== '' ? 'orders' : (detail.net === undefined || detail.net === '' ? '' : 'legacy-system-log'),
       payer_country: order.payer_country || detail.buyer_country_code || detail.country || '',
       region: detail.region || '',
       city: detail.city || '',

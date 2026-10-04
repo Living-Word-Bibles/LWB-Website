@@ -1,3 +1,4 @@
+[README.md](https://github.com/user-attachments/files/33032817/README.md)
 [README.md](https://github.com/user-attachments/files/32243153/README.md)
 [README.md](https://github.com/user-attachments/files/32208072/README.md)
 [README.md](https://github.com/user-attachments/files/32166030/README.md)
@@ -29,7 +30,7 @@
 <p align="center">
   <a href="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml/badge.svg?branch=main"></a>
   <img alt="Frontend package v2.8.0" src="https://img.shields.io/badge/frontend-v2.8.0-555555">
-  <img alt="Website Backend v2.2.4" src="https://img.shields.io/badge/backend-v2.2.4-555555">
+  <img alt="Website Backend v2.2.5" src="https://img.shields.io/badge/backend-v2.2.5-555555">
   <img alt="Hosting GitHub Pages" src="https://img.shields.io/badge/hosting-GitHub%20Pages-555555">
 </p>
 
@@ -39,7 +40,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 02 October 2026 at 17:43:19Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 4 October 2026 at 19:02:32Z UTC</sub></p>
 
 ---
 
@@ -58,12 +59,12 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
 | Frontend package version | `2.8.0` |
-| Google Apps Script version | `2.2.4` |
+| Google Apps Script version | `2.2.5` |
 | Email Service version | `1.0.0` |
-| Apps Script build stamp | `02 October 2026 at 16:27:00Z UTC` |
+| Apps Script build stamp | `4 October 2026 at 19:02:32Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `02 October 2026 at 17:43:19Z UTC` |
+| README revision | `4 October 2026 at 19:02:32Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
 
@@ -90,7 +91,18 @@ Released **02 October 2026**. Last Updated: **02 October 2026 at 17:43:19Z UTC**
 
 ### Website backend and email delivery separation
 
-- Website Backend advanced to **v2.2.4**.
+### Website Backend v2.2.5 — PayPal fee and net amount reporting
+
+- Advanced the Website Backend to **v2.2.5** with build stamp **4 October 2026 at 19:02:32Z UTC**.
+- Added first-class `paypal_fee` and `net_amount` support to the existing **Orders** sheet.
+- PayPal Activity Report reconciliation now writes each completed sale's PayPal fee and net amount directly to the corresponding Orders row while preserving idempotent transaction matching.
+- The Portal **Orders** view now reads PayPal fee and net amount from Orders first and retains the older `System Log.metadata_json` payment values only as a compatibility fallback for historical reconciliations.
+- **Accounts & Purchases** customer order history now displays **Gross**, **PayPal Fee**, and **Net** for orders where those values are available.
+- Orders KPI totals for **Gross Sales**, **PayPal Fees**, and **Net Sales** use the first-class Orders values when present.
+- No new sheet is introduced. This patch uses the existing Orders architecture and the two added Orders columns: `paypal_fee` and `net_amount`.
+- Existing PayPal transaction IDs, Hosted Button IDs, customer entitlements, product mappings, email-service separation, Print Products workflow, and public storefront behavior are unchanged.
+
+- Website Backend advanced to **v2.2.5**.
 - Added the dedicated Living Word Bibles Email Service **v1.0.0** for outbound transactional and newsletter email.
 - The Website Backend continues to own website API, accounts, authentication, purchases, entitlements, reader access, analytics, consent, subscriber records, administrative tools, and reconciliation workflows.
 - Outbound account-verification, password-reset, qualifying digital-purchase confirmation, newsletter-test, and newsletter-campaign email is handled by the dedicated Email Service.
@@ -106,12 +118,21 @@ Released **02 October 2026**. Last Updated: **02 October 2026 at 17:43:19Z UTC**
 ### Release status
 
 - Frontend package advanced to **v2.8.0 Alpha**.
-- Website Backend: **v2.2.4**.
+- Website Backend: **v2.2.5**.
 - Email Service: **v1.0.0**.
 
 ### v2.8.0 surgical file set
 
 This release changes only the public email-routing surfaces, shared footer/configuration, Portal newsletter integration, backend/email-service source, and release documentation required for the email architecture update.
+
+The **v2.2.5 PayPal fee/net patch** additionally updates only:
+
+```text
+/apps-script/Code.gs
+/portal/index.html
+/assets/js/portal.js
+/README.md
+```
 
 ---
 
@@ -1505,8 +1526,8 @@ Current backend metadata:
 
 ```text
 Service: LWB Website API
-Version: 2.2.4
-Apps Script build stamp: 02 October 2026 at 16:27:00Z UTC
+Version: 2.2.5
+Apps Script build stamp: 4 October 2026 at 19:02:32Z UTC
 ```
 
 Dedicated outbound-email component:
@@ -1669,7 +1690,7 @@ Deployment remains handled by `.github/workflows/deploy-pages.yml`.
 
 A push to `main` validates the repository and publishes the **repository root (`.`)** directly to GitHub Pages. There is no generated production output directory.
 
-For Website Backend v2.2.4, replace `/apps-script/Code.gs` in the existing production backend project and deploy a new version without changing the established public backend endpoint. Deploy the dedicated Email Service v1.0.0 separately from `/apps-script/email-service/Code.gs`. The Portal continues to call the Website Backend, which relays outbound email/newsletter actions to the Email Service.
+For Website Backend v2.2.5, replace `/apps-script/Code.gs` in the existing production backend project and deploy a new version without changing the established public backend endpoint. Deploy the dedicated Email Service v1.0.0 separately from `/apps-script/email-service/Code.gs`. The Portal continues to call the Website Backend, which relays outbound email/newsletter actions to the Email Service.
 
 ---
 
@@ -1749,10 +1770,10 @@ Before merging or deploying this release:
 
 **Repository architecture revision:** `2026-08-27T22:28:20Z`  
 **Apps Script build stamp:** `14 September 2026 at 19:01:03Z UTC`  
-**Google Apps Script version:** `2.2.4`  
+**Google Apps Script version:** `2.2.5`  
 **Email Service version:** `1.0.0`  
 **Frontend package version:** `2.8.0`  
-**README last updated:** **04 October 2026 at 13:00:00Z UTC**
+**README last updated:** **04 October 2026 at 19:10:15Z UTC**
 ---
 
 <p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 02 October 2026 at 17:43:19Z UTC</strong></p>

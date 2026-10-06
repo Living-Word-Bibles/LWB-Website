@@ -1,11 +1,18 @@
 /**
- * Living Word Bibles Backend v2.2.5
+ * Living Word Bibles Backend v2.2.6
  * Core Website API
  *
  * Account: gospellivingwordbibles@gmail.com
  * Spreadsheet: LWB Website
  * Legal display date: 11 September 2026
- * Build timestamp: 4 October 2026 at 19:02:32Z UTC
+ * Build timestamp: 06 October 2026 at 11:59:54Z UTC
+ *
+ * v2.2.6 highlights:
+ * - Adds authenticated automatic retail price synchronization for participating Print Products.
+ * - Adds a portal-triggered price refresh while preserving the existing manual Price Reconcile workflow.
+ * - Updates only valid new/featured offer prices and never replaces an existing price when no usable offer is returned.
+ * - Adds daily scheduled refresh support and immediate public snapshot republishing after successful updates.
+ * - Keeps private retail credentials outside source code and reads them only from private runtime properties.
  *
  * v2.2.5 highlights:
  * - Adds first-class Orders.paypal_fee and Orders.net_amount persistence for PayPal Activity Report reconciliation.
@@ -107,10 +114,15 @@
  */
 
 const LWB = Object.freeze({
-  VERSION: '2.2.5',
-  BUILD_UTC: '4 October 2026 at 19:02:32Z UTC',
-  PRINT_PRODUCTS_SNAPSHOT_KEY: 'print-products-public-snapshot-v2.2.5',
+  VERSION: '2.2.6',
+  BUILD_UTC: '06 October 2026 at 11:59:54Z UTC',
+  PRINT_PRODUCTS_SNAPSHOT_KEY: 'print-products-public-snapshot-v2.2.6',
   PRINT_PRODUCTS_SNAPSHOT_MAX_AGE_SECONDS: 60,
+  RETAIL_MARKETPLACE: 'www.amazon.com',
+  RETAIL_TOKEN_ENDPOINT: 'https://api.amazon.com/auth/o2/token',
+  RETAIL_GET_ITEMS_ENDPOINT: 'https://creatorsapi.amazon/catalog/v1/getItems',
+  RETAIL_TOKEN_CACHE_KEY: 'lwb-retail-access-token-v1',
+  RETAIL_REFRESH_HOUR: 9,
   SITE_URL: 'https://www.livingwordbibles.com',
   CONTACT_EMAIL: 'gospel@livingwordbibles.com',
   EMAIL_SERVICE_URL: 'https://script.google.com/macros/s/AKfycby4zWPYCSDiRyxgXHCH7wbOqKV1J32avpko_905ODuM_QToQhFWhd-FJvd0ZTsaJI6Xug/exec',
@@ -430,6 +442,9 @@ function doPost(e) {
         break;
       case 'admin-print-product-update':
         payload = adminPrintProductUpdate_(data);
+        break;
+      case 'admin-print-products-refresh':
+        payload = adminPrintProductsRefresh_(data);
         break;
       case 'admin-analytics':
         payload = adminAnalytics_(data);
@@ -3198,6 +3213,254 @@ function adminManualPurchaseRemove_(data) {
 
 
 
+
+function retailPriceCredentials_() {
+  const props = PropertiesService.getScriptProperties();
+  const clientId = String(props.getProperty('LWB_RETAIL_CLIENT_ID') || '').trim();
+  const clientSecret = String(props.getProperty('LWB_RETAIL_CLIENT_SECRET') || '').trim();
+  const partnerTag = String(props.getProperty('LWB_RETAIL_PARTNER_TAG') || '').trim();
+
+  if (!clientId || !clientSecret || !partnerTag) {
+    throw new Error('Automatic retail pricing is not fully configured.');
+  }
+
+  return {
+    client_id: clientId,
+    client_secret: clientSecret,
+    partner_tag: partnerTag
+  };
+}
+
+function retailAccessToken_() {
+  const cache = CacheService.getScriptCache();
+  const cached = cache.get(LWB.RETAIL_TOKEN_CACHE_KEY);
+  if (cached) return cached;
+
+  const credentials = retailPriceCredentials_();
+  const response = UrlFetchApp.fetch(LWB.RETAIL_TOKEN_ENDPOINT, {
+    method: 'post',
+    contentType: 'application/json',
+    payload: JSON.stringify({
+      grant_type: 'client_credentials',
+      client_id: credentials.client_id,
+      client_secret: credentials.client_secret,
+      scope: 'creatorsapi::default'
+    }),
+    muteHttpExceptions: true
+  });
+
+  const code = response.getResponseCode();
+  const text = response.getContentText();
+  let parsed;
+  try {
+    parsed = JSON.parse(text);
+  } catch (_) {
+    throw new Error('Retail authentication returned an unreadable response.');
+  }
+
+  if (code < 200 || code >= 300 || !parsed || !parsed.access_token) {
+    throw new Error('Retail authentication failed (HTTP ' + code + ').');
+  }
+
+  const ttl = Math.max(60, Math.min(3500, Number(parsed.expires_in || 3600) - 120));
+  cache.put(LWB.RETAIL_TOKEN_CACHE_KEY, String(parsed.access_token), ttl);
+  return String(parsed.access_token);
+}
+
+function retailGetItems_(asins) {
+  const ids = (asins || []).map(function(value) {
+    return clean_(String(value || '').toUpperCase(), 20);
+  }).filter(Boolean).slice(0, 10);
+
+  if (!ids.length) return [];
+
+  const credentials = retailPriceCredentials_();
+  const response = UrlFetchApp.fetch(LWB.RETAIL_GET_ITEMS_ENDPOINT, {
+    method: 'post',
+    contentType: 'application/json',
+    headers: {
+      Authorization: 'Bearer ' + retailAccessToken_(),
+      'x-marketplace': LWB.RETAIL_MARKETPLACE
+    },
+    payload: JSON.stringify({
+      itemIds: ids,
+      itemIdType: 'ASIN',
+      marketplace: LWB.RETAIL_MARKETPLACE,
+      partnerTag: credentials.partner_tag,
+      resources: [
+        'itemInfo.title',
+        'offersV2.listings.condition',
+        'offersV2.listings.isBuyBoxWinner',
+        'offersV2.listings.price'
+      ]
+    }),
+    muteHttpExceptions: true
+  });
+
+  const code = response.getResponseCode();
+  const text = response.getContentText();
+  let parsed;
+  try {
+    parsed = JSON.parse(text);
+  } catch (_) {
+    throw new Error('Retail catalog returned an unreadable response.');
+  }
+
+  if (code < 200 || code >= 300) {
+    throw new Error('Retail catalog request failed (HTTP ' + code + ').');
+  }
+
+  return parsed && parsed.itemsResult && Array.isArray(parsed.itemsResult.items)
+    ? parsed.itemsResult.items
+    : [];
+}
+
+function retailNewFeaturedPrice_(item) {
+  const listings = item && item.offersV2 && Array.isArray(item.offersV2.listings)
+    ? item.offersV2.listings
+    : [];
+
+  const usable = listings.filter(function(listing) {
+    if (!listing || listing.violatesMAP === true) return false;
+    const condition = String(listing.condition && listing.condition.value || '').toLowerCase();
+    const money = listing.price && listing.price.money;
+    const amount = Number(money && money.amount);
+    const currency = String(money && money.currency || '').toUpperCase();
+    return condition === 'new' && isFinite(amount) && amount > 0 && (!currency || currency === 'USD');
+  });
+
+  const preferred = usable.find(function(listing) { return listing.isBuyBoxWinner === true; }) || usable[0];
+  if (!preferred) return null;
+
+  const amount = Number(preferred.price.money.amount);
+  return Math.round(amount * 100) / 100;
+}
+
+function refreshPrintProductPrices_(actorEmail, source) {
+  const productSheet = sheet_(LWB.SHEETS.PRINT_PRODUCTS);
+  const rows = readObjects_(productSheet)
+    .filter(function(row) {
+      return Boolean(clean_(row.print_product_id || '', 200)) &&
+        Boolean(clean_(row.asin || '', 40));
+    });
+
+  const byAsin = {};
+  rows.forEach(function(row) {
+    byAsin[String(row.asin || '').trim().toUpperCase()] = row;
+  });
+
+  const asins = Object.keys(byAsin);
+  const observed = Utilities.formatDate(new Date(), 'America/Indiana/Indianapolis', 'yyyy-MM-dd');
+  const summary = {
+    requested: asins.length,
+    updated: 0,
+    unchanged: 0,
+    skipped: 0,
+    failed_batches: 0,
+    errors: []
+  };
+
+  for (let i = 0; i < asins.length; i += 10) {
+    const batch = asins.slice(i, i + 10);
+    let items = [];
+
+    try {
+      items = retailGetItems_(batch);
+    } catch (err) {
+      summary.failed_batches++;
+      summary.errors.push(safeError_(err));
+      logSystem_('ERROR', 'PRINT_PRICE_REFRESH_BATCH_FAILED', actorEmail || '', '',
+        source || 'scheduled', safeError_(err), { asin_count: batch.length });
+      continue;
+    }
+
+    const itemsByAsin = {};
+    items.forEach(function(item) {
+      const asin = String(item && item.asin || '').trim().toUpperCase();
+      if (asin) itemsByAsin[asin] = item;
+    });
+
+    batch.forEach(function(asin) {
+      const row = byAsin[asin];
+      const item = itemsByAsin[asin];
+      const nextPrice = retailNewFeaturedPrice_(item);
+
+      if (!row || !nextPrice) {
+        summary.skipped++;
+        logSystem_('WARN', 'PRINT_PRICE_REFRESH_SKIPPED', actorEmail || '',
+          row && row.print_product_id || asin, source || 'scheduled',
+          row && row.product_name || asin, { asin: asin, reason: 'no-usable-new-featured-price' });
+        return;
+      }
+
+      const previousPrice = Number(row.current_price || 0);
+      const previousDate = normalizeSheetDate_(row.price_observed_date);
+
+      row.current_price = nextPrice;
+      row.price_observed_date = observed;
+      upsertByKey_(productSheet, 'print_product_id', row.print_product_id, row);
+
+      if (Math.abs(previousPrice - nextPrice) > 0.0001 || previousDate !== observed) {
+        summary.updated++;
+      } else {
+        summary.unchanged++;
+      }
+
+      logSystem_('INFO', 'PRINT_PRICE_AUTO_UPDATED', actorEmail || '',
+        row.print_product_id, source || 'scheduled', row.product_name || row.print_product_id, {
+          asin: asin,
+          previous_price: previousPrice,
+          current_price: nextPrice,
+          previous_observed_date: previousDate,
+          price_observed_date: observed
+        });
+    });
+
+    if (i + 10 < asins.length) Utilities.sleep(1100);
+  }
+
+  publishPrintProductsPublicSnapshot_();
+
+  logSystem_('INFO', 'PRINT_PRICE_REFRESH_COMPLETE', actorEmail || '', '',
+    source || 'scheduled', 'print product price refresh complete', summary);
+
+  return summary;
+}
+
+function adminPrintProductsRefresh_(data) {
+  const admin = verifyAdminSessionToken_(data.token);
+  const summary = refreshPrintProductPrices_(admin.email, 'portal');
+  return { ok: true, summary: summary, products: adminPrintProducts_({ token: data.token }).products };
+}
+
+function scheduledPrintProductPriceRefresh() {
+  return refreshPrintProductPrices_('', 'scheduled');
+}
+
+function installDailyPrintPriceRefresh() {
+  const handler = 'scheduledPrintProductPriceRefresh';
+
+  ScriptApp.getProjectTriggers().forEach(function(trigger) {
+    if (trigger.getHandlerFunction && trigger.getHandlerFunction() === handler) {
+      ScriptApp.deleteTrigger(trigger);
+    }
+  });
+
+  ScriptApp.newTrigger(handler)
+    .timeBased()
+    .everyDays(1)
+    .atHour(LWB.RETAIL_REFRESH_HOUR)
+    .inTimezone('America/Indiana/Indianapolis')
+    .create();
+
+  return {
+    ok: true,
+    handler: handler,
+    hour: LWB.RETAIL_REFRESH_HOUR,
+    timezone: 'America/Indiana/Indianapolis'
+  };
+}
+
 function adminPrintProducts_(data) {
   verifyAdminSessionToken_(data.token);
   const products = readObjects_(sheet_(LWB.SHEETS.PRINT_PRODUCTS))
@@ -4145,6 +4408,6 @@ function escapeHtml_(value) {
 
 /*
 ==========================================================================================
-END OF LWB BACKEND v2.2.4 | Copyright © 2026 Living Word Bibles. All Rights Reserved. Developed by Cook Technology Services. Last Updated on 02 October 2026 at 16:27:00Z UTC
+END OF LWB BACKEND v2.2.4 | Copyright © 2026 Living Word Bibles. All Rights Reserved. Developed by Cook Technology Services. Last Updated on 04 October 2026 at 19:06:10Z UTC
 ==========================================================================================
 */

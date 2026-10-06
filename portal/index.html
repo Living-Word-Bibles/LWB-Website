@@ -148,9 +148,10 @@
       <section class="portal-panel" data-panel="price-reconcile" hidden>
         <article class="portal-card">
           <div class="portal-section-head">
-            <div><h2>Price Reconcile</h2><p class="portal-muted">Print Products reference data is read-only here. Only the current price and observed date can be changed.</p></div>
-            <button class="btn secondary" type="button" data-refresh-print-products>Refresh</button>
+            <div><h2>Price Reconcile</h2><p class="portal-muted">Reference data is read-only here. Current price and observed date may still be changed manually when needed.</p></div>
+            <div class="portal-actions" style="margin-top:0"><button class="btn secondary" type="button" data-refresh-print-products>Reload</button><button class="btn" type="button" data-auto-refresh-print-products>Update Prices Now</button></div>
           </div>
+          <p class="portal-status" data-price-refresh-status hidden></p>
           <div class="portal-scroll" style="margin-top:18px"><table class="portal-table"><thead><tr><th>Product</th><th>Format</th><th>Category</th><th>ASIN</th><th>Amazon Direct</th><th>Affiliate Reference</th><th>Price</th><th>Observed Date</th><th>Action</th></tr></thead><tbody data-print-product-rows></tbody></table></div>
         </article>
       </section>

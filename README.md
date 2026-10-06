@@ -30,7 +30,7 @@
 <p align="center">
   <a href="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml/badge.svg?branch=main"></a>
   <img alt="Frontend package v2.8.0" src="https://img.shields.io/badge/frontend-v2.8.0-555555">
-  <img alt="Website Backend v2.2.5" src="https://img.shields.io/badge/backend-v2.2.5-555555">
+  <img alt="Website Backend v2.2.6" src="https://img.shields.io/badge/backend-v2.2.6-555555">
   <img alt="Hosting GitHub Pages" src="https://img.shields.io/badge/hosting-GitHub%20Pages-555555">
 </p>
 
@@ -40,7 +40,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 4 October 2026 at 19:02:32Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 06 October 2026 at 13:20:00Z UTC</sub></p>
 
 ---
 
@@ -59,12 +59,12 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
 | Frontend package version | `2.8.0` |
-| Google Apps Script version | `2.2.5` |
+| Google Apps Script version | `2.2.6` |
 | Email Service version | `1.0.0` |
-| Apps Script build stamp | `4 October 2026 at 19:02:32Z UTC` |
+| Apps Script build stamp | `06 October 2026 at 13:20:00Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `4 October 2026 at 19:02:32Z UTC` |
+| README revision | `06 October 2026 at 13:20:00Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
 
@@ -90,6 +90,31 @@ Released **02 October 2026**. Last Updated: **02 October 2026 at 17:43:19Z UTC**
 - Updated public `mailto:` links with page-specific subjects so incoming messages are easier to identify and route.
 
 ### Website backend and email delivery separation
+
+### Website Backend v2.2.6 — Automated print-price synchronization
+
+- Advanced the Website Backend to **v2.2.6** with build stamp **06 October 2026 at 13:20:00Z UTC**.
+- Added automatic current-price synchronization for participating print storefront products.
+- Added an authenticated **Update Prices Now** action to Portal → Price Reconcile.
+- Preserved the existing manual per-product price/date Save workflow as a fallback.
+- Automatic updates use the current featured **New** offer buying price for each participating ASIN and leave the existing stored price unchanged when no usable featured New offer is returned.
+- Successful refreshes immediately republish the existing public price snapshot used by the Print Bibles and Christian Books storefronts; `/assets/js/print-products.js` now displays that value as the current featured new-offer price rather than a lowest or starting price.
+- Added a daily scheduled refresh handler with a one-time installer for the existing production backend project.
+- Private retail credentials are read only from private runtime properties and are not embedded in website files or release documentation.
+
+### v2.2.6 coordinated file set
+
+```text
+/apps-script/Code.gs
+/apps-script/README.md
+/assets/js/print-products.js
+/assets/js/portal.js
+/estore/print-bibles/index.html
+/estore/christian-books/index.html
+/portal/index.html
+/README.md
+/change-log.html
+```
 
 ### Website Backend v2.2.5 — PayPal fee and net amount reporting
 
@@ -118,7 +143,7 @@ Released **02 October 2026**. Last Updated: **02 October 2026 at 17:43:19Z UTC**
 ### Release status
 
 - Frontend package advanced to **v2.8.0 Alpha**.
-- Website Backend: **v2.2.5**.
+- Website Backend: **v2.2.6**.
 - Email Service: **v1.0.0**.
 
 ### v2.8.0 surgical file set
@@ -1526,8 +1551,8 @@ Current backend metadata:
 
 ```text
 Service: LWB Website API
-Version: 2.2.5
-Apps Script build stamp: 4 October 2026 at 19:02:32Z UTC
+Version: 2.2.6
+Apps Script build stamp: 06 October 2026 at 11:59:54Z UTC
 ```
 
 Dedicated outbound-email component:
@@ -1690,7 +1715,7 @@ Deployment remains handled by `.github/workflows/deploy-pages.yml`.
 
 A push to `main` validates the repository and publishes the **repository root (`.`)** directly to GitHub Pages. There is no generated production output directory.
 
-For Website Backend v2.2.5, replace `/apps-script/Code.gs` in the existing production backend project and deploy a new version without changing the established public backend endpoint. Deploy the dedicated Email Service v1.0.0 separately from `/apps-script/email-service/Code.gs`. The Portal continues to call the Website Backend, which relays outbound email/newsletter actions to the Email Service.
+For Website Backend v2.2.6, replace `/apps-script/Code.gs` in the existing production backend project and deploy a new version without changing the established public backend endpoint. Deploy the dedicated Email Service v1.0.0 separately from `/apps-script/email-service/Code.gs`. The Portal continues to call the Website Backend, which relays outbound email/newsletter actions to the Email Service.
 
 ---
 
@@ -1769,11 +1794,11 @@ Before merging or deploying this release:
 ---
 
 **Repository architecture revision:** `2026-08-27T22:28:20Z`  
-**Apps Script build stamp:** `14 September 2026 at 19:01:03Z UTC`  
-**Google Apps Script version:** `2.2.5`  
+**Apps Script build stamp:** `06 October 2026 at 11:59:54Z UTC`  
+**Google Apps Script version:** `2.2.6`  
 **Email Service version:** `1.0.0`  
 **Frontend package version:** `2.8.0`  
-**README last updated:** **05 October 2026 at 13:00:00Z UTC**
+**README last updated:** **06 October 2026 at 11:59:54Z UTC**
 ---
 
-<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 02 October 2026 at 17:43:19Z UTC</strong></p>
+<p align="center"><strong>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 06 October 2026 at 11:59:54Z UTC</strong></p>

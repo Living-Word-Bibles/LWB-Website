@@ -5,7 +5,7 @@
  * Account: gospellivingwordbibles@gmail.com
  * Spreadsheet: LWB Website
  * Legal display date: 11 September 2026
- * Build timestamp: 06 October 2026 at 11:59:54Z UTC
+ * Build timestamp: 06 October 2026 at 13:20:00Z UTC
  *
  * v2.2.6 highlights:
  * - Adds authenticated automatic retail price synchronization for participating Print Products.
@@ -115,7 +115,7 @@
 
 const LWB = Object.freeze({
   VERSION: '2.2.6',
-  BUILD_UTC: '06 October 2026 at 11:59:54Z UTC',
+  BUILD_UTC: '06 October 2026 at 13:20:00Z UTC',
   PRINT_PRODUCTS_SNAPSHOT_KEY: 'print-products-public-snapshot-v2.2.6',
   PRINT_PRODUCTS_SNAPSHOT_MAX_AGE_SECONDS: 60,
   RETAIL_MARKETPLACE: 'www.amazon.com',
@@ -3275,44 +3275,67 @@ function retailGetItems_(asins) {
   if (!ids.length) return [];
 
   const credentials = retailPriceCredentials_();
-  const response = UrlFetchApp.fetch(LWB.RETAIL_GET_ITEMS_ENDPOINT, {
-    method: 'post',
-    contentType: 'application/json',
-    headers: {
-      Authorization: 'Bearer ' + retailAccessToken_(),
-      'x-marketplace': LWB.RETAIL_MARKETPLACE
-    },
-    payload: JSON.stringify({
-      itemIds: ids,
-      itemIdType: 'ASIN',
-      marketplace: LWB.RETAIL_MARKETPLACE,
-      partnerTag: credentials.partner_tag,
-      resources: [
-        'itemInfo.title',
-        'offersV2.listings.condition',
-        'offersV2.listings.isBuyBoxWinner',
-        'offersV2.listings.price'
-      ]
-    }),
-    muteHttpExceptions: true
+  const payload = JSON.stringify({
+    itemIds: ids,
+    itemIdType: 'ASIN',
+    marketplace: LWB.RETAIL_MARKETPLACE,
+    partnerTag: credentials.partner_tag,
+    resources: [
+      'itemInfo.title',
+      'offersV2.listings.condition',
+      'offersV2.listings.isBuyBoxWinner',
+      'offersV2.listings.price'
+    ]
   });
 
-  const code = response.getResponseCode();
-  const text = response.getContentText();
-  let parsed;
-  try {
-    parsed = JSON.parse(text);
-  } catch (_) {
-    throw new Error('Retail catalog returned an unreadable response.');
+  let lastError = null;
+
+  for (let attempt = 0; attempt < 3; attempt++) {
+    if (attempt > 0) Utilities.sleep(Math.pow(2, attempt - 1) * 1000);
+
+    const response = UrlFetchApp.fetch(LWB.RETAIL_GET_ITEMS_ENDPOINT, {
+      method: 'post',
+      contentType: 'application/json',
+      headers: {
+        Authorization: 'Bearer ' + retailAccessToken_(),
+        'x-marketplace': LWB.RETAIL_MARKETPLACE
+      },
+      payload: payload,
+      muteHttpExceptions: true
+    });
+
+    const code = response.getResponseCode();
+    const text = response.getContentText();
+    let parsed = null;
+
+    try {
+      parsed = JSON.parse(text);
+    } catch (_) {
+      parsed = null;
+    }
+
+    if (code >= 200 && code < 300) {
+      return parsed && parsed.itemsResult && Array.isArray(parsed.itemsResult.items)
+        ? parsed.itemsResult.items
+        : [];
+    }
+
+    if (code === 401 && attempt === 0) {
+      CacheService.getScriptCache().remove(LWB.RETAIL_TOKEN_CACHE_KEY);
+      lastError = new Error('Retail authentication token was rejected and has been refreshed.');
+      continue;
+    }
+
+    if (code === 429 || code >= 500) {
+      lastError = new Error('Retail catalog request temporarily unavailable (HTTP ' + code + ').');
+      continue;
+    }
+
+    const reason = parsed && parsed.reason ? ' — ' + String(parsed.reason) : '';
+    throw new Error('Retail catalog request failed (HTTP ' + code + ')' + reason + '.');
   }
 
-  if (code < 200 || code >= 300) {
-    throw new Error('Retail catalog request failed (HTTP ' + code + ').');
-  }
-
-  return parsed && parsed.itemsResult && Array.isArray(parsed.itemsResult.items)
-    ? parsed.itemsResult.items
-    : [];
+  throw lastError || new Error('Retail catalog request failed.');
 }
 
 function retailNewFeaturedPrice_(item) {

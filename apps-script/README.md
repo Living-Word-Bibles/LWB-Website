@@ -1,55 +1,53 @@
-# Living Word Bibles — Google Apps Script backend
+# Living Word Bibles — Website Backend
 
-This directory contains the source-control copy of the **LWB Backend** used by the static Living Word Bibles website. It is a data/API backend only. It does **not** build, edit, generate, or overwrite website pages.
+This directory contains the source-control copy of the Living Word Bibles website backend. It is a data/API backend only. It does not build, edit, generate, or overwrite website pages.
 
-## Current resources
+## Current release
 
-- Google account: `gospellivingwordbibles@gmail.com`
-- Spreadsheet: `LWB Website`
-- Spreadsheet ID: `1xnzdo1UJsEOTqcO2066Nfb6ayqKn8Zg5RbNLdpbaTcc`
-- Product folder: `LWB Product Files`
-- Product folder ID: `1G6H26CknI1XI090cMVVjb8aVYxM94APP`
-- Deployed Web App: `LWB Backend`
-- Web App URL: `https://script.google.com/macros/s/AKfycbwHIonCe2_aijuiflRSq1jtXMpueX6DCoVIssW-YRqWT3gDisH13g1UzJrhnY1KteM1/exec`
+- Backend version: `2.2.6`
+- Build stamp: `06 October 2026 at 13:20:00Z UTC`
+- Public storefront price endpoint: `?action=print-products`
+- Portal price tools:
+  - authenticated print-product list
+  - manual price/date Save
+  - on-demand automatic price refresh
+- Daily price refresh support is provided by `scheduledPrintProductPriceRefresh`.
+- `installDailyPrintPriceRefresh()` installs/replaces the daily 9:00 AM America/Indiana/Indianapolis trigger.
 
-The website consumes this URL through `assets/js/config.js`.
+## Print Products pricing
 
-## Current public endpoints
+`Print Products` remains the authoritative record used by the public Print Bibles and Christian Books storefronts.
 
-- `?action=ping`
-- `?action=health`
-- `?action=settings`
-- `?action=products`
-- `?action=product&slug=...`
-- `?action=social`
-- `?action=free-download-link&product=...`
-- `?action=verify-pdt&tx=...&product=...`
-- `?action=download&token=...`
+For participating ASINs, v2.2.6 can retrieve the current featured New offer buying price, write `current_price` and `price_observed_date`, and republish the existing public snapshot.
 
-POST actions currently implemented by the source-controlled backend include `subscribe`, `unsubscribe`, `contact`, and `free-download`.
+Safeguards:
 
-## Paid product files
+- no usable current featured New offer → keep the existing stored price unchanged;
+- blank/invalid prices are never published as `$0.00`;
+- the existing manual Portal Price Reconcile Save workflow remains available;
+- the separately managed God Bless The USA Bible listing is not part of the automatic ASIN refresh;
+- transient retail-service failures do not erase or zero existing prices.
 
-The private Drive folder contains the paid EPUB assets using these exact filenames:
+## Private configuration
 
-- `kjv.epub`
-- `asv.epub`
-- `ylt.epub`
-- `web.epub`
+Private retail credentials are not stored in this README or in checked-in source.
 
-Free EPUBs remain static website assets and are not moved into paid fulfillment:
+The backend expects these private runtime properties to already be configured in the deployed backend project:
 
-- `/assets/products/kjvspecial.epub`
-- `/assets/products/drb.epub`
+- `LWB_RETAIL_CLIENT_ID`
+- `LWB_RETAIL_CLIENT_SECRET`
+- `LWB_RETAIL_PARTNER_TAG`
 
-## Script Properties
+Do not commit credential values to source control.
 
-The core setup function records the current Sheet/folder IDs and creates `DOWNLOAD_TOKEN_SECRET` if missing. PayPal settings remain separate.
+## Public price delivery
 
-`PAYPAL_PDT_IDENTITY_TOKEN` and `PAYPAL_RECEIVER_EMAIL` are **not** supplied or changed by the website migration. Do not replace a PayPal receiver email merely because the public website contact email changed.
+The storefront continues to read `?action=print-products` through `/assets/js/print-products.js`.
+
+The frontend displays the returned value as the **current featured new-offer price**. It does not label that value as a lowest price or a starting price.
 
 ## Deployment
 
-When the Apps Script source itself is changed, create a new Web App deployment version under the existing **LWB Backend** deployment. If Google issues a different `/exec` URL, change only `assets/js/config.js` in the website repository.
+When backend source changes, deploy a new version under the existing production backend deployment. Preserve the existing production deployment URL unless the platform requires a replacement.
 
-Last documented: **27 August 2026 at 14:59:40Z UTC**.
+Last documented: 06 October 2026 at 13:20:00Z UTC.

@@ -30,7 +30,7 @@
 <p align="center">
   <a href="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Living-Word-Bibles/LWB-Website/actions/workflows/deploy-pages.yml/badge.svg?branch=main"></a>
   <img alt="Frontend package v2.8.0" src="https://img.shields.io/badge/frontend-v2.8.0-555555">
-  <img alt="Website Backend v2.2.6" src="https://img.shields.io/badge/backend-v2.2.6-555555">
+  <img alt="Website Backend v2.2.7" src="https://img.shields.io/badge/backend-v2.2.7-555555">
   <img alt="Hosting GitHub Pages" src="https://img.shields.io/badge/hosting-GitHub%20Pages-555555">
 </p>
 
@@ -40,7 +40,7 @@
   <a href="https://github.com/Living-Word-Bibles/LWB-Website"><strong>GitHub Repository</strong></a>
 </p>
 
-<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 06 October 2026 at 13:20:00Z UTC</sub></p>
+<p align="center"><sub>© 2026 Living Word Bibles | All Rights Reserved | Developed by <a href="https://cts.cook-international.com">Cook Technology Services</a> in Chicago, Illinois | Last Updated on 06 October 2026 at 14:09:11Z UTC</sub></p>
 
 ---
 
@@ -59,12 +59,12 @@ A push to `main` validates the checked-in static tree and publishes the reposito
 | Production site | `https://www.livingwordbibles.com/` |
 | Deployment branch | `main` |
 | Frontend package version | `2.8.0` |
-| Google Apps Script version | `2.2.6` |
+| Google Apps Script version | `2.2.7` |
 | Email Service version | `1.0.0` |
-| Apps Script build stamp | `06 October 2026 at 13:20:00Z UTC` |
+| Apps Script build stamp | `06 October 2026 at 14:09:11Z UTC` |
 | Runtime configuration architecture stamp | `2026-08-27T14:59:40Z` |
 | Static-site architecture repair timestamp | `2026-08-27T22:28:20Z` |
-| README revision | `06 October 2026 at 13:20:00Z UTC` |
+| README revision | `06 October 2026 at 14:09:11Z UTC` |
 
 > **Architecture rule:** page HTML is authoritative. Shared includes, runtime JavaScript, validation tooling, the Google Apps Script backend, and GitHub Actions support the site; none of them should regenerate or overwrite page bodies.
 
@@ -90,6 +90,17 @@ Released **02 October 2026**. Last Updated: **02 October 2026 at 17:43:19Z UTC**
 - Updated public `mailto:` links with page-specific subjects so incoming messages are easier to identify and route.
 
 ### Website backend and email delivery separation
+
+### Website Backend v2.2.7 — Print-price refresh reliability fix
+
+- Advanced the Website Backend to **v2.2.7** with build stamp **06 October 2026 at 14:09:11Z UTC**.
+- Fixed a misleading Portal result where complete catalog-request failures could appear as `0 updated / 0 unchanged / 0 skipped`.
+- Automatic refresh now explicitly requests **New** condition offers in **USD**.
+- A successful price observation always refreshes `price_observed_date`, even when the numeric price is unchanged.
+- Refresh results now report eligible products, successfully checked products, price changes, date refreshes, skipped products, failed products, and the first returned error.
+- If every catalog batch fails, the Portal now receives a real error instead of a false-success summary.
+- Manual Price Reconcile Save remains unchanged and available as a fallback.
+- No credential values are stored in repository files.
 
 ### Website Backend v2.2.6 — Automated print-price synchronization
 
@@ -143,7 +154,7 @@ Released **02 October 2026**. Last Updated: **02 October 2026 at 17:43:19Z UTC**
 ### Release status
 
 - Frontend package advanced to **v2.8.0 Alpha**.
-- Website Backend: **v2.2.6**.
+- Website Backend: **v2.2.7**.
 - Email Service: **v1.0.0**.
 
 ### v2.8.0 surgical file set
@@ -1551,7 +1562,7 @@ Current backend metadata:
 
 ```text
 Service: LWB Website API
-Version: 2.2.6
+Version: 2.2.7
 Apps Script build stamp: 06 October 2026 at 11:59:54Z UTC
 ```
 
@@ -1715,7 +1726,7 @@ Deployment remains handled by `.github/workflows/deploy-pages.yml`.
 
 A push to `main` validates the repository and publishes the **repository root (`.`)** directly to GitHub Pages. There is no generated production output directory.
 
-For Website Backend v2.2.6, replace `/apps-script/Code.gs` in the existing production backend project and deploy a new version without changing the established public backend endpoint. Deploy the dedicated Email Service v1.0.0 separately from `/apps-script/email-service/Code.gs`. The Portal continues to call the Website Backend, which relays outbound email/newsletter actions to the Email Service.
+For Website Backend v2.2.7, replace `/apps-script/Code.gs` in the existing production backend project and deploy a new version without changing the established public backend endpoint. Deploy the dedicated Email Service v1.0.0 separately from `/apps-script/email-service/Code.gs`. The Portal continues to call the Website Backend, which relays outbound email/newsletter actions to the Email Service.
 
 ---
 
@@ -1795,7 +1806,7 @@ Before merging or deploying this release:
 
 **Repository architecture revision:** `2026-08-27T22:28:20Z`  
 **Apps Script build stamp:** `06 October 2026 at 11:59:54Z UTC`  
-**Google Apps Script version:** `2.2.6`  
+**Google Apps Script version:** `2.2.7`  
 **Email Service version:** `1.0.0`  
 **Frontend package version:** `2.8.0`  
 **README last updated:** **06 October 2026 at 11:59:54Z UTC**

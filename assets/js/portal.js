@@ -617,11 +617,22 @@
       setMessage(priceStatus, 'Updating current prices…', true);
       const result = await request('admin-print-products-refresh');
       const summary = result.summary || {};
-      setMessage(
-        priceStatus,
-        `Price refresh complete: ${summary.updated || 0} updated, ${summary.unchanged || 0} unchanged, ${summary.skipped || 0} skipped.`,
-        true
-      );
+      const failed = Number(summary.failed || 0);
+      const checked = Number(summary.checked || 0);
+      const eligible = Number(summary.eligible || 0);
+      const priceChanged = Number(summary.price_changed || 0);
+      const dateUpdated = Number(summary.date_updated || 0);
+      const skipped = Number(summary.skipped || 0);
+
+      const message =
+        `Price refresh complete: ${checked} of ${eligible} checked; ` +
+        `${priceChanged} price changes; ${dateUpdated} observed dates refreshed; ` +
+        `${skipped} skipped; ${failed} failed.` +
+        (Array.isArray(summary.errors) && summary.errors.length
+          ? ` Error: ${summary.errors[0]}`
+          : '');
+
+      setMessage(priceStatus, message, failed === 0);
       renderPrintProducts(result.products || []);
     } catch (error) {
       setMessage(priceStatus, error.message || 'Price refresh failed.');

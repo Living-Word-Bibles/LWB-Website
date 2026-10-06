@@ -1,11 +1,18 @@
 /**
- * Living Word Bibles Backend v2.2.6
+ * Living Word Bibles Backend v2.2.7
  * Core Website API
  *
  * Account: gospellivingwordbibles@gmail.com
  * Spreadsheet: LWB Website
  * Legal display date: 11 September 2026
- * Build timestamp: 06 October 2026 at 13:20:00Z UTC
+ * Build timestamp: 06 October 2026 at 14:09:11Z UTC
+ *
+ * v2.2.7 highlights:
+ * - Fixes automatic Print Products refresh diagnostics so failed catalog requests can no longer appear as a successful 0/0/0 refresh.
+ * - Requests New-condition USD offers explicitly and surfaces catalog/authentication errors to the Portal.
+ * - Updates price_observed_date on every successful price observation, even when the numeric price is unchanged.
+ * - Reports checked rows, price changes, date refreshes, skipped rows, and failed rows separately.
+ * - Preserves the existing manual Price Reconcile Save workflow and public snapshot behavior.
  *
  * v2.2.6 highlights:
  * - Adds authenticated automatic retail price synchronization for participating Print Products.
@@ -114,9 +121,9 @@
  */
 
 const LWB = Object.freeze({
-  VERSION: '2.2.6',
-  BUILD_UTC: '06 October 2026 at 13:20:00Z UTC',
-  PRINT_PRODUCTS_SNAPSHOT_KEY: 'print-products-public-snapshot-v2.2.6',
+  VERSION: '2.2.7',
+  BUILD_UTC: '06 October 2026 at 14:09:11Z UTC',
+  PRINT_PRODUCTS_SNAPSHOT_KEY: 'print-products-public-snapshot-v2.2.7',
   PRINT_PRODUCTS_SNAPSHOT_MAX_AGE_SECONDS: 60,
   RETAIL_MARKETPLACE: 'www.amazon.com',
   RETAIL_TOKEN_ENDPOINT: 'https://api.amazon.com/auth/o2/token',
@@ -3278,6 +3285,8 @@ function retailGetItems_(asins) {
   const payload = JSON.stringify({
     itemIds: ids,
     itemIdType: 'ASIN',
+    condition: 'New',
+    currencyOfPreference: 'USD',
     marketplace: LWB.RETAIL_MARKETPLACE,
     partnerTag: credentials.partner_tag,
     resources: [
@@ -3304,7 +3313,7 @@ function retailGetItems_(asins) {
       muteHttpExceptions: true
     });
 
-    const code = response.getResponseCode();
+    const httpCode = response.getResponseCode();
     const text = response.getContentText();
     let parsed = null;
 
@@ -3314,25 +3323,49 @@ function retailGetItems_(asins) {
       parsed = null;
     }
 
-    if (code >= 200 && code < 300) {
-      return parsed && parsed.itemsResult && Array.isArray(parsed.itemsResult.items)
+    if (httpCode >= 200 && httpCode < 300) {
+      const items = parsed && parsed.itemsResult && Array.isArray(parsed.itemsResult.items)
         ? parsed.itemsResult.items
         : [];
+
+      if (items.length) return items;
+
+      const apiErrors = parsed && Array.isArray(parsed.errors) ? parsed.errors : [];
+      if (apiErrors.length) {
+        const message = apiErrors.map(function(error) {
+          return clean_(error && (error.message || error.code) || 'Unknown catalog error', 500);
+        }).filter(Boolean).join(' | ');
+        throw new Error('Retail catalog returned no items: ' + (message || 'unknown error') + '.');
+      }
+
+      throw new Error('Retail catalog returned no items for the requested ASINs.');
     }
 
-    if (code === 401 && attempt === 0) {
+    if (httpCode === 401 && attempt === 0) {
       CacheService.getScriptCache().remove(LWB.RETAIL_TOKEN_CACHE_KEY);
       lastError = new Error('Retail authentication token was rejected and has been refreshed.');
       continue;
     }
 
-    if (code === 429 || code >= 500) {
-      lastError = new Error('Retail catalog request temporarily unavailable (HTTP ' + code + ').');
+    const apiErrors = parsed && Array.isArray(parsed.errors) ? parsed.errors : [];
+    const apiMessage = apiErrors.length
+      ? apiErrors.map(function(error) {
+          return clean_(error && (error.message || error.code) || '', 500);
+        }).filter(Boolean).join(' | ')
+      : clean_(parsed && (parsed.message || parsed.reason) || '', 1000);
+
+    if (httpCode === 429 || httpCode >= 500) {
+      lastError = new Error(
+        'Retail catalog request temporarily unavailable (HTTP ' + httpCode + ')' +
+        (apiMessage ? ': ' + apiMessage : '') + '.'
+      );
       continue;
     }
 
-    const reason = parsed && parsed.reason ? ' — ' + String(parsed.reason) : '';
-    throw new Error('Retail catalog request failed (HTTP ' + code + ')' + reason + '.');
+    throw new Error(
+      'Retail catalog request failed (HTTP ' + httpCode + ')' +
+      (apiMessage ? ': ' + apiMessage : '') + '.'
+    );
   }
 
   throw lastError || new Error('Retail catalog request failed.');
@@ -3361,24 +3394,45 @@ function retailNewFeaturedPrice_(item) {
 
 function refreshPrintProductPrices_(actorEmail, source) {
   const productSheet = sheet_(LWB.SHEETS.PRINT_PRODUCTS);
-  const rows = readObjects_(productSheet)
+  const allRows = readObjects_(productSheet)
     .filter(function(row) {
-      return Boolean(clean_(row.print_product_id || '', 200)) &&
-        Boolean(clean_(row.asin || '', 40));
+      return Boolean(clean_(row.print_product_id || '', 200));
     });
+
+  const rows = allRows.filter(function(row) {
+    return Boolean(clean_(row.asin || '', 40));
+  });
+
+  if (!rows.length) {
+    throw new Error(
+      'Automatic price refresh found no eligible Print Products rows with ASIN values. ' +
+      'Expected columns: print_product_id, asin, current_price, price_observed_date.'
+    );
+  }
 
   const byAsin = {};
   rows.forEach(function(row) {
-    byAsin[String(row.asin || '').trim().toUpperCase()] = row;
+    const asin = clean_(String(row.asin || '').toUpperCase(), 20);
+    if (asin) byAsin[asin] = row;
   });
 
   const asins = Object.keys(byAsin);
-  const observed = Utilities.formatDate(new Date(), 'America/Indiana/Indianapolis', 'yyyy-MM-dd');
+  const observed = Utilities.formatDate(
+    new Date(),
+    'America/Indiana/Indianapolis',
+    'yyyy-MM-dd'
+  );
+
   const summary = {
-    requested: asins.length,
+    total_rows: allRows.length,
+    eligible: asins.length,
+    checked: 0,
     updated: 0,
+    price_changed: 0,
+    date_updated: 0,
     unchanged: 0,
     skipped: 0,
+    failed: 0,
     failed_batches: 0,
     errors: []
   };
@@ -3390,16 +3444,26 @@ function refreshPrintProductPrices_(actorEmail, source) {
     try {
       items = retailGetItems_(batch);
     } catch (err) {
+      const message = safeError_(err);
       summary.failed_batches++;
-      summary.errors.push(safeError_(err));
-      logSystem_('ERROR', 'PRINT_PRICE_REFRESH_BATCH_FAILED', actorEmail || '', '',
-        source || 'scheduled', safeError_(err), { asin_count: batch.length });
+      summary.failed += batch.length;
+      summary.errors.push(message);
+
+      logSystem_(
+        'ERROR',
+        'PRINT_PRICE_REFRESH_BATCH_FAILED',
+        actorEmail || '',
+        '',
+        source || 'scheduled',
+        message,
+        { asins: batch, asin_count: batch.length }
+      );
       continue;
     }
 
     const itemsByAsin = {};
     items.forEach(function(item) {
-      const asin = String(item && item.asin || '').trim().toUpperCase();
+      const asin = clean_(String(item && item.asin || '').toUpperCase(), 20);
       if (asin) itemsByAsin[asin] = item;
     });
 
@@ -3408,35 +3472,60 @@ function refreshPrintProductPrices_(actorEmail, source) {
       const item = itemsByAsin[asin];
       const nextPrice = retailNewFeaturedPrice_(item);
 
-      if (!row || !nextPrice) {
+      if (!row || !item || !nextPrice) {
         summary.skipped++;
-        logSystem_('WARN', 'PRINT_PRICE_REFRESH_SKIPPED', actorEmail || '',
-          row && row.print_product_id || asin, source || 'scheduled',
-          row && row.product_name || asin, { asin: asin, reason: 'no-usable-new-featured-price' });
+        logSystem_(
+          'WARN',
+          'PRINT_PRICE_REFRESH_SKIPPED',
+          actorEmail || '',
+          row && row.print_product_id || asin,
+          source || 'scheduled',
+          row && row.product_name || asin,
+          {
+            asin: asin,
+            reason: !item ? 'item-not-returned' : 'no-usable-new-featured-price'
+          }
+        );
         return;
       }
 
+      summary.checked++;
+
       const previousPrice = Number(row.current_price || 0);
       const previousDate = normalizeSheetDate_(row.price_observed_date);
+      const priceChanged = Math.abs(previousPrice - nextPrice) > 0.0001;
+      const dateChanged = previousDate !== observed;
 
       row.current_price = nextPrice;
       row.price_observed_date = observed;
       upsertByKey_(productSheet, 'print_product_id', row.print_product_id, row);
 
-      if (Math.abs(previousPrice - nextPrice) > 0.0001 || previousDate !== observed) {
+      if (priceChanged) summary.price_changed++;
+      if (dateChanged) summary.date_updated++;
+
+      if (priceChanged || dateChanged) {
         summary.updated++;
       } else {
         summary.unchanged++;
       }
 
-      logSystem_('INFO', 'PRINT_PRICE_AUTO_UPDATED', actorEmail || '',
-        row.print_product_id, source || 'scheduled', row.product_name || row.print_product_id, {
+      logSystem_(
+        'INFO',
+        'PRINT_PRICE_AUTO_UPDATED',
+        actorEmail || '',
+        row.print_product_id,
+        source || 'scheduled',
+        row.product_name || row.print_product_id,
+        {
           asin: asin,
           previous_price: previousPrice,
           current_price: nextPrice,
           previous_observed_date: previousDate,
-          price_observed_date: observed
-        });
+          price_observed_date: observed,
+          price_changed: priceChanged,
+          date_changed: dateChanged
+        }
+      );
     });
 
     if (i + 10 < asins.length) Utilities.sleep(1100);
@@ -3444,8 +3533,22 @@ function refreshPrintProductPrices_(actorEmail, source) {
 
   publishPrintProductsPublicSnapshot_();
 
-  logSystem_('INFO', 'PRINT_PRICE_REFRESH_COMPLETE', actorEmail || '', '',
-    source || 'scheduled', 'print product price refresh complete', summary);
+  logSystem_(
+    summary.failed ? 'WARN' : 'INFO',
+    'PRINT_PRICE_REFRESH_COMPLETE',
+    actorEmail || '',
+    '',
+    source || 'scheduled',
+    'print product price refresh complete',
+    summary
+  );
+
+  if (summary.checked === 0 && summary.failed > 0) {
+    throw new Error(
+      'Automatic price refresh failed before any product could be checked. ' +
+      (summary.errors[0] || 'See System Log for the catalog error.')
+    );
+  }
 
   return summary;
 }
@@ -4431,6 +4534,6 @@ function escapeHtml_(value) {
 
 /*
 ==========================================================================================
-END OF LWB BACKEND v2.2.4 | Copyright © 2026 Living Word Bibles. All Rights Reserved. Developed by Cook Technology Services. Last Updated on 04 October 2026 at 19:06:10Z UTC
+END OF LWB BACKEND v2.2.7 | Copyright © 2026 Living Word Bibles. All Rights Reserved. Developed by Cook Technology Services. Last Updated on 06 October 2026 at 14:09:11Z UTC
 ==========================================================================================
 */

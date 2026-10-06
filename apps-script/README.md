@@ -4,8 +4,8 @@ This directory contains the source-control copy of the Living Word Bibles websit
 
 ## Current release
 
-- Backend version: `2.2.6`
-- Build stamp: `06 October 2026 at 13:20:00Z UTC`
+- Backend version: `2.2.7`
+- Build stamp: `06 October 2026 at 14:09:11Z UTC`
 - Public storefront price endpoint: `?action=print-products`
 - Portal price tools:
   - authenticated print-product list
@@ -18,7 +18,7 @@ This directory contains the source-control copy of the Living Word Bibles websit
 
 `Print Products` remains the authoritative record used by the public Print Bibles and Christian Books storefronts.
 
-For participating ASINs, v2.2.6 can retrieve the current featured New offer buying price, write `current_price` and `price_observed_date`, and republish the existing public snapshot.
+For participating ASINs, v2.2.7 can retrieve the current featured New offer buying price, write `current_price` and `price_observed_date`, and republish the existing public snapshot.
 
 Safeguards:
 
@@ -27,6 +27,22 @@ Safeguards:
 - the existing manual Portal Price Reconcile Save workflow remains available;
 - the separately managed God Bless The USA Bible listing is not part of the automatic ASIN refresh;
 - transient retail-service failures do not erase or zero existing prices.
+
+
+## v2.2.7 refresh behavior
+
+The automatic refresh now reports separate counts for:
+
+- eligible ASIN rows;
+- successfully checked products;
+- numeric price changes;
+- observed-date refreshes;
+- skipped products;
+- failed products and failed batches.
+
+A complete catalog/authentication failure is returned to the Portal as an error and can no longer appear as a successful `0 / 0 / 0` refresh.
+
+Every successful observation writes today's `price_observed_date` even when the numeric price did not change.
 
 ## Private configuration
 
@@ -50,4 +66,4 @@ The frontend displays the returned value as the **current featured new-offer pri
 
 When backend source changes, deploy a new version under the existing production backend deployment. Preserve the existing production deployment URL unless the platform requires a replacement.
 
-Last documented: 06 October 2026 at 13:20:00Z UTC.
+Last documented: 06 October 2026 at 14:09:11Z UTC.

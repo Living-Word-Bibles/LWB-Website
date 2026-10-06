@@ -608,6 +608,29 @@
   }
 
   root.querySelector('[data-refresh-print-products]')?.addEventListener('click', () => loadPrintProducts().catch(showError));
+
+  root.querySelector('[data-auto-refresh-print-products]')?.addEventListener('click', async event => {
+    const button = event.currentTarget;
+    const priceStatus = root.querySelector('[data-price-refresh-status]');
+    try {
+      button.disabled = true;
+      setMessage(priceStatus, 'Updating current prices…', true);
+      const result = await request('admin-print-products-refresh');
+      const summary = result.summary || {};
+      setMessage(
+        priceStatus,
+        `Price refresh complete: ${summary.updated || 0} updated, ${summary.unchanged || 0} unchanged, ${summary.skipped || 0} skipped.`,
+        true
+      );
+      renderPrintProducts(result.products || []);
+    } catch (error) {
+      setMessage(priceStatus, error.message || 'Price refresh failed.');
+      showError(error);
+    } finally {
+      button.disabled = false;
+    }
+  });
+
   root.querySelector('[data-print-product-rows]')?.addEventListener('click', async event => {
     const button = event.target.closest('[data-save-print-product]');
     if (!button) return;
